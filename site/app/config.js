@@ -30,7 +30,7 @@
         'Assets/js/theme.init.js'
     ];
 
-    var remoteServiceName = 'http://api.local.dev';
+    var remoteServiceName = 'http://api.local.dev/';
 
     var events = {
         controllerActivateSuccess: 'controller.activateSuccess',
