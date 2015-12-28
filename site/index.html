@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html data-ng-app="app">
+<head>
+    <base href="/">
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <title>Arkalys - Serveur 2.32</title>
+    <meta name="keywords" content="ARKALYS" />
+    <meta name="description" content="ARKALYS">
+    <meta name="author" content="ARKALYS">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Web Fonts  -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Alegreya|Alegreya+SC|Oswald:400,300" rel="stylesheet" type="text/css">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="Content/bootstrap.css">
+    <link rel="stylesheet" href="Content/font-awesome.css">
+    <link rel="stylesheet" href="Assets/plugin/rs-plugin/css/settings.css">
+    <link rel="stylesheet" href="Content/magnific-popup.css">
+    <link rel="stylesheet" href="Content/toastr.css">
+    <link href="Content/loading-bar.css" rel="stylesheet" />
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="Assets/css/theme.css">
+    <link rel="stylesheet" href="Assets/css/custom.css">
+    <link rel="stylesheet" href="Assets/css/theme-elements.css">
+    <link rel="stylesheet" href="Assets/css/theme-blog.css">
+    <link rel="stylesheet" href="Assets/css/theme-shop.css">
+    <link rel="stylesheet" href="Assets/css/theme-animate.css">
+
+
+    <!-- Skin CSS -->
+    <link rel="stylesheet" href="Assets/css/skins/default.css">
+
+    <!-- Head Libs -->
+    <script src="Scripts/modernizr-2.8.3.js"></script>
+
+    <!--[if IE]>
+        <link rel="stylesheet" href="Assets/css/ie.css">
+    <![endif]-->
+    <!--[if lte IE 8]>
+        <script src="Scripts/respond.js"></script>
+        <script src="Scripts/excanvas.js"></script>
+    <![endif]-->
+
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit" async defer></script>
+</head>
+<body>
+    <div data-ng-include="'/app/controllers/layout/shell.html'">
+    </div>
+
+    <!-- Vendor -->
+    <script src="Scripts/jquery-2.1.4.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/toastr.js"></script>
+    <script src="Assets/plugin/common/common.js"></script>
+    <script src="Assets/plugin/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script src="Assets/plugin/rs-plugin/js/jquery.themepunch.revolution.js"></script>
+    <script src="Scripts/jquery.magnific-popup.js"></script>
+
+    <!-- #region Angular -->
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-animate.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="Scripts/angular-sanitize.js"></script>
+    <script src="Scripts/angular-messages.js"></script>
+    <script src="Scripts/angular-webstorage.js"></script>
+    <script src="Scripts/angular-webstorage-utils.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region Angular UI -->
+    <script src="Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="Scripts/loading-bar.js"></script>
+    <script src="Scripts/angular-recaptcha.js"></script>
+
+    <script src="Assets/plugin/angular-load/angular-load.js"></script>
+    <script src="Assets/plugin/angular-gravatar/angular-gravatar.js"></script>
+    <!-- #endregion -->
+
+    <!-- #endregion -->
+
+    <!-- #region Bootstrapping -->
+    <script src="app/app.js"></script>
+    <script src="app/config.js"></script>
+    <script src="app/config.exceptionHandler.js"></script>
+    <script src="app/config.route.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region common Modules -->
+    <script src="app/common/common.js"></script>
+    <script src="app/common/logger.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region app -->
+    <script src="app/controllers/layout/shell.js"></script>
+    <script src="app/controllers/layout/header.js"></script>
+    <script src="app/controllers/home/home.js"></script>
+    <script src="app/controllers/auth/login.js"></script>
+    <script src="app/controllers/auth/register.js"></script>
+    <script src="app/controllers/account/account.js"></script>
+    <script src="app/controllers/account/gameaccount.js"></script>
+    <script src="app/controllers/shop/shop.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region app Modules -->
+    <script src="app/modules/authInterceptor.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region app Services -->
+    <script src="app/services/routeMediator.js"></script>
+    <script src="app/services/authService.js"></script>
+    <script src="app/services/gameService.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region app Directives -->
+    <script src="app/directives/homeSlider.js"></script>
+    <script src="app/directives/compareTo.js"></script>
+    <!-- #endregion -->
+</body>
+</html>
