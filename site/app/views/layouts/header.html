@@ -56,8 +56,8 @@
         </div>
         <nav class="nav-main mega-menu">
             <ul class="nav nav-pills nav-main" id="mainMenu">
-                <li data-ng-class="isCurrent(r)" data-ng-repeat="r in navRoutes">
-                    <a href="{{r.url}}" data-ng-bind-html="r.config.settings.content"></a>
+                <li ng-class="isCurrent(r)" ng-repeat="r in navRoutes">
+                    <a href="{{r.url}}" ng-bind-html="r.config.settings.content"></a>
                 </li>
             </ul>
         </nav>
