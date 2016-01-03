@@ -1,61 +1,31 @@
-﻿<div class="slider-container">
+<div class="slider-container">
     <div class="slider" id="revolutionSlider" data-plugin-revolution-slider data-plugin-options='{"startheight": 580}'>
         <ul>
             <li data-transition="fade" data-slotamount="13" data-masterspeed="300">
 
                 <img src="/assets/img/slides/slide-clean-bg-2.jpg" data-bgposition="left top" data-bgrepeat="no-repeat">
 
-                <div class="tp-caption white top-label md white customin"
-                     data-x="left" data-hoffset="115"
-                     data-y="170"
-                     data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
-                     data-speed="800"
-                     data-start="0"
-                     data-easing="Back.easeInOut"
-                     data-endspeed="300">
+                <div class="tp-caption white top-label md white customin" data-x="left" data-hoffset="115" data-y="170" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                data-speed="800" data-start="0" data-easing="Back.easeInOut" data-endspeed="300">
                     N'attend plus et rejoint dès maintenant
                 </div>
 
-                <div class="tp-caption main-label md white customin"
-                     data-x="left" data-hoffset="115"
-                     data-y="190"
-                     data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
-                     data-speed="800"
-                     data-start="300"
-                     data-easing="Back.easeInOut"
-                     data-endspeed="300">
+                <div class="tp-caption main-label md white customin" data-x="left" data-hoffset="115" data-y="190" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                data-speed="800" data-start="300" data-easing="Back.easeInOut" data-endspeed="300">
                     ARKALYS
                 </div>
 
-                <div class="tp-caption bottom-label md white sfb"
-                     data-x="left" data-hoffset="135"
-                     data-y="290"
-                     data-speed="800"
-                     data-start="500"
-                     data-easing="Back.easeInOut"
-                     data-endspeed="300">
+                <div class="tp-caption bottom-label md white sfb" data-x="left" data-hoffset="135" data-y="290" data-speed="800" data-start="500" data-easing="Back.easeInOut" data-endspeed="300">
                     Donjons . Toutes les classes . Reconnexion en Combat . Contenu 2.32
                 </div>
 
-                <a class="tp-caption customin btn btn-lg btn-primary main-button" href="/auth/register"
-                   data-x="left" data-hoffset="205"
-                   data-y="340"
-                   data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
-                   data-speed="800"
-                   data-start="700"
-                   data-easing="Back.easeInOut"
-                   data-endspeed="300">
+                <a class="tp-caption customin btn btn-lg btn-primary main-button" href="/auth/register" data-x="left" data-hoffset="205" data-y="340" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                data-speed="800" data-start="700" data-easing="Back.easeInOut" data-endspeed="300">
                     Jouer !
                 </a>
 
-                <div class="tp-caption sfb"
-                     data-x="right" data-hoffset="-110"
-                     data-y="center" data-voffset="10"
-                     data-speed="1000"
-                     data-start="700"
-                     data-easing="Back.easeInOut"
-                     data-endspeed="300">
-                    <img src="/assets/img/slides/dofus_3.png"/>
+                <div class="tp-caption sfb" data-x="right" data-hoffset="-110" data-y="center" data-voffset="10" data-speed="1000" data-start="700" data-easing="Back.easeInOut" data-endspeed="300">
+                    <img src="/assets/img/slides/dofus_3.png" />
                 </div>
             </li>
         </ul>
@@ -64,13 +34,13 @@
 
 <script>
     // Revolution Slider
-    (function (theme, $) {
+    (function(theme, $) {
 
         theme = theme || {};
 
         var instanceName = '__revolution';
 
-        var PluginRevolutionSlider = function ($el, opts) {
+        var PluginRevolutionSlider = function($el, opts) {
             return this.initialize($el, opts);
         };
 
@@ -142,7 +112,7 @@
         };
 
         PluginRevolutionSlider.prototype = {
-            initialize: function ($el, opts) {
+            initialize: function($el, opts) {
                 if ($el.data(instanceName)) {
                     return this;
                 }
@@ -157,13 +127,13 @@
                 return this;
             },
 
-            setData: function () {
+            setData: function() {
                 this.$el.data(instanceName, this);
 
                 return this;
             },
 
-            setOptions: function (opts) {
+            setOptions: function(opts) {
                 this.options = $.extend(true, {}, PluginRevolutionSlider.defaults, opts, {
                     wrapper: this.$el
                 });
@@ -171,7 +141,7 @@
                 return this;
             },
 
-            build: function () {
+            build: function() {
                 if (!($.isFunction($.fn.revolution))) {
                     return this;
                 }
@@ -188,8 +158,8 @@
         });
 
         // jquery plugin
-        $.fn.themePluginRevolutionSlider = function (opts) {
-            return this.map(function () {
+        $.fn.themePluginRevolutionSlider = function(opts) {
+            return this.map(function() {
                 var $this = $(this);
 
                 if ($this.data(instanceName)) {
@@ -204,14 +174,14 @@
     }).apply(this, [window.theme, jQuery]);
 
     // Revolution Slider
-    (function ($) {
+    (function($) {
 
         'use strict';
 
         if ($.isFunction($.fn['themePluginRevolutionSlider'])) {
 
-            $(function () {
-                $('[data-plugin-revolution-slider]:not(.manual), .slider-container .slider:not(.manual)').each(function () {
+            $(function() {
+                $('[data-plugin-revolution-slider]:not(.manual), .slider-container .slider:not(.manual)').each(function() {
                     var $this = $(this),
                         opts;
 
@@ -226,4 +196,5 @@
         }
 
     }).apply(this, [jQuery]);
+
 </script>
