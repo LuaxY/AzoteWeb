@@ -1606,9 +1606,9 @@ window.theme = {};
 
 // Word Rotate
 (function(theme, $) {
-	
+
 	theme = theme || {};
-	
+
 	var instanceName = '__wordRotate';
 
 	var PluginWordRotate = function($el, opts) {
@@ -1705,7 +1705,7 @@ window.theme = {};
 			} else {
 				return new PluginWordRotate($this, opts);
 			}
-			
+
 		});
 	}
 
@@ -2126,6 +2126,7 @@ window.theme = {};
 					if (!this.options.menuAfterHeader) {
 
 						if ($(window).scrollTop() > ((headerHeight - 15) - logoSmallHeight)) {
+
 							self.stickyMenuActivate();
 						} else {
 							self.stickyMenuDeactivate();
@@ -2166,7 +2167,7 @@ window.theme = {};
 					}, 200, function() {
 						$.event.trigger({
 							type: "stickyMenu.active"
-						});						
+						});
 					});
 
 				}
@@ -2190,7 +2191,7 @@ window.theme = {};
 						}, 200, function() {
 						$.event.trigger({
 							type: "stickyMenu.deactive"
-						});						
+						});
 					});
 
 					}

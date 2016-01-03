@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var serviceId = 'authService';
@@ -26,13 +26,13 @@
             var deferred = common.$q.defer();
 
             common.$http.post(url, form)
-                .success(function (result) {
+                .success(function(result) {
                     webStorage.session.add('authorizationTicket', result.authorizationTicket);
                     common.$broadcast(config.events.authLogged);
 
                     deferred.resolve(result);
                 })
-                .error(function (result) {
+                .error(function(result) {
                     deferred.reject(result);
                     common.logger.logError(result.message);
                 });
@@ -50,10 +50,10 @@
             var deferred = common.$q.defer();
 
             common.$http.post(url, form)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
+                .error(function(result) {
                     deferred.reject(result);
                     common.logger.logError(result.message);
                 });

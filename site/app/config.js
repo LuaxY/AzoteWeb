@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var app = angular.module('app');
@@ -26,8 +26,8 @@
     };
 
     var lazyLoadingScripts = [
-        'Assets/js/theme.js',
-        'Assets/js/theme.init.js'
+        '/assets/js/theme.js',
+        '/assets/js/theme.init.js'
     ];
 
     var remoteServiceName = 'http://api.local.dev/';
@@ -53,7 +53,7 @@
 
     app.value('config', config);
 
-    app.config(['$logProvider', function ($logProvider) {
+    app.config(['$logProvider', function($logProvider) {
         // turn debugging off/on (no info or warn)
         if ($logProvider.debugEnabled) {
             $logProvider.debugEnabled(true);
@@ -61,16 +61,16 @@
     }]);
 
     //#region Configure the common services via commonConfig
-    app.config(['commonConfigProvider', function (cfg) {
+    app.config(['commonConfigProvider', function(cfg) {
         cfg.config.controllerActivateSuccessEvent = config.events.controllerActivateSuccess;
     }]);
     //#endregion
 
-    app.config(['gravatarServiceProvider', function (gravatarServiceProvider) {
+    app.config(['gravatarServiceProvider', function(gravatarServiceProvider) {
         gravatarServiceProvider.secure = true;
     }]);
 
-    app.config(['$locationProvider', function ($locationProvider) {
+    app.config(['$locationProvider', function($locationProvider) {
         $locationProvider.html5Mode(true);
     }]);
 })();

@@ -1,31 +1,30 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
-    // Define the common module 
+    // Define the common module
     // Contains services:
     //  - common
     //  - logger
     //  - spinner
     var commonModule = angular.module('common', []);
 
-    // Must configure the common service and set its 
+    // Must configure the common service and set its
     // events via the commonConfigProvider
-    commonModule.provider('commonConfig', function () {
+    commonModule.provider('commonConfig', function() {
         this.config = {
             // These are the properties we need to set
             //controllerActivateSuccessEvent: '',
             //spinnerToggleEvent: ''
         };
 
-        this.$get = function () {
+        this.$get = function() {
             return {
                 config: this.config
             };
         };
     });
 
-    commonModule.factory('common',
-        ['$q', '$rootScope', '$timeout', '$http', 'commonConfig', 'logger', common]);
+    commonModule.factory('common', ['$q', '$rootScope', '$timeout', '$http', 'commonConfig', 'logger', common]);
 
     function common($q, $rootScope, $timeout, $http, commonConfig, logger) {
         var throttles = {};
@@ -48,8 +47,10 @@
         return service;
 
         function activateController(promises, controllerId) {
-            return $q.all(promises).then(function (eventArgs) {
-                var data = { controllerId: controllerId };
+            return $q.all(promises).then(function(eventArgs) {
+                var data = {
+                    controllerId: controllerId
+                };
                 $broadcast(commonConfig.config.controllerActivateSuccessEvent, data);
             });
         }
@@ -59,13 +60,13 @@
         }
 
         function createSearchThrottle(viewmodel, list, filteredList, filter, delay) {
-            // After a delay, search a viewmodel's list using 
+            // After a delay, search a viewmodel's list using
             // a filter function, and return a filteredList.
 
             // custom delay or use default
             delay = +delay || 300;
 
-            // if only vm and list parameters were passed, set others by naming convention 
+            // if only vm and list parameters were passed, set others by naming convention
             if (!filteredList) {
                 // assuming list is named sessions, filteredList is filteredSessions
                 filteredList = 'filtered' + list[0].toUpperCase() + list.substr(1).toLowerCase(); // string
@@ -75,21 +76,21 @@
             }
 
             // create the filtering function we will call from here
-            var filterFn = function () {
+            var filterFn = function() {
                 // translates to ...
                 // vm.filteredSessions = vm.sessions.filter(function(item( { returns vm.sessionFilter (item) } );
-                viewmodel[filteredList] = viewmodel[list].filter(function (item) {
+                viewmodel[filteredList] = viewmodel[list].filter(function(item) {
                     return viewmodel[filter](item);
                 });
             };
 
-            return (function () {
-                // Wrapped in outer IFFE so we can use closure 
+            return (function() {
+                // Wrapped in outer IFFE so we can use closure
                 // over filterInputTimeout which references the timeout
                 var filterInputTimeout;
 
                 // return what becomes the 'applyFilter' function in the controller
-                return function (searchNow) {
+                return function(searchNow) {
                     if (filterInputTimeout) {
                         $timeout.cancel(filterInputTimeout);
                         filterInputTimeout = null;
@@ -97,8 +98,7 @@
 
                     if (searchNow || !delay) {
                         filterFn();
-                    }
-                    else {
+                    } else {
                         filterInputTimeout = $timeout(filterFn, delay);
                     }
                 };
@@ -106,8 +106,8 @@
         }
 
         function debouncedThrottle(key, callback, delay, immediate) {
-            // Perform some action (callback) after a delay. 
-            // Track the callback by key, so if the same callback 
+            // Perform some action (callback) after a delay.
+            // Track the callback by key, so if the same callback
             // is issued again, restart the delay.
 
             var defaultDelay = 1000;

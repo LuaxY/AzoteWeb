@@ -1,0 +1,65 @@
+<div class="header-top">
+    <div class="container">
+        <p>
+            <a href=""><i class="fa fa-signal"></i> 2000 connectés</a>
+        </p>
+        <nav>
+            <ul class="nav nav-pills nav-top">
+                <li ng-show="!isLogged">
+                    <a href="/auth/login"><i class="fa fa-sign-in"></i> Connexion</a>
+                </li>
+                <li ng-show="!isLogged">
+                    <a href="/auth/register"><i class="fa fa-pencil"></i> Inscription</a>
+                </li>
+                <li class="dropdown" ng-show="isLogged">
+                    <a href="" data-toggle="dropdown" class="dropdown-toggle">
+                        Bonjour {{profile.firstname}}
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/account"><i class="fa fa-pencil"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="" ng-click="disconnect()"><i class="fa fa-power-off"></i> Déconnexion</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="container">
+    <h1 class="logo">
+        <a href="/">
+            <img alt="Arkalys" width="150" height="98" data-sticky-width="150" data-sticky-height="98" src="/assets/img/logo-arkalys-new.png">
+        </a>
+    </h1>
+    <button class="btn btn-responsive-nav btn-inverse" data-toggle="collapse" data-target=".nav-main-collapse">
+        <i class="fa fa-bars"></i>
+    </button>
+</div>
+<div class="navbar-collapse nav-main-collapse collapse">
+    <div class="container">
+        <div class="search" id="headerSearch">
+            <a href="#" id="headerSearchOpen"><i class="fa fa-search"></i></a>
+            <div class="search-input">
+                <form id="headerSearchForm" action="#" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control search" name="q" id="q" placeholder="Search..." required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <nav class="nav-main mega-menu">
+            <ul class="nav nav-pills nav-main" id="mainMenu">
+                <li data-ng-class="isCurrent(r)" data-ng-repeat="r in navRoutes">
+                    <a href="{{r.url}}" data-ng-bind-html="r.config.settings.content"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
