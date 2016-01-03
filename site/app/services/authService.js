@@ -32,9 +32,9 @@
 
                     deferred.resolve(result);
                 })
-                .error(function(result) {
-                    deferred.reject(result);
-                    common.logger.logError(result.message);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -53,9 +53,9 @@
                 .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function(result) {
-                    deferred.reject(result);
-                    common.logger.logError(result.message);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;

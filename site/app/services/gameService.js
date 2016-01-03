@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var serviceId = 'gameService';
@@ -24,12 +24,12 @@
             var deferred = common.$q.defer();
 
             common.$http.get(url)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result.message);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -41,12 +41,12 @@
             var deferred = common.$q.defer();
 
             common.$http.post(url, form)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result.message);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -58,12 +58,12 @@
             var deferred = common.$q.defer();
 
             common.$http.post(url, form)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -76,12 +76,12 @@
             var deferred = common.$q.defer();
 
             common.$http.post(url, form)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -92,12 +92,12 @@
             var deferred = common.$q.defer();
 
             common.$http.get(url)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result.message);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -108,12 +108,12 @@
             var deferred = common.$q.defer();
 
             common.$http.get(url)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;
@@ -124,12 +124,12 @@
             var deferred = common.$q.defer();
 
             common.$http.get(url)
-                .success(function (result) {
+                .success(function(result) {
                     deferred.resolve(result);
                 })
-                .error(function (result) {
-                    deferred.reject(result);
-                    common.logger.logError(result);
+                .error(function(error) {
+                    deferred.reject(error);
+                    common.logger.logError(error.message);
                 });
 
             return deferred.promise;

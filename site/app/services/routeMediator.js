@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function() {
     'use strict';
 
     var serviceId = 'routeMediator';
@@ -23,7 +23,7 @@
         }
 
         function handleRoutingErrors() {
-            $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+            $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
                 if (handleRouteChangeError) {
                     return;
                 }
@@ -40,7 +40,7 @@
 
         function updateDocTitle() {
             $rootScope.$on('$routeChangeSuccess',
-                function (event, current, previous) {
+                function(event, current, previous) {
                     handleRouteChangeError = false;
 
                     var title = config.docTitle + (current.title || '');
@@ -51,7 +51,7 @@
         }
 
         function contentLoaded() {
-            $rootScope.$on('$viewContentLoaded', function () {
+            $rootScope.$on('$viewContentLoaded', function() {
                 if (isContentLoaded)
                     return;
 
@@ -65,19 +65,16 @@
         function loadScript(scripts, index) {
             var script = scripts[index];
 
-            angularLoad.loadScript(script).then(function () {
+            angularLoad.loadScript(script).then(function() {
                 logger.logSuccess('Succes load: ' + script);
 
                 if (scripts.length - 1 > index) {
                     loadScript(scripts, index + 1);
-                }      
-            }).catch(function () {
+                }
+            }).catch(function() {
                 var msg = 'Error loading script: ' + script;
                 logger.logError(msg, script, serviceId, true);
             });
         }
-        //#region Internal Methods        
-
-        //#endregion
     }
 })();
