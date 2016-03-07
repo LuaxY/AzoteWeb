@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Account;
+use App\Beta;
 
 use Validator;
 use Auth;
@@ -25,6 +26,13 @@ class AccountController extends Controller
             return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
         }
 
+        $allowedEmail = Beta::where('email', $request->input('email'))->first();
+
+        if (!$allowedEmail || $allowedEmail->active == 0)
+        {
+            return $this->error(401, 'adresse email non autorisée pour la bêta');
+        }
+
         $salt = str_random(8);
 
         $user = new User;
@@ -34,6 +42,9 @@ class AccountController extends Controller
         $user->firstname = $request->input('firstName');
         $user->lastname  = $request->input('lastName');
         $user->save();
+
+        $allowedEmail->active = 0;
+        $allowedEmail->save();
 
         return $this->success('compte créé');
     }

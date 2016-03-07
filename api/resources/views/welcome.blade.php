@@ -38,7 +38,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Arkalys 2.32</div>
+                <div class="title">Arkalys 2.33</div>
             </div>
         </div>
     </body>
