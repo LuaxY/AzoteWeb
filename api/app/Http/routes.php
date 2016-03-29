@@ -38,3 +38,10 @@ Route::group(['prefix' => 'account'], function()
         ])->where('accountId', '[0-9]+');
     });
 });
+
+Route::group(['prefix' => 'support'], function()
+{
+    Route::get('create', 'SupportController@create');
+
+    Route::post('store', 'SupportController@store');
+});
