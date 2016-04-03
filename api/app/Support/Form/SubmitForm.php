@@ -4,8 +4,8 @@ namespace App\Support\Form;
 
 class SubmitForm implements IForm
 {
-    public static function render($data)
+    public static function render($name, $data)
     {
-        return "<input type=\"submit\" value=\"{$data['value']}\"><br>\n";
+        return "<input type=\"submit\" value=\"$name\"><br>\n";
     }
 }

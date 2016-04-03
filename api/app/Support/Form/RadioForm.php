@@ -4,13 +4,24 @@ namespace App\Support\Form;
 
 class RadioForm implements IForm
 {
-    public static function render($data)
+    public static function render($name, $data)
     {
         $html = "";
 
-        foreach ($data['values'] as $value)
+        foreach ($data as $obj)
         {
-            $html .= "<input type=\"radio\" name=\"{$data['name']}\" value=\"$value\"> $value<br>\n";
+            $value = $obj->value;
+            $child = (isset($obj->child) ? $obj->child : false);
+
+            if ($child)
+            {
+                $html .= "<input type=\"radio\" name=\"$name\" value=\"c|$child\"> $value<br>\n";
+            }
+            else
+            {
+                $html .= "<input type=\"radio\" name=\"$name\" value=\"f|$value\"> $value<br>\n";
+            }
+
         }
 
         return $html;

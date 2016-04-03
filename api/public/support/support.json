@@ -1,0 +1,16 @@
+{
+    "fields": [{
+        "type": "radio",
+        "name": "Support",
+        "data": [{
+            "value": "Site web",
+            "child": "web"
+        }, {
+            "value": "En jeu",
+            "child": "game"
+        }, {
+            "value": "Autre",
+            "child": "other"
+        }]
+    }]
+}

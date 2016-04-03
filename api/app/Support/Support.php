@@ -11,12 +11,39 @@ class Support
 {
     public static function generateForm()
     {
+        $json = json_decode(file_get_contents("support/game_bug.json"));
         $html = "";
 
-        $html .= TextForm::render(['name' => 'Nom de compte', 'required' => true]);
-        $html .= RadioForm::render(['name' => 'Personnage', 'values' => ['Perso1', 'Perso2']]);
-        $html .= SelectForm::render(['name' => 'Sort', 'values' => ['Sort1', 'Sort2']]);
-        $html .= SubmitForm::render(['value' => 'Envoyer']);
+        foreach ($json->fields as $field)
+        {
+            $type = $field->type;
+            $name = $field->name;
+            $data = (isset($field->data) ? $field->data : false);
+
+            $form = false;
+
+            switch($type)
+            {
+                case 'text':
+                case 'integer':
+                    $form = new TextForm;
+                    break;
+                case 'radio':
+                    $form = new RadioForm;
+                    break;
+                case 'select':
+                    $form = new SelectForm;
+                    break;
+                case 'submit':
+                    $form = new SubmitForm;
+                    break;
+            }
+
+            if ($form)
+            {
+                $html .= $form->render($name, $data);
+            }
+        }
 
         return $html;
     }

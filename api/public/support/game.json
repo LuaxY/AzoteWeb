@@ -1,0 +1,13 @@
+{
+    "fields": [{
+        "type": "radio",
+        "name": "Signaler",
+        "data": [{
+            "value": "Problème technique",
+            "child": "game_tech_issue"
+        }, {
+            "value": "Bug",
+            "child": "game_bug"
+        }]
+    }]
+}
