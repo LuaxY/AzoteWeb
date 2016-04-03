@@ -9,9 +9,10 @@ use App\Support\Form\SubmitForm;
 
 class Support
 {
-    public static function generateForm()
+    public static function generateForm($child)
     {
-        $json = json_decode(file_get_contents("support/game_bug.json"));
+        // TODO: protect this code !!!
+        $json = json_decode(file_get_contents("support/$child.json"));
         $html = "";
 
         foreach ($json->fields as $field)

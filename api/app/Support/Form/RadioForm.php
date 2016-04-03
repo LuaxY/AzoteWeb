@@ -6,21 +6,24 @@ class RadioForm implements IForm
 {
     public static function render($name, $data)
     {
-        $html = "";
+        $html = "$name:<br>\n";
 
         foreach ($data as $obj)
         {
             $value = $obj->value;
             $child = (isset($obj->child) ? $obj->child : false);
+            $v;
 
             if ($child)
             {
-                $html .= "<input type=\"radio\" name=\"$name\" value=\"c|$child\"> $value<br>\n";
+                $v = "c|$child";
             }
             else
             {
-                $html .= "<input type=\"radio\" name=\"$name\" value=\"f|$value\"> $value<br>\n";
+                $v = "f|$value";
             }
+
+            $html .= "<input type=\"radio\" name=\"$name\" value=\"$v\"> $value<br>\n";
 
         }
 

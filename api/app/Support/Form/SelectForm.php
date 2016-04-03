@@ -6,21 +6,25 @@ class SelectForm implements IForm
 {
     public static function render($name, $data)
     {
-        $html = "<select name=\"$name\">\n";
+        $html  = "$name: <select name=\"$name\">\n";
+        $html .= "<option value=\"r|null\"></option>\n";
 
         foreach ($data as $obj)
         {
             $value = $obj->value;
             $child = (isset($obj->child) ? $obj->child : false);
+            $v;
 
             if ($child)
             {
-                $html .= "<option value=\"c|$child\">$value</option>\n";
+                $v = "c|$child";
             }
             else
             {
-                $html .= "<option value=\"f|$value\">$value</option>\n";
+                $v = "f|$value";
             }
+
+            $html .= "<option value=\"$v\">$value</option>\n";
         }
 
         $html .= "</select><br>\n";

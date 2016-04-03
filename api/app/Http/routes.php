@@ -43,5 +43,7 @@ Route::group(['prefix' => 'support'], function()
 {
     Route::get('create', 'SupportController@create');
 
+    Route::get('child/{child}', 'SupportController@child');
+
     Route::post('store', 'SupportController@store');
 });
