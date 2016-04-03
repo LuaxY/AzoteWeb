@@ -17,8 +17,7 @@
     }, {
         "type": "integer",
         "name": "Niveau du personnage"
-    }
-    , {
+    }, {
         "type": "submit",
         "name": "Envoyer"
     }]

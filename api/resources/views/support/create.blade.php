@@ -28,8 +28,7 @@ function get_child(id, name) {
 }
 
 function remove_parts(id) {
-    if (nb_part > id) {
-        console.log(nb_part +' > '+ id);
+    if (nb_part >= id) {
         for (var i = id; i <= nb_part; i++) {
             $('#support [part='+i+']').remove();
         }

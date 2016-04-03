@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Support\Form\TextForm;
 use App\Support\Form\RadioForm;
 use App\Support\Form\SelectForm;
+use App\Support\Form\TextareaForm;
 use App\Support\Form\SubmitForm;
 
 class Support
@@ -34,6 +35,9 @@ class Support
                     break;
                 case 'select':
                     $form = new SelectForm;
+                    break;
+                case 'textarea':
+                    $form = new TextareaForm;
                     break;
                 case 'submit':
                     $form = new SubmitForm;
