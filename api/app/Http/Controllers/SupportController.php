@@ -17,9 +17,9 @@ class SupportController extends Controller
         return view('support/create', ['html' => $html]);
     }
 
-    public function child($child)
+    public function child($child, $params = false)
     {
-        return Support::generateForm($child);
+        return Support::generateForm($child, $params);
     }
 
     public function store()

@@ -4,5 +4,5 @@ namespace App\Support\Form;
 
 interface IForm
 {
-    public static function render($name, $data);
+    public static function render($name, $data, $params);
 }

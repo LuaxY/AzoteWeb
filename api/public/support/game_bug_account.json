@@ -1,0 +1,12 @@
+{
+    "fields": [{
+        "type": "characters",
+        "name": "Personnages",
+        "data": {
+            "a": "b"
+        }
+    }, {
+        "type": "submit",
+        "name": "Envoyer"
+    }]
+}

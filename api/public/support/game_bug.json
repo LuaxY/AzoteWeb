@@ -1,24 +1,9 @@
 {
     "fields": [{
-        "type": "text",
-        "name": "Compte de jeu"
-    }, {
-        "type": "text",
-        "name": "Pseudo du personnage"
-    }, {
-        "type": "select",
-        "name": "Classe",
-        "data": [{
-            "value": "Feca",
-            "child": "feca"
-        }, {
-            "value": "Iop"
-        }]
-    }, {
-        "type": "integer",
-        "name": "Niveau du personnage"
-    }, {
-        "type": "submit",
-        "name": "Envoyer"
+        "type": "accounts",
+        "name": "Compte de jeu",
+        "data": {
+            "child": "game_bug_account"
+        }
     }]
 }

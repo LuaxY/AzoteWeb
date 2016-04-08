@@ -4,7 +4,7 @@ namespace App\Support\Form;
 
 class SelectForm implements IForm
 {
-    public static function render($name, $data)
+    public static function render($name, $data, $params)
     {
         $html  = "$name: <select name=\"$name\">\n";
         $html .= "<option value=\"r|null\"></option>\n";

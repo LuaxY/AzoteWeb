@@ -4,7 +4,7 @@ namespace App\Support\Form;
 
 class RadioForm implements IForm
 {
-    public static function render($name, $data)
+    public static function render($name, $data, $params)
     {
         $html = "$name:<br>\n";
 
