@@ -1,7 +1,7 @@
 {
     "fields": [{
         "type": "characters",
-        "name": "Personnages",
+        "name": "Personnage",
         "data": {
             "a": "b"
         }

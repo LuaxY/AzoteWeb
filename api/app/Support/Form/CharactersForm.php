@@ -9,7 +9,7 @@ class CharactersForm implements IForm
 {
     public static function render($name, $data, $params)
     {
-        $html = "";
+        $html = "$name:<br>\n";
         //$html  = "$name: <select name=\"$name\">\n";
         //$html .= "<option value=\"r|null\"></option>\n";
 
@@ -23,7 +23,7 @@ class CharactersForm implements IForm
             foreach ($characters as $character)
             {
                 //$html .= "<option value=\"c|$child|$character->Id\">$character->Name</option>\n";
-                $html .= "<img src=\"http://api.dofus.lan/forge/player/{$character->Id}/face/2/50/50\">\n";
+                $html .= "<div class=\"character\"><input type=\"radio\" name=\"$name\" id=\"{$character->Id}\" value=\"{$character->Id}\"> <label for=\"{$character->Id}\"><img src=\"http://api.dofus.lan/forge/player/{$character->Id}/face/2/50/50\"> {$character->Name} - {$character->classe()} niveau {$character->level()}</label></div>\n";
             }
         }
 

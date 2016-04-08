@@ -5,12 +5,21 @@
     <script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE=" crossorigin="anonymous"></script>
     <style>
         #support {
-            width: 300px;
+            width: 400px;
         }
 
         #support .part {
             margin: 5px;
             border: black 1px solid;
+        }
+
+        #support .character {
+            margin: 5px;
+            border: black 1px solid;
+        }
+
+        #support .character img {
+            vertical-align:middle
         }
     </style>
 </head>
