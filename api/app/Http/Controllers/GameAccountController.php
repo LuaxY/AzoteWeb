@@ -93,7 +93,7 @@ class GameAccountController extends Controller
                 $character = new \stdClass;
                 $character->name = $_character->Name;
                 $character->level = $_character->Level;
-                $character->lookLink = 'https://dofus.voidmx.net/api/forge/dofus/renderer/look/' . bin2hex($_character->EntityLookString) . '/full/1/150_220-10.png';
+                $character->lookLink = "http://api.dofus.lan/forge/player/{$_character->Id}/full/1/150/220";
                 $characters[] = $character;
             }
 

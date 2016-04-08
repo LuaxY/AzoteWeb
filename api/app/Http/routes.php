@@ -43,7 +43,25 @@ Route::group(['prefix' => 'support'], function()
 {
     Route::get('create', 'SupportController@create');
 
-    Route::get('child/{child}', 'SupportController@child');
+    Route::get('child/{child}/{params?}', [
+        'middleware' => 'auth',
+        'uses' => 'SupportController@child',
+    ]);
 
     Route::post('store', 'SupportController@store');
+});
+
+Route::group(['prefix' => 'forge'], function()
+{
+    Route::get('image/{request}', 'Api\ForgeController@image')->where('request', '(.*)');
+
+    Route::get('player/{id}/{mode}/{orientation}/{sizeX}/{sizeY}', 'Api\ForgeController@player')->where([
+        'id'          => '[0-9]+',
+        'mode'        => '(full|face)',
+        'orientation' => '[0-8]',
+        'sizeX'       => '[0-9]+',
+        'sizeY'       => '[0-9]+'
+    ]);
+
+    Route::get('text/{id}', 'Api\ForgeController@text')->where('id', '[0-9]+');
 });
