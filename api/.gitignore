@@ -1,5 +1,7 @@
 /vendor
 /node_modules
+/.sass-cache
+/public/forge/*.png
 Homestead.yaml
 Homestead.json
 .env

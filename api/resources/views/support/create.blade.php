@@ -15,7 +15,14 @@
 
         #support .character {
             margin: 5px;
-            border: black 1px solid;
+            border: #009688 2px solid;
+            border-radius: 5px;
+            height: 50px;
+        }
+
+        #support .character:hover {
+            border-color: #00564F;
+            background-color: #E3FFFC;
         }
 
         #support .character img {
@@ -34,7 +41,10 @@ var nb_part = 0;
 function get_child(id, name, params) {
     remove_parts(id);
 
-    $.get('/support/child/' + name + '/' + params, function(data) {
+    var url = '/support/child/' + name;
+    if (params != null && params != '') url +=  '/' + params;
+
+    $.get(url, function(data) {
         $('#support').append('<div class="part" part="' + id + '">' + data + '</div>');
         nb_part = id + "";
     });
