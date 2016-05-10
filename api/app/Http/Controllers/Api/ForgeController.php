@@ -12,7 +12,7 @@ class ForgeController extends Controller
 {
     public function image($request)
     {
-        $redis = Redis::connection();
+        //$redis = Redis::connection();
 
         $format = pathinfo($request, PATHINFO_EXTENSION);
         switch ($format)
@@ -27,7 +27,8 @@ class ForgeController extends Controller
         $url .= $request;
         $hash = md5($request);
 
-        $data = $redis->get("dofus:forge:$hash");
+        //$data = $redis->get("dofus:forge:$hash");
+        $data = @file_get_contents("forge/$hash.$format");
 
         if ($data)
         {
@@ -49,7 +50,8 @@ class ForgeController extends Controller
             }
             else
             {
-                $redis->set("dofus:forge:$hash", $result);
+                //$redis->set("dofus:forge:$hash", $result);
+                file_put_contents("forge/$hash.$format", $result);
                 print $result;
             }
 
