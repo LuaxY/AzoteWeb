@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Security;
 
 class User extends Authenticatable
 {
@@ -40,4 +41,13 @@ class User extends Authenticatable
             'passwordConfirmation' => 'required|same:password',
         ],
     ];
+
+    public function hashPassword($password, $salt)
+    {
+        $password = Security::hash('sha512', $password, 10);
+        $salt     = Security::hash('sha512', $salt, 10);
+        $hash     = Security::hash('sha512', $password . $salt, 10);
+
+        return $hash;
+    }
 }
