@@ -62,9 +62,11 @@ section[role=footer] {
                         background: rgba(0, 0, 0, 0.5);
                         display: inline-block;
                         opacity: 0;
+
                         &:hover {
                             opacity: 1;
                         }
+
                         &:before {
                             content: "\f144";
                             width: 100%;
@@ -78,6 +80,7 @@ section[role=footer] {
             &.social {
                 width: 100%;
                 margin-top: -15px;
+
                 li {
                     color: #aaccdc;
                     font-size: 25px;
@@ -94,17 +97,21 @@ section[role=footer] {
         width: 100%;
         padding: 25px 0 18px;
         background: #2892c4;
+
         p {
             width: 1024px;
             padding: 0 15px;
             margin: auto;
             color: #ffffff;
+
             a:hover {
                 text-decoration: underline;
             }
+
             br {
                 display: none;
             }
+
             img.logo {
                 float: right;
                 margin-top: -16px;
@@ -119,6 +126,7 @@ section[role=footer] {
             width: 100%;
             padding: 20px 25px;
         }
+
         footer p {
             width: 100%;
         }
@@ -142,6 +150,7 @@ section[role=footer] {
 
         .content ul {
             width: 50%;
+            
             &.video {
                 width: 100%;
                 margin-top: 15px;

@@ -3,9 +3,11 @@ main {
     margin: auto;
     position: relative;
     padding-top: 25px;
+
     #left {
         width: calc(70% - 25px);
         float: left;
+
         article {
             width: 100%;
             background: #ffffff;
@@ -13,12 +15,15 @@ main {
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
             position: relative;
+
             &[news] {
                 width: calc(50% - 10px);
             }
+
             &:nth-child(even) {
                 margin-right: 20px;
             }
+
             .voile {
                 width: 100% !important;
                 height: 80px !important;
@@ -27,9 +32,11 @@ main {
                 z-index: 400;
                 bottom: 35px;
             }
+
             &[news]:first-child {
                 width: 100%;
             }
+
             time {
                 position: absolute;
                 z-index: 100;
@@ -41,6 +48,7 @@ main {
                 top: 10px;
                 left: 10px;
             }
+
             figure {
                 width: 100%;
                 height: 190px;
@@ -48,23 +56,28 @@ main {
                 position: relative;
                 top: 0;
                 z-index: 90;
+
                 .content {
                     width: 200%;
                     height: 190px;
                     position: absolute;
                     left: -50%;
                     text-align: center;
+
                     img {
                         width: 50%;
                     }
                 }
+
                 .voile {
                     bottom: 0;
                 }
             }
+
             header {
                 width: 100%;
                 padding: 15px 15px 10px;
+
                 h1 {
                     font-size: 16px;
                     color: #34b0da;
@@ -73,6 +86,7 @@ main {
                     font-family: 'montserratbold';
                 }
             }
+
             p {
                 padding: 0 15px 10px;
                 color: #797979;
@@ -80,10 +94,12 @@ main {
                 line-height: 18px;
                 font-family: 'montserratlight';
             }
+
             &[news] p {
                 overflow: hidden;
                 height: 150px;
             }
+
             footer {
                 background: #ffffff;
                 position: relative;
@@ -102,32 +118,40 @@ main {
                     line-height: 36px;
                     border-bottom: 1px solid #000000;
                     float: left;
+
                     &:before {
                         margin-right: 5px;
                         font-size: 16px;
                         width: 12px;
                     }
+
                     &:first-child {
                         color: #bed02a;
                         border-color: #bed02a;
+
                         &:before {
                             content: "\f087";
                         }
+
                         &:hover:before {
                             content: "\f164";
                         }
                     }
+
                     &:last-child {
                         color: #d05d2a;
                         border-color: #d05d2a;
+
                         &:before {
                             content: "\f088";
                         }
+
                         &:hover:before {
                             content: "\f165";
                         }
                     }
                 }
+
                 .right {
                     float: right;
                     border-bottom: 1px solid #35b3db;
@@ -141,9 +165,11 @@ main {
             }
         }
     }
+
     #right {
         width: 30%;
         float: right;
+
         a {
             &[butt] {
                 width: 100%;
@@ -156,6 +182,7 @@ main {
                 display: inline-block;
                 font-family: 'montserratbold';
                 font-size: 18px;
+
                 span {
                     width: 100%;
                     display: inline-block;
@@ -163,13 +190,16 @@ main {
                     font-family: 'montserratlight';
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
                 }
+
                 &:hover {
                     box-shadow: 0 5px 30px rgba(255, 255, 255, 0.8) inset;
                     text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+
                     span {
                         text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
                     }
                 }
+
                 &:after {
                     width: 100%;
                     font-size: 30px;
@@ -178,18 +208,22 @@ main {
             &[butt=register]:after {
                 content: "\f234";
             }
+
             &[butt=support]:after {
                 content: "\f0e6";
             }
+
             &[butt=youtube]:after {
                 content: "\f16a";
             }
+
             &[butt=twitch]:after {
                 content: "\f1e8";
             }
         }
     }
 }
+
 @media screen and (max-width: 1024px) {
     main {
         width: 100%;
