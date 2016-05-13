@@ -1,0 +1,194 @@
+main {
+  width: 1024px;
+  margin: auto;
+  position: relative;
+  padding-top: 25px; }
+  main #left {
+    width: calc(70% - 25px);
+    float: left; }
+    main #left article {
+      width: 100%;
+      background: #ffffff;
+      float: left;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      position: relative; }
+      main #left article[news] {
+        width: calc(50% - 10px); }
+      main #left article:nth-child(even) {
+        margin-right: 20px; }
+      main #left article .voile {
+        width: 100% !important;
+        height: 80px !important;
+        display: inline-block;
+        position: absolute;
+        z-index: 400;
+        bottom: 35px; }
+      main #left article[news]:first-child {
+        width: 100%; }
+      main #left article time {
+        position: absolute;
+        z-index: 100;
+        background: #ffffff;
+        color: #34b0da;
+        font-family: 'montserratbold';
+        padding: 2px 7px 1px;
+        font-size: 14px;
+        top: 10px;
+        left: 10px; }
+      main #left article figure {
+        width: 100%;
+        height: 190px;
+        overflow: hidden;
+        position: relative;
+        top: 0;
+        z-index: 90; }
+        main #left article figure .content {
+          width: 200%;
+          height: 190px;
+          position: absolute;
+          left: -50%;
+          text-align: center; }
+          main #left article figure .content img {
+            width: 50%; }
+        main #left article figure .voile {
+          bottom: 0; }
+      main #left article header {
+        width: 100%;
+        padding: 15px 15px 10px; }
+        main #left article header h1 {
+          font-size: 16px;
+          color: #34b0da;
+          text-transform: uppercase;
+          line-height: 15px;
+          font-family: 'montserratbold'; }
+      main #left article p {
+        padding: 0 15px 10px;
+        color: #797979;
+        font-size: 12px;
+        line-height: 18px;
+        font-family: 'montserratlight'; }
+      main #left article[news] p {
+        overflow: hidden;
+        height: 150px; }
+      main #left article footer {
+        background: #ffffff;
+        position: relative;
+        z-index: 500;
+        width: 100%;
+        height: 35px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset; }
+        main #left article footer ul.like li {
+          font-family: 'montserratbold';
+          cursor: pointer;
+          width: auto;
+          font-size: 14px;
+          padding: 0 4px;
+          height: 35px;
+          margin-left: 6px;
+          line-height: 36px;
+          border-bottom: 1px solid #000000;
+          float: left; }
+          main #left article footer ul.like li:before {
+            margin-right: 5px;
+            font-size: 16px;
+            width: 12px; }
+          main #left article footer ul.like li:first-child {
+            color: #bed02a;
+            border-color: #bed02a; }
+            main #left article footer ul.like li:first-child:before {
+              content: "\f087"; }
+            main #left article footer ul.like li:first-child:hover:before {
+              content: "\f164"; }
+          main #left article footer ul.like li:last-child {
+            color: #d05d2a;
+            border-color: #d05d2a; }
+            main #left article footer ul.like li:last-child:before {
+              content: "\f088"; }
+            main #left article footer ul.like li:last-child:hover:before {
+              content: "\f165"; }
+        main #left article footer .right {
+          float: right;
+          border-bottom: 1px solid #35b3db;
+          color: #35b3db;
+          padding: 0 6px;
+          margin-right: 6px;
+          height: 35px;
+          font-size: 14px;
+          line-height: 35px; }
+  main #right {
+    width: 30%;
+    float: right; }
+    main #right a[butt] {
+      width: 100%;
+      padding: 20px 10px 15px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      text-transform: uppercase;
+      display: inline-block;
+      font-family: 'montserratbold';
+      font-size: 18px; }
+      main #right a[butt] span {
+        width: 100%;
+        display: inline-block;
+        font-size: 14px;
+        font-family: 'montserratlight';
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+      main #right a[butt]:hover {
+        box-shadow: 0 5px 30px rgba(255, 255, 255, 0.8) inset;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); }
+        main #right a[butt]:hover span {
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); }
+      main #right a[butt]:after {
+        width: 100%;
+        font-size: 30px; }
+    main #right a[butt=register]:after {
+      content: "\f234"; }
+    main #right a[butt=support]:after {
+      content: "\f0e6"; }
+    main #right a[butt=youtube]:after {
+      content: "\f16a"; }
+    main #right a[butt=twitch]:after {
+      content: "\f1e8"; }
+
+@media screen and (max-width: 1024px) {
+  main {
+    width: 100%;
+    padding: 25px 25px 0; } }
+/* LEFT */
+@media screen and (max-width: 750px) {
+  main #left {
+    width: 100%;
+    float: none; } }
+@media screen and (max-width: 630px) {
+  main #left article {
+    float: none;
+    width: 100% !important;
+    margin-right: 0; }
+    main #left article figure .content img {
+      width: 50%; } }
+/* RIGHT */
+@media screen and (max-width: 750px) {
+  main #right {
+    width: 100%;
+    float: none; } }
+@media screen and (max-width: 1024px) {
+  main #right a[butt]:after {
+    font-size: inherit;
+    width: auto; } }
+@media screen and (max-width: 750px) {
+  main #right a[butt] {
+    font-size: 16px;
+    float: left;
+    width: calc(50% - 10px); }
+    main #right a[butt]:nth-child(odd) {
+      margin-right: 20px; }
+    main #right a[butt] span {
+      font-size: 12px; } }
+@media screen and (max-width: 630px) {
+  main #right a[butt] {
+    float: none;
+    width: 100%;
+    margin-right: 0; } }
