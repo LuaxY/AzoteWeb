@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => 'http://api.local.dev',
+    'url' => 'http://api.dofus.lan',
 
     /*
     |--------------------------------------------------------------------------
@@ -157,6 +157,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -205,6 +206,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
     ],
 

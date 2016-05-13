@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "greggilbert/recaptcha": "dev-master",
-        "predis/predis": "dev-master"
+        "predis/predis": "dev-master",
+        "laravelcollective/html": "5.2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -2,28 +2,35 @@ section[role=footer] {
     clear: both;
     width: 100%;
     background: #2d9ed4;
+
     .content {
         width: 1024px;
         padding: 20px 15px;
         margin: auto;
         color: #ffffff;
+
         ul {
             width: 180px;
             float: left;
             font-size: 14px;
+
             li {
                 line-height: 25px;
+
                 a:hover {
                     color: #2d9ed4;
                 }
+
                 &:first-child {
                     text-transform: uppercase;
                     font-family: "montserratbold";
                 }
             }
+
             &.video {
                 float: right;
                 width: calc(100% - 400px);
+
                 li {
                     &:not(:first-child) {
                         line-height: 12px;
@@ -34,13 +41,16 @@ section[role=footer] {
                         float: left;
                         height: 80px;
                     }
+
                     &:first-child {
                         width: 100%;
                         margin-bottom: 10px;
                     }
+
                     &:last-child {
                         margin-right: 0 !important;
                     }
+
                     a {
                         width: 100%;
                         text-align: center;
@@ -64,6 +74,7 @@ section[role=footer] {
                     }
                 }
             }
+
             &.social {
                 width: 100%;
                 margin-top: -15px;
@@ -77,6 +88,7 @@ section[role=footer] {
             }
         }
     }
+
     footer {
         clear: both;
         width: 100%;
@@ -100,6 +112,7 @@ section[role=footer] {
         }
     }
 }
+
 @media screen and (max-width: 1024px) {
     section[role=footer] {
         .content {
@@ -111,24 +124,29 @@ section[role=footer] {
         }
     }
 }
+
 @media screen and (max-width: 750px) {
     section[role=footer] {
         footer p {
             text-align: center;
+
             img.logo {
                 float: none;
                 margin: 0 0 15px;
             }
+
             br {
                 display: block;
             }
         }
+
         .content ul {
             width: 50%;
             &.video {
                 width: 100%;
                 margin-top: 15px;
             }
+
             &.social {
                 margin-top: 20px;
                 width: 100%;
@@ -140,10 +158,12 @@ section[role=footer] {
         }
     }
 }
+
 @media screen and (max-width: 550px) {
     section[role=footer] .content ul.video li {
         width: 100% !important;
         margin-bottom: 10px;
+
         &:last-child {
             margin-bottom: 0;
         }
