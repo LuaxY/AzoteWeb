@@ -94,7 +94,7 @@ class GameAccountController extends Controller
                 $character->name = $_character->Name;
                 $character->level = $_character->level();
                 $character->classe = $_character->classe();
-                $character->lookLink = "http://api.dofus.lan/forge/player/{$_character->Id}/full/1/150/220";
+                $character->lookLink = url('forge/player', [$_character->Id, 'full', 1, 150, 220]);
                 $characters[] = $character;
             }
 
