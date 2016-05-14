@@ -112,7 +112,7 @@ class AccountController extends Controller
             }
 
             Auth::user()->salt     = str_random(8);
-            Auth::user()->password = $user->hashPassword($request->input('password'), Auth::user()->salt);
+            Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
             Auth::user()->update([
                 'password' => Auth::user()->password,
                 'salt'     => Auth::user()->salt,
