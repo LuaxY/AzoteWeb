@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 use App\Security;
 
 class User extends Authenticatable
 {
+    use HasRoles; // CanResetPassword
+
     protected $fillable = [
         'email',
         'password',
@@ -28,15 +31,16 @@ class User extends Authenticatable
             'email'                => 'required|email|unique:users,email',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
-            'firstName'            => 'required|min:3|max:32|alpha_dash',
-            'lastName'             => 'required|min:3|max:32|alpha_dash',
-            //'captchaResponse'      => 'required|recaptcha',
+            'firstname'            => 'required|min:3|max:32|alpha_dash',
+            'lastname'             => 'required|min:3|max:32|alpha_dash',
+            'g-recaptcha-response' => 'required|recaptcha',
+            'cgu'                  => 'required',
         ],
-        'update1' => [
+        'update-name' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
         ],
-        'update2' => [
+        'update-password' => [
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
@@ -49,5 +53,10 @@ class User extends Authenticatable
         $hash     = Security::hash('sha512', $password . $salt, 10);
 
         return $hash;
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany('App\Account', 'Email', 'email')->get();
     }
 }
