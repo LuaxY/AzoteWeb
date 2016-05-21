@@ -49,36 +49,11 @@ class AccountController extends Controller
     {
         $accounts = Auth::user()->accounts();
 
+        /*if (Auth::user()->cannot('user-edit')) {
+            abort(403);
+        }*/
+
         return view('account/profile', compact('accounts'));
-
-        /*
-        $profile = new \stdClass;
-        $profile->firstname     = Auth::user()->firstname;
-        $profile->lastname      = Auth::user()->lastname;
-        $profile->email         = Auth::user()->email;
-        $profile->lastIPAddress = Auth::user()->last_ip_address;
-        $profile->gameAccounts  = [];
-
-        $accounts = Account::where('Email', Auth::user()->email)->get();
-
-        foreach ($accounts as $account)
-        {
-            $gameAccount = new \stdClass;
-            $gameAccount->id              = $account->Id;
-            $gameAccount->login           = $account->Login;
-            $gameAccount->nickname        = $account->Nickname;
-            $gameAccount->secretAnswer    = $account->SecretAnswer;
-            $gameAccount->newTokens       = $account->NewTokens;
-            $gameAccount->creationDate    = $account->CreationDate;
-            $gameAccount->lastConnection  = $account->LastConnection;
-            $gameAccount->lastConnectedIp = $account->LastConnectionIp;
-            $gameAccount->lastVote        = $account->LastVote;
-
-            $profile->gameAccounts[] = $gameAccount;
-        }
-
-        return response()->json(['profile' => $profile]);
-        */
     }
 
     public function update(Request $request)

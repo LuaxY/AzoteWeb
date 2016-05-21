@@ -2,7 +2,7 @@
 
 @section('page')
 
-<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+<div class="col-md-6 col-md-offset-1 col-xs-12">
 
     @if($errors->has())
 
@@ -21,47 +21,55 @@
 
     <div class="panel panel-default">
 
-        <div class="panel-heading">Inscription</div>
-        <div class="panel-body" style="padding: 30px;">
+        <div class="panel-heading">Création d'un nouveau compte de jeu</i></div>
+        <div class="panel-body">
 
             <p>Déjà inscrit? <a href="{{ route('login') }}">Connectez-vous</a> à votre compte.</p>
-            <hr>
 
-            {{ Form::open(['class' => 'form-horizontal']) }}
+            {{ Form::open(['class' => 'form-horizontal', 'style' => 'padding: 15px;']) }}
 
                 <div class="form-group @if ($errors->has('firstname')) has-error @endif">
+                    <label for="firstname">Votre prénom :</label>
+                    <span class="help-block">Cette information restera confidentielle.</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa m-r-xs fa-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="firstname" placeholder="Prénom" value="{{ old('firstname') }}" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Prénom" value="{{ old('firstname') }}" autofocus required>
                     </div>
                 </div>
 
                 <div class="form-group @if ($errors->has('lastname')) has-error @endif">
+                    <label for="lasrtname">Votre nom :</label>
+                    <span class="help-block">Cette information restera confidentielle.</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa m-r-xs fa-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="lastname" placeholder="Nom" value="{{ old('lastname') }}" required>
+                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Nom" value="{{ old('lastname') }}" required>
                     </div>
                 </div>
 
                 <div class="form-group @if ($errors->has('email')) has-error @endif">
+                    <label for="email">Votre adresse e-mail :</label>
+                    <span class="help-block">Vous permettra de vous connecter au site.</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa m-r-xs fa-envelope" aria-hidden="true"></i></span>
-                        <input type="email" class="form-control" name="email" placeholder="Adresse E-mail" value="{{ old('email') }}" required>
+                        <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Adresse E-mail" value="{{ old('email') }}" required>
                     </div>
                 </div>
 
-                <div class="row" style="margin-left: -30px; margin-right: -30px;">
+                <div class="row" >
 
-                    <div class="col-lg-6">
-                        <div class="input-group @if ($errors->has('password')) has-error @endif" style="margin-bottom: 15px;">
-                            <span class="input-group-addon"><i class="fa m-r-xs fa-key" aria-hidden="true"></i></span>
+                    <label for="email">Votre mot de passe :</label>
+                    <span class="help-block">Vous permettra de vous connecter au site.</span>
+
+                    <div class="col-md-6 col-xs-12" style="margin-left: -15px;">
+                        <div class="input-group @if ($errors->has('password')) has-error @endif">
+                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
                         </div>
                     </div>
 
-                    <div class="col-lg-6 pull-right">
-                        <div class="input-group margin-bottom-20 @if ($errors->has('passwordConfirmation')) has-error @endif" style="margin-bottom: 15px;">
-                            <span class="input-group-addon"><i class="fa m-r-xs fa-key" aria-hidden="true"></i></span>
+                    <div class="col-md-6 col-xs-12 pull-right" style="margin-right: -15px;">
+                        <div class="input-group @if ($errors->has('passwordConfirmation')) has-error @endif">
+                            <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="passwordConfirmation" placeholder="Confirmation" required>
                         </div>
                     </div>
@@ -93,6 +101,30 @@
 
             {{ Form::close() }}
 
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-4 col-xs-12">
+
+    <div class="panel panel-default">
+
+        <div class="panel-heading">Création d'un compte de jeu</div>
+        <div class="panel-body">
+            <p>Sur Arkalys nous faisons une différence entre un compte web et un compte de jeu.</p>
+            <p>Un compte web va permettre de créer et gérer les comptes jeu.</p>
+            <p>Un compte web peux contenir au maximum 4 compte de jeu.</p>
+            <p><a href="">Accéder au Gestionnaire de Comptes</a></p>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">Téléchargement du jeu</div>
+        <div class="panel-body">
+            <p>La dernière étape pour accéder au serveur est le téléchargement et l'installation du jeu.</p>
+            <p>Pour ce faire nous avons développé un launcher qui va se charger de télécharger et d'assurer la mise à jour des fichiers de votre installation.</p>
         </div>
     </div>
 
