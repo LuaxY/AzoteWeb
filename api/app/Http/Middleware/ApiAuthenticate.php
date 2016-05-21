@@ -5,7 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class Authenticate
+use App\User;
+
+class ApiAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -17,16 +19,15 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest())
+        $user = User::where('ticket', $request->header('authorizationTicket'))->first();
+
+        if ($user)
         {
-            if ($request->ajax() || $request->wantsJson())
-            {
-                return response('Unauthorized.', 401);
-            }
-            else
-            {
-                return redirect()->guest('login');
-            }
+            Auth::login($user);
+        }
+        else
+        {
+            return response()->json(['message' => "vous n'êtes pas identifié"], 401);
         }
 
         return $next($request);

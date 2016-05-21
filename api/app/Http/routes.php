@@ -1,57 +1,106 @@
 <?php
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Route::get('/', [
+    'uses' => 'PostController@index',
+    'as'   => 'home'
+]);
 
-Route::get('/', 'PostController@all');
+/* ============ AUTH ============ */
+
+Route::get('/login', [
+    'middleware' => 'guest',
+    'uses' => 'AuthController@login',
+    'as'   => 'login'
+]);
+
+Route::post('/login', [
+    'middleware' => 'guest',
+    'uses' => 'AuthController@auth',
+    'as'   => 'login'
+]);
+
+Route::get('/logout', [
+    'middleware' => 'auth',
+    'uses' => 'AuthController@logout',
+    'as'   => 'logout'
+]);
+
+/* ============ ACCOUNT ============ */
 
 Route::group(['prefix' => 'account'], function()
 {
-    Route::post('register', 'AccountController@register');
+    Route::get('register', [
+        'middleware' => 'guest',
+        'uses' => 'AccountController@register',
+        'as'   => 'register'
+    ]);
 
-    Route::post('login', 'AccountController@login');
+    Route::post('register', [
+        'middleware' => 'guest',
+        'uses' => 'AccountController@store',
+        'as'   => 'register'
+    ]);
 
     Route::get('profile', [
-    	'middleware' => 'auth',
-    	'uses' => 'AccountController@profile',
+        'middleware' => 'auth',
+        'uses' => 'AccountController@profile',
+        'as'   => 'profile'
     ]);
+});
 
-    Route::post('update', [
-    	'middleware' => 'auth',
-    	'uses' => 'AccountController@update',
-    ]);
+/* ============ API ============ */
 
-    Route::group(['prefix' => 'game'], function()
+Route::group(['prefix' => 'api'], function()
+{
+    Route::group(['prefix' => 'account'], function()
     {
-        Route::post('create', [
-            'middleware' => 'auth',
-            'uses' => 'GameAccountController@create',
+        Route::post('register', 'Api\AccountController@register');
+
+        Route::post('login', 'Api\AccountController@login');
+
+        Route::get('profile', [
+            'middleware' => 'auth.api',
+            'uses' => 'Api\AccountController@profile',
         ]);
 
         Route::post('update', [
-            'middleware' => 'auth',
-            'uses' => 'GameAccountController@update',
+            'middleware' => 'auth.api',
+            'uses' => 'Api\AccountController@update',
         ]);
 
-        Route::get('characters/{accountId}', [
-        	'middleware' => 'auth',
-        	'uses' => 'GameAccountController@characters',
-        ])->where('accountId', '[0-9]+');
+        Route::group(['prefix' => 'game'], function()
+        {
+            Route::post('create', [
+                'middleware' => 'auth.api',
+                'uses' => 'Api\GameAccountController@create',
+            ]);
+
+            Route::post('update', [
+                'middleware' => 'auth.api',
+                'uses' => 'Api\GameAccountController@update',
+            ]);
+
+            Route::get('characters/{accountId}', [
+                'middleware' => 'auth.api',
+                'uses' => 'Api\GameAccountController@characters',
+            ])->where('accountId', '[0-9]+');
+        });
+    });
+
+    Route::group(['prefix' => 'support'], function()
+    {
+        Route::get('create', 'SupportController@create');
+
+        Route::get('child/{child}/{params?}', [
+            'middleware' => 'auth.api',
+            'uses' => 'SupportController@child',
+        ]);
+
+        Route::post('store', 'SupportController@store');
     });
 });
 
-Route::group(['prefix' => 'support'], function()
-{
-    Route::get('create', 'SupportController@create');
-
-    Route::get('child/{child}/{params?}', [
-        'middleware' => 'auth',
-        'uses' => 'SupportController@child',
-    ]);
-
-    Route::post('store', 'SupportController@store');
-});
+/* ============ FORGE ============ */
 
 Route::group(['prefix' => 'forge'], function()
 {

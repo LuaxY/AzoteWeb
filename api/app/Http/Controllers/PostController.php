@@ -8,8 +8,8 @@ use App\Http\Requests;
 
 class PostController extends Controller
 {
-    public function all()
+    public function index()
     {
-        return view('layouts/master');
+        return view('posts/index');
     }
 }

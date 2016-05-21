@@ -12,6 +12,15 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        //
+        'api/account/register',
+        'api/account/login',
+        'api/account/profile',
+        'api/account/update',
+        'api/account/game/create',
+        'api/account/game/update',
+        'api/account/game/characters/{accountId}',
+        'api/support/create',
+        'api/support/child/{child}/{params?}',
+        'api/support/store',
     ];
 }

@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -158,6 +158,7 @@ return [
 
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
 
     ],
 
@@ -206,8 +207,9 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
+        'Form'      => Collective\Html\FormFacade::class,
+        'Html'      => Collective\Html\HtmlFacade::class,
+        'Gravatar'  => Thomaswelton\LaravelGravatar\Facades\Gravatar::class
 
     ],
 

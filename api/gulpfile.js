@@ -16,7 +16,7 @@ elixir(function(mix) {
 
     //mix.sass('app.scss');
 
-    mix.compass('app.scss', 'public/css', {
+    mix.compass('*.scss', 'public/css', {
         style: "nested",
         //config_file: "config.rb",
         sass: "resources/assets/sass",

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,16 +18,11 @@ class AccountController extends Controller
 {
     public function register(Request $request)
     {
-        return view('account/register');
-    }
-
-    public function store(Request $request)
-    {
         $validator = Validator::make($request->all(), User::$rules['register']);
 
         if ($validator->fails())
         {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
         }
 
         $salt = str_random(8);
@@ -36,22 +31,30 @@ class AccountController extends Controller
         $user->email     = $request->input('email');
         $user->password  = $user->hashPassword($request->input('password'), $salt);
         $user->salt      = $salt;
-        $user->firstname = $request->input('firstname');
-        $user->lastname  = $request->input('lastname');
+        $user->firstname = $request->input('firstName');
+        $user->lastname  = $request->input('lastName');
         $user->save();
 
-        Auth::login($user);
+        return $this->success('compte créé');
+    }
 
-        return redirect('/');
+    public function login(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
+        {
+            Auth::login($user);
+            Auth::user()->ticket = str_random(32);
+            Auth::user()->update(['ticket' => Auth::user()->ticket]);
+            return response()->json(['authorizationTicket' => Auth::user()->ticket]);
+        }
+
+        return $this->error(401, 'identifiants invalide');
     }
 
     public function profile()
     {
-        $accounts = Auth::user()->accounts();
-
-        return view('account/profile', compact('accounts'));
-
-        /*
         $profile = new \stdClass;
         $profile->firstname     = Auth::user()->firstname;
         $profile->lastname      = Auth::user()->lastname;
@@ -78,7 +81,6 @@ class AccountController extends Controller
         }
 
         return response()->json(['profile' => $profile]);
-        */
     }
 
     public function update(Request $request)

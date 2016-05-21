@@ -1,4 +1,4 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 @import "compass/css3";
 
@@ -8,5 +8,8 @@
 
 @import "layouts/header";
 @import "layouts/banner";
-@import "layouts/role";
+@import "layouts/main";
 @import "layouts/footer";
+
+@import "pages/home";
+@import "pages/login";
