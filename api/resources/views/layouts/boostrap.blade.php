@@ -3,6 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>Arkalys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content=""/>
+    <meta name="Keywords" content="">
+
     {!! Html::favicon('images/favicon.ico') !!}
 
     <!-- Fonts -->
@@ -10,16 +14,16 @@
     {!! Html::style('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css') !!}
 
     <!-- CSS -->
-    {!! Html::style('css/spark.css') !!}
+    {!! Html::style('css/app.css') !!}
 
     <!-- Scripts -->
     {!! Html::script('https://code.jquery.com/jquery-2.2.3.min.js') !!}
     {!! Html::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js') !!}
 </head>
-<body class="with-navbar">
+<body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar">
         <div class="container">
 
             <div class="navbar-header">
@@ -63,7 +67,7 @@
                     <!-- Connected -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownMenu1">
-                            <img src="{{ Gravatar::src(Auth::user()->email, 200) }}" class="nav-profile-photo m-r-xs">
+                            <img src="{{ Gravatar::src(Auth::user()->email, 200) }}" class="nav-profile-photo">
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">

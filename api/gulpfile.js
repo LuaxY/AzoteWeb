@@ -1,5 +1,6 @@
-var elixir = require('laravel-elixir');
-require('laravel-elixir-sass-compass');
+var elixir    = require('laravel-elixir');
+var stylus    = require('laravel-elixir-stylus');
+var bootstrap = require('bootstrap-styl');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,15 +17,16 @@ elixir(function(mix) {
 
     //mix.sass('app.scss');
 
-    mix.compass('*.scss', 'public/css', {
-        style: "nested",
-        //config_file: "config.rb",
+    mix.stylus('*.styl', 'public/css', {
+        use: [ bootstrap() ],
+        //'compress': true,
+        /*style: "nested",
         sass: "resources/assets/sass",
         relative: true,
         comments: false,
         image: "public/imgs",
         javascript: "public/js",
-        font: "public/fonts",
+        font: "public/fonts",*/
     });
 
 });
