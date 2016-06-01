@@ -21,10 +21,10 @@
 
     <div class="panel panel-default">
 
-        <div class="panel-heading">Création d'un nouveau compte de jeu</i></div>
+        <div class="panel-heading">Création d'un compte</i></div>
         <div class="panel-body">
 
-            <p>Déjà inscrit? <a href="{{ route('login') }}">Connectez-vous</a> à votre compte.</p>
+            <p>Déjà inscrit? <b><a href="{{ route('login') }}">Connectez-vous</a></b> à votre compte.</p>
 
             {{ Form::open(['class' => 'form-horizontal', 'style' => 'padding: 15px;']) }}
 
@@ -33,7 +33,7 @@
                     <span class="help-block">Cette information restera confidentielle.</span>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Prénom" value="{{ old('firstname') }}" autofocus required>
+                        <input type="text" class="form-control input-lg" name="firstname" id="firstname" placeholder="Prénom" value="{{ old('firstname') }}" autofocus required>
                     </div>
                 </div>
 
@@ -42,7 +42,7 @@
                     <span class="help-block">Cette information restera confidentielle.</span>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Nom" value="{{ old('lastname') }}" required>
+                        <input type="text" class="form-control input-lg" name="lastname" id="lastname" placeholder="Nom" value="{{ old('lastname') }}" required>
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                     <span class="help-block">Vous permettra de vous connecter au site.</span>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Adresse E-mail" value="{{ old('email') }}" required>
+                        <input type="email" class="form-control input-lg" name="email" id="email" placeholder="Adresse E-mail" value="{{ old('email') }}" required>
                     </div>
                 </div>
 
@@ -63,14 +63,14 @@
                     <div class="col-md-6 col-xs-12" style="margin-left: -15px;">
                         <div class="input-group @if ($errors->has('password')) has-error @endif">
                             <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+                            <input type="password" class="form-control input-lg" name="password" placeholder="Mot de passe" required>
                         </div>
                     </div>
 
                     <div class="col-md-6 col-xs-12 pull-right" style="margin-right: -15px;">
                         <div class="input-group @if ($errors->has('passwordConfirmation')) has-error @endif">
                             <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="passwordConfirmation" placeholder="Confirmation" required>
+                            <input type="password" class="form-control input-lg" name="passwordConfirmation" placeholder="Confirmation" required>
                         </div>
                     </div>
 
@@ -82,21 +82,15 @@
                     {!! Recaptcha::render(['lang' => 'fr']) !!}
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="form-group @if ($errors->has('cgu')) has-error @endif">
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="cgu" required> J'ai lu et j'accepte les <a href="">Conditions d'utilisation</a></label>
-                            </div>
-                        </div>
+                <div class="form-group @if ($errors->has('cgu')) has-error @endif">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="cgu" required> J'ai lu et j'accepte les <b><a href="">Conditions d'utilisation</a></b></label>
                     </div>
+                </div>
 
-                    <div class="col-lg-3 pull-right" style="margin-right: -15px;">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary"><i class="fa m-r-xs fa-user-plus"></i>S'inscrire</button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus"></i> <b>S'inscrire</b></button>
 
-                        </div>
-                    </div>
                 </div>
 
             {{ Form::close() }}
@@ -115,7 +109,7 @@
             <p>Sur Arkalys nous faisons une différence entre un compte web et un compte de jeu.</p>
             <p>Un compte web va permettre de créer et gérer les comptes jeu.</p>
             <p>Un compte web peux contenir au maximum 4 compte de jeu.</p>
-            <p><a href="">Accéder au Gestionnaire de Comptes</a></p>
+            <p><a href="">Accéder au <b>Gestionnaire de Comptes</b></a></p>
         </div>
     </div>
 

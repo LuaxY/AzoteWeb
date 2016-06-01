@@ -25,41 +25,32 @@
                 <div class="form-group @if ($errors->has('auth')) has-error @endif">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa m-r-xs fa-envelope" aria-hidden="true"></i></span>
-                        <input type="email" class="form-control" name="email" placeholder="Adresse E-mail" value="{{ old('email') }}" autofocus required>
+                        <input type="email" class="form-control input-lg" name="email" placeholder="Adresse E-mail" value="{{ old('email') }}" autofocus required>
                     </div>
                 </div>
 
                 <div class="form-group @if ($errors->has('auth')) has-error @endif">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa m-r-xs fa-key" aria-hidden="true"></i></span>
-                        <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+                        <input type="password" class="form-control input-lg" name="password" placeholder="Mot de passe" required>
                     </div>
                 </div>
 
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="remember"> Se souvenir de moi</label>
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="remember"> Se souvenir de moi</label>
                     </div>
+                </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group pull-right">
-                            <button type="submit" class="btn btn-primary"><i class="fa m-r-xs fa-sign-in"></i>Connexion</button>
-
-                        </div>
-                    </div>
-
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in"></i> <b>Connexion</b></button>
                 </div>
 
             {{ Form::close() }}
 
             <hr>
             <h4>Mot de passe oublié ?</h4>
-            <p>Pas de soucis, <a href="">clique ici</a> pour réinitialiser ton mot de passe.<p>
+            <p>Pas de soucis, <b><a href="">clique ici</a></b> pour réinitialiser ton mot de passe.<p>
 
         </div>
     </div>

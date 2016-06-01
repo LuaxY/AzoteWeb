@@ -1,5 +1,7 @@
 @import "bootstrap";
 
+@import "utils/fonts";
+
 .nav-profile-photo {
     border: 2px solid #d3e0e9;
     border-radius: 50%;
@@ -10,6 +12,16 @@
 
 body {
     background-color: #f1f1f1;
+    font-family: "montserratlight";
+}
+
+a {
+    text-decoration: none;
+}
+
+b {
+    font-family: "montserratbold" !important;
+    font-weight: normal !important;
 }
 
 .navbar {
@@ -26,6 +38,22 @@ body {
             background-color: #fff;
             color: #2aafdc;
         }
+
+        .panel-body {
+            color: #797979;
+
+            a {
+                color: #2aafdc;
+            }
+        }
+    }
+
+    &.panel-primary {
+        .panel-body {
+            p {
+                color: #fff;
+            }
+        }
     }
 
     &.panel-primary, &.panel-primary .panel-heading {
@@ -33,7 +61,55 @@ body {
     }
 
     .panel-heading {
+        font-size: 16px;
         text-transform: uppercase;
         border: none;
+        font-family: "montserratbold";
+        padding-top: 20px;
+    }
+
+    .panel-body {
+        a {
+            //font-weight: bold;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.form-group {
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.input-group {
+    .input-group-addon, .form-control {
+        border-radius: 0px;
+    }
+
+    .input-group-addon {
+        padding: 20px;
+    }
+
+    .input-lg {
+        height: 60px;
+    }
+
+    .form-control {
+        background-color: #eee;
+        border-left: none;
+    }
+}
+
+.btn {
+    &.btn-primary {
+        background-color: #2aafdc;
+        border-radius: 0px;
+        border: none;
+        padding: 20px;
+        text-transform: uppercase;
     }
 }
