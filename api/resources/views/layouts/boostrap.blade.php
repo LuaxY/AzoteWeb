@@ -37,9 +37,7 @@
                 <div class="hamburger">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                        <i class="fa fa-align-justify"></i>
                     </button>
                 </div>
 
@@ -78,12 +76,12 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                             <li class="dropdown-header">Paramètres</li>
                             <li>
-                                <a href="{{ route('profile') }}"><i class="fa fa-fw fa-btn fa-cog"></i>Mon compte</a>
-                                <a href=""><i class="fa fa-fw fa-btn fa-life-ring"></i>Mes tickets</a>
+                                <a href="{{ route('profile') }}"><i class="fa fa-fw fa-btn fa-cog" aria-hidden="true"></i>Mon compte</a>
+                                <a href=""><i class="fa fa-fw fa-btn fa-life-ring" aria-hidden="true"></i>Mes tickets</a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="{{ route('logout') }}"><i class="fa fa-fw fa-btn fa-sign-out"></i>Déconnexion</a>
+                                <a href="{{ route('logout') }}"><i class="fa fa-fw fa-btn fa-sign-out" aria-hidden="true"></i>Déconnexion</a>
                             </li>
                         </ul>
                     </li>

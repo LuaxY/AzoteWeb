@@ -63,7 +63,7 @@
 
                 <div class="col-xs-8">
                     <p>Bonjour <b>{{ Auth::user()->firstname }}</b></p>
-                    <p><a href=""><i class="fa fa-power-off"></i> Se déconnecter</a></p>
+                    <p><a href=""><i class="fa fa-power-off" aria-hidden="true"></i> Se déconnecter</a></p>
                 </div>
             </div>
 
@@ -74,17 +74,17 @@
         <div class="panel-body">
             <p>Mon solde de points</p>
             <h1>0</h1>
-            <p><b><a href=""><i class="fa fa-cart-plus"></i> En acheter d'avantage</a></b></p>
+            <p><b><a href=""><i class="fa fa-cart-plus" aria-hidden="true"></i> En acheter d'avantage</a></b></p>
         </div>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-body panel-menu">
             <ul class="nav" >
-                <li><a href=""><i class="fa fa-user"></i> Mon profile</a></li>
-                <li><a href=""><i class="fa fa-users"></i> Mes comptes de jeu</a></li>
-                <li><a href=""><i class="fa fa-shopping-cart"></i> Mes achats</a></li>
-                <li><a href=""><i class="fa fa-life-ring"></i> Mes tickets</a></li>
+                <li><a href=""><i class="fa fa-user" aria-hidden="true"></i> Mon profile</a></li>
+                <li><a href=""><i class="fa fa-users" aria-hidden="true"></i> Mes comptes de jeu</a></li>
+                <li><a href=""><i class="fa fa-shopping-cart" aria-hidden="true"></i> Mes achats</a></li>
+                <li><a href=""><i class="fa fa-life-ring" aria-hidden="true"></i> Mes tickets</a></li>
             </ul>
         </div>
     </div>
