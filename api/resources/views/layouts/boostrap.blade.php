@@ -4,8 +4,13 @@
     <meta charset="utf-8">
     <title>Arkalys</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content=""/>
-    <meta name="Keywords" content="">
+    <meta name="description" content="Arkalys est un Serveur privé dofus 2.0, le premier et le plus avancé au monde à ce jour. Fier d'une énorme communauté derrière cela en fais le meilleur serveur Dofus 2.0."/>
+    <meta name="keywords" content="arkalys,dofus,server,serveur,kamas,jetons,orbes,gratuit,dofus gratuit,serveur dofus,dofus serveur,jeu,jouer,serveur privé dofus,dofus serveur privé,mmorpg,jeu en lign">
+    <meta property="og:description" content="Arkalys est un Serveur privé dofus 2.0, le premier et le plus avancé au monde à ce jour. Fier d'une énorme communauté derrière cela en fais le meilleur serveur Dofus 2.0."/>
+    <meta property="og:title" content="Arkalys"/>
+    <meta property="og:image" content="https://beta.arkalys.com/assets/img/logo-arkalys-new.png"/>
+    <meta property="og:type" content="website"/>
+    <meta property="fb_page_id" content="146996812129127"/>
 
     {!! Html::favicon('images/favicon.ico') !!}
 
