@@ -99,11 +99,7 @@
 
     <div id="breadcrumb">
         <div class="container">
-            <h1>Rejoindre la communauté</h1>
-            <ol class="breadcrumb">
-                <li><a href="#">Accueil</a></li>
-                <li class="active">Rejoindre la communauté</li>
-            </ol>
+            @yield('breadcrumbs')
         </div>
     </div>
 

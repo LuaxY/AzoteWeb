@@ -159,6 +159,7 @@ return [
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
     ],
 
@@ -206,10 +207,11 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
-        'Form'      => Collective\Html\FormFacade::class,
-        'Html'      => Collective\Html\HtmlFacade::class,
-        'Gravatar'  => Thomaswelton\LaravelGravatar\Facades\Gravatar::class
+        'Recaptcha'   => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+        'Form'        => Collective\Html\FormFacade::class,
+        'Html'        => Collective\Html\HtmlFacade::class,
+        'Gravatar'    => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 

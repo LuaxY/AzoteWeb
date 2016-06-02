@@ -1,5 +1,10 @@
 @extends('layouts.boostrap')
 
+@section('breadcrumbs')
+<h1>Rejoindre la communauté</h1>
+{!! Breadcrumbs::render('page', 'Rejoindre la communauté') !!}
+@stop
+
 @section('page')
 
 <div class="col-md-6 col-md-offset-1 col-xs-12">

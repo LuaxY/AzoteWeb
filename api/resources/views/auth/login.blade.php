@@ -1,5 +1,10 @@
 @extends('layouts.boostrap')
 
+@section('breadcrumbs')
+<h1>Connexion</h1>
+{!! Breadcrumbs::render('page', 'Connexion') !!}
+@stop
+
 @section('page')
 
 <div class="col-md-4 col-md-offset-4">
