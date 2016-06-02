@@ -5,7 +5,7 @@
   },
   "dependencies": {
     "laravel-elixir": "*",
-    "laravel-elixir-stylus": "*",
+    "laravel-elixir-stylus": "2.0.0",
     "bootstrap-styl": "*"
   }
 }
