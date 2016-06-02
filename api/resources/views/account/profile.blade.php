@@ -48,18 +48,24 @@
 
 <div class="col-md-3">
 
-    <div class="panel panel-default">
+    <div class="panel panel-default about">
         <div class="panel-body">
-            <div class="thumbnail">
-                <img src="{{ Gravatar::src(Auth::user()->email, 262) }}">
+            <div class="row">
+
+                <div class="col-xs-4">
+                    <img src="{{ Gravatar::src(Auth::user()->email, 262) }}">
+                </div>
+
+                <div class="col-xs-8">
+                    <p>Bonjour <b>{{ Auth::user()->firstname }}</b></p>
+                    <p><a href=""><i class="fa fa-power-off"></i> Se déconnecter</a></p>
+                </div>
             </div>
 
-            <p>Bnojour <b>{{ Auth::user()->firstname }}</b></p>
-            <p><a href=""><i class="fa fa-power-off"></i> Déconnexion</a></p>
         </div>
     </div>
 
-    <div class="panel panel-primary">
+    <div class="panel panel-primary money">
         <div class="panel-body">
             <p>Mon solde de points</p>
             <h1>0</h1>
@@ -68,7 +74,7 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body panel-menu">
             <ul class="nav" >
                 <li><a href=""><i class="fa fa-user"></i> Mon profile</a></li>
                 <li><a href=""><i class="fa fa-users"></i> Mes comptes de jeu</a></li>
