@@ -30,19 +30,41 @@
 
                 @endforeach
 
-                <div class="col-md-3 col-xs-12">
-                    <div class="thumbnail">
-                        {!! Html::image('images/add_account.png', 'Free slot') !!}
-                        <div class="caption" style="text-align: center;">
-                            <h4>Libre</h4>
-                            <p>&nbsp;</p>
+                @can('user-edit')
+                CREATE
+                @endcan
 
-                             @can('user-edit')
-                            <p><a href="" class="btn btn-default btn-block" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Créer</a></p>
-                            @endcan
+                @for ($i = 0; $i < 2; $i++)
+
+                <div class="col-md-3 col-xs-12">
+                    <a href="">
+                        <div class="thumbnail used">
+                            <h1><i class="fa fa-users"></i></h1>
+                            <div class="caption">
+                                <h4>Luax</h4>
+                                <p><b>3 personnages</b></p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
+                @endfor
+
+                @for ($i = 0; $i < 2; $i++)
+
+                <div class="col-md-3 col-xs-12">
+                    <a href="">
+                        <div class="thumbnail free">
+                            <h1><i class="fa fa-user-plus"></i></h1>
+                            <div class="caption">
+                                <h5>Compte libre</h5>
+                                <p><b>Créer un compte</b> <i class="fa fa-plus" aria-hidden="true"></i></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                @endfor
 
             </div>
 
