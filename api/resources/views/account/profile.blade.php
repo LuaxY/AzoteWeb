@@ -11,7 +11,9 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">Mes comptes de jeu</div>
-        <div class="panel-body">
+        <div class="panel-body" style="padding-top: 0;">
+
+            <p>Voici la liste des comptes de jeu que vous possédez.</p>
 
             <div class="row">
 
@@ -42,7 +44,7 @@
                             <h1><i class="fa fa-users"></i></h1>
                             <div class="caption">
                                 <h4>Luax</h4>
-                                <p><b>3 personnages</b></p>
+                                <p>3 personnages</p>
                             </div>
                         </div>
                     </a>
@@ -58,7 +60,7 @@
                             <h1><i class="fa fa-user-plus"></i></h1>
                             <div class="caption">
                                 <h5>Compte libre</h5>
-                                <p><b>Créer un compte</b> <i class="fa fa-plus" aria-hidden="true"></i></p>
+                                <p>Créer un compte <i class="fa fa-plus" aria-hidden="true"></i></p>
                             </div>
                         </div>
                     </a>
