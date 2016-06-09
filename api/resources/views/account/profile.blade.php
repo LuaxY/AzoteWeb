@@ -11,7 +11,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">Mes comptes de jeu</div>
-        <div class="panel-body" style="padding-top: 0;">
+        <div class="panel-body simple">
 
             <p>Voici la liste des comptes de jeu que vous possédez.</p>
 
@@ -87,7 +87,7 @@
 
                 <div class="col-xs-8">
                     <p>Bonjour <b>{{ Auth::user()->firstname }}</b></p>
-                    <p><a href=""><i class="fa fa-power-off" aria-hidden="true"></i> Se déconnecter</a></p>
+                    <p><a href="{{ route('logout') }}"><i class="fa fa-power-off" aria-hidden="true"></i> Se déconnecter</a></p>
                 </div>
             </div>
 

@@ -23,7 +23,7 @@
     <div class="panel panel-default">
 
         <div class="panel-heading">Connexion</div>
-        <div class="panel-body" style="padding: 30px;">
+        <div class="panel-body" style="padding: 10px 30px;">
 
             {{ Form::open(['class' => 'form-horizontal']) }}
 
