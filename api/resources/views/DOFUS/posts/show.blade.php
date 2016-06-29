@@ -9,7 +9,7 @@
     <div class="content">
         <h1 class="content-title">
             <span class="icon-big icon-news"></span> {{ $post->title }}
-            <span class="subtitle"><span>@lang('categories.' . $post->type)</span> - {{ date('d F Y', strtotime($post->date)) }}</span>
+            <span class="subtitle"><span>@lang('categories.' . $post->type)</span> - {{ date('d F Y', strtotime($post->created_at)) }}</span>
         </h1>
 
         <article>
@@ -25,13 +25,13 @@
 @foreach ($comments as $comment)
             <div class="comment @if ($comment->author->isAdmin()) admin @elseif ($comment->author->isStaff()) staff @endif">
                 <div class="comment-avatar">
-                    <div class="author-image"><img src="{{ URL::asset($comment->author->Avatar) }}" /></div>
+                    <div class="author-image"><img src="{{ URL::asset($comment->author->avatar) }}" /></div>
                     <div class="author-tag">@if ($comment->author->isStaff(0)) <strong>Erezia staff</strong> @else Joueur @endif</div>
                 </div>
                 <div class="comment-content">
                     <div class="author-name">
-                        <strong>{{ $comment->author->Nickname }}</strong>
-                        <small>{{ date('d F Y à H:m', strtotime($comment->date)) }}</small>
+                        <strong>{{ $comment->author->firstname }}</strong>
+                        <small>{{ date('d F Y à H:m', strtotime($comment->created_at)) }}</small>
                     </div>
                     <div class="comment-text">{{ $comment->text }}</div>
                 </div>

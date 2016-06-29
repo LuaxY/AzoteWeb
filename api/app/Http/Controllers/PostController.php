@@ -8,6 +8,7 @@ use App\Services\Pagination;
 use \Cache;
 
 use App\Post;
+use App\Comment;
 
 class PostController extends Controller
 {
@@ -23,5 +24,18 @@ class PostController extends Controller
         });
 
 		return view('posts.index', compact('posts'));
+    }
+
+    public function show($id, $slug = "")
+    {
+        $post = Cache::remember('posts_' . $id, self::CACHE_EXPIRE_MINUTES, function() use($id) {
+            return Post::findOrFail($id);
+        });
+
+        $comments = Cache::remember('posts_' . $id . '_comments', self::CACHE_EXPIRE_MINUTES, function() use($id) {
+            return Comment::where('post_id', $id)->orderBy('created_at', 'desc')->paginate(self::POSTS_PER_PAGE);
+        });
+
+        return view('posts.show', compact('post', 'comments'));
     }
 }

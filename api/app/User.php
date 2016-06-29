@@ -64,4 +64,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
     }
+
+    public function isAdmin()
+    {
+        if ($this->rank >= 4)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function isStaff()
+    {
+        if ($this->rank > 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

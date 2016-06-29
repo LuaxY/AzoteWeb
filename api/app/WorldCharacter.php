@@ -16,6 +16,6 @@ class WorldCharacter extends Model
 
     public function character()
     {
-        return $this->hasOne('App\Character', 'Id', 'CharacterId');
+        return $this->hasOne(Character::class, 'Id', 'CharacterId')->first();
     }
 }
