@@ -18,7 +18,7 @@ return array(
 
     'account.register' => 'inscription',
 
-    'account.dashboard' => 'profile',
+    'account.profile' => 'profile',
 
     'account.login' => 'compte/connexion',
 
