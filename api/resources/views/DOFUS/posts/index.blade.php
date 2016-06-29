@@ -13,10 +13,10 @@
                 <a href="{{ URL::route('posts.show', [$post->id, $post->slug]) }}"><img src="{{ URL::asset($post->image) }}" alt="{{ $post->title }}" /></a>
             </div>
             <div class="post-info">
-                <div class="post-avatar"><img src="{{ URL::asset($post->author->Avatar) }}" /></div>
+                <div class="post-avatar"><img src="{{ URL::asset($post->author->avatar) }}" /></div>
                 <div class="post-info-details">
                     <div class="post-title"><a href="{{ URL::route('posts.show', [$post->id, $post->slug]) }}">{{ $post->title }}</a></div>
-                    <div class="post-date"><a href="">@lang('categories.' . $post->type)</a> - {{ date('d F Y', strtotime($post->date)) }}</div>
+                    <div class="post-date"><a href="">@lang('categories.' . $post->type)</a> - {{ date('d F Y', strtotime($post->created_at)) }}</div>
                 </div>
             </div>
             <div class="post-content">{{ $post->preview }}</div>
@@ -40,5 +40,6 @@
 @endforeach
     </div> <!-- news -->
     <div class="pagination-block">
+        {!! $posts->render() !!}
     </div>
 @stop

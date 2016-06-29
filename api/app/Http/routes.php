@@ -10,6 +10,7 @@ Route::get('/', [
 Route::any('vote', [ 'as' => 'vote.index' ]);
 Route::any('shop', [ 'as' => 'shop.payment.country' ]);
 Route::any('posts', [ 'as' => 'posts' ]);
+Route::any('posts/show', [ 'as' => 'posts.show' ]);
 
 /* ============ AUTH ============ */
 

@@ -62,7 +62,7 @@ class Account extends Model
     public function characters()
     {
         $characters = [];
-        $worldCharacters =  $this->hasMany('App\WorldCharacter', 'AccountId', 'Id');
+        $worldCharacters =  $this->hasMany(WorldCharacter::class, 'AccountId', 'Id');
 
         foreach ($worldCharacters->get() as $worldCharacter)
         {
