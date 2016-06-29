@@ -1,0 +1,54 @@
+body {
+    background: url("../imgs/backgrounds/404.jpg") no-repeat scroll center top #010624;
+}
+
+.p404 {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.p404 .p404-text {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.p404 .p404-text div:nth-child(1) {
+    color: #848E02;
+    font-size: 74px;
+    line-height: 74px;
+}
+
+.p404 .p404-text div:nth-child(2) {
+    color: #3BA7E1;
+    font-size: 33px;
+    line-height: 33px;
+}
+
+.p404 .p404-text div:nth-child(3) {
+    color: #BCE3F8;
+    font-size: 42px;
+    line-height: 42px;
+}
+
+.p404 .p404-back {
+    margin-top: 350px;
+    margin-bottom: 100px;
+    background-color: #23a9b5;
+    color: #FFF;
+    text-shadow: 0px 1px 1px #333;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 23px;
+    line-height: 23px;
+    padding: 12px 34px;
+    display: inline-block;
+    border-radius: 0px;
+    border: medium none;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+}
+
+.p404 .p404-back:hover {
+    background-color: #07FEEC;
+    text-decoration: none;
+}

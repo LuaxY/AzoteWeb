@@ -1,0 +1,204 @@
+.shop {
+    padding: 20px;
+    width: 100%;
+    overflow: auto;
+}
+
+.shop .shop-content {
+    background: none repeat scroll 0% 0% #F5F2ED;
+    border: 1px solid #DFDDD1;
+    padding: 20px;
+    overflow: auto;
+}
+
+.shop .shop-content.cgv {
+    border: none;
+    background: transparent;
+}
+
+.shop .cgv .checkbox {
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    width: 460px;
+    float: left;
+    text-align: justify;
+}
+
+.shop .cgv button.buy {
+    width: 300px;
+    text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    background-color: #23a9b5;
+    font-size: 23px;
+    color: #fff;
+    text-shadow: 0px 1px 1px #333;
+    padding: 5px 0;
+    text-align: center;
+    border: medium none;
+    cursor: pointer;
+    float: right;
+}
+
+.shop .cgv button.buy:hover {
+    background-color: #37d3d8;
+}
+
+.shop .cgv button.buy span {
+    display: block;
+    text-transform: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.shop .title span.icon-flag {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.shop .shop-element {
+    width: 100%;
+    cursor: pointer;
+    background: none repeat scroll 0% 0% #FFF;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+.shop .shop-element.promo {
+    border: 1px solid #F7AE2E;
+}
+
+.shop .shop-element.unavailable {
+    pointer-events: none;
+}
+
+.shop .unavailable .shop-description {
+    opacity: .4;
+}
+
+.shop .shop-icon {
+    margin-right: 30px;
+}
+
+.shop .shop-icon img {
+    max-width: 60px;
+}
+
+.shop .shop-name {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #28170E;
+}
+
+.shop .shop-name span {
+    color: #D24C0C;
+}
+
+.shop .shop-promo {
+    margin-top: 12px;
+    background: url("../imgs/shop/promo_bg.png") repeat scroll 0% 0% #F7AE2E;
+    color: #FFF;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.shop .shop-promo .promo-title {
+    background: none repeat scroll 0% 0% #FFF;
+    color: #F7AE2E;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 0px 0.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.shop .shop-promo .promo-desc {
+    padding: 0.5rem;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.shop .shop-country span {
+    margin: 5px;
+    float: left;
+}
+
+.shop .payment {
+    overflow: auto;
+}
+
+.shop .payment-number {
+    font-size: 23px;
+    line-height: 40px;
+    margin-bottom: 20px;
+}
+
+.shop .payment-cost {
+    max-width: 460px;
+}
+
+.shop .payment-code {
+    color: #66614E;
+    margin-top: 10px;
+}
+
+.shop .payment-code input[type="text"] {
+    margin-left: 30px;
+    width: 170px;
+    height: 40px;
+}
+
+.shop .payment-submit {
+    text-align: center;
+}
+
+.shop .payment-submit {
+    margin-top: 10px;
+}
+
+.shop .payment-submit input[type="submit"] {
+    font-size: 23px;
+    line-height: 22px;
+    padding: 12px 34px;
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+    border-radius: 0px;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    border: medium none;
+    background-color: #11a0f2;
+    color: #FFF;
+    text-shadow: 0px 1px 1px #333;
+}
+
+.shop .payment-submit input[type="submit"]:hover {
+    background-color: #11cbf2;
+}
+
+.shop .payment-steps {
+    margin-top: 30px;
+}
+
+.shop .payment-steps ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.shop .payment-steps ul li {
+    padding: 5px;
+}
+
+.shop .payment-steps span.step {
+    margin-right: 10px;
+}
+
+.shop .payment-steps p.legal {
+    color: #777;
+    font-size: 85%;
+    text-align: left;
+}

@@ -1,0 +1,74 @@
+#login-form {
+    width: 100%;
+    height: 340px;
+    padding: 40px 0;
+}
+
+#login-form .left {
+    width: 50%;
+    padding: 0 60px;
+    border-right: 1px solid #bdbdbd;
+}
+
+#login-form .left input[type=submit] {
+    width: 100%;
+    padding: 12px 34px;
+    color: #fff;
+    display: block;
+    background-color: #11A0F2;
+    text-shadow: 0 1px 1px #333;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 23px;
+    font-weight: 400;
+    border: none;
+}
+
+#login-form .left input[type=submit]:hover {
+    cursor: pointer;
+    background-color: #11CBF2;
+}
+
+#login-form .left .login-lost {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+    color: #9c9c9a;
+    font-size: 15px;
+}
+
+#login-form .right {
+    width: 50%;
+    padding: 0 40px;
+    text-align: center;
+}
+
+#login-form .right h2 {
+    color: #56380a;
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#login-form .right .login-register {
+    margin: 12px 50px;
+    padding: 12px 34px;
+    color: #fff;
+    display: block;
+    background-color: #f29c06;
+    text-shadow: 0 1px 1px #333;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 23px;
+    font-weight: 400;
+}
+
+#login-form .right .login-register:hover {
+    cursor: pointer;
+    text-decoration: none;
+    background-color: #FFD200;
+}
+
+#login-form .right img {
+    margin-top: 20px;
+}

@@ -1,0 +1,178 @@
+body {
+    background: url("../imgs/backgrounds/dofus1.jpg") no-repeat scroll center top #0D0A61;
+}
+
+.register {
+    margin-top: 200px;
+}
+
+.register .row {
+    margin: 0;
+    overflow: auto;
+}
+
+.register .step-1 {
+    position: relative;
+    overflow: visible;
+    float: left;
+    width: 683px;
+}
+
+.register .step-2 {
+    position: relative;
+    overflow: visible;
+    float: right;
+    width: 480px;
+    margin-top: 320px;
+}
+
+.register .step-3 {
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    margin-top: 7px;
+}
+
+.register .step-1 .block-header {
+    background: url("../imgs/bg_header_block1.jpg") repeat scroll left top transparent;
+}
+
+.register .step-1 .block-header .title {
+    background-color: #C5D432;
+}
+
+.register .step-1 .block-header .title span {
+    background: none repeat scroll 0% 0% #9DAB0B;
+    box-shadow: 0px -2px 0px 0px #747D1D inset;
+}
+
+.register .step-2 .block-header {
+    background: url("../imgs/bg_header_block2.jpg") repeat scroll left top transparent;
+}
+
+.register .step-2 .block-header .title {
+    background-color: #F7CB00;
+}
+
+.register .step-2 .block-header .title span {
+    background: none repeat scroll 0% 0% #FF9D00;
+    box-shadow: 0px -2px 0px 0px #8D791C inset;
+}
+
+.register .step-3 .block-header {
+    background: url("../imgs/bg_header_block3.jpg") repeat scroll left top transparent;
+    width: 480px;
+    height: 329px;
+    float: left;
+}
+
+.register .step-3 .block-header .title {
+    background-color: #88E0FF;
+}
+
+.register .step-3 .block-header .title span {
+    background: none repeat scroll 0% 0% #76BEF3;
+    box-shadow: 0px -2px 0px 0px #608194 inset;
+}
+
+.register .step-3 .block-header .illu {
+    height: 272px;
+    width: 46%;
+    background-image: url("../imgs/illu/illu_block3_left.png");
+    background-repeat: no-repeat;
+    position: relative;
+    background-position: left bottom;
+    background-size: cover;
+    float: left;
+}
+
+.register .step-3 .block-header .text {
+    text-align: left;
+    margin-top: 15px;
+    padding-right: 8px;
+}
+
+.register .step-3 .block-body {
+    border-left: 1px solid #AD9B7F;
+    float: left;
+    width: 670px;
+    display: block;
+    height: 329px;
+}
+
+.register .block-header .title {
+    color: #FFF;
+    text-shadow: 1px 1px 1px #888;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    padding: 5px;
+    position: relative;
+}
+
+.register .block-header .title span {
+    display: inline-block;
+    border-radius: 3px;
+    line-height: 42px;
+    padding: 0px 10px;
+}
+
+.register .block-header .text {
+    color: #fff;
+    text-align: center;
+    padding: 15px 5px;
+}
+
+.register .block-body {
+    background-color: #FAFAFA;
+    padding: 10px;
+}
+
+.register .block-body form {
+    margin: 12px 100px;
+}
+
+.register .block-body form .block-submit input {
+    background: -webkit-linear-gradient(#C8E014 0px, #BCE254 7%, #B5E03E 12%, #A4B921 52%, #A4B921 88%, #C8E014 100%) repeat scroll 0% 0% transparent;
+    background: -o-linear-gradient(#C8E014 0px, #BCE254 7%, #B5E03E 12%, #A4B921 52%, #A4B921 88%, #C8E014 100%) repeat scroll 0% 0% transparent;
+    background: linear-gradient(#C8E014 0px, #BCE254 7%, #B5E03E 12%, #A4B921 52%, #A4B921 88%, #C8E014 100%) repeat scroll 0% 0% transparent;
+    display: block;
+    margin: 0px auto;
+}
+
+.register .block-body form .block-submit input:hover
+{
+    background: -webkit-linear-gradient(#D1EB09 0px, #C3F244 7%, #BDF12D 12%, #B2CB0F 52%, #B2CB0F 88%, #D1EB09 100%) repeat scroll 0% 0% transparent;
+    background: -o-linear-gradient(#D1EB09 0px, #C3F244 7%, #BDF12D 12%, #B2CB0F 52%, #B2CB0F 88%, #D1EB09 100%) repeat scroll 0% 0% transparent;
+    background: linear-gradient(#D1EB09 0px, #C3F244 7%, #BDF12D 12%, #B2CB0F 52%, #B2CB0F 88%, #D1EB09 100%) repeat scroll 0% 0% transparent;
+}
+
+.register .step-2 .block-body .download {
+    background: -webkit-linear-gradient(#F7E199 1%, #F9DB77 7%, #FAC612 14%, #F19E12 41%, #F19E12 52%, #F19E12 88%, #FAC612 99%) repeat scroll 0% 0% transparent;
+    background: -o-linear-gradient(#F7E199 1%, #F9DB77 7%, #FAC612 14%, #F19E12 41%, #F19E12 52%, #F19E12 88%, #FAC612 99%) repeat scroll 0% 0% transparent;
+    background: linear-gradient(#F7E199 1%, #F9DB77 7%, #FAC612 14%, #F19E12 41%, #F19E12 52%, #F19E12 88%, #FAC612 99%) repeat scroll 0% 0% transparent;
+    width: 300px;
+    margin: 0px auto;
+    display: block;
+}
+
+.register .step-2 .block-body .download:hover {
+    background:-webkit-linear-gradient(#fbec95 1%, #fce874 7%, #fcdd10 14%, #f8b50c 41%, #f8b50c 52%, #f8b50c 88%, #fcdd10 99%);
+    background:-o-linear-gradient(#fbec95 1%, #fce874 7%, #fcdd10 14%, #f8b50c 41%, #f8b50c 52%, #f8b50c 88%, #fcdd10 99%);
+    background:linear-gradient(#fbec95 1%, #fce874 7%, #fcdd10 14%, #f8b50c 41%, #f8b50c 52%, #f8b50c 88%, #fcdd10 99%);
+    text-decoration: none;
+}
+
+.tooltip {
+    background: none repeat scroll 0% 0% #FFF;
+    color: #28170E;
+    z-index: 15002;
+    max-width: 280px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 13px;
+    border: 1px solid #B1B1B1;
+    position: absolute;
+    min-width: 50px;
+    direction: ltr;
+}

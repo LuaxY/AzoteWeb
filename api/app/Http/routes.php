@@ -5,21 +5,27 @@ Route::get('/', [
     'as'   => 'home'
 ]);
 
+/* ============ TMP ============ */
+
+Route::any('vote', [ 'as' => 'vote.index' ]);
+Route::any('shop', [ 'as' => 'shop.payment.country' ]);
+Route::any('posts', [ 'as' => 'posts' ]);
+
 /* ============ AUTH ============ */
 
-Route::get('/login', [
+Route::get('login', [
     'middleware' => 'guest',
     'uses' => 'AuthController@login',
     'as'   => 'login'
 ]);
 
-Route::post('/login', [
+Route::post('login', [
     'middleware' => 'guest',
     'uses' => 'AuthController@auth',
     'as'   => 'login'
 ]);
 
-Route::get('/logout', [
+Route::get('logout', [
     'middleware' => 'auth',
     'uses' => 'AuthController@logout',
     'as'   => 'logout'

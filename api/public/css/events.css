@@ -1,0 +1,167 @@
+/** St Patrick **/
+
+.panel.remaining-tickets .panel-title,
+.panel.gifts-to-win .panel-title {
+    background: #262523;
+    text-align: center;
+}
+
+.panel.remaining-tickets .panel-icon,
+.panel.gifts-to-win .panel-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    left: auto;
+    top: auto;
+    float: none;
+    vertical-align: middle;
+    margin-right: 5px;
+
+}
+
+.panel.remaining-tickets .panel-icon {
+    background: url('../imgs/events/icon-tickets.png');
+}
+
+.panel.gifts-to-win .panel-icon {
+    background: url('../imgs/events/icon-gifts.png');
+}
+
+.panel.remaining-tickets .tickets-count {
+    display: table;
+    width: 100%;
+}
+
+.panel.remaining-tickets .tickets-count .label,
+.panel.remaining-tickets .tickets-count .count {
+    display: table-cell;
+    padding: 8px 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 25px;
+    position: relative;
+    text-align: center;
+}
+
+.panel.remaining-tickets .tickets-count .label {
+    background: #ffa800;
+    color: #fff;
+    width: 75%;
+}
+
+.panel.remaining-tickets .tickets-count .count {
+    background: #fff;
+    width: 25%;
+}
+
+.panel.remaining-tickets .tickets-count .count::before {
+    border-color: transparent transparent transparent #ffa800;
+    content: " ";
+    display: block;
+    line-height: 15px;
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    margin-top: -7px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 0 7px 15px;
+}
+
+.st-patrick .content-title {
+    background-color: #97a800;
+}
+
+.st-patrick article {
+    padding: 12px;
+}
+
+.st-patrick .scratch-to-win {
+    color: #848e02;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+}
+
+.st-patrick .game-container {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    height: 675px;
+    border: 5px inset;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-image: url('../imgs/events/st-patrick-bg.jpg');
+}
+
+.st-patrick .game-container .bg-container {
+    position: relative;
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding-top: 324px;
+}
+
+.st-patrick .game-container .bg-container .canvas-zone {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    width: 285px;
+    height: 112px;
+}
+
+.st-patrick .game-container .bg-container .canvas-zone .scratchgame-replay {
+    text-align: center;
+    padding-top: 32px;
+}
+
+.btn {
+    display: inline-block;
+    border-radius: 0;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 0;
+    vertical-align: middle;
+    background-image: none;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.btn-lg {
+    font-size: 23px;
+    line-height: 22px;
+    padding: 12px 34px;
+}
+
+.btn-blue,
+.btn-info,
+.btn-primary {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #f29c06;
+    text-shadow: 0 1px 1px #333;
+}
+
+.btn-info:hover {
+    background-color: #ffd200;
+}
+
+.st-patrick .game-container .bg-container .canvas-zone .scratchgame-replay .btn {
+    padding: 12px 40px;
+    /*border: 2px outset rgba(255, 255, 255, .8);*/
+}
+
+.st-patrick .scratchpad-intro {
+    margin: 20px 40px;
+}

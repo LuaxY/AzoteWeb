@@ -1,0 +1,891 @@
+/** ICONS SET **/
+
+.icon-polls,
+.icon-alliance,
+.icon-animation,
+.icon-builds,
+.icon-calendar,
+.icon-character,
+.icon-devblog,
+.icon-directories,
+.icon-edition,
+.icon-forum,
+.icon-guild,
+.icon-guild-pages,
+.icon-heroic,
+.icon-illustration,
+.icon-krosmaster,
+.icon-ladder-alliance,
+.icon-ladder-general,
+.icon-ladder-kolizeum,
+.icon-ladder-krosmaster,
+.icon-ladder-success,
+.icon-news,
+.icon-screenshot,
+.icon-server-offline,
+.icon-server-online,
+.icon-servers,
+.icon-sponsorship,
+.icon-success,
+.icon-support,
+.icon-videos,
+.icon-married,
+.icon-job-pages,
+.icon-rules,
+.icon-patchnote,
+.icon-codes,
+.icon-gift,
+.icon-shop,
+.icon-bank,
+.icon-bak,
+.icon-ogrines,
+.icon-kamas,
+.icon-progress,
+.icon-address {
+    background-image: url("../imgs/community-sprites.png");
+    background-repeat: no-repeat;
+    display: block;
+}
+
+h1 .icon-big,
+.panel-title .icon-med {
+    float: left;
+}
+
+.icon-breeds,
+.icon-consumables,
+.icon-dungeons,
+.icon-equipments,
+.icon-jobs,
+.icon-monsters,
+.icon-pets,
+.icon-quests,
+.icon-ressources,
+.icon-rides,
+.icon-companions,
+.icon-weapons,
+.icon-plus-dofus,
+.icon-plus_dofus,
+.icon-mmo,
+.icon-mmorpg,
+.icon-egg,
+.icon-encyclopedia,
+.icon-sets,
+.icon-spells,
+.icon-universe,
+.icon-tutorials,
+.icon-neutral,
+.icon-tx-neutral,
+.icon-move,
+.icon-tx-movementpoints,
+.icon-water,
+.icon-tx-chance,
+.icon-range,
+.icon-tx-range,
+.icon-air,
+.icon-tx-agility,
+.icon-tx-initiative,
+.icon-action,
+.icon-tx-actionpoints,
+.icon-tx-prospecting,
+.icon-life,
+.icon-tx-vitality,
+.icon-tx-lifepoints,
+.icon-tx-wisdom,
+.icon-fire,
+.icon-tx-intelligence,
+.icon-earth,
+.icon-tx-strength,
+.icon-tx-escape,
+.icon-tx-invocation,
+.icon-tx-tackle,
+.icon-tx-summonablecreaturesboost,
+.icon-tx-criticalhit,
+.icon-tx-weapondamage,
+.icon-tx-trappercent,
+.icon-tx-trap,
+.icon-tx-shieldpoints,
+.icon-tx-return,
+.icon-tx-pushreduction,
+.icon-tx-push,
+.icon-tx-lifepoints,
+.icon-tx-heal,
+.icon-tx-dodgemp,
+.icon-tx-dodgeap,
+.icon-tx-damagespercent,
+.icon-tx-damage,
+.icon-tx-criticalreduction,
+.icon-tx-criticaldamage,
+.icon-tx-attackmp,
+.icon-tx-attackap {
+    background-image: url("../imgs/encyclopedia-sprites.png");
+    background-repeat: no-repeat;
+    display: block;
+    float: left;
+}
+
+.picto {
+    background: url("../imgs/common-sprites.png");
+    background-repeat: no-repeat;
+}
+
+/** LARGE **/
+
+.icon-large {
+    background-size: 126px auto;
+    width: 126px;
+    height: 126px;
+}
+
+.icon-large.icon-breeds {
+    background-position:0 -10px
+}
+
+.icon-large.icon-consumables {
+    background-position:0 -95px
+}
+
+.icon-large.icon-dungeons {
+    background-position:0 -180px
+}
+
+.icon-large.icon-equipments {
+    background-position:0 -265px
+}
+
+.icon-large.icon-jobs {
+    background-position:0 -346px
+}
+
+.icon-large.icon-monsters {
+    background-position:0 -435px
+}
+
+.icon-large.icon-pets {
+    background-position:0 -520px
+}
+
+.icon-large.icon-quests {
+    background-position:0 -605px
+}
+
+.icon-large.icon-ressources {
+    background-position:0 -690px
+}
+
+.icon-large.icon-rides {
+    background-position:0 -775px
+}
+
+.icon-large.icon-weapons,.icon-large.icon-plus-dofus {
+    background-position:0 -860px
+}
+
+.icon-large.icon-egg {
+    background-position:0 -945px
+}
+
+.icon-large.icon-encyclopedia {
+    background-position:0 -1030px
+}
+
+.icon-large.icon-sets {
+    background-position:0 -1115px
+}
+
+.icon-large.icon-spells {
+    background-position:0 -1197px
+}
+
+.icon-large.icon-universe {
+    background-position:0 -1285px
+}
+
+.icon-large.icon-tutorials {
+    background-position:0 -1370px
+}
+
+.icon-large.icon-companions {
+    background-position:0 -1600px
+}
+
+/** BIG **/
+
+.icon-big  {
+    background-size: 65px auto;
+    width: 65px;
+    height: 65px;
+}
+
+.icon-big.icon-polls {
+    background-position:0 -10px
+}
+
+.icon-big.icon-alliance {
+    background-position:0 -95px
+}
+
+.icon-big.icon-animation {
+    background-position:0 -180px
+}
+
+.icon-big.icon-builds {
+    background-position:0 -265px
+}
+
+.icon-big.icon-calendar {
+    background-position:0 -350px
+}
+
+.icon-big.icon-character {
+    background-position:0 -435px
+}
+
+.icon-big.icon-devblog {
+    background-position:0 -520px
+}
+
+.icon-big.icon-directories {
+    background-position:0 -605px
+}
+
+.icon-big.icon-edition {
+    background-position:0 -690px
+}
+
+.icon-big.icon-forum {
+    background-position:0 -775px
+}
+
+.icon-big.icon-guild {
+    background-position:0 -860px
+}
+
+.icon-big.icon-heroic {
+    background-position:0 -945px
+}
+
+.icon-big.icon-illustration {
+    background-position:0 -1030px
+}
+
+.icon-big.icon-krosmaster {
+    background-position:0 -1115px
+}
+
+.icon-big.icon-ladder-alliance {
+    background-position:0 -1200px
+}
+
+.icon-big.icon-ladder-general {
+    background-position:0 -1285px
+}
+
+.icon-big.icon-ladder-kolizeum {
+    background-position:0 -1370px
+}
+
+.icon-big.icon-ladder-krosmaster {
+    background-position:0 -1455px
+}
+
+.icon-big.icon-ladder-success {
+    background-position:0 -1540px
+}
+
+.icon-big.icon-news {
+    background-position:0 -1625px
+}
+
+.icon-big.icon-screenshot {
+    background-position:0 -1712px
+}
+
+.icon-big.icon-server-offline {
+    background-position:0 -1795px
+}
+
+.icon-big.icon-server-online {
+    background-position:0 -1880px
+}
+
+.icon-big.icon-servers {
+    background-position:0 -1965px
+}
+
+.icon-big.icon-sponsorship {
+    background-position:0 -2050px
+}
+
+.icon-big.icon-success {
+    background-position:0 -2135px
+}
+
+.icon-big.icon-support {
+    background-position:0 -2220px
+}
+
+.icon-big.icon-videos {
+    background-position:0 -2308px
+}
+
+.icon-big.icon-married {
+    background-position:0 -2390px
+}
+
+.icon-big.icon-job-pages {
+    background-position:0 -2477px
+}
+
+.icon-big.icon-rules {
+    background-position:0 -2610px
+}
+
+.icon-big.icon-patchnote {
+    background-position:0 -2694px
+}
+
+.icon-big.icon-codes {
+    background-position:0 -2777px
+}
+
+.icon-big.icon-gift {
+    background-position:0 -2837px
+}
+
+.icon-big.icon-shop {
+    background-position:0 -2903px
+}
+
+.icon-big.icon-bank {
+    background-position:0 -2968px
+}
+
+.icon-big.icon-address {
+    background-position:0 -3036px
+}
+
+.icon-big.icon-progress {
+    background-position:0 -3104px
+}
+
+.icon-big.icon-bak {
+    background-position:0 -3172px
+}
+
+.icon-big.icon-ogrines {
+    background-position:0 -3247px
+}
+
+.icon-big.icon-kamas {
+    background-position:0 -3318px
+}
+
+/** MEDIUM+ **/
+
+.icon-medplus {
+    background-size: 89px auto;
+    width: 46px;
+    height: 46px;
+}
+
+.icon-medplus.icon-breeds {
+    background-position:0 -5px
+}
+
+.icon-medplus.icon-consumables {
+    background-position:0 -65px
+}
+
+.icon-medplus.icon-dungeons {
+    background-position:0 -126px
+}
+
+.icon-medplus.icon-equipments {
+    background-position:0 -187px
+}
+
+.icon-medplus.icon-jobs {
+    background-position:0 -243px
+}
+
+.icon-medplus.icon-monsters {
+    background-position:0 -306px
+}
+
+.icon-medplus.icon-pets {
+    background-position:0 -365px
+}
+
+.icon-medplus.icon-quests {
+    background-position:0 -432px
+}
+
+.icon-medplus.icon-ressources {
+    background-position:0 -486px
+}
+
+.icon-medplus.icon-rides {
+    background-position:0 -546px
+}
+
+.icon-medplus.icon-weapons,.icon-medplus.icon-mmo,.icon-medplus.icon-mmorpg {
+    background-position:0 -605px
+}
+
+.icon-medplus.icon-egg {
+    background-position:0 -666px
+}
+
+.icon-medplus.icon-encyclopedia {
+    background-position:0 -725px
+}
+
+.icon-medplus.icon-sets {
+    background-position:0 -785px
+}
+
+.icon-medplus.icon-spells {
+    background-position:0 -842px
+}
+
+.icon-medplus.icon-universe {
+    background-position:0 -906px
+}
+
+.icon-medplus.icon-tutorials {
+    background-position:0 -967px
+}
+
+.icon-medplus.icon-plus-dofus,.icon-medplus.icon-plus_dofus {
+    background-position:0 -1026px
+}
+
+.icon-medplus.icon-companions {
+    background-position:0 -1132px
+}
+
+/** MEDIUM **/
+
+.icon-med  {
+    background-size: 46px auto;
+    width: 46px;
+    height: 46px;
+}
+
+.icon-med.icon-polls {
+    background-position:0 -5px
+}
+
+.icon-med.icon-alliance {
+    background-position:0 -65px
+}
+
+.icon-med.icon-animation {
+    background-position:0 -126px
+}
+
+.icon-med.icon-builds {
+    background-position:0 -187px
+}
+
+.icon-med.icon-calendar {
+    background-position:0 -245px
+}
+
+.icon-med.icon-character {
+    background-position:0 -306px
+}
+
+.icon-med.icon-devblog {
+    background-position:0 -365px
+}
+
+.icon-med.icon-directories {
+    background-position:0 -426px
+}
+
+.icon-med.icon-edition {
+    background-position:0 -486px
+}
+
+.icon-med.icon-forum {
+    background-position:0 -546px
+}
+
+.icon-med.icon-guild {
+    background-position:0 -605px
+}
+
+.icon-med.icon-heroic {
+    background-position:0 -666px
+}
+
+.icon-med.icon-illustration {
+    background-position:0 -725px
+}
+
+.icon-med.icon-krosmaster {
+    background-position:0 -788px
+}
+
+.icon-med.icon-ladder-alliance {
+    background-position:0 -845px
+}
+
+.icon-med.icon-ladder-general {
+    background-position:0 -906px
+}
+
+.icon-med.icon-ladder-kolizeum {
+    background-position:0 -966px
+}
+
+.icon-med.icon-ladder-krosmaster {
+    background-position:0 -1025px
+}
+
+.icon-med.icon-ladder-success {
+    background-position:0 -1086px
+}
+
+.icon-med.icon-news {
+    background-position:0 -1146px
+}
+
+.icon-med.icon-screenshot {
+    background-position:0 -1205px
+}
+
+.icon-med.icon-server-offline {
+    background-position:0 -1267px
+}
+
+.icon-med.icon-server-online {
+    background-position:0 -1328px
+}
+
+.icon-med.icon-servers {
+    background-position:0 -1386px
+}
+
+.icon-med.icon-sponsorship {
+    background-position:0 -1445px
+}
+
+.icon-med.icon-success {
+    background-position:0 -1509px
+}
+
+.icon-med.icon-support {
+    background-position:0 -1564px
+}
+
+.icon-med.icon-videos {
+    background-position:0 -1625px
+}
+
+.icon-med.icon-married {
+    background-position:0 -1692px
+}
+
+.icon-med.icon-job-pages {
+    background-position:0 -1750px
+}
+
+.icon-med.icon-rules {
+    background-position:0 -1846px
+}
+
+.icon-med.icon-patchnote {
+    background-position:0 -1905px
+}
+
+.icon-med.icon-codes {
+    background-position:0 -1958px
+}
+
+.icon-med.icon-gift {
+    background-position:0 -2007px
+}
+
+.icon-med.icon-shop {
+    background-position:0 -2051px
+}
+
+.icon-med.icon-bank {
+    background-position:0 -2098px
+}
+
+.icon-med.icon-bak {
+    background-position:0 -3172px
+}
+
+.icon-med.icon-ogrines {
+    background-position:0 -3247px
+}
+
+.icon-med.icon-kamas {
+    background-position:0 -3318px
+}
+
+/** SMALL **/
+
+.icon-small  {
+    background-size: 22px auto;
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.icon-small.icon-ogrines {
+    background-position:0 -1100px
+}
+
+/** FLAGS **/
+
+.icon-flag {
+    background-image: url("../imgs/shop/flags.png");
+    background-repeat: no-repeat;
+    display: block;
+    width: 32px;
+    height: 25px;
+}
+
+.flag-fr{
+    background-position: -1px -235px;
+}
+
+.flag-fd,
+.flag-fo{
+    background-position: -1px -204px;
+}
+
+.flag-be{
+    background-position: -1px -142px;
+}
+
+.flag-ch{
+    background-position: -1px -81px;
+}
+
+.flag-lu{
+    background-position: -1px -327px;
+}
+
+.flag-ca{
+    background-position: -1px -173px;
+}
+
+.flag-de{
+    background-position: -1px -266px;
+}
+
+.flag-es{
+    background-position: -1px -358px;
+}
+
+.flag-uk{
+    background-position: -1px -389px;
+}
+
+.flag-it{
+    background-position: -1px -296px;
+}
+
+.flag-at{
+    background-position: -1px -111px;
+}
+
+.flag-nl{
+    background-position: -1px -327px;
+}
+
+.flag-no{
+    background-position: -1px -420px;
+}
+
+.flag-se{
+    background-position: -1px -451px;
+}
+
+.flag-bg{
+    background-position: -1px -21px;
+}
+
+.flag-cz{
+    background-position: -1px -51px;
+}
+
+.flag-dk{
+    background-position: -1px -481px;
+}
+
+.flag-ee{
+    background-position: -1px -511px;
+}
+
+.flag-fi{
+    background-position: -1px -541px;
+}
+
+.flag-gr{
+    background-position: -1px -571px;
+}
+
+.flag-hr{
+    background-position: -1px -601px;
+}
+
+.flag-hu{
+    background-position: -1px -631px;
+}
+
+.flag-ie{
+    background-position: -1px -661px;
+}
+
+.flag-is{
+    background-position: -1px -691px;
+}
+
+.flag-li{
+    background-position: -1px -721px;
+}
+
+.flag-lt{
+    background-position: -1px -751px;
+}
+
+.flag-lv{
+    background-position: -1px -781px;
+}
+
+.flag-mc{
+    background-position: -1px -811px;
+}
+
+.flag-me{
+    background-position: -1px -841px;
+}
+
+.flag-pl{
+    background-position: -1px -871px;
+}
+
+.flag-ro{
+    background-position: -1px -901px;
+}
+
+.flag-ru{
+    background-position: -1px -931px;
+}
+
+.flag-sk{
+    background-position: -1px -961px;
+}
+
+.flag-sl{
+    background-position: -1px -991px;
+}
+
+.flag-pt{
+    background-position: -1px -1021px;
+}
+
+.flag-ar{
+    background-position: -1px -1051px;
+}
+
+.flag-br{
+    background-position: -1px -1081px;
+}
+
+.flag-mx{
+    background-position: -1px -1111px;
+}
+
+.flag-cl{
+    background-position: -1px -1141px;
+}
+
+.flag-pf{
+    background-position: -1px -1173px;
+}
+
+.flag-th{
+    background-position: -1px -1203px;
+}
+
+.flag-vn{
+    background-position: -1px -1233px;
+}
+
+.flag-my{
+    background-position: -1px -1263px;
+}
+
+.flag-id{
+    background-position: -1px -1293px;
+}
+
+.flag-sg{
+    background-position: -1px -1323px;
+}
+
+.flag-au{
+    background-position: -1px -1353px;
+}
+
+.flag-ru{
+    background-position: -1px -1383px;
+}
+
+.flag-za{
+    background-position: -1px -1413px;
+}
+
+.flag-ng{
+    background-position: -1px -1443px;
+}
+
+.flag-cn{
+    background-position: -1px -1473px;
+}
+
+.flag-tr{
+    background-position: -1px -1503px;
+}
+
+.flag-tw{
+    background-position: -1px -1533px;
+}
+
+.flag-hk{
+    background-position: -1px -1563px;
+}
+
+.flag-ma{
+    background-position: -1px -1593px;
+}
+
+.flag-tn{
+    background-position: -1px -1623px;
+}
+
+.flag-rs{
+    background-position: -1px -1653px;
+}
+
+.flag-co{
+    background-position: -1px -1683px;
+}
+
+.flag-ec{
+    background-position: -1px -1713px;
+}
+
+.flag-us{
+    background-position: -1px -1743px;
+}
