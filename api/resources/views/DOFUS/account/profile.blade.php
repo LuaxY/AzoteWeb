@@ -28,11 +28,11 @@
                 <th>Code</th>
                 <th>Statut</th>
             </tr>
-@foreach (Auth::user()->transactions()->get() as $transaction)
+@foreach (Auth::user()->transactions() as $transaction)
             <tr>
                 <td>{{ $transaction->id }}</td>
-                <td>{{ $transaction->date }}</td>
-                <td>{{ Utils::format_price( $transaction->points, ' ') }} OGR</td>
+                <td>{{ $transaction->created_at }}</td>
+                <td>{{ Utils::format_price($transaction->points, ' ') }} OGR</td>
                 <td>{{ $transaction->code }}</td>
                 <td>{{ Utils::transaction_status($transaction->state) }}</td>
             </tr>

@@ -8,8 +8,8 @@
             {!! Form::open(['route' => 'login']) !!}
             @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
             <div class="form-group">
-                <label for="username">Nom de compte</label>
-                <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Nom de compte" name="username" value="{{ Input::old('username') }}" @if ($errors->has('auth')) class="has-error" @endif />
+                <label for="username">Email</label>
+                <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Nom de compte" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe</label>
@@ -31,11 +31,11 @@
             <span class="icon-medplus icon-pets"></span>Mon compte
         </div>
         <div class="panel-content account">
-            <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->Avatar) }}" /></div>
+            <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></div>
             <div class="account-details">
-                <div class="account-name">{{ Auth::user()->Nickname }}</div>
+                <div class="account-name">{{ Auth::user()->firstname }}</div>
                 <div class="account-info">
-                    <a href="{{ URL::route('dashboard') }}">Gestion de compte</a>
+                    <a href="{{ URL::route('profile') }}">Gestion de compte</a>
                     <div style="margin-top: 5px;">
                         Ogrines: {{ Utils::format_price(Auth::user()->Tokens) }}<span class="icon-small icon-ogrines"></span><br />
                         <a href="{{ URL::route('shop.payment.country') }}"><i>Acheter des ogrines</i></a>

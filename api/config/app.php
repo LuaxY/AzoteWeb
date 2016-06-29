@@ -215,6 +215,7 @@ return [
         'Html'        => Collective\Html\HtmlFacade::class,
         'Gravatar'    => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'Utils'       => App\Helpers\Utils::class,
 
     ],
 

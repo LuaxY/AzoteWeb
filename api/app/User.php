@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Account::class, 'Email', 'email')->get();
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
+    }
 }
