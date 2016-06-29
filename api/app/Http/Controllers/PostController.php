@@ -18,7 +18,7 @@ class PostController extends Controller
     {
         $page = $request->has('page') ? $request->input('page') : 1;
 
-        $posts = Cache::remember('posts_page_' . $page, 3, function() {
+        $posts = Cache::remember('posts_page_' . $page, self::CACHE_EXPIRE_MINUTES, function() {
             return Post::orderBy('created_at', 'desc')->paginate(self::POSTS_PER_PAGE);
         });
 
