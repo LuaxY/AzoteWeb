@@ -37,7 +37,7 @@
                 <div class="account-info">
                     <a href="{{ URL::route('profile') }}">Gestion de compte</a>
                     <div style="margin-top: 5px;">
-                        Ogrines: {{ Utils::format_price(Auth::user()->Tokens) }}<span class="icon-small icon-ogrines"></span><br />
+                        Ogrines: {{ Utils::format_price(Auth::user()->points) }}<span class="icon-small icon-ogrines"></span><br />
                         <a href="{{ URL::route('shop.payment.country') }}"><i>Acheter des ogrines</i></a>
                     </div>
                 </div>

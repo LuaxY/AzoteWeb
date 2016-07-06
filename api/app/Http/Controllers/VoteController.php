@@ -28,6 +28,11 @@ class VoteController extends Controller
         $current    = (($votesCount + $nextGifts) / 10) % 5;
         $delay      = $this->delay();
 
+        if ($current <= 0)
+        {
+            $current = 5;
+        }
+
         $data = [
             'palierId'   => $palierId,
             'votesCount' => $votesCount,
@@ -51,18 +56,14 @@ class VoteController extends Controller
             return $this->index();
         }
 
-        Auth::user()->VoteCount += 1;
-        Auth::user()->Tokens += 10;
+        Auth::user()->votes    += 1;
+        Auth::user()->points   += 10;
+        Auth::user()->last_vote = date('Y-m-d H:i:s');
+        Auth::user()->save();
 
-        Auth::user()->update([
-            'VoteCount' => Auth::user()->VoteCount,
-            'Tokens'    => Auth::user()->Tokens,
-            'LastVote'  => date('Y-m-d H:i:s'),
-        ]);
-
-        if (Auth::user()->VoteCount % 10 == 0)
+        if (Auth::user()->votes % 10 == 0)
         {
-            $reward = VoteReward::where('votes', Auth::user()->VoteCount)->firstOrFail();
+            $reward = VoteReward::where('votes', Auth::user()->votes)->firstOrFail();
             // TODO: add $reward->itemId to account
         }
 
@@ -106,7 +107,7 @@ class VoteController extends Controller
 
     private function userVotes()
     {
-        return Auth::user()->VoteCount;
+        return Auth::user()->votes;
     }
 
     private function palierId()
@@ -146,7 +147,7 @@ class VoteController extends Controller
         $obj = new \stdClass();
 
         $obj->now      = strtotime(date('Y-m-d H:i:s'));
-        $obj->duration = $obj->now - strtotime(Auth::user()->LastVote);
+        $obj->duration = $obj->now - strtotime(Auth::user()->last_vote);
         $obj->canVote  = $obj->duration < config('dofus.rpg-paradize.delay') ? false : true;
         $obj->wait     = config('dofus.rpg-paradize.delay') - $obj->duration;
         $obj->hours    = intval($obj->wait / 3600);
