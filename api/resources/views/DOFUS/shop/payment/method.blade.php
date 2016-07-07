@@ -65,7 +65,7 @@
                     <div class="checkbox">
                         <label>
                             @if ($errors->has('cgv')) <span class="input-error">{{ $errors->first('cgv') }}</span><br /> @endif
-                            <input type="checkbox" name="cgv" value="1" /> En cochant cette case, vous acceptez expressément que la fourniture du contenu numérique (ogrines) commence immédiatement après l'envoi de notre mail de confirmation d'achat et renoncez donc expressément à votre droit de rétractation. Vous confirmez avoir pris connaissance des <a href="{{ URL::to('legal/cgv') }}">conditions générales de vente</a> d'{{ config('dofus.title') }} et vous confirmez que <b>{{ Auth::user()->Nickname }}</b> est le propriétaire du moyen de paiement ou que vous avez reçu l'autorisation du titulaire du moyen de paiement.
+                            <input type="checkbox" name="cgv" value="1" /> En cochant cette case, vous acceptez expressément que la fourniture du contenu numérique (ogrines) commence immédiatement après l'envoi de notre mail de confirmation d'achat et renoncez donc expressément à votre droit de rétractation. Vous confirmez avoir pris connaissance des <a href="{{ URL::to('legal/cgv') }}">conditions générales de vente</a> d'{{ config('dofus.title') }} et vous confirmez que <b>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</b> est le propriétaire du moyen de paiement ou que vous avez reçu l'autorisation du titulaire du moyen de paiement.
                         </label>
                     </div>
                     <button class="buy">

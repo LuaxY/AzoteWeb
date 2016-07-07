@@ -25,7 +25,7 @@ class Authenticate
             }
             else
             {
-                return redirect()->guest('login');
+                return redirect()->route('home');
             }
         }
 

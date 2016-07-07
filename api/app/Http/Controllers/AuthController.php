@@ -24,7 +24,7 @@ class AuthController extends Controller
 		if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
 		{
 			Auth::login($user);
-			return redirect(route('profile'));
+			return redirect()->route('profile');
 		}
 		else
 		{
