@@ -10,6 +10,10 @@ return [
 
     'theme'        => env('THEME', false),
 
+    'background'   => env('BACKGROUND', 'dofus4'),
+
+    'color'        => env('COLOR', '#000'),
+
     'carousel'     => env('CAROUSEL', false),
 
     'vote'         => 10,

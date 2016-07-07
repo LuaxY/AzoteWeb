@@ -4,7 +4,7 @@ body, div {
 }
 
 body {
-    background: url("../imgs/backgrounds/dofus5.jpg") no-repeat scroll center top #180A01;
+    background: no-repeat scroll center top;
     font-size: 15px;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
