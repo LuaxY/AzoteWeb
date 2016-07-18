@@ -4,6 +4,7 @@ namespace App\Services\Payment;
 
 use \Cache;
 use App\Services\Payment;
+use Auth;
 
 class DediPass extends Payment
 {
@@ -106,9 +107,17 @@ class DediPass extends Payment
 
             if ($result->identifier == 'TEST-CODE')
             {
-                // TODO test code can be used only by admin
-                $check->country = 'xx';
-                $check->type    = 'test';
+                if (Auth::user()->isAdmin())
+                {
+                    $check->country = 'xx';
+                    $check->type    = 'test';
+                }
+                else
+                {
+                    $check->success = false;
+                    $check->message = "Rang insuffisant pour utiliser le code de test";
+                    return $check;
+                }
             }
             else
             {

@@ -30,7 +30,7 @@
                 <a href="{{ URL::route('home') }}"><div id="logo"></div></a>
                 <ul class="box right">
                     <li><a href="{{ URL::route('vote.index') }}">Vote</a></li>
-                    <li><a href="http://forum.erezia.net/">Forum</a></li>
+                    <li><a href="http://forum.azote.us/">Forum</a></li>
                     <li><a href="{{ URL::to('support') }}">Support</a></li>
                 </ul>
             </div>
@@ -46,6 +46,12 @@
             <source src="{{ URL::asset('imgs/carousel/'.config('dofus.theme').'/video.ogv') }}" type="video/ogv">
         </video>
 @endif
+    </div>
+@endif
+
+@if(Session::has('msg_flash'))
+    <div class="container flash">
+        <h2>{{ Session::get('msg_flash') }}</h2>
     </div>
 @endif
 

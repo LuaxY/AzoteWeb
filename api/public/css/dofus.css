@@ -219,6 +219,18 @@ button {
 /*------------------CONTENT----------------------*/
 /*-----------------------------------------------*/
 
+.flash {
+    padding: 0 10px;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.30);
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0px 0px 10px #000;
+}
+
 .content,
 .panel {
     -moz-box-shadow: 0px 0px 2px 0px #333;
