@@ -32,7 +32,6 @@ Route::group(['prefix' => $locale], function() {
     /* ============ ACCOUNT ============ */
 
     Route::get(Lang::get('routes.account.register'), [
-		'middleware' => 'guest',
 		'uses'       => 'AccountController@register',
 		'as'         => 'register'
 	]);

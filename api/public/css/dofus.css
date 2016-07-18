@@ -57,6 +57,10 @@ button {
     opacity: .4;
 }
 
+.no-event {
+    pointer-events: none;
+}
+
 .hr {
     border-right: 0px none;
     border-width: 1px 0px 0px;

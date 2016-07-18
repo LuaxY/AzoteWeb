@@ -11,7 +11,7 @@
     <div class="container">
         <div class="register">
             <div class="row">
-                <div class="step-1">
+                <div class="step-1 @if (!Auth::guest()) disabled no-event @endif">
                     <div id="main">
                         <div class="block-header">
                             <div class="title">
