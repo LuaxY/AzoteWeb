@@ -16,8 +16,8 @@
                 {!! Form::open(['route' => 'login']) !!}
                 @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
                 <div class="form-group">
-                    <label for="username">Nom de compte</label>
-                    <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Nom de compte" name="username" value="{{ Input::old('username') }}" @if ($errors->has('auth')) class="has-error" @endif />
+                    <label for="username">Email</label>
+                    <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('username') }}" @if ($errors->has('auth')) class="has-error" @endif />
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>

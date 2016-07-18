@@ -9,7 +9,7 @@
             @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
             <div class="form-group">
                 <label for="username">Email</label>
-                <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Nom de compte" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
+                <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe</label>
@@ -59,7 +59,7 @@
         Achete des ogrines
     </a>
 
-    <div class="panel">
+    <!--<div class="panel">
         <div class="panel-title">
             <span class="icon-med icon-ladder-success"></span>Événements
         </div>
@@ -102,5 +102,5 @@
                 <li>Pro Pack</li>
             </ul>
         </div>
-    </div>
+    </div>-->
 @stop

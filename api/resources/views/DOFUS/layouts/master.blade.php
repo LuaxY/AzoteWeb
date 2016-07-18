@@ -25,7 +25,7 @@
                 <ul class="box left">
                     <li><a href="{{ URL::route('home') }}">{{ config('dofus.title') }}</a></li>
                     <li><a href="{{ URL::route('register') }}">Rejoindre</a></li>
-                    <li><a href="{{ URL::to('server') }}">Serveur</a></li>
+                    <li><a href="{{ URL::route('shop.payment.country') }}">Boutique</a></li>
                 </ul>
                 <a href="{{ URL::route('home') }}"><div id="logo"></div></a>
                 <ul class="box right">
@@ -69,13 +69,13 @@
                 <li><a href="{{ URL::to('ladder') }}">Classement</a></li>
                 <li><a href="{{ URL::to('gifts') }}">Cadeaux</a></li>
             </ul>
-            <ul>
+            <!--<ul>
                 <li>Tournois</li>
                 <li><a href="{{ URL::to('pvp/fights') }}">Combats</a></li>
                 <li><a href="{{ URL::to('pvp/champions') }}">Champion</a></li>
                 <li><a href="{{ URL::to('pvp/result') }}">Résultats</a></li>
                 <li><a href="{{ URL::to('pvp/reward') }}">Récompenses</a></li>
-            </ul>
+            </ul>-->
             <ul>
                 <li>Support</li>
                 <li><a href="{{ URL::to('support/help') }}">Aide</a></li>
