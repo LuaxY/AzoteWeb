@@ -42,6 +42,8 @@ class AccountController extends Controller
 
         Auth::login($user);
 
+        $request->session()->flash('msg_flash', "Bienvenu {$user->firstname} !");
+
         return redirect('/');
     }
 

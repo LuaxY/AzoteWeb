@@ -3,7 +3,7 @@
 @section('page')
     <div class="container">
         <div id="play">
-            <a href="@{{ URL::route('register') }}">Jouer !</a>
+            <a href="{{ URL::route('register') }}">Jouer !</a>
         </div>
 
         <div id="main">
