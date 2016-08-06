@@ -12,7 +12,7 @@ class Character extends Model
 
     protected $table = 'characters';
 
-    protected $connection = 'world';
+    public $server;
 
     public function level()
     {

@@ -13,28 +13,26 @@
         </h1>
 
         <div class="title">
-            <span class="picto"></span>Mes compte de jeu</span>
+            <span class="picto"></span>Mes comptes de jeu</span>
         </div>
 
         <table>
             <tr>
                 <th>#</th>
                 <th>Pseudo</th>
+                <th>Serveur</th>
                 <th style="width: 100px; text-align: center;">Personnages</th>
                 <th style="width: 200px; text-align: center;">Actions</th>
             </tr>
+@foreach ($accounts as $account)
             <tr>
                 <td>1</td>
-                <td>Sorrow1</td>
-                <td align="center">3</td>
+                <td>{{ $account->Nickname }}</td>
+                <td>{{ ucfirst($account->server) }}</td>
+                <td align="center">{{ count($account->characters()) }}</td>
                 <td align="center">Visualiser</td>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>Sorrow1</td>
-                <td align="center">3</td>
-                <td align="center">Visualiser</td>
-            </tr>
+@endforeach
         </table>
 
         <a href=""><button>+ Créer un nouveau compte</button></a>

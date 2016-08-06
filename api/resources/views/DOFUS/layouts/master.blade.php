@@ -85,8 +85,8 @@
             <ul>
                 <li>Support</li>
                 <li><a href="{{ URL::to('support/help') }}">Aide</a></li>
-                <li><a href="http://forum.erezia.net/">Forum</a></li>
-                <li><a href="mailto:contact@erezia.net">Contact</a></li>
+                <li><a href="https://forum.azote.us/">Forum</a></li>
+                <li><a href="mailto:hello@azote.us">Contact</a></li>
                 <li><a href="{{ URL::to('support/faq') }}">FAQ</a></li>
             </ul>
         </div>

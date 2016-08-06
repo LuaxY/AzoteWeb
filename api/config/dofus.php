@@ -6,6 +6,8 @@ return [
 
     'subtitle'     => env('SUBTITLE', 'Serveur privé'),
 
+    'servers'      => [ 'sigma', 'epsilon' ],
+
     'template'     => env('TEMPLATE', 'dofus'),
 
     'theme'        => env('THEME', false),

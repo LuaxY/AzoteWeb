@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use WorldCharacter;
+use App\WorldCharacter;
+use App\ModelCustom;
 
 class Account extends Model
 {
@@ -12,9 +13,9 @@ class Account extends Model
 
     protected $table = 'accounts';
 
-    protected $connection = 'auth';
-
     public $timestamps = false;
+
+    public $server;
 
     protected $hidden = array('PasswordHash');
 
@@ -62,7 +63,7 @@ class Account extends Model
     public function characters()
     {
         $characters = [];
-        $worldCharacters =  $this->hasMany(WorldCharacter::class, 'AccountId', 'Id')->get();
+        $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);    
 
         foreach ($worldCharacters as $worldCharacter)
         {

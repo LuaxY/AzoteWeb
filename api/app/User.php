@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Security;
+use App\ModelCustom;
 
 class User extends Authenticatable
 {
@@ -57,7 +58,7 @@ class User extends Authenticatable
 
     public function accounts()
     {
-        return $this->hasMany(Account::class, 'Email', 'email')->get();
+        return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
     }
 
     public function transactions()
