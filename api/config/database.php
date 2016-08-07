@@ -58,32 +58,6 @@ return [
             'strict'    => false,
         ],
 
-        /* ================== REMOVE BEGIN ================== */
-        'auth' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST_AUTH', ''),
-            'database'  => env('DB_DATABASE_AUTH', ''),
-            'username'  => env('DB_USERNAME_AUTH', ''),
-            'password'  => env('DB_PASSWORD_AUTH', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
-
-        'world' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST_WORLD', ''),
-            'database'  => env('DB_DATABASE_WORLD', ''),
-            'username'  => env('DB_USERNAME_WORLD', ''),
-            'password'  => env('DB_PASSWORD_WORLD', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
-        /* ================== REMOVE END ================== */
-
         'sigma_auth' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST_AUTH_SIGMA', ''),

@@ -8,7 +8,7 @@ class ItemTemplate extends Model
 {
     protected $table = 'items_templates';
 
-    protected $connection = 'world';
+    protected $connection = 'sigma_world';
 
     public $timestamps = false;
 }
