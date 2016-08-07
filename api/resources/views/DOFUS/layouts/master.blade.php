@@ -27,12 +27,12 @@
                     <li><a href="{{ URL::route('register') }}">Rejoindre</a></li>
                     <li><a href="{{ URL::route('shop.payment.country') }}">Boutique</a></li>
                 </ul>
-                <a href="{{ URL::route('home') }}"><div id="logo"></div></a>
                 <ul class="box right">
                     <li><a href="{{ URL::route('vote.index') }}">Vote</a></li>
                     <li><a href="http://forum.azote.us/">Forum</a></li>
                     <li><a href="{{ URL::to('support') }}">Support</a></li>
                 </ul>
+                <a href="{{ URL::route('home') }}"><div id="logo"></div></a>
             </div>
         </div>
     </div>

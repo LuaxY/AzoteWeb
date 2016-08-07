@@ -31,7 +31,7 @@
             <div class="right">
                 <h2>Pas de compte ?</h2>
                 <a class="login-register" href="{{ URL::route('register') }}">Créer un compte</a>
-                <img src="{{ URL::asset('imgs/erezia.png') }}" width="200" />
+                <img src="{{ URL::asset('imgs/azote.png') }}" width="100" />
             </div>
         </div>
     </div> <!-- content -->

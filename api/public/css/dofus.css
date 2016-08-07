@@ -118,19 +118,18 @@ button {
 }
 
 #header #logo {
-    width: 250px;
-    height: 130px;
-    background: url("../imgs/erezia.png") no-repeat;
-    background-size: 250px 130px;
+    width: 131px;
+    height: 177px;
+    background: url("../imgs/azote_logo.png") no-repeat;
+    background-size: 131px 177px;
     z-index: 1500 !important;
     position: relative;
-    margin:-41px auto 0 auto;
-    float: left;
+    margin: 0 auto;
 }
 
 #header #menu {
     width: 900px;
-    height: 70px;
+    /*height: 70px;*/
     font-family: 'Oswald', sans-serif;
     font-size: 18px;
     padding-top: 5px;
@@ -820,11 +819,11 @@ div.title {
 
 #footer .logo {
     float: left;
-    width: 200px;
-    height: 115px;
-    background: url("../imgs/erezia.png") no-repeat;
-    background-size: 200px 104px;
-    margin: 45px 0 0 40px
+    width: 100px;
+    height: 136px;
+    background: url("../imgs/azote.png") no-repeat;
+    background-size:100px 136px;
+    margin: 30px 0 0 60px
 }
 
 #footer .menu {
