@@ -37,7 +37,7 @@
                     </label>
 @endforeach
 @endforeach
-                    <label>
+                    <!--<label>
                         <div class="shop-element unavailable">
                             <input type="radio" name="method" value="paypal" disabled="disabled" />
                             <span class="shop-description">
@@ -54,7 +54,7 @@
                                 <span class="shop-name">paysafecard : <span>2,00 &euro;</span></span>
                             </span>
                         </div>
-                    </label>
+                    </label>-->
 
                     @if ($errors->has('country')) <div class="input-error">{{ $errors->first('country') }}</div> @endif
                     @if ($errors->has('method_')) <div class="input-error">{{ $errors->first('method_') }}</div> @endif

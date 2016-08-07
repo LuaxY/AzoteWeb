@@ -23,6 +23,9 @@
                         <div class="payment-number">{{ $payment->number }}</div>
 @elseif ($method == 'sms')
                         <div class="payment-number">Envoyer <b>{{ $payment->keyword }}</b> au <b>{{ $payment->number }}</b></div>
+@else
+                        Cliquez sur le lien suivant pour obtenir le code :
+                        <div class="payment-number"><a href="{{ $payment->link }}" target="_blank">Payer avec <img src="{{ URL::asset('imgs/shop/payment/' . $method . '.png') }}" /></a></div>
 @endif
                         <div class="payment-cost">{!! $payment->text !!}</div>
                     </div>
@@ -53,10 +56,16 @@
                         <li><span class="step">2</span>En réponse, vous recevrez un code d'accès.</li>
                         <li><span class="step">3</span>Entrez le code dans le formulaire.</li>
                         <li><span class="step">4</span>Enfin, cliquez sur "<b>Valider</b>".</li>
+@else
+                        <li><span class="step">1</span>Cliquez sur le lien ci-dessus.</li>
+                        <li><span class="step">2</span>Suivez les instructions indiqués.</li>
+                        <li><span class="step">3</span>Vous recevrez un code d'accès.</li>
+                        <li><span class="step">4</span>Entrez le code dans le formulaire.</li>
+                        <li><span class="step">5</span>Enfin, cliquez sur "<b>Valider</b>".</li>
 @endif
                     </ul>
 
-                    <p>Vous devez être le propriétaire du téléphone pour utiliser ce service (ou avoir obtenu son autorisation). Les mineurs doivent avoir obtenu l'accord de leurs parents ou représentants légaux avant d'utiliser ce moyen de paiement. Ne conservez pas le numéro de téléphone, il peut changer à tout moment. Vous avez 24h pour utiliser le code d'accès ou le numéro d'ordre. Le coût de l'achat sera reporté sur votre relevé téléphonique.</p>
+                    <p>Vous devez être le propriétaire du moyen de paiement pour utiliser ce service (ou avoir obtenu son autorisation). Les mineurs doivent avoir obtenu l'accord de leurs parents ou représentants légaux avant d'utiliser ce moyen de paiement. Ne conservez pas le numéro de téléphone, il peut changer à tout moment. Vous avez 24h pour utiliser le code d'accès ou le numéro d'ordre. Le coût de l'achat sera reporté sur votre relevé téléphonique ou bancaire.</p>
 
                     <div class="hr"></div>
 

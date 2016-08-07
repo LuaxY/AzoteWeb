@@ -53,6 +53,7 @@ class DediPass extends Payment
             $newMethod->text   = $method->mention;
             $newMethod->cost   = $method->user_price . " " . $newMethod->devise;
             $newMethod->points = $method->user_earns;
+            $newMethod->link   = $method->link;
 
             if ($methodName == "sms")
             {
