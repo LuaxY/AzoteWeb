@@ -14,7 +14,7 @@
 @yield('header')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
-@if (config('dofus.theme'))
+@if (config('dofus.theme') || isset($custom_back))
 <body>
 @else
 <body style="background-image: url('{{ URL::asset('imgs/carousel/common/'.config('dofus.background').'.jpg') }}'); background-color: {{ config('dofus.color') }};">

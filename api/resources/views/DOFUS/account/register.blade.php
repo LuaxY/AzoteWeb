@@ -6,6 +6,7 @@
 @stop
 
 <?php $no_carousel = true; ?>
+<?php $custom_back = true; ?>
 
 @section('page')
     <div class="container">
