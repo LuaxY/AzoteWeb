@@ -49,8 +49,32 @@ Route::group(['prefix' => $locale], function() {
 	]);
 
 	Route::get(Lang::get('routes.account.activation'), [
+		'middleware' => 'guest',
 		'uses'       => 'AccountController@activation',
 		'as'         => 'activation'
+	]);
+
+	Route::get(Lang::get('routes.account.password_lost'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@password_lost',
+		'as'         => 'password-lost'
+	]);
+
+	Route::post(Lang::get('routes.account.password_lost'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@passord_lost_email',
+		'as'         => 'password-lost'
+	]);
+
+	Route::get(Lang::get('routes.account.reset'), [
+		'uses'       => 'AccountController@reset_form',
+		'as'         => 'reset'
+	]);
+
+	Route::post(Lang::get('routes.account.reset'), [
+		'middleware' => 'auth',
+		'uses'       => 'AccountController@reset_password',
+		'as'         => 'reset'
 	]);
 
     /* ============ AUTH ============ */

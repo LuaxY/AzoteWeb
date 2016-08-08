@@ -26,6 +26,10 @@ return array(
 
     'account.activation' => 'compte/activation/{ticket}',
 
+    'account.password_lost' => 'mot-de-passe-oublie',
+
+    'account.reset' => 'compte/reset/{ticket}',
+
     /** Shop **/
 
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',

@@ -66,7 +66,7 @@
                 <li><a href="{{ URL::route('posts') }}">Actualités</a></li>
                 <li><a href="{{ URL::route('register') }}">Télécharger</a></li>
                 <li><a href="{{ URL::route('register') }}">Créer un compte</a></li>
-                <li><a href="{{ URL::to('password-lost') }}">Mot de passe oublié ?</a></li>
+                <li><a href="{{ URL::route('password-lost') }}">Mot de passe oublié ?</a></li>
             </ul>
             <ul>
                 <li>Serveur</li>

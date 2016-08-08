@@ -17,7 +17,7 @@ use Auth;
 
 class AccountController extends Controller
 {
-    public function register(Request $request)
+    public function register()
     {
         return view('account/register');
     }
@@ -61,7 +61,6 @@ class AccountController extends Controller
         if (!$user)
         {
             request()->session()->flash('msg_flash', "Clé d'activation invalide.");
-
             return redirect('/');
         }
 
@@ -77,6 +76,74 @@ class AccountController extends Controller
         request()->session()->flash('msg_flash', "Bienvenu {$user->firstname} !");
 
         return redirect('/');
+    }
+
+    public function password_lost()
+    {
+        return view('account/password-lost');
+    }
+
+    public function passord_lost_email(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ($user)
+        {
+            $user->ticket = str_random(32);
+            $user->update([
+                'ticket' => $user->ticket
+            ]);
+
+            Mail::send('emails.password', ['user' => $user], function ($message) use ($user) {
+                $message->from('welcome@azote.us', 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Mot de passe oublié');
+            });
+        }
+
+        request()->session()->flash('msg_flash', "Un email de réinitialisation de mot de passe a était envoyé.");
+
+        return redirect('/');
+    }
+
+    public function reset_form($ticket)
+    {
+        $user = User::where('ticket', $ticket)->first();
+
+        if (!$user)
+        {
+            request()->session()->flash('msg_flash', "Clé d'activation invalide.");
+            return redirect('/');
+        }
+
+        Auth::login($user);
+
+        request()->session()->flash('msg_flash', "Veuillez changer votre mot de passe.");
+
+        return view('account/reset');
+    }
+
+    public function reset_password(Request $request)
+    {
+        $validator = Validator::make($request->all(), User::$rules['update-password']);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        Auth::user()->salt     = str_random(8);
+        Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
+        Auth::user()->ticket   = null;
+        Auth::user()->update([
+            'password' => Auth::user()->password,
+            'salt'     => Auth::user()->salt,
+            'ticket'   => Auth::user()->ticket,
+        ]);
+
+        $request->session()->flash('msg_flash', "Mot de passe mis à jour");
+
+        return redirect()->route('profile');
     }
 
     public function profile()
@@ -98,7 +165,8 @@ class AccountController extends Controller
 
             if ($validator->fails())
             {
-                return $this->error(401, 'nom/prénom incorrect', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+                //return $this->error(401, 'nom/prénom incorrect', $validator->errors()->all());
             }
 
             Auth::user()->firstname = $request->input('firstname');
@@ -115,7 +183,8 @@ class AccountController extends Controller
 
             if ($validator->fails())
             {
-                return $this->error(401, 'mot de passe incorrect', $validator->errors()->all());
+                return redirect()->back()->withErrors($validator)->withInput();
+                //return $this->error(401, 'mot de passe incorrect', $validator->errors()->all());
             }
 
             Auth::user()->salt     = str_random(8);
@@ -126,6 +195,9 @@ class AccountController extends Controller
             ]);
         }
 
-        return $this->success('profile mis à jour');
+        $request->session()->flash('msg_flash', "Profile mis à jour");
+
+        return redirect()->route('profile');
+        //return $this->success('profile mis à jour');
     }
 }

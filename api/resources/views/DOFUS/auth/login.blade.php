@@ -16,8 +16,8 @@
                 {!! Form::open(['route' => 'login']) !!}
                 @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
                 <div class="form-group">
-                    <label for="username">Email</label>
-                    <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('username') }}" @if ($errors->has('auth')) class="has-error" @endif />
+                    <label for="email">Email</label>
+                    <input id="email" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
@@ -25,7 +25,7 @@
                 </div>
                 <input type="submit" value="Connexion" />
                 {!! Form::close() !!}
-                <a class="login-lost" href="{{ URL::to('password/reset') }}">Mot de passe oublié ?</a>
+                <a class="login-lost" href="{{ URL::route('password-lost') }}">Mot de passe oublié ?</a>
             </div>
 
             <div class="right">
