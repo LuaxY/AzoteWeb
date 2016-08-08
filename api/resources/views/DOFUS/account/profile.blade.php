@@ -12,6 +12,8 @@
             <span class="icon-big icon-bank"></span> Mon compte
         </h1>
 
+        <br>
+
         <div class="title">
             <span class="picto"></span>Mes comptes de jeu</span>
         </div>
@@ -35,7 +37,7 @@
 @endforeach
         </table>
 
-        <a href=""><button>+ Créer un nouveau compte</button></a>
+        <a href="" class="no-decoration"><button class="btn">Créer un nouveau compte</button></a>
         <br><br>
 
         <div class="title">

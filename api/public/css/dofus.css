@@ -35,6 +35,11 @@ button {
     overflow: visible;
 }
 
+.no-decoration,
+.no-decoration:hover {
+    text-decoration: none;
+}
+
 .container {
     width: 1170px;
     height: auto;
@@ -768,6 +773,25 @@ div.title {
 
 .menu-lost-login a:hover {
     color: #07FEEC;
+    text-decoration: none;
+}
+
+.btn {
+    padding: 12px 34px;
+    margin: 10px;
+    color: #fff;
+    display: block;
+    background-color: #11A0F2;
+    text-shadow: 0 1px 1px #333;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 23px;
+    font-weight: 400;
+    border: none;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: #11CBF2;
     text-decoration: none;
 }
 

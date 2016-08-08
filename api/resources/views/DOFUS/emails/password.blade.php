@@ -1,6 +1,6 @@
 <style>
 * {
-    font-family: "Helvetica", "Arial", sans-serif;=20
+    font-family: "Helvetica", "Arial", sans-serif;
 }
 </style>
 <h3>Bonjour {{ $user->firstname }} {{ $user->lastname }} !</h3>
