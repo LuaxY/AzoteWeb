@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Account;
 
+use Mail;
 use Validator;
 use Auth;
 
@@ -38,11 +39,42 @@ class AccountController extends Controller
         $user->salt      = $salt;
         $user->firstname = $request->input('firstname');
         $user->lastname  = $request->input('lastname');
+        $user->active    = false;
+        $user->ticket    = str_random(32);
         $user->save();
+
+        Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+            $message->from('welcome@azote.us', 'Azote.us');
+            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+            $message->subject('Azote.us - Confirmation d\'inscription');
+        });
+
+        $request->session()->flash('msg_flash', "Vous allez recevoir un email d'activation !");
+
+        return redirect('/');
+    }
+
+    public function activation($ticket)
+    {
+        $user = User::where('ticket', $ticket)->first();
+
+        if (!$user)
+        {
+            request()->session()->flash('msg_flash', "Clé d'activation invalide.");
+
+            return redirect('/');
+        }
+
+        $user->ticket = null;
+        $user->active = true;
+        $user->update([
+            'ticket' => $user->ticket,
+            'active' => $user->active
+        ]);
 
         Auth::login($user);
 
-        $request->session()->flash('msg_flash', "Bienvenu {$user->firstname} !");
+        request()->session()->flash('msg_flash', "Bienvenu {$user->firstname} !");
 
         return redirect('/');
     }

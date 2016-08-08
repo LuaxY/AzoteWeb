@@ -24,6 +24,8 @@ return array(
 
     'account.logout' => 'compte/deconnexion',
 
+    'account.activation' => 'compte/activation/{ticket}',
+
     /** Shop **/
 
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',

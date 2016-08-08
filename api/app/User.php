@@ -20,11 +20,13 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'last_ip_address',
+        'active',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'ticket',
     ];
 
     public static $rules = [

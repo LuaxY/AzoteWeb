@@ -48,6 +48,11 @@ Route::group(['prefix' => $locale], function() {
 		'as'         => 'profile'
 	]);
 
+	Route::get(Lang::get('routes.account.activation'), [
+		'uses'       => 'AccountController@activation',
+		'as'         => 'activation'
+	]);
+
     /* ============ AUTH ============ */
 
     Route::get(Lang::get('routes.account.login'), [

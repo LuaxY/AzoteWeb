@@ -23,6 +23,11 @@ class AuthController extends Controller
 
 		if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
 		{
+            if (!$user->active)
+            {
+                return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé.'])->withInput();
+            }
+
 			Auth::login($user);
 			return redirect()->route('profile');
 		}
