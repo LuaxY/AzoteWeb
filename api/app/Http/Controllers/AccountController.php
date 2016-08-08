@@ -44,7 +44,7 @@ class AccountController extends Controller
         $user->save();
 
         Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
-            $message->from('welcome@azote.us', 'Azote.us');
+            $message->from(config('mail.sender'), 'Azote.us');
             $message->to($user->email, $user->firstname . ' ' . $user->lastname);
             $message->subject('Azote.us - Confirmation d\'inscription');
         });
@@ -95,7 +95,7 @@ class AccountController extends Controller
             ]);
 
             Mail::send('emails.password', ['user' => $user], function ($message) use ($user) {
-                $message->from('welcome@azote.us', 'Azote.us');
+                $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Mot de passe oublié');
             });
