@@ -17,6 +17,9 @@ use Auth;
 
 class AccountController extends Controller
 {
+    const SALT_LENGTH   = 8;
+    const TICKET_LENGTH = 32;
+
     public function register()
     {
         return view('account/register');
@@ -31,7 +34,7 @@ class AccountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $salt = str_random(8);
+        $salt = str_random(self::SALT_LENGTH);
 
         $user = new User;
         $user->email     = $request->input('email');
@@ -40,7 +43,7 @@ class AccountController extends Controller
         $user->firstname = $request->input('firstname');
         $user->lastname  = $request->input('lastname');
         $user->active    = false;
-        $user->ticket    = str_random(32);
+        $user->ticket    = str_random(self::TICKET_LENGTH);
         $user->save();
 
         Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
@@ -64,7 +67,7 @@ class AccountController extends Controller
             return redirect('/');
         }
 
-        $user->ticket = null;
+        $user->ticket = str_random(self::TICKET_LENGTH);
         $user->active = true;
         $user->update([
             'ticket' => $user->ticket,
@@ -89,7 +92,7 @@ class AccountController extends Controller
 
         if ($user)
         {
-            $user->ticket = str_random(32);
+            $user->ticket = str_random(self::TICKET_LENGTH);
             $user->update([
                 'ticket' => $user->ticket
             ]);
@@ -132,9 +135,9 @@ class AccountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Auth::user()->salt     = str_random(8);
+        Auth::user()->salt     = str_random(self::SALT_LENGTH);
         Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
-        Auth::user()->ticket   = null;
+        Auth::user()->ticket   = str_random(self::TICKET_LENGTH);
         Auth::user()->update([
             'password' => Auth::user()->password,
             'salt'     => Auth::user()->salt,
@@ -187,7 +190,7 @@ class AccountController extends Controller
                 //return $this->error(401, 'mot de passe incorrect', $validator->errors()->all());
             }
 
-            Auth::user()->salt     = str_random(8);
+            Auth::user()->salt     = str_random(self::SALT_LENGTH);
             Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
             Auth::user()->update([
                 'password' => Auth::user()->password,
