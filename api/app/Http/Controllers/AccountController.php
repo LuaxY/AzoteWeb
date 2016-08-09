@@ -57,7 +57,7 @@ class AccountController extends Controller
         return redirect('/');
     }
 
-    public function activation($ticket)
+    public function activation($ticket = null)
     {
         $user = User::where('ticket', $ticket)->first();
 
@@ -109,7 +109,7 @@ class AccountController extends Controller
         return redirect('/');
     }
 
-    public function reset_form($ticket)
+    public function reset_form($ticket = null)
     {
         $user = User::where('ticket', $ticket)->first();
 

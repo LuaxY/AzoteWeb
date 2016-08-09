@@ -24,11 +24,11 @@ return array(
 
     'account.logout' => 'compte/deconnexion',
 
-    'account.activation' => 'compte/activation/{ticket}',
+    'account.activation' => 'compte/activation/{ticket?}',
 
     'account.password_lost' => 'mot-de-passe-oublie',
 
-    'account.reset' => 'compte/reset/{ticket}',
+    'account.reset' => 'compte/reset/{ticket?}',
 
     /** Shop **/
 
