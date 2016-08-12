@@ -104,7 +104,7 @@ class AccountController extends Controller
             });
         }
 
-        request()->session()->flash('msg_flash', "Un email de réinitialisation de mot de passe a était envoyé.");
+        request()->session()->flash('msg_flash', "Un email de réinitialisation de mot de passe a été envoyé.");
 
         return redirect('/');
     }

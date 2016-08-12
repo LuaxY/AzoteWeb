@@ -1,4 +1,4 @@
-table {
+.content table {
     width: 100%;
     border: none;
     background-color: #f8f8f6;
@@ -8,12 +8,12 @@ table {
 }
 
 
-tr {
+.content tr {
     background-color: #b1ac9c;
     color: #b1ac9c;
 }
 
-th {
+.content th {
     background-color: #a5a288;
     color: #362712;
     height: 40px;
@@ -22,7 +22,7 @@ th {
     padding: 5px 8px;
 }
 
-td {
+.content td {
     background-color: #f3f2ed;
     color: #362712;
     height: 45px;
@@ -30,6 +30,6 @@ td {
     padding: 5px 8px;
 }
 
-tr:hover td {
+.content tr:hover td {
     background-color: #ffffff;
 }

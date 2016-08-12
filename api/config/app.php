@@ -162,6 +162,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -215,6 +216,7 @@ return [
         'Html'        => Collective\Html\HtmlFacade::class,
         'Gravatar'    => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'Debugbar'    => Barryvdh\Debugbar\Facade::class,
         'Utils'       => App\Helpers\Utils::class,
 
     ],
