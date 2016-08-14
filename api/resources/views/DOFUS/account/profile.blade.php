@@ -6,11 +6,9 @@
 @stop
 
 @section('content')
-<div class="ak-container ak-main-center vote-rewards">
+<div class="ak-container ak-main-center">
     <div class="ak-title-container">
-        <h1 class="ak-return-link">
-            <span class="ak-icon-big ak-bank"></span></a> Mon compte
-        </h1>
+        <h1><span class="ak-icon-big ak-bank"></span></a> Mon compte</h1>
     </div>
 
     <div class="ak-container ak-panel-stack">

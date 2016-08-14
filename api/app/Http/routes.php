@@ -77,6 +77,38 @@ Route::group(['prefix' => $locale], function() {
 		'as'         => 'reset'
 	]);
 
+	/* ============ GAME ACCOUNT ============ */
+
+	Route::get(Lang::get('routes.gameaccount.create'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@create',
+		'as'         => 'gameaccount.create'
+	]);
+
+	Route::post(Lang::get('routes.gameaccount.create'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@store',
+		'as'         => 'gameaccount.create'
+	]);
+
+	Route::get(Lang::get('routes.gameaccount.view'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@view',
+		'as'         => 'gameaccount.view'
+	]);
+
+	Route::get(Lang::get('routes.gameaccount.edit'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@edit',
+		'as'         => 'gameaccount.edit'
+	]);
+
+	Route::post(Lang::get('routes.gameaccount.edit'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@update',
+		'as'         => 'gameaccount.edit'
+	]);
+
     /* ============ AUTH ============ */
 
     Route::get(Lang::get('routes.account.login'), [

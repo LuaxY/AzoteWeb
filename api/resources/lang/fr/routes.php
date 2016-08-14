@@ -30,6 +30,14 @@ return [
 
     'account.reset' => 'compte/reset/{ticket?}',
 
+    /** Game Account **/
+
+    'gameaccount.create' => 'compte/jeu/creation',
+
+    'gameaccount.view' => 'compte/jeu/{server}/{accountId}',
+
+    'gameaccount.edit' => 'compte/jeu/{server}/{accountId}/modifier',
+
     /** Shop **/
 
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',

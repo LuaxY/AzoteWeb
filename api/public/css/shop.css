@@ -5805,3 +5805,16 @@ body.ak-404-page .ak-404 .ak-form input[type="submit"] {
 .payment-steps span.step {
     margin-right: 10px;
 }
+.payment-number {
+    font-size: 23px;
+    line-height: 40px;
+    margin-bottom: 20px;
+}
+.ak-shop-article .ak-shop-article-action button,
+.ak-shop-article .ak-shop-article-action a {
+    margin: 15px 22px;
+    width: auto;
+}
+.ak-shop-article .ak-shop-article-action {
+    margin: 0;
+}

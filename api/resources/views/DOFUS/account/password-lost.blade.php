@@ -11,13 +11,10 @@
 
 @section('content')
 <div class="ak-title-container">
-    <h1 class="ak-return-link">
-        <a href=""><span class="ak-icon-big ak-support"></span></a> Mot de passe oublié
-    </h1>
+    <h1><a href=""><span class="ak-icon-big ak-support"></span></a> Mot de passe oublié</h1>
 </div>
 <div class="ak-container ak-panel ak-account-login">
     <div class="ak-panel-content">
-
         <div class="ak-login-page panel-main">
             <div class="row">
                 <div class="col-sm-6">

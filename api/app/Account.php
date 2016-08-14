@@ -41,8 +41,8 @@ class Account extends Model
 
     public static $rules = [
         'register' => [
-            'login'                => 'required|min:3|max:32|unique:auth.accounts,Login|alpha_dash',
-            'nickname'             => 'required|min:3|max:32|unique:auth.accounts,Nickname|alpha_dash',
+            'login'                => 'required|min:3|max:32|unique:{DB}.accounts,Login|alpha_dash',
+            'nickname'             => 'required|min:3|max:32|unique:{DB}.accounts,Nickname|alpha_dash',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
