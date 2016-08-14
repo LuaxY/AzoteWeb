@@ -1,38 +1,83 @@
 @extends('layouts.contents.default')
 @include('layouts.menus.base')
 
-@section('header')
-    {!! Html::style('css/login.css') !!}
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Connexion') !!}
 @stop
 
 @section('content')
-    <div class="content">
-        <h1 class="content-title">
-            <span class="icon-big icon-character"></span> Connexion
-        </h1>
+<div class="ak-title-container">
+    <h1 class="ak-return-link">
+        <a href=""><span class="ak-icon-big ak-game"></span></a>Se connecter
+    </h1>
+</div>
+<div class="ak-container ak-panel ak-account-login ak-nocontentpadding">
+    <div class="ak-panel-content">
 
-        <div id="login-form">
-            <div class="left">
-                {!! Form::open(['route' => 'login']) !!}
-                @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
-                </div>
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input id="password" type="password" placeholder="Mot de passe" name="password" @if ($errors->has('auth')) class="has-error" @endif />
-                </div>
-                <input type="submit" value="Connexion" />
-                {!! Form::close() !!}
-                <a class="login-lost" href="{{ URL::route('password-lost') }}">Mot de passe oublié ?</a>
-            </div>
+        <div class="ak-login-page">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="ak-login-account">
+                        <div class="ak-login-block">
+                            <h2></h2>
+                            <div class="ak-container ak-panel">
+                                <div class="ak-panel-content">
+                                    <div class="ak-account-connect">
+                                        @if($errors->has('auth'))
+                                        <div class="infos_content">
+                                            <div class="infos_box infos_box_login bg-danger text-danger" >
+                                                <span class="warning">{{ $errors->first('auth') }}</span>
+                                            </div>
+                                        </div>
+                                        @endif
 
-            <div class="right">
-                <h2>Pas de compte ?</h2>
-                <a class="login-register" href="{{ URL::route('register') }}">Créer un compte</a>
-                <img src="{{ URL::asset('imgs/azote.png') }}" width="100" />
+                                        <div class="ak-form">
+                                            {!! Form::open(['route' => 'login']) !!}
+                                                <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                                                    <label class="control-label" for="email">Email</label>
+                                                    <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
+                                                </div>
+
+                                                <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                                                    <label class="control-label" for="userpass">Mot de passe</label>
+                                                    <input type="password" class="form-control ak-field-password ak-tooltip" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="1" name="remember" checked="checked">Rester connecté
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <input type="submit" role="button" class="btn btn-primary btn-lg" id="login_sub" value="Se connecter">
+                                            {!! Form::close() !!}
+                                        </div>
+                                    </div>
+                                    <div class="ak-login-links">
+                                        <ul>
+                                            <li><a href="{{ URL::route('password-lost') }}" target="_blank">Mot de passe oublié ?</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="ak-create-account ">
+                        <h2>Créer un compte</h2>
+                        <p>
+                            <a class="btn btn-lg btn-info" href="{{ URL::route('register') }}">Créer un compte</a>
+                            <a class="ak-info-link" href="{{ URL::to('support/faq#account') }}">Qu'est-ce qu'un compte {{ config('dofus.title') }} ?</a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div> <!-- content -->
+
+    </div>
+</div>
 @stop

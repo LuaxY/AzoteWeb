@@ -5,19 +5,28 @@
     {!! Html::style('css/vote.css') !!}
 @stop
 
-@section('content')
-    <div class="content">
-        <h1 class="content-title">
-            <span class="icon-big icon-character"></span> Vote pour le serveur
-        </h1>
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Voter') !!}
+@stop
 
-        <div id="vote-process">
-            <div class="left">
-                <a class="vote-link" href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank">Voter</a>
-            </div>
-            <div class="right">
-                Vous n'êtes pas identifié, votre vote ne rapporteras aucun points. <a href="{{ URL::route('login') }}">S'identifier</a>
+@section('content')
+<div class="ak-container ak-main-center vote-rewards">
+    <div class="ak-title-container">
+        <h1 class="ak-return-link">
+            <span class="ak-icon-big ak-character"></span></a> Vote pour le serveur
+        </h1>
+    </div>
+    <div class="ak-container ak-panel panel-vote-link">
+        <div class="ak-panel-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
+                </div>
+                <div class="col-sm-6">
+                    <p>Vous n'êtes pas identifié, votre vote ne rapporteras aucun points. <a href="{{ URL::route('login') }}">S'identifier</a></p>
+                </div>
             </div>
         </div>
-    </div> <!-- content -->
+    </div>
+
 @stop

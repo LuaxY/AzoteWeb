@@ -1,106 +1,103 @@
 @section('menu')
-@if (Auth::guest())
-    <div class="panel blue">
-        <div class="panel-title">
-            <span class="icon-medplus icon-pets"></span>Connexion
-        </div>
-        <div class="panel-content login">
-            {!! Form::open(['route' => 'login']) !!}
-            @if($errors->has('auth')) <span class="input-error" style="font-weight: 400; font-size: 12px;">{{ $errors->first('auth') }}</span> @endif
-            <div class="form-group">
-                <label for="username">Email</label>
-                <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" value="{{ Input::old('email') }}" @if ($errors->has('auth')) class="has-error" @endif />
+<aside class="col-md-3">
+    <div class="ak-container ak-main-aside">
+
+        @if (Auth::guest())
+        <div class="row ak-container ak-panel ak-panel-blue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon ak-icon-med ak-bank"></span> Connexion
             </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input id="password" type="password" placeholder="Mot de passe" name="password" @if ($errors->has('auth')) class="has-error" @endif />
-            </div>
-            <div class="block-submit">
-                <input id="login" class="btn-medium" type="submit" value="Connexion" />
-                <div class="menu-lost-login">
-                    <a href="{{ URL::route('register') }}">S'inscrire</a><br />
-                    <a href="{{ URL::route('password-lost') }}">Mot de passe oublié</a>
+            <div class="ak-panel-content ak-login-panel">
+                <div class="ak-form">
+                    {!! Form::open(['route' => 'login']) !!}
+                        <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                            <label class="control-label" for="email">Email</label>
+                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
+                        </div>
+
+                        <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                            <label class="control-label" for="userpass">Mot de passe</label>
+                            <input type="password" class="form-control ak-field-password ak-tooltip" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="1" name="remember" checked="checked">Rester connecté
+                                </label>
+                            </div>
+                        </div>
+                        <input type="submit" role="button" class="btn btn-primary btn-lg btn-block" id="login_sub" value="Se connecter">
+                    {!! Form::close() !!}
                 </div>
             </div>
-            {!! Form::close() !!}
         </div>
-    </div>
-@else
-    <div class="panel blue">
-        <div class="panel-title">
-            <span class="icon-medplus icon-pets"></span>Mon compte
-        </div>
-        <div class="panel-content account">
-            <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></div>
-            <div class="account-details">
-                <div class="account-name">{{ Auth::user()->firstname }}</div>
-                <div class="account-info">
-                    <a href="{{ URL::route('profile') }}">Gestion de compte</a>
-                    <div style="margin-top: 5px;">
-                        Ogrines: {{ Utils::format_price(Auth::user()->points) }}<span class="icon-small icon-ogrines"></span><br />
-                        <a href="{{ URL::route('shop.payment.country') }}"><i>Acheter des ogrines</i></a>
+        @else
+        <div class="row ak-container ak-panel ak-panel-blue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon ak-icon-med ak-bank"></span> Mon compte
+            </div>
+            <div class="ak-panel-content ak-profile-panel">
+                <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></div>
+                <div class="account-details">
+                    <div class="account-name">{{ Auth::user()->firstname }}</div>
+                    <div class="account-info">
+                        <a href="{{ URL::route('profile') }}"><button class="btn btn-primary btn-sm">Gestion de compte</button></a>
                     </div>
                 </div>
+                <div class="clearfix"></div>
+                <div class="ak-reserve-container">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="ak-ogrine-reserve-critical ak-ogrines-reserve">
+                                <span class="ak-reserve">{{ Utils::format_price(Auth::user()->points) }}</span>
+                                <span class="ak-icon-small ak-ogrines-icon"></span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="ak-ogrine-reserve-critical ak-gifts-reserve">
+                                <span class="ak-reserve">{{ Utils::format_price(intval(Auth::user()->votes / 10)) }}</span>
+                                <span class="ak-icon-small ak-gifts-icon"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="logout">
+                    <a href="{{ URL::route('logout') }}"><button class="btn btn-primary btn-lg btn-block">Déconnexion</button></a>
+                </div>
             </div>
-            <div class="logout">
-                <a href="{{ URL::route('logout') }}">Déconnexion</a>
+        </div>
+        @endif
+
+        <div class="row ak-container">
+            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="font-size: 25px;">Obtenir des cadeaux</a>
+        </div>
+
+        <div class="row ak-container">
+            <div class="ak-block-shop">
+                <div class="text-center ak-shop-top">
+                    <a href="{{ URL::route('shop.payment.country') }}" class="ak-shop-title"> La boutique</a>
+                </div>
+                <div class="ak-shop-articles">
+                    <div class="row ak-container">
+                        <div class="ak-column ak-container col-xs-12 col-sm-4 col-md-12">
+                            <div class="ak-shop-article">
+                                <div class="ak-shop-article-container">
+                                    <div class="ak-shop-article-action">
+                                        <a href="{{ URL::route('shop.payment.country') }}" class="btn btn-primary btn-lg ak-btn-unlock"><span class="ak-icon-med ak-unlock"></span> Acheter des <span class="ak-icon-ogrines"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="{{ URL::route('shop.payment.country') }}" class="ak-shop-link"> Aller sur la boutique</a>
+                </div>
             </div>
+            <a class="ak-home-facebook" href="https://www.facebook.com/azote" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>
+            <a class="ak-home-youtube" href="https://www.youtube.com/user/azote" target="_blank">visiter la chaine<br>youtube <span>{{ config('dofus.title') }}</span></a>
         </div>
     </div>
-@endif
-    <a class="btn-aside btn-vote" href="{{ URL::route('vote.index') }}">
-        <em>Besoin d'ogrines ?</em>
-        <br>
-        Vote pour le serveur !
-    </a>
-    <a class="btn-aside btn-shop" href="{{ URL::route('shop.payment.country') }}">
-        <em>Envie de cadeaux ?</em>
-        <br>
-        Achete des ogrines
-    </a>
-
-    <!--<div class="panel">
-        <div class="panel-title">
-            <span class="icon-med icon-ladder-success"></span>Événements
-        </div>
-        <div class="panel-content">
-            <div class="level-1">
-                <a href="#" class="title">Tournois</a>
-            </div>
-            <ul class="level-2">
-                <li><img src="{{ URL::asset('imgs/icons/tournois.png') }}"> Combats</li>
-                <li><img src="{{ URL::asset('imgs/icons/champions.png') }}"> Champions</li>
-                <li><img src="{{ URL::asset('imgs/icons/kamas.png') }}"> Résultats</li>
-            </ul>
-            <div class="level-1">
-                <a href="#" class="title">Divers</a>
-            </div>
-            <ul class="level-2">
-                <li><img src="{{ URL::asset('imgs/icons/alliance.png') }}"> Alliances versus Alliances</li>
-                <li><img src="{{ URL::asset('imgs/icons/fee.png') }}"> Nowel</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">
-            <span class="icon-med icon-shop"></span>Boutique
-        </div>
-        <div class="panel-content">
-            <div class="level-1">
-                <a href="#" class="title">Objets</a>
-            </div>
-            <ul class="level-2">
-                <li>Object 1</li>
-                <li>Object 2</li>
-            </ul>
-            <div class="level-1">
-                <a href="#" class="title">Booster</a>
-            </div>
-            <ul class="level-2">
-                <li>Starter Pack</li>
-                <li>Pro Pack</li>
-            </ul>
-        </div>
-    </div>-->
+</aside>
 @stop

@@ -1,47 +1,49 @@
-                        <div class="vote-palier-name">Palier : {{ $palierId }}</div>
-                            <div class="vote-progress">
-                                <div class="progress-bar" data="{{ $progress }}"></div>
-                            </div>
-                            <div class="vote-time-line">
-@foreach ($steps as $i => $step)
-                                <div class="vote-reward vote-block-{{ $i }}" item="{{ $step->itemId }}" step="{{ $i }}" votes="{{ $step->votes }}">
-                                    <span class="arrow"></span>
-                                    <div class="vote-reward-step @if ($current == $i) selected @endif">
-                                        <span class="vote-reward-text">
-                                            <span>{{ $step->votes }}</span>
-                                            votes
-                                        </span>
-                                        <span class="vote-reward-icon"></span>
-                                    </div>
+<div class="ak-rewards">
+    <div class="ak-progression">
+        <div class="ak-title-progression">Palier : {{ $palierId }}</div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" data="{{ $progress }}"></div>
+        </div>
+        <div class="ak-time-line">
+            @foreach ($steps as $i => $step)
+            <div class="ak-ajaxloader ak-block-step ak-block-step{{ $i }}" item="{{ $step->itemId }}" step="{{ $i }}" votes="{{ $step->votes }}">
+                <span class="arrow"></span>
+                <a class="@if ($current == $i) ak-selected @endif"><span class="ak-text"><span>{{ $step->votes }}</span> votes</span> <span class="ak-gift"></span></a>
+            </div>
+            @endforeach
+        </div>
+        <div class="ak-select-time-line ak-ajaxloader">
+            <select onchange="$('.ak-block-step'+this.value+' a').trigger('click');">
+                @foreach ($steps as $i => $step)
+                <option @if ($current == $i) selected="" @endif value="{{ $i }}">{{ $step->votes }} votes</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="ak-block-gift">
+            <div class="ak-title-gift"> <span class="ak-nb-step"><span></span> votes</span>
+                <div class="ak-text"> <span class="ak-nb-day">Cadeau à obtenir :</span> <span class="ak-name-gift"></span> </div>
+            </div>
+            <div class="ak-container ak-panel">
+                <div class="ak-panel-content">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="ak-encyclo-detail-illu"><img src="" class="img-maxresponsive" data-max="200"></div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="ak-encyclo-detail-right ak-nocontentpadding">
+                                <div class="ak-container ak-panel">
+                                    <div class="ak-panel-title"><span class="ak-panel-title-icon"></span>Description</div>
+                                    <div class="ak-panel-content"></div>
                                 </div>
-@endforeach
                             </div>
-                            <div class="vote-item mask-relative masked">
-                                <div class="vote-gift-details vote-block-{{ $current }}">
-                                    <div class="vote-gift-title-block">
-                                        <span class="vote-reward-text">
-                                            <span></span>
-                                            votes
-                                        </span>
-                                        <div class="vote-gift-title">
-                                            <span class="vote-gift-title-next">Cadeau à obtenir :</span>
-                                            <span class="vote-gift-title-object"></span>
-                                        </div>
-                                    </div>
-                                    <div class="vote-gift-description-block">
-                                        <div class="object-illu left">
-                                            <img src="" />
-                                        </div>
-                                        <div class="vote-gift-description right">
-                                            <div class="title">
-                                                <span class="picto"></span>
-                                                Description
-                                            </div>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="loadmask" style="display: block;"></div>
-                                <div class="loading" style="display: block; top: 100px;"></div>
-                            </div>
-                            <div id="load-item" item="{{ $steps[$current]->itemId }}" step="{{ $current }}" votes="{{ $steps[$current]->votes }}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ak-container">
+            <div class="ak-social"></div>
+        </div>
+        <div id="load-item" item="{{ $steps[$current]->itemId }}" step="{{ $current }}" votes="{{ $steps[$current]->votes }}"></div>
+    </div>
+</div>

@@ -22,6 +22,10 @@ class AccountController extends Controller
 
     public function register()
     {
+        if (!Auth::guest())
+        {
+            return redirect()->route('download');
+        }
         return view('account/register');
     }
 

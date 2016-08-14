@@ -148,6 +148,13 @@ Route::group(['prefix' => $locale], function() {
 		'as'         => 'vote.object'
 	]);
 
+	/* ============ OTHERS ============ */
+
+	Route::get(Lang::get('routes.download'), [
+		'uses' => 'PageController@download',
+		'as'   => 'download'
+	]);
+
 });
 
 /* ============ API ============ */

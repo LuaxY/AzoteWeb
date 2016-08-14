@@ -5,27 +5,61 @@
     {!! Html::style('css/login.css') !!}
 @stop
 
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Mot de passe oublié') !!}
+@stop
+
 @section('content')
-    <div class="content">
-        <h1 class="content-title">
-            <span class="icon-big icon-character"></span> Mot de passe oublié
-        </h1>
+<div class="ak-title-container">
+    <h1 class="ak-return-link">
+        <a href=""><span class="ak-icon-big ak-support"></span></a> Mot de passe oublié
+    </h1>
+</div>
+<div class="ak-container ak-panel ak-account-login ak-nocontentpadding">
+    <div class="ak-panel-content">
 
-        <div id="login-form">
-            <div class="left">
-                {!! Form::open(['route' => 'password-lost']) !!}
-                <div class="form-group">
-                    <label for="username">Email</label>
-                    <input id="username" type="text" autocorrect="off" autocapitalize="off" placeholder="Email" name="email" />
+        <div class="ak-login-page">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="ak-login-account">
+                        <div class="ak-login-block">
+                            <h2></h2>
+                            <div class="ak-container ak-panel">
+                                <div class="ak-panel-content">
+                                    @if($errors->has('auth'))
+                                    <div class="infos_content">
+                                        <div class="infos_box infos_box_login bg-danger text-danger" >
+                                            <span class="warning">{{ $errors->first('auth') }}</span>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <div class="ak-form">
+                                        {!! Form::open(['route' => 'password-lost']) !!}
+                                            <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                                                <label class="control-label" for="email">Email</label>
+                                                <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
+                                            </div>
+                                            <input type="submit" role="button" class="btn btn-primary btn-lg" value="Réinitialiser le mot de passe">
+                                        {!! Form::close() !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <input type="submit" value="Réinitialiser le mot de passe" />
-                {!! Form::close() !!}
-            </div>
 
-            <div class="right">
-                <h2>Pas de compte ?</h2>
-                <a class="login-register" href="{{ URL::route('register') }}">Créer un compte</a>
+                <div class="col-sm-6">
+                    <div class="ak-create-account" style="background:none;padding:0;padding-top:20px;">
+                        <h2>Créer un compte</h2>
+                        <p>
+                            Pas de compte ?
+                            <a class="btn btn-lg btn-info" href="{{ URL::route('register') }}">Créer un compte</a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div> <!-- content -->
+    </div>
+</div>
 @stop

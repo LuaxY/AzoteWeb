@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -50,8 +50,12 @@ return array(
 
     'vote.object' => 'vote/objet/{item?}',
 
+    /** Others **/
+
+    'download' => 'telecharger',
+
     /** Events **/
 
     'event.st-patrick' => 'event/st-patrick',
 
-);
+];
