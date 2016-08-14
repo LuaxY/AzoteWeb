@@ -5,28 +5,46 @@
     {!! Html::style('css/login.css') !!}
 @stop
 
-@section('content')
-    <div class="content">
-        <h1 class="content-title">
-            <span class="icon-big icon-character"></span> Mot de passe oublié
-        </h1>
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Mot de passe oublié') !!}
+@stop
 
-        <div id="login-form">
-            <div class="left">
-                {!! Form::open(['route' => 'reset']) !!}
-                <div class="form-group">
-                    <label for="password">Nouveau mot de passe</label>
-                    <input id="password" type="password" autocorrect="off" autocapitalize="off" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" @if ($errors->has('password')) class="has-error" @endif />
-                    @if ($errors->has('password')) <span class="input-error">{{ $errors->first('password') }}</span> @endif
+@section('content')
+<div class="ak-title-container">
+    <h1 class="ak-return-link">
+        <a href=""><span class="ak-icon-big ak-support"></span></a> Mot de passe oublié
+    </h1>
+</div>
+<div class="ak-container ak-panel ak-account-login">
+    <div class="ak-panel-content">
+
+        <div class="ak-login-page panel-main">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="">
+                        <div class="ak-login-block">
+                            <div class="ak-container">
+                                <div class="ak-form">
+                                    {!! Form::open(['route' => 'reset']) !!}
+                                        <div class="form-group @if ($errors->has('password')) has-error @endif">
+                                            <label class="control-label" for="password">Nouveau mot de passe</label>
+                                            <input type="password" class="form-control" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="password">
+                                            @if ($errors->has('password')) <label class="error control-label">{{ $errors->first('password') }}</label> @endif
+                                        </div>
+                                        <div class="form-group @if ($errors->has('passwordConfirmation')) has-error @endif">
+                                            <label class="control-label" for="passwordConfirmation">Confirmation</label>
+                                            <input type="password" class="form-control" placeholder="Confirmation" name="passwordConfirmation" value="{{ Input::old('passwordConfirmation') }}" id="passwordConfirmation">
+                                            @if ($errors->has('passwordConfirmation')) <label class="error control-label">{{ $errors->first('passwordConfirmation') }}</label> @endif
+                                        </div>
+                                        <input type="submit" role="button" class="btn btn-primary btn-lg btn-block" value="Réinitialiser le mot de passe">
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="passwordConfirmation">Confirmation</label>
-                    <input id="passwordConfirmation" type="password" autocorrect="off" autocapitalize="off" placeholder="Confirmation" name="passwordConfirmation" value="{{ Input::old('passwordConfirmation') }}" @if ($errors->has('passwordConfirmation')) class="has-error" @endif />
-                    @if ($errors->has('passwordConfirmation')) <span class="input-error">{{ $errors->first('passwordConfirmation') }}</span> @endif
-                </div>
-                <input type="submit" value="Réinitialiser le mot de passe" />
-                {!! Form::close() !!}
             </div>
         </div>
-    </div> <!-- content -->
+    </div>
+</div>
 @stop

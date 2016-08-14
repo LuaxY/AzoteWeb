@@ -122,7 +122,7 @@
                                     <span class="ak-link-title">{{ config('dofus.title') }}</span>
                                 </div>
                                 <a href="{{ URL::route('posts') }}">Actualités</a>
-                                <a href="{{ URL::route('register') }}">Télécharger</a>
+                                <a href="{{ URL::route('download') }}">Télécharger</a>
                                 <a href="{{ URL::route('register') }}">Créer un compte</a>
                                 <a href="{{ URL::route('password-lost') }}">Mot de passe oublié ?</a>
                             </div>
@@ -166,7 +166,7 @@
 
                 </div>
                 <div class="col-md-3 ak-block-download">
-                    <a href="{{ URL::route('register') }}" class="btn btn-primary btn-lg">Télécharger le jeu</a>
+                    <a href="{{ URL::route('download') }}" class="btn btn-primary btn-lg">Télécharger le jeu</a>
                     <a class="ak-problem" href="{{ URL::to('support') }}">Un problème ? Contactez le support.        </a>
                     <div class="ak-social-network">
                         <a href="https://www.facebook.com/azote" class="fb" target="_blank"></a>

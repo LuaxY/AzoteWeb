@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="ak-login-links">
                                     <ul>
-                                        <li><a href="{{ URL::route('password-lost') }}" target="_blank">Mot de passe oublié ?</a></li>
+                                        <li><a href="{{ URL::route('password-lost') }}">Mot de passe oublié ?</a></li>
                                     </ul>
                                 </div>
                             </div>

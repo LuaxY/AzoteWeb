@@ -24,17 +24,9 @@
                     <div class="ak-login-account">
                         <div class="ak-login-block">
                             <div class="ak-container">
-                                @if($errors->has('auth'))
-                                <div class="infos_content">
-                                    <div class="infos_box infos_box_login bg-danger text-danger" >
-                                        <span class="warning">{{ $errors->first('auth') }}</span>
-                                    </div>
-                                </div>
-                                @endif
-
                                 <div class="ak-form">
                                     {!! Form::open(['route' => 'password-lost']) !!}
-                                        <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                                        <div class="form-group">
                                             <label class="control-label" for="email">Email</label>
                                             <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
                                         </div>

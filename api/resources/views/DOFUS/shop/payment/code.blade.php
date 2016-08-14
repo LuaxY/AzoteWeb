@@ -25,7 +25,7 @@
         <div class="ak-panel-content">
             <div class="panel-main">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         @if ($method == 'audiotel' || $method == 'mobilecall')
                         Pour obtenir votre code, appelez le
                         <div class="payment-number">{{ $payment->number }}</div>
@@ -37,7 +37,7 @@
                         @endif
                         <div class="payment-cost">{!! $payment->text !!}</div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         En cas de problème, veuillez contacter le <b><a href="#">support</a></b>
                         <div class="payment-code ak-form">
                             {!! Form::open(['route' => 'shop.payment.process', 'class' => 'form-group']) !!}
@@ -45,8 +45,8 @@
                                 <input type="hidden" name="method" value="{{ $method }}_{{ $palier }}" />
                                 <input type="hidden" name="cgv" value="{{ $cgv }}" />
                                 <div class="form-group @if ($errors->has('code')) has-error @endif">
-                                    @if ($errors->has('code')) <label class="error control-label">{{ $errors->first('code') }}<br><br></label> @endif
                                     Entrez votre code : <input type="text" name="code" value="{{ Input::old('code') }}" @if ($errors->has('code')) class="has-error" @endif />
+                                    @if ($errors->has('code')) <br><br><p style="text-align:center;"><label class="error control-label">{{ $errors->first('code') }}</label></p> @endif
                                 </div>
                                 <div class="payment-submit"><input type="submit" class="btn btn-primary btn-lg" value="Valider" /></div>
                             {!! Form::close() !!}

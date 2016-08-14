@@ -34,7 +34,6 @@
                                 <div class="ak-create-account-block">
                                     Pour jouer à {{ config('dofus.title') }}, vous devez posséder un compte. <a href="{{ URL::route('register') }}">Créer un compte {{ config('dofus.title') }}</a>
                                 </div>
-                                <div class="col-md-1"></div>
                             </div>
                         </div>
                     </div>
