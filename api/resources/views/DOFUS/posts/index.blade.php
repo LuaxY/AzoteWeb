@@ -15,7 +15,7 @@
 @section('background') ak-background-type-homepage @stop
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render() !!}
+{!! Breadcrumbs::render('page', 'Actualités') !!}
 @stop
 
 @section('content')

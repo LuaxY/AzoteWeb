@@ -15,34 +15,31 @@
         <a href=""><span class="ak-icon-big ak-support"></span></a> Mot de passe oublié
     </h1>
 </div>
-<div class="ak-container ak-panel ak-account-login ak-nocontentpadding">
+<div class="ak-container ak-panel ak-account-login">
     <div class="ak-panel-content">
 
-        <div class="ak-login-page">
+        <div class="ak-login-page panel-main">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="ak-login-account">
                         <div class="ak-login-block">
-                            <h2></h2>
-                            <div class="ak-container ak-panel">
-                                <div class="ak-panel-content">
-                                    @if($errors->has('auth'))
-                                    <div class="infos_content">
-                                        <div class="infos_box infos_box_login bg-danger text-danger" >
-                                            <span class="warning">{{ $errors->first('auth') }}</span>
-                                        </div>
+                            <div class="ak-container">
+                                @if($errors->has('auth'))
+                                <div class="infos_content">
+                                    <div class="infos_box infos_box_login bg-danger text-danger" >
+                                        <span class="warning">{{ $errors->first('auth') }}</span>
                                     </div>
-                                    @endif
+                                </div>
+                                @endif
 
-                                    <div class="ak-form">
-                                        {!! Form::open(['route' => 'password-lost']) !!}
-                                            <div class="form-group @if ($errors->has('auth')) has-error @endif">
-                                                <label class="control-label" for="email">Email</label>
-                                                <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
-                                            </div>
-                                            <input type="submit" role="button" class="btn btn-primary btn-lg" value="Réinitialiser le mot de passe">
-                                        {!! Form::close() !!}
-                                    </div>
+                                <div class="ak-form">
+                                    {!! Form::open(['route' => 'password-lost']) !!}
+                                        <div class="form-group @if ($errors->has('auth')) has-error @endif">
+                                            <label class="control-label" for="email">Email</label>
+                                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
+                                        </div>
+                                        <input type="submit" role="button" class="btn btn-primary btn-lg" value="Réinitialiser le mot de passe">
+                                    {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>

@@ -16185,8 +16185,6 @@ nav .breadcrumb .ak-first {
     border-right: none;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    margin-top: 12px;
-    margin-top: 1.2rem;
     text-align: center;
     color: #bcbdb8;
     border-color: #bdbdbd
@@ -22503,6 +22501,11 @@ img.mfp-img {
     margin-right: 1rem
 }
 
+.ak-table tr th.ak-center,
+.ak-table tr td.ak-center {
+    text-align: center
+}
+
 .ak-table tr td.ak-rank {
     text-align: center
 }
@@ -22996,6 +22999,10 @@ img.mfp-img {
     margin-bottom: 12px;
     background: #f8f8f6;
     color: #78664c
+}
+
+.ak-panel.ak-glue {
+    margin-bottom: 0;
 }
 
 .ak-panel.ak-collapsible .ak-panel-title {
@@ -28481,8 +28488,12 @@ a.ak-content-nav-button.ak-next {
     vertical-align: middle
 }
 
-.ak-icon-big.ak-filter, .ak-icon-big.ak-search, .ak-icon-med.ak-filter,
-.ak-icon-med.ak-search {
+.ak-icon-big.ak-filter,
+.ak-icon-big.ak-search,
+.ak-icon-med.ak-filter,
+.ak-icon-med.ak-search,
+.ak-icon-small.ak-filter,
+.ak-icon-small.ak-search {
     background-image: url("../imgs/assets/sprite_zoom.png");
     background-repeat: no-repeat
 }
@@ -28505,6 +28516,18 @@ a.ak-content-nav-button.ak-next {
 
 .ak-icon-med.ak-filter {
     background-position: 0 -7px
+}
+
+.ak-icon-small {
+    background-size: 22px auto
+}
+
+.ak-icon-small.ak-filter {
+    background-position: 0 -3px
+}
+
+.ak-icon-small.ak-search {
+    background-position: 0 -34px
 }
 
 .ak-breed-icon {
@@ -30301,4 +30324,12 @@ body.ak-light-skin .main > .ak-container {
 .breadcrumb > .active {
     color: #f7f4da;
     text-shadow: 1px 1px 1px #000;
+}
+.container-padding {
+    padding: 12px;
+}
+.panel-main {
+    background: #f3f2ed;
+    border: 1px solid #c9c6bb;
+    padding: 12px;
 }

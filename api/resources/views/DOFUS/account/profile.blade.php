@@ -1,67 +1,80 @@
 @extends('layouts.contents.default')
 @include('layouts.menus.base')
 
-@section('header')
-    {!! Html::style('css/table.css') !!}
-    {!! Html::style('css/dashboard.css') !!}
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Mon compte') !!}
 @stop
 
 @section('content')
-    <div class="content">
-        <h1 class="content-title">
-            <span class="icon-big icon-bank"></span> Mon compte
+<div class="ak-container ak-main-center vote-rewards">
+    <div class="ak-title-container">
+        <h1 class="ak-return-link">
+            <span class="ak-icon-big ak-bank"></span></a> Mon compte
         </h1>
+    </div>
 
-        <br>
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-content">
+                <div class="panel-main">
 
-        <div class="title">
-            <span class="picto"></span>Mes comptes de jeu</span>
+                </div>
+            </div>
+            <div class="ak-panel-title">
+                  <span class="ak-panel-title-icon"></span> Mes comptes de jeu
+            </div>
         </div>
+    </div>
 
-        <table>
-            <tr>
-                <th>#</th>
-                <th>Pseudo</th>
-                <th>Serveur</th>
-                <th style="width: 100px; text-align: center;">Personnages</th>
-                <th style="width: 200px; text-align: center;">Actions</th>
-            </tr>
-@foreach ($accounts as $account)
-            <tr>
-                <td>1</td>
-                <td>{{ $account->Nickname }}</td>
-                <td>{{ ucfirst($account->server) }}</td>
-                <td align="center">{{ count($account->characters()) }}</td>
-                <td align="center">Visualiser</td>
-            </tr>
-@endforeach
-        </table>
+    <table class="ak-container ak-table">
+        <tr>
+            <th class="ak-center">#</th>
+            <th>Pseudo</th>
+            <th>Serveur</th>
+            <th class="ak-center" style="width: 100px;">Personnages</th>
+            <th class="ak-center" style="width: 200px;">Actions</th>
+        </tr>
+        @foreach ($accounts as $account)
+        <tr>
+            <td class="ak-rank">1</td>
+            <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Nickname }}</a></td>
+            <td>{{ ucfirst($account->server) }}</td>
+            <td class="ak-center">{{ count($account->characters()) }}</td>
+            <td class="ak-center"><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+        </tr>
+        @endforeach
+    </table>
 
-        <a href="" class="no-decoration"><button class="btn">Créer un nouveau compte</button></a>
-        <br><br>
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-content">
+                <div class="">
+                    <a href="{{ URL::route('gameaccount.create') }}"><button class="btn btn-info btn-lg">Créer un nouveau compte</button></a>
+                </div>
+            </div>
 
-        <div class="title">
-            <span class="picto"></span>Historique des transactions</span>
+            <div class="ak-panel-title">
+                  <span class="ak-panel-title-icon"></span> Mes achats
+            </div>
         </div>
+    </div>
 
-        <table>
-            <tr>
-                <th>#</th>
-                <th>Date d'achat</th>
-                <th>Ogrines</th>
-                <th>Code</th>
-                <th>Statut</th>
-            </tr>
-@foreach (Auth::user()->transactions() as $transaction)
-            <tr>
-                <td>{{ $transaction->id }}</td>
-                <td>{{ $transaction->created_at }}</td>
-                <td>{{ Utils::format_price($transaction->points, ' ') }} OGR</td>
-                <td>{{ $transaction->code }}</td>
-                <td>{{ Utils::transaction_status($transaction->state) }}</td>
-            </tr>
-@endforeach
-        </table>
-
-    </div> <!-- content -->
+    <table class="ak-container ak-table">
+        <tr>
+            <th class="ak-center">#</th>
+            <th>Date d'achat</th>
+            <th>Ogrines</th>
+            <th>Code</th>
+            <th>Statut</th>
+        </tr>
+        @foreach (Auth::user()->transactions() as $transaction)
+        <tr>
+            <td class="ak-center">{{ $transaction->id }}</td>
+            <td>{{ $transaction->created_at }}</td>
+            <td>{{ Utils::format_price($transaction->points, ' ') }} OGR</td>
+            <td>{{ $transaction->code }}</td>
+            <td>{{ Utils::transaction_status($transaction->state) }}</td>
+        </tr>
+        @endforeach
+    </table>
 @stop

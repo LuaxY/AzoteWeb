@@ -16,8 +16,8 @@
             <span class="ak-icon-big ak-character"></span></a> Vote pour le serveur
         </h1>
     </div>
-    <div class="ak-container ak-panel panel-vote-link">
-        <div class="ak-panel-content">
+    <div class="ak-container ak-panel panel-vote-link container-padding">
+        <div class="ak-panel-content panel-main">
             <div class="row">
                 <div class="col-sm-6">
                     <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
@@ -28,5 +28,4 @@
             </div>
         </div>
     </div>
-
 @stop

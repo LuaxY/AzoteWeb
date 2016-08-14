@@ -141,6 +141,9 @@ return [
         'size'                  => 'Taille',
         'cgu'                   => 'Conditions d\'utilisation',
         'g-recaptcha-response'  => 'Captcha',
+        'server'                => 'Serveur',
+        'login'                 => 'Identifiant',
+        'nickname'              => 'Pseudo',
     ],
 
     'recaptcha' => 'Le captcha n\'est pas correcte.',

@@ -18,7 +18,7 @@ return [
 
     'account.register' => 'inscription',
 
-    'account.profile' => 'profile',
+    'account.profile' => 'compte/profile',
 
     'account.login' => 'compte/connexion',
 
@@ -26,7 +26,7 @@ return [
 
     'account.activation' => 'compte/activation/{ticket?}',
 
-    'account.password_lost' => 'mot-de-passe-oublie',
+    'account.password_lost' => 'compte/mot-de-passe-oublie',
 
     'account.reset' => 'compte/reset/{ticket?}',
 

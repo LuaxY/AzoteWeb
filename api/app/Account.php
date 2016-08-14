@@ -52,6 +52,11 @@ class Account extends Model
         ]
     ];
 
+    public function changeConnection($conn)
+    {
+        $this->connection = $conn;
+    }
+
 	public function isAdmin()
 	{
 		if ($this->Role >= 4)
@@ -63,7 +68,7 @@ class Account extends Model
     public function characters()
     {
         $characters = [];
-        $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);    
+        $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
         foreach ($worldCharacters as $worldCharacter)
         {
