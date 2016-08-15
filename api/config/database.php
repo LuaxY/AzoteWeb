@@ -58,24 +58,48 @@ return [
             'strict'    => false,
         ],
 
-        'auth' => [
+        'sigma_auth' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST_AUTH', ''),
-            'database'  => env('DB_DATABASE_AUTH', ''),
-            'username'  => env('DB_USERNAME_AUTH', ''),
-            'password'  => env('DB_PASSWORD_AUTH', ''),
+            'host'      => env('DB_HOST_AUTH_SIGMA', ''),
+            'database'  => env('DB_DATABASE_AUTH_SIGMA', ''),
+            'username'  => env('DB_USERNAME_AUTH_SIGMA', ''),
+            'password'  => env('DB_PASSWORD_AUTH_SIGMA', ''),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             'strict'    => false,
         ],
 
-        'world' => [
+        'sigma_world' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST_WORLD', ''),
-            'database'  => env('DB_DATABASE_WORLD', ''),
-            'username'  => env('DB_USERNAME_WORLD', ''),
-            'password'  => env('DB_PASSWORD_WORLD', ''),
+            'host'      => env('DB_HOST_WORLD_SIGMA', ''),
+            'database'  => env('DB_DATABASE_WORLD_SIGMA', ''),
+            'username'  => env('DB_USERNAME_WORLD_SIGMA', ''),
+            'password'  => env('DB_PASSWORD_WORLD_SIGMA', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
+        'epsilon_auth' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST_AUTH_EPSILON', ''),
+            'database'  => env('DB_DATABASE_AUTH_EPSILON', ''),
+            'username'  => env('DB_USERNAME_AUTH_EPSILON', ''),
+            'password'  => env('DB_PASSWORD_AUTH_EPSILON', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
+        'epsilon_world' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST_WORLD_EPSILON', ''),
+            'database'  => env('DB_DATABASE_WORLD_EPSILON', ''),
+            'username'  => env('DB_USERNAME_WORLD_EPSILON', ''),
+            'password'  => env('DB_PASSWORD_WORLD_EPSILON', ''),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

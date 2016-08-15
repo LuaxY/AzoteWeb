@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use WorldCharacter;
+use App\WorldCharacter;
+use App\ModelCustom;
 
 class Account extends Model
 {
@@ -12,9 +13,9 @@ class Account extends Model
 
     protected $table = 'accounts';
 
-    protected $connection = 'auth';
-
     public $timestamps = false;
+
+    public $server;
 
     protected $hidden = array('PasswordHash');
 
@@ -40,8 +41,8 @@ class Account extends Model
 
     public static $rules = [
         'register' => [
-            'login'                => 'required|min:3|max:32|unique:auth.accounts,Login|alpha_dash',
-            'nickname'             => 'required|min:3|max:32|unique:auth.accounts,Nickname|alpha_dash',
+            'login'                => 'required|min:3|max:32|unique:{DB}.accounts,Login|alpha_dash',
+            'nickname'             => 'required|min:3|max:32|unique:{DB}.accounts,Nickname|alpha_dash',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
@@ -50,6 +51,11 @@ class Account extends Model
             'passwordConfirmation' => 'required|same:password',
         ]
     ];
+
+    public function changeConnection($conn)
+    {
+        $this->connection = $conn;
+    }
 
 	public function isAdmin()
 	{
@@ -62,11 +68,11 @@ class Account extends Model
     public function characters()
     {
         $characters = [];
-        $worldCharacters =  $this->hasMany('App\WorldCharacter', 'AccountId', 'Id');
+        $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
-        foreach ($worldCharacters->get() as $worldCharacter)
+        foreach ($worldCharacters as $worldCharacter)
         {
-            $characters[] = $worldCharacter->character()->first();
+            $characters[] = $worldCharacter->character();
         }
 
         return $characters;

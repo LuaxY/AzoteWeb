@@ -8,5 +8,5 @@ class Experience extends Model
 {
     protected $table = 'experiences';
 
-    protected $connection = 'world';
+    protected $connection = 'sigma_world';
 }

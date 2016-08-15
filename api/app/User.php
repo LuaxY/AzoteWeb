@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Security;
+use App\ModelCustom;
 
 class User extends Authenticatable
 {
@@ -19,11 +20,13 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'last_ip_address',
+        'active',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'ticket',
     ];
 
     public static $rules = [
@@ -57,6 +60,35 @@ class User extends Authenticatable
 
     public function accounts()
     {
-        return $this->hasMany('App\Account', 'Email', 'email')->get();
+        return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
+    }
+
+    public function isAdmin()
+    {
+        if ($this->rank >= 4)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function isStaff()
+    {
+        if ($this->rank > 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

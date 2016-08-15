@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Character;
+use App\Character;
 
 class WorldCharacter extends Model
 {
@@ -12,10 +12,10 @@ class WorldCharacter extends Model
 
     protected $table = 'worlds_characters';
 
-    protected $connection = 'auth';
+    public $server;
 
     public function character()
     {
-        return $this->hasOne('App\Character', 'Id', 'CharacterId');
+        return ModelCustom::hasOneOnOneServer('world', $this->server, Character::class, 'Id', $this->CharacterId);
     }
 }

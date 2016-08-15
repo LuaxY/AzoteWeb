@@ -13,7 +13,7 @@ class AddTicketToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('ticket')->after('salt')->unique();
+            $table->string('ticket')->after('salt'); //->unique();
         });
     }
 

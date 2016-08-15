@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'url' => 'http://api.dofus.lan',
+    'url' => 'https://azote.us',
 
     /*
     |--------------------------------------------------------------------------
@@ -66,6 +66,8 @@ return [
     */
 
     'locale' => 'fr',
+
+    'locales' => ['fr', 'en'],
 
     /*
     |--------------------------------------------------------------------------
@@ -160,6 +162,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -206,12 +209,15 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'Input'     => Illuminate\Support\Facades\Input::class,
 
         'Recaptcha'   => Greggilbert\Recaptcha\Facades\Recaptcha::class,
         'Form'        => Collective\Html\FormFacade::class,
         'Html'        => Collective\Html\HtmlFacade::class,
         'Gravatar'    => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'Debugbar'    => Barryvdh\Debugbar\Facade::class,
+        'Utils'       => App\Helpers\Utils::class,
 
     ],
 

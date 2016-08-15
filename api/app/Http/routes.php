@@ -1,58 +1,199 @@
 <?php
 
-Route::get('/', [
-    'uses' => 'PostController@index',
-    'as'   => 'home'
-]);
+$locale = Request::segment(1);
 
-/* ============ AUTH ============ */
-
-Route::get('/login', [
-    'middleware' => 'guest',
-    'uses' => 'AuthController@login',
-    'as'   => 'login'
-]);
-
-Route::post('/login', [
-    'middleware' => 'guest',
-    'uses' => 'AuthController@auth',
-    'as'   => 'login'
-]);
-
-Route::get('/logout', [
-    'middleware' => 'auth',
-    'uses' => 'AuthController@logout',
-    'as'   => 'logout'
-]);
-
-/* ============ ACCOUNT ============ */
-
-Route::group(['prefix' => 'account'], function()
+if (in_array($locale, Config::get('app.locales')))
 {
-    Route::get('register', [
-        'middleware' => 'guest',
-        'uses' => 'AccountController@register',
-        'as'   => 'register'
+	App::setLocale($locale);
+}
+else
+{
+	$locale = null;
+}
+
+Route::group(['prefix' => $locale], function() {
+
+    Route::any('/', [
+        'uses' => 'PostController@index',
+        'as'   => 'home'
     ]);
 
-    Route::post('register', [
+    /* ============ NEWS ============ */
+
+	Route::get(Lang::get('routes.posts.index'), [
+		'uses' => 'PostController@index',
+		'as'   => 'posts'
+	]);
+	Route::get(Lang::get('routes.posts.show'), [
+		'uses' => 'PostController@show',
+		'as'   => 'posts.show'
+	]);
+
+    /* ============ ACCOUNT ============ */
+
+    Route::get(Lang::get('routes.account.register'), [
+		'uses'       => 'AccountController@register',
+		'as'         => 'register'
+	]);
+
+    Route::post(Lang::get('routes.account.register'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@store',
+		'as'         => 'register'
+	]);
+
+    Route::get(Lang::get('routes.account.profile'), [
+		'middleware' => 'auth',
+		'uses'       => 'AccountController@profile',
+		'as'         => 'profile'
+	]);
+
+	Route::get(Lang::get('routes.account.activation'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@activation',
+		'as'         => 'activation'
+	]);
+
+	Route::get(Lang::get('routes.account.password_lost'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@password_lost',
+		'as'         => 'password-lost'
+	]);
+
+	Route::post(Lang::get('routes.account.password_lost'), [
+		'middleware' => 'guest',
+		'uses'       => 'AccountController@passord_lost_email',
+		'as'         => 'password-lost'
+	]);
+
+	Route::get(Lang::get('routes.account.reset'), [
+		'uses'       => 'AccountController@reset_form',
+		'as'         => 'reset'
+	]);
+
+	Route::post(Lang::get('routes.account.reset'), [
+		'middleware' => 'auth',
+		'uses'       => 'AccountController@reset_password',
+		'as'         => 'reset'
+	]);
+
+	/* ============ GAME ACCOUNT ============ */
+
+	Route::get(Lang::get('routes.gameaccount.create'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@create',
+		'as'         => 'gameaccount.create'
+	]);
+
+	Route::post(Lang::get('routes.gameaccount.create'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@store',
+		'as'         => 'gameaccount.create'
+	]);
+
+	Route::get(Lang::get('routes.gameaccount.view'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@view',
+		'as'         => 'gameaccount.view'
+	]);
+
+	Route::get(Lang::get('routes.gameaccount.edit'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@edit',
+		'as'         => 'gameaccount.edit'
+	]);
+
+	Route::post(Lang::get('routes.gameaccount.edit'), [
+		'middleware' => 'auth',
+		'uses'       => 'GameAccountController@update',
+		'as'         => 'gameaccount.edit'
+	]);
+
+    /* ============ AUTH ============ */
+
+    Route::get(Lang::get('routes.account.login'), [
         'middleware' => 'guest',
-        'uses' => 'AccountController@store',
-        'as'   => 'register'
+        'uses'       => 'AuthController@login',
+        'as'         => 'login'
     ]);
 
-    Route::get('profile', [
+    Route::post(Lang::get('routes.account.login'), [
+        'middleware' => 'guest',
+        'uses'       => 'AuthController@auth',
+        'as'         => 'login'
+    ]);
+
+    Route::get(Lang::get('routes.account.logout'), [
         'middleware' => 'auth',
-        'uses' => 'AccountController@profile',
-        'as'   => 'profile'
+        'uses'       => 'AuthController@logout',
+        'as'         => 'logout'
     ]);
+
+    /* ============ SHOP ============ */
+
+    Route::get(Lang::get('routes.shop.payment.choose-country'), [
+		'middleware' => 'auth',
+		'uses'       => 'PaymentController@country',
+		'as'         => 'shop.payment.country'
+	]);
+
+	Route::get(Lang::get('routes.shop.payment.choose-method'), [
+		'middleware' => 'auth',
+		'uses'       => 'PaymentController@method',
+		'as'         => 'shop.payment.method'
+	]);
+
+	Route::any(Lang::get('routes.shop.payment.get-code'), [
+		'middleware' => 'auth',
+		'uses'       => 'PaymentController@code',
+		'as'         => 'shop.payment.code'
+	]);
+
+	Route::post(Lang::get('routes.shop.payment.process'), [
+		'middleware' => 'auth',
+		'uses'       => 'PaymentController@process',
+		'as'         => 'shop.payment.process'
+	]);
+
+    /* ============ VOTE ============ */
+
+    Route::get(Lang::get('routes.vote.index'), [
+		'uses'   => 'VoteController@index',
+		'as'     => 'vote.index'
+	]);
+
+	Route::get(Lang::get('routes.vote.process'), [
+		'middleware' => 'auth',
+		'uses'       => 'VoteController@process',
+		'as'         => 'vote.process'
+	]);
+
+	Route::get(Lang::get('routes.vote.palier'), [
+		'middleware' => 'auth',
+		'uses'       => 'VoteController@palier',
+		'as'         => 'vote.palier'
+	]);
+
+	Route::get(Lang::get('routes.vote.object'), [
+		'middleware' => 'auth',
+		'uses'       => 'VoteController@object',
+		'as'         => 'vote.object'
+	]);
+
+	/* ============ OTHERS ============ */
+
+	Route::get(Lang::get('routes.download'), [
+		'uses' => 'PageController@download',
+		'as'   => 'download'
+	]);
+
 });
 
 /* ============ API ============ */
 
 Route::group(['prefix' => 'api'], function()
 {
-    Route::group(['prefix' => 'account'], function()
+    /*Route::group(['prefix' => 'account'], function()
     {
         Route::post('register', 'Api\AccountController@register');
 
@@ -60,32 +201,32 @@ Route::group(['prefix' => 'api'], function()
 
         Route::get('profile', [
             'middleware' => 'auth.api',
-            'uses' => 'Api\AccountController@profile',
+            'uses'       => 'Api\AccountController@profile',
         ]);
 
         Route::post('update', [
             'middleware' => 'auth.api',
-            'uses' => 'Api\AccountController@update',
+            'uses'       => 'Api\AccountController@update',
         ]);
 
         Route::group(['prefix' => 'game'], function()
         {
             Route::post('create', [
                 'middleware' => 'auth.api',
-                'uses' => 'Api\GameAccountController@create',
+                'uses'       => 'Api\GameAccountController@create',
             ]);
 
             Route::post('update', [
                 'middleware' => 'auth.api',
-                'uses' => 'Api\GameAccountController@update',
+                'uses'       => 'Api\GameAccountController@update',
             ]);
 
             Route::get('characters/{accountId}', [
                 'middleware' => 'auth.api',
-                'uses' => 'Api\GameAccountController@characters',
+                'uses'       => 'Api\GameAccountController@characters',
             ])->where('accountId', '[0-9]+');
         });
-    });
+    });*/
 
     Route::group(['prefix' => 'support'], function()
     {
@@ -93,7 +234,7 @@ Route::group(['prefix' => 'api'], function()
 
         Route::get('child/{child}/{params?}', [
             'middleware' => 'auth.api',
-            'uses' => 'SupportController@child',
+            'uses'       => 'SupportController@child',
         ]);
 
         Route::post('store', 'SupportController@store');

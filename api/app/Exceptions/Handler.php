@@ -10,6 +10,8 @@ use Illuminate\Foundation\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use App\Exceptions\GenericException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -22,6 +24,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        GenericException::class,
     ];
 
     /**
@@ -46,6 +49,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof GenericException)
+        {
+            $data   = $e->toArray();
+            $status = $e->getStatus();
+
+            return response()->view('errors.generic', $data, $status);
+        }
+
         return parent::render($request, $e);
     }
 }
