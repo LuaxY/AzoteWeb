@@ -28,7 +28,7 @@
                     <div class="ak-brand" data-set="ak-brand">
                         <a class="navbar-brand" href="{{ URL::route('home') }}"></a>
                     </div>
-                    <a class="ak-support" href="{{ URL::to('support') }}" target="_blank">Support</a>
+                    <a class="ak-support" href="{{ URL::to('support') }}">Support</a>
                 </div>
                 <div class="ak-idbar-right">
                     @if (Auth::guest())
@@ -93,7 +93,7 @@
                         </li>
                         <span class="ak-navbar-right-part">
                             <li class="lvl0 sep"><a href="{{ URL::route('vote.index') }}">Vote</a></li>
-                            <li class="lvl0 sep"><a href="https://forum.azote.us/">Forum</a></li>
+                            <li class="lvl0 sep"><a href="{{ config('dofus.social.forum') }}" target="_blank">Forum</a></li>
                             <li class="lvl0 sep"><a href="{{ URL::to('support') }}">Support</a></li>
                         </span>
                     </ul>
@@ -159,8 +159,8 @@
                                     <span class="ak-link-title">Support</span>
                                 </div>
                                 <a href="{{ URL::to('support/help') }}">Aide</a>
-                                <a href="https://forum.azote.us/">Forum</a>
-                                <a href="mailto:hello@azote.us">Contact</a>
+                                <a href="{{ config('dofus.social.forum') }}">Forum</a>
+                                <a href="mailto:{{ config('dofus.email') }}">Contact</a>
                                 <a href="{{ URL::to('support/faq') }}">FAQ</a>
                             </div>
                         </div>
@@ -171,9 +171,9 @@
                     <a href="{{ URL::route('download') }}" class="btn btn-primary btn-lg">Télécharger le jeu</a>
                     <a class="ak-problem" href="{{ URL::to('support') }}">Un problème ? Contactez le support.        </a>
                     <div class="ak-social-network">
-                        <a href="https://www.facebook.com/azote" class="fb" target="_blank"></a>
-                        <a href="http://twitter.com/azote" class="tw" target="_blank"></a>
-                        <a href="https://www.youtube.com/user/azote" class="yo" target="_blank"></a>
+                        <a href="{{ config('dofus.social.facebook') }}" class="fb" target="_blank"></a>
+                        <a href="{{ config('dofus.social.twitter') }}" class="tw" target="_blank"></a>
+                        <a href="{{ config('dofus.social.youtube') }}" class="yo" target="_blank"></a>
                     </div>
                 </div>
             </div>

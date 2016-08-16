@@ -18,6 +18,20 @@ return [
 
     'carousel'     => env('CAROUSEL', false),
 
+    'email'        => 'support@azote.us',
+
+    'social'       => [
+
+        'forum'    => 'https://forum.azote.us/',
+
+        'facebook' => 'https://facebook.com/azote',
+
+        'twitter'  => 'https://twitter.com/azote',
+
+        'youtube'  => 'https://youtube.com/channel/azote',
+
+    ],
+
     'vote'         => 10,
 
     'rpg-paradize' => [

@@ -189,6 +189,10 @@ Route::group(['prefix' => $locale], function() {
 
 });
 
+Route::get('support', function () {
+    header("Location: mailto:".config('dofus.email'));
+});
+
 /* ============ API ============ */
 
 Route::group(['prefix' => 'api'], function()

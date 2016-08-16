@@ -95,8 +95,8 @@
                     <a href="{{ URL::route('shop.payment.country') }}" class="ak-shop-link"> Aller sur la boutique</a>
                 </div>
             </div>
-            <a class="ak-home-facebook" href="https://www.facebook.com/azote" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>
-            <a class="ak-home-youtube" href="https://www.youtube.com/user/azote" target="_blank">visiter la chaine<br>youtube <span>{{ config('dofus.title') }}</span></a>
+            <a class="ak-home-facebook" href="{{ config('dofus.social.facebook') }}" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>
+            <a class="ak-home-youtube" href="{{ config('dofus.social.youtube') }}" target="_blank">visiter la chaine<br>youtube <span>{{ config('dofus.title') }}</span></a>
         </div>
     </div>
 </aside>
