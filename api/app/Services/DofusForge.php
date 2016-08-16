@@ -8,7 +8,7 @@ class DofusForge
 {
     static public function asset($url)
     {
-        return 'http://127.0.0.1/Website/api/public/forge/image/' . $url;
+        return url('/') . '/forge/image/' . $url;
     }
 
     static public function image($request)
