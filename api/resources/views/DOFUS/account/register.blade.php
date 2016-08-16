@@ -62,7 +62,7 @@
 
                                                     <div class="ak-container ak-recaptcha-container">
                                                         <div class="ak-container block_captcha">
-                                                            <div class="form-group">
+                                                            <div class="form-group @if ($errors->has('g-recaptcha-response')) has-error @endif">
                                                                 <label class="control-label" for="recaptcha">Confirmez que vous n'êtes pas un robot</label>
                                                                 {!! Recaptcha::render() !!}
                                                                 @if ($errors->has('g-recaptcha-response')) <br /><label class="error control-label">{{ $errors->first('g-recaptcha-response') }}</label> @endif
@@ -70,7 +70,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
+                                                    <div class="form-group @if ($errors->has('cgu')) has-error @endif">
                                                         <div class="checkbox">
                                                             <label>
                                                                 <input type="checkbox" value="1" name="cgu" required="required" /> J'ai lu et j'accepte les <a onclick="window.open('https://account.ankama.com/fr/cgu?mode=p','pop','scrollbars=yes,menubar=yes,width=740,height=600')" href="javascript:void(0);">conditions générales</a> du site.

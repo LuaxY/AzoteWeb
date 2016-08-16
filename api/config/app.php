@@ -163,6 +163,7 @@ return [
         Thomaswelton\LaravelGravatar\LaravelGravatarServiceProvider::class,
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Kamaln7\Toastr\ToastrServiceProvider::class,
 
     ],
 
@@ -217,6 +218,7 @@ return [
         'Gravatar'    => Thomaswelton\LaravelGravatar\Facades\Gravatar::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
         'Debugbar'    => Barryvdh\Debugbar\Facade::class,
+        'Toastr'      => Kamaln7\Toastr\Facades\Toastr::class,
         'Utils'       => App\Helpers\Utils::class,
 
     ],

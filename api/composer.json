@@ -12,7 +12,8 @@
         "laravelcollective/html": "5.2.*",
         "thomaswelton/laravel-gravatar": "~1.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
-        "guzzlehttp/guzzle": "~5.3|~6.0"
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "oriceon/toastr-5-laravel": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

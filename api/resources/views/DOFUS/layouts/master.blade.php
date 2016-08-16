@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     {!! Html::style('css/common.css') !!}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     {!! Html::script('js/common.js') !!}
     @yield('header')
     <style type="text/css">
@@ -45,12 +47,12 @@
                             <span class="label label-danger">0</span>
                         </a>
                         <div class="ak-button-modal ak-nav-logged">
-                            <div class="ak-logged-account">
+                            <a class="ak-logged-account" href="{{ URL::route('profile') }}">
                                 <span class="ak-nickname">{{ Auth::user()->firstname }}</span>
                                 <span class="avatar">
                                     <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="Avatar">
                                 </span>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     @endif
@@ -192,5 +194,11 @@
             </div>
         </div>
     </footer>
+
+    @if(Session::has('msg_flash'))
+    {{ Toastr::info(str_replace("'", "\\'", Session::get('msg_flash'))) }}
+    {!! Toastr::render() !!}
+    @endif
+
 </body>
 </html>
