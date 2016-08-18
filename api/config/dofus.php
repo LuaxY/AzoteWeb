@@ -6,7 +6,7 @@ return [
 
     'subtitle'     => env('SUBTITLE', 'Serveur privé'),
 
-    'servers'      => [ 'sigma', 'epsilon' ],
+    'servers'      => explode('|', env('SERVERS')),
 
     'template'     => env('TEMPLATE', 'dofus'),
 
@@ -18,17 +18,17 @@ return [
 
     'carousel'     => env('CAROUSEL', false),
 
-    'email'        => 'support@azote.us',
+    'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
     'social'       => [
 
-        'forum'    => 'https://forum.azote.us/',
+        'forum'    => env('SOCIAL_FORUM'),
 
-        'facebook' => 'https://facebook.com/azote',
+        'facebook' => env('SOCIAL_FACEBOOK'),
 
-        'twitter'  => 'https://twitter.com/azote',
+        'twitter'  => env('SOCIAL_TWITTER'),
 
-        'youtube'  => 'https://youtube.com/channel/azote',
+        'youtube'  => env('SOCIAL_YOUTUBE'),
 
     ],
 
