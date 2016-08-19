@@ -50,14 +50,18 @@
                     <div class="row">
                         <div class="col-xs-6">
                             <div class="ak-ogrine-reserve-critical ak-ogrines-reserve">
-                                <span class="ak-reserve">{{ Utils::format_price(Auth::user()->points) }}</span>
-                                <span class="ak-icon-small ak-ogrines-icon"></span>
+                                <a href="{{ URL::route('shop.payment.country') }}">
+                                    <span class="ak-reserve">{{ Utils::format_price(Auth::user()->points) }}</span>
+                                    <span class="ak-icon-small ak-ogrines-icon"></span>
+                                </a>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="ak-ogrine-reserve-critical ak-gifts-reserve">
-                                <span class="ak-reserve">{{ Utils::format_price(intval(Auth::user()->votes / 10)) }}</span>
-                                <span class="ak-icon-small ak-gifts-icon"></span>
+                                <a href="{{ URL::route('vote.index') }}">
+                                    <span class="ak-reserve">{{ Utils::format_price(intval(Auth::user()->votes / 10)) }}</span>
+                                    <span class="ak-icon-small ak-gifts-icon"></span>
+                                </a>
                             </div>
                         </div>
                     </div>
