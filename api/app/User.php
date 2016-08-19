@@ -58,9 +58,16 @@ class User extends Authenticatable
         return $hash;
     }
 
-    public function accounts()
+    public function accounts($server = null)
     {
-        return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
+        if ($server && in_array($server, config('dofus.servers')))
+        {
+            return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
+        }
+        else
+        {
+            return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
+        }
     }
 
     public function transactions()
