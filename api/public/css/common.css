@@ -30333,3 +30333,6 @@ body.ak-light-skin .main > .ak-container {
     border: 1px solid #c9c6bb;
     padding: 12px;
 }
+.ak-reserve-container .row {
+    margin: 0;
+}
