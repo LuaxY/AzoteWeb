@@ -22,9 +22,8 @@
 
                         <div class="form-group">
                             <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="1" name="remember" checked="checked">Rester connecté
-                                </label>
+                                <label><input type="checkbox" value="1" name="remember" checked="checked">Rester connecté</label>
+                                <a href="{{ URL::route('register') }}" style="color:white;float:right">S'inscrire</a>
                             </div>
                         </div>
                         <input type="submit" role="button" class="btn btn-primary btn-lg btn-block" id="login_sub" value="Se connecter">
