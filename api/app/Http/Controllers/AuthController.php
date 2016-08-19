@@ -25,7 +25,8 @@ class AuthController extends Controller
 		{
             if (!$user->active)
             {
-                return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé.'])->withInput();
+                $request->session()->flash('msg_flash', "Votre compte n'est pas activé, vérifiez vos emails.");
+                return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
             }
 
 			Auth::login($user);
