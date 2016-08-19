@@ -4,7 +4,7 @@ namespace App;
 
 class ModelCustom
 {
-    public static function hasManyOnManyServers(string $databaseType, string $related, string $foreignKey, string $localValue)
+    public static function hasManyOnManyServers($databaseType, $related, $foreignKey, $localValue)
     {
         $servers = config('dofus.servers');
         $entities = [];
@@ -22,7 +22,7 @@ class ModelCustom
         return $entities;
     }
 
-    public static function hasManyOnOneServer(string $databaseType, string $server, string $related, string $foreignKey, string $localValue)
+    public static function hasManyOnOneServer($databaseType, $server, $related, $foreignKey, $localValue)
     {
         $entities = [];
         $entitiesList = $related::on($server . '_' . $databaseType)->where($foreignKey, $localValue)->get();
@@ -36,7 +36,7 @@ class ModelCustom
         return $entities;
     }
 
-    public static function hasOneOnOneServer(string $databaseType, string $server, string $related, string $foreignKey, string $localValue)
+    public static function hasOneOnOneServer($databaseType, $server, $related, $foreignKey, $localValue)
     {
         $entity = $related::on($server . '_' . $databaseType)->where($foreignKey, $localValue)->first();
         $entity->server = $server;
