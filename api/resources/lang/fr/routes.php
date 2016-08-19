@@ -18,7 +18,7 @@ return [
 
     'account.register' => 'inscription',
 
-    'account.profile' => 'compte/profile',
+    'account.profile' => 'compte/profil',
 
     'account.login' => 'compte/connexion',
 

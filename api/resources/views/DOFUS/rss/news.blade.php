@@ -3,7 +3,7 @@
     <channel>
         <title>{{ config('dofus.title') }} - {{ config('dofus.subtitle') }}</title>
         <link>{{ url('/') }}</link>
-        <description></description>
+        <description>{{ config('dofus.title') }} Serveurs Dofus 2.10 & 2.35</description>
         @foreach ($posts as $post)
         <item>
             <title>{{ $post->title }}</title>
