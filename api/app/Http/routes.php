@@ -193,6 +193,8 @@ Route::get('support', function () {
     header("Location: mailto:".config('dofus.email'));
 });
 
+Route::get('news.rss', [ 'uses' => 'RssController@news' ]);
+
 /* ============ API ============ */
 
 Route::group(['prefix' => 'api'], function()
