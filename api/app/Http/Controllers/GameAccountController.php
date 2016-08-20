@@ -24,13 +24,7 @@ class GameAccountController extends Controller
 
     private function isServerExist($server)
     {
-        $server_rule = [
-            'server' => 'required|in:' . implode(',', config('dofus.servers')),
-        ];
-
-        $validator = Validator::make(['server' => $server], $server_rule);
-
-        if ($validator->fails())
+        if (!in_array($server, config('dofus.servers')))
         {
             return false;
         }
