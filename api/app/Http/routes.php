@@ -190,7 +190,7 @@ Route::group(['prefix' => $locale], function() {
 });
 
 Route::get('support', function () {
-    header("Location: mailto:".config('dofus.email'));
+    return view('support/temp');
 });
 
 Route::get('news.rss', [ 'uses' => 'RssController@news' ]);
