@@ -199,8 +199,8 @@
         </div>
     </footer>
 
-    @if(Session::has('msg_flash'))
-    {{ Toastr::info(str_replace("'", "\\'", Session::get('msg_flash'))) }}
+    @if(Session::has('notify'))
+    {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
     @endif
 

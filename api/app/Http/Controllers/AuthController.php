@@ -25,7 +25,7 @@ class AuthController extends Controller
 		{
             if (!$user->active)
             {
-                $request->session()->flash('msg_flash', "Votre compte n'est pas activé, vérifiez vos emails.");
+                $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte n'est pas activé, vérifiez vos emails."]);
                 return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
             }
 

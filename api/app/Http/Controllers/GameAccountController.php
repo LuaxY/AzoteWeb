@@ -86,7 +86,7 @@ class GameAccountController extends Controller
         $account->server          = $request->input('server');
         $account->save();
 
-        $request->session()->flash('msg_flash', "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !");
+        $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
 
         // TODO: create game account view
         //return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
@@ -106,7 +106,7 @@ class GameAccountController extends Controller
         }
 
         // TMP
-        request()->session()->flash('msg_flash', "Modification des comptes de jeu prochainement !");
+        request()->session()->flash('notify', ['type' => 'info', 'message' => "Modification des comptes de jeu prochainement !"]);
         return redirect()->route('profile');
         // END
 

@@ -154,7 +154,7 @@ class PaymentController extends Controller
                 Auth::user()->points += $validation->points;
                 Auth::user()->save();
 
-                $request->session()->flash('msg_flash', "Vous avez reçus {$validation->points} points !");
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus {$validation->points} points !"]);
 
                 return redirect()->route('home');
             }

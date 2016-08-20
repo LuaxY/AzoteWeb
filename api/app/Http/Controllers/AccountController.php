@@ -56,7 +56,7 @@ class AccountController extends Controller
             $message->subject('Azote.us - Confirmation d\'inscription');
         });
 
-        $request->session()->flash('msg_flash', "Vous allez recevoir un email d'activation !");
+        $request->session()->flash('notify', ['type' => 'info', 'message' => "Vous allez recevoir un email d'activation !"]);
 
         return redirect('/');
     }
@@ -67,7 +67,7 @@ class AccountController extends Controller
 
         if (!$user)
         {
-            request()->session()->flash('msg_flash', "Clé d'activation invalide.");
+            request()->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
 
@@ -80,7 +80,7 @@ class AccountController extends Controller
 
         Auth::login($user);
 
-        request()->session()->flash('msg_flash', "Bienvenu {$user->firstname} !");
+        request()->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenu {$user->firstname} !"]);
 
         return redirect('/');
     }
@@ -108,7 +108,7 @@ class AccountController extends Controller
             });
         }
 
-        request()->session()->flash('msg_flash', "Un email de réinitialisation de mot de passe a été envoyé.");
+        request()->session()->flash('notify', ['type' => 'info', 'message' => "Un email de réinitialisation de mot de passe a été envoyé."]);
 
         return redirect('/');
     }
@@ -119,13 +119,13 @@ class AccountController extends Controller
 
         if (!$user)
         {
-            request()->session()->flash('msg_flash', "Clé d'activation invalide.");
+            request()->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
 
         Auth::login($user);
 
-        request()->session()->flash('msg_flash', "Veuillez changer votre mot de passe.");
+        request()->session()->flash('notify', ['type' => 'info', 'message' => "Veuillez changer votre mot de passe."]);
 
         return view('account/reset');
     }
@@ -148,7 +148,7 @@ class AccountController extends Controller
             'ticket'   => Auth::user()->ticket,
         ]);
 
-        $request->session()->flash('msg_flash', "Mot de passe mis à jour");
+        $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
 
         return redirect()->route('profile');
     }
@@ -202,7 +202,7 @@ class AccountController extends Controller
             ]);
         }
 
-        $request->session()->flash('msg_flash', "Profile mis à jour");
+        $request->session()->flash('notify', ['type' => 'success', 'message' => "Profile mis à jour."]);
 
         return redirect()->route('profile');
         //return $this->success('profile mis à jour');

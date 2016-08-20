@@ -63,6 +63,7 @@ class VoteController extends Controller
 
         if (Auth::user()->votes % 10 == 0)
         {
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
             $reward = VoteReward::where('votes', Auth::user()->votes)->firstOrFail();
             // TODO: add $reward->itemId to account
         }
