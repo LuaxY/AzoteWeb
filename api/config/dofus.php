@@ -32,7 +32,7 @@ return [
 
     ],
 
-    'vote'         => 10,
+    'vote'         => env('POINTS_BY_VOTES', 10),
 
     'rpg-paradize' => [
         'id'       => env('RPG_PARADIZE', 0),
