@@ -47,6 +47,25 @@ class User extends Authenticatable
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
+        'update-profile-admin' => [
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'avatar'    => 'image|mimes:jpg,jpeg,png|max:3500',
+        ],
+        'admin-store' => [
+            'email'                => 'required|email|unique:users,email',
+            'password'             => 'required|min:6',
+            'passwordConfirmation' => 'required|same:password',
+            'firstname'            => 'required|min:3|max:32|alpha_dash',
+            'lastname'             => 'required|min:3|max:32|alpha_dash',
+            'rank'                 => 'required|in:0,4',
+        ],
+        'admin-update' => [
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'rank'      => 'required|in:0,4',
+            'points'    => 'required|numeric'
+        ],
     ];
 
     public function hashPassword($password, $salt)
@@ -75,6 +94,16 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id', 'id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function isAdmin()
     {
         if ($this->rank >= 4)
@@ -97,5 +126,15 @@ class User extends Authenticatable
         {
             return false;
         }
+    }
+
+    public function isActive()
+    {
+        return $this->active == 1;
+    }
+
+    public function isBanned()
+    {
+        return $this->banned == 1;
     }
 }

@@ -164,7 +164,12 @@ return [
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Kamaln7\Toastr\ToastrServiceProvider::class,
-
+        Intervention\Image\ImageServiceProvider::class,
+        HieuLe\Active\ActiveServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
     ],
 
     /*
@@ -220,7 +225,10 @@ return [
         'Debugbar'    => Barryvdh\Debugbar\Facade::class,
         'Toastr'      => Kamaln7\Toastr\Facades\Toastr::class,
         'Utils'       => App\Helpers\Utils::class,
-
+        'Image'       => Intervention\Image\Facades\Image::class,
+        'Active'      => HieuLe\Active\Facades\Active::class,
+        'Datatables'  => Yajra\Datatables\Facades\Datatables::class,
+        'FilemanagerLaravel'=> Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel::class,
     ],
 
 ];

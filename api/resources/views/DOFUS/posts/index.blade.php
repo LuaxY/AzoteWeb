@@ -28,7 +28,7 @@
                 <div class="ak-item-elt ak-universe-key-mmorpg">
                     <div class="ak-item-elt-content">
                         <a class="ak-link-img" href="{{ URL::route('posts.show', [$post->id, $post->slug]) }}">
-                            <img class="img-responsive" data-max="1200" alt="{{ $post->title }}" src="{{ URL::asset($post->image) }}">
+                            <img class="img-responsive" alt="{{ $post->title }}" src="{{ URL::asset($post->image) }}">
                         </a>
 
                         <div class="ak-item-elt-inner">

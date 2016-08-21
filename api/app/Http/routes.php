@@ -263,3 +263,134 @@ Route::group(['prefix' => 'forge'], function()
 
     Route::get('text/{id}', 'Api\ForgeController@text')->where('id', '[0-9]+');
 });
+
+/* ============ ADMIN PANEL ============ */
+
+Route::group(['middleware' => ['auth', 'admin']], function() {
+
+	Route::controller('filemanager', 'FilemanagerLaravelController');
+
+	/* ============ ADMIN PREFIX ============ */
+	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+
+		Route::any('/', [
+			'uses' => 'AdminController@index',
+			'as'   => 'admin.dashboard'
+		]);
+
+		// ACCOUNT //
+		Route::group(['prefix' => 'account'], function() {
+
+			Route::get('/', [
+				'uses' => 'AccountController@index',
+				'as'   => 'admin.account'
+			]);
+
+			Route::patch('/update', [
+				'uses' => 'AccountController@accountUpdate',
+				'as'   => 'admin.account.update'
+			]);
+
+			route::patch('/avatar/reset', [
+				'uses' => 'AccountController@resetAvatar',
+				'as'   => 'admin.account.avatar.reset'
+			]);
+
+			Route::get('/password', [
+				'uses' => 'AccountController@password',
+				'as'   => 'admin.password'
+			]);
+
+			Route::patch('/password/update', [
+				'uses' => 'AccountController@passwordUpdate',
+				'as'   => 'admin.password.update'
+			]);
+		});
+
+		// POSTS //
+		Route::controller('/posts/data', 'PostDatatablesController', [
+			'anyData'  => 'datatables.postdata'
+		]);
+		Route::resource('post', 'PostController', ['names' => [
+			'index'   => 'admin.posts', // GET Index
+			'create'  => 'admin.post.create', // GET Create
+			'store'   => 'admin.post.store', // POST Store (create POST)
+			'destroy' => 'admin.post.destroy', // DELETE
+			'edit'    => 'admin.post.edit', // GET Edit (view) /post/ID/edit
+			'update'  => 'admin.post.update' // PUT OU PATCH for update the edit
+		]]);
+
+		// TASKS //
+		Route::patch('/task/updatePositions', [
+			'uses' => 'TaskController@updatePositions',
+			'as'   => 'admin.task.update.positions'
+		]);
+		Route::patch('/task/updateModal', [
+            'uses' => 'TaskController@updateModal',
+            'as'   => 'admin.task.update.modal'
+		]);
+		Route::resource('task', 'TaskController', ['names' => [
+			'index'   => 'admin.tasks', // GET Index
+			'create'  => 'admin.task.create', // GET Create
+			'store'   => 'admin.task.store', // POST Store (create TASK)
+			'destroy' => 'admin.task.destroy', // DELETE
+			'edit'    => 'admin.task.edit', // GET Edit (view) /task/ID/edit
+			'update'  => 'admin.task.update' // PUT OU PATCH for update the edit
+		]]);
+
+		// USERS //
+		Route::controller('/users/data', 'UserDatatablesController', [
+			'anyData'  => 'datatables.userdata'
+		]);
+
+		Route::group(['prefix' => 'user/{user}'], function() {
+
+			// Users actions
+			Route::patch('ban', [
+				'uses' => 'UserController@ban',
+				'as'   => 'admin.user.ban'
+			])->where('user', '[0-9]+');
+
+			Route::patch('unban', [
+				'uses' => 'UserController@unban',
+				'as'   => 'admin.user.unban'
+			])->where('user', '[0-9]+');
+
+			Route::patch('activate', [
+				'uses' => 'UserController@activate',
+				'as'   => 'admin.user.activate'
+			])->where('user', '[0-9]+');
+
+			Route::patch('password', [
+				'uses' => 'UserController@password',
+				'as'   => 'admin.user.password'
+			])->where('user', '[0-9]+');
+
+			Route::patch('avatar/reset', [
+				'uses' => 'UserController@resetAvatar',
+				'as'   => 'admin.user.reset.avatar'
+			])->where('user', '[0-9]+');
+
+			Route::patch('avatar/reset', [
+				'uses' => 'UserController@resetAvatar',
+				'as'   => 'admin.user.reset.avatar'
+			])->where('user', '[0-9]+');
+
+			// Game Accounts
+			Route::get('/server/{server}', [
+				'uses' => 'GameAccountController@index',
+				'as'   => 'admin.user.game.accounts'
+			])->where('user','[0-9]+');
+
+		});
+
+		Route::resource('user', 'UserController', ['names' => [
+            'index'   => 'admin.users', // GET Index
+            'create'  => 'admin.user.create', // GET Create
+            'store'   => 'admin.user.store', // POST Store (create TASK)
+            'destroy' => 'admin.user.destroy', // DELETE
+            'edit'    => 'admin.user.edit', // GET Edit (view) /user/ID/edit
+            'update'  => 'admin.user.update' // PUT OU PATCH for update the edit
+		]]);
+	});
+});

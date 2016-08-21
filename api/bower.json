@@ -1,0 +1,22 @@
+{
+  "name": "azote",
+  "version": "1.0",
+  "main": "",
+  "ignore": [],
+  "dependencies": {
+    "dropify": "*",
+    "sweetalert": "*",
+    "datetimepicker": "*",
+    "dragula": "*",
+    "pick-a-color": "*",
+    "bootstrap-touchspin": "*"
+  },
+  "devDependencies": {
+    "dropify": "*",
+    "sweetalert": "*",
+    "datetimepicker": "*",
+    "dragula": "*",
+    "pick-a-color": "*",
+    "bootstrap-touchspin": "*"
+  }
+}

@@ -2,6 +2,12 @@
 /node_modules
 /.sass-cache
 /public/forge/*.png
+/public/css
+/public/js
+/public/vendor
+/public/filemanager
+/public/uploads/users
+/resources/views/vendor
 Homestead.yaml
 Homestead.json
 .env

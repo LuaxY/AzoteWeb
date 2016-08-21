@@ -17,6 +17,8 @@ class Account extends Model
 
     public $server;
 
+    protected $dates = ['CreationDate', 'BanEndDate'];
+
     protected $hidden = array('PasswordHash');
 
     protected $fillable = array(
@@ -57,13 +59,13 @@ class Account extends Model
         $this->connection = $conn;
     }
 
-	public function isAdmin()
-	{
-		if ($this->Role >= 4)
-			return true;
-		else
-			return false;
-	}
+    public function isAdmin()
+    {
+        if ($this->Role >= 4)
+            return true;
+        else
+            return false;
+    }
 
     public function characters()
     {

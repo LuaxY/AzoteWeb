@@ -20,7 +20,7 @@ class PostController extends Controller
         $page = $request->has('page') ? $request->input('page') : 1;
 
         $posts = Cache::remember('posts_page_' . $page, self::CACHE_EXPIRE_MINUTES, function() {
-            return Post::orderBy('created_at', 'desc')->paginate(self::POSTS_PER_PAGE);
+            return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
         });
 
 		return view('posts.index', compact('posts'));

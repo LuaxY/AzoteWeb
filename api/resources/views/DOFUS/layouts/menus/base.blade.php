@@ -73,7 +73,7 @@
         @endif
 
         <div class="row ak-container">
-            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:23px;">Vote et gagne des cadeux</a>
+            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:23px;">Vote et gagne des cadeaux</a>
         </div>
 
         <div class="row ak-container">
