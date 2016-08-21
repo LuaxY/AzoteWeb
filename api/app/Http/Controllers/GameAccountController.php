@@ -99,8 +99,10 @@ class GameAccountController extends Controller
             throw new GenericException('not_account_owner');
         }
 
+        //dd(config('dofus.details')[$server]); // example to get server details (name/description/ip/port);
+
         // TMP
-        request()->session()->flash('notify', ['type' => 'info', 'message' => "Modification des comptes de jeu prochainement !"]);
+        request()->session()->flash('notify', ['type' => 'warning', 'message' => "Modification des comptes de jeu prochainement !"]);
         return redirect()->route('profile');
         // END
 

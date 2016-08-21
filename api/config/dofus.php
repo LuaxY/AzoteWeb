@@ -6,7 +6,9 @@ return [
 
     'subtitle'     => env('SUBTITLE', 'Serveur privé'),
 
-    'servers'      => explode('|', env('SERVERS')),
+    'servers'      => [], // filled in FillServers middleware
+
+    'details'      => [], // filled in FillServers middleware
 
     'template'     => env('TEMPLATE', 'dofus'),
 
