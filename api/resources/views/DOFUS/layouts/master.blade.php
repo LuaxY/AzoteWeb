@@ -10,9 +10,9 @@
 	<meta name="keywords" content="azote,sigma,epsilon,dofus,server,serveur,kamas,jetons,orbes,gratuit,dofus gratuit,serveur dofus,dofus serveur,jeu,jouer,serveur privé dofus,dofus serveur privé,mmorpg,jeu en ligne" />
     <link rel="alternate" type="application/rss+xml" title="News RSS" href="{{ URL::to('news.rss') }}" />
     {!! Html::style('css/common.css') !!}
+    {!! Html::style('css/toastr.min.css') !!}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Html::script('js/admin/toastr.min.js') !!}
     {!! Html::script('js/common.js') !!}
     @yield('header')
     <style type="text/css">
