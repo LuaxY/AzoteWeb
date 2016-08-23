@@ -382,6 +382,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 				'as'   => 'admin.user.game.accounts'
 			])->where('user','[0-9]+');
 
+			Route::post('/server/{server}/store', [
+				'uses' => 'GameAccountController@store',
+				'as'   => 'admin.user.game.account.store'
+			])->where('user','[0-9]+');
+
 		});
 
 		Route::resource('user', 'UserController', ['names' => [
