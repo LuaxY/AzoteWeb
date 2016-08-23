@@ -39,6 +39,19 @@ class GameAccountController extends Controller
     {
         if (!$this->isServerExist($server))
         {
+           abort(404);
+        }
+        $user = User::findOrFail($user->id);
+        $accounts = $user->accounts($server);
+        return view('admin.users.servers.index', compact('accounts', 'user', 'server'));
+
+    }
+
+    public function edit(User $user, $server, $accountId)
+
+    {
+        if (!$this->isServerExist($server))
+        {
             abort(404);
         }
 
@@ -78,10 +91,28 @@ class GameAccountController extends Controller
         $account->save();
 
         return response()->json([], 202);
+
+        $user = User::findOrFail($user->id);
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+
+        return view('admin.users.servers.edit', compact('user', 'server', 'account'));
+
     }
 
+    public function update(User $user, $server, $accountId, Request $request)
+    {
 
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
 
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+        return redirect()->back();
+
+    }
 
 
 

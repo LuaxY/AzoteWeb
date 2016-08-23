@@ -1,5 +1,5 @@
 <div class="m-b-30">
-    <a href="{{ route('admin.users') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
+    <a href="{{ route('admin.users') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to users</a>
 </div>
 <div class="m-b-30" style="background-color: white;border-radius: 5px;">
     <ul class="nav nav-pills nav-justified">

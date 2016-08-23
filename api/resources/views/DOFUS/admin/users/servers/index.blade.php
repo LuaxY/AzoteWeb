@@ -1,5 +1,5 @@
 @extends('layouts.admin.admin')
-@section('page-title') User {{ $user->firstname }} @endsection
+@section('title') User {{ $user->firstname }} @endsection
 @section('page-title') User: {{ $user->firstname }} - Details @endsection
 @section('content')
      <!-- Start content -->
@@ -50,7 +50,7 @@
                                                 @if(!$account->IsJailed && !$account->IsBanned)<span class="label label-success">OK</span>@endif
                                                 @if($account->IsBanned == 1)<span class="label label-danger">Banned</span>@endif
                                             </td>
-                                            <td> <a href="#" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a></td>
+                                            <td> <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
