@@ -376,12 +376,28 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 				'as'   => 'admin.user.reset.avatar'
 			])->where('user', '[0-9]+');
 
-			// Game Accounts
-			Route::get('/server/{server}', [
-				'uses' => 'GameAccountController@index',
-				'as'   => 'admin.user.game.accounts'
-			])->where('user','[0-9]+');
+            // Game Accounts
+            Route::group(['prefix' => 'server/{server}'], function() {
 
+                // Index
+                Route::get('/', [
+                    'uses' => 'GameAccountController@index',
+                    'as'   => 'admin.user.game.accounts'
+                ])->where('user','[0-9]+');
+
+                // Edit (view)
+                Route::get('/{id}/edit', [
+                    'uses' => 'GameAccountController@edit',
+                    'as'   => 'admin.user.game.account.edit'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+
+                // Update
+                Route::patch('/{id}', [
+                    'uses' => 'GameAccountController@update',
+                    'as'   => 'admin.user.game.account.update'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+
+            });
 		});
 
 		Route::resource('user', 'UserController', ['names' => [
