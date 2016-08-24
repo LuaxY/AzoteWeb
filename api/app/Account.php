@@ -79,4 +79,25 @@ class Account extends Model
 
         return $characters;
     }
+
+    public function returnStatus()
+    {
+        if($this->IsJailed == 1)
+        {
+            $text = 'Jailed';
+            $label = 'danger';
+        }
+        if($this->IsBanned == 1)
+        {
+            $text = 'Banned';
+            $label = 'danger';
+        }
+        if($this->IsJailed == 0 && $this->IsBanned == 0)
+        {
+            $text = 'OK';
+            $label = 'success';
+        }
+
+        return '<span class="label label-'.$label.'">'.$text.'</span>';
+    }
 }

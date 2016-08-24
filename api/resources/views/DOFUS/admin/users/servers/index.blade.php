@@ -46,11 +46,19 @@
                                             <td>{{ $account->LastConnection }}</td>
                                             <td>{{ $account->LastConnectedIp }}</td>
                                             <td>{{ $account->LastClientKey }}</td>
-                                            <td>@if($account->IsJailed == 1)<span class="label label-danger">Jailed</span>@endif
-                                                @if(!$account->IsJailed && !$account->IsBanned)<span class="label label-success">OK</span>@endif
-                                                @if($account->IsBanned == 1)<span class="label label-danger">Banned</span>@endif
+                                            <td>
+                                                {!! $account->returnStatus() !!}
                                             </td>
-                                            <td> <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a></td>
+                                            <td>
+                                                <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a>
+                                                @if(!$account->IsBanned)
+                                                <a href="javascript:void(0)" id="ban-{{$account->Id}}" class="ban pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Ban"> <i class="fa fa-ban"></i> </a>
+                                                @endif
+
+                                                @if(!$account->IsJailed)
+                                                    <a href="javascript:void(0)" id="jail-{{$account->Id}}" class="jail pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Jail"> <i class="fa fa-user"></i> </a>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
