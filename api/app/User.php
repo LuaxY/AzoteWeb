@@ -36,7 +36,7 @@ class User extends Authenticatable
             'passwordConfirmation' => 'required|same:password',
             'firstname'            => 'required|min:3|max:32|alpha_dash',
             'lastname'             => 'required|min:3|max:32|alpha_dash',
-            //'g-recaptcha-response' => 'required|recaptcha',
+            'g-recaptcha-response' => 'required|recaptcha',
             'cgu'                  => 'required',
         ],
         'update-name' => [
