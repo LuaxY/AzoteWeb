@@ -121,7 +121,8 @@ class GameAccountController extends Controller
         $bannerAccount = Account::on($server . '_auth')->where('Email', $bannerUser->email)->first();
         $bannerAccountId = $bannerAccount ? $banneraccount->Id : 0;
 
-        $account->BanReason = $request->banReason;
+        $account->BanReason = $request->BanReason;
+        $account->BanEndDate = $request->BanEndDate;
         $account->IsBanned = true;
         $account->BannerAccountId = $bannerAccountId;
         $account->save();

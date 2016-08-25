@@ -2,6 +2,7 @@
 @section('title') User {{ $user->firstname }} @endsection
 @section('page-title') User: {{ $user->firstname }} - Details @endsection
 @section('header')
+    {{ Html::style('css/jquery.datetimepicker.min.css') }}
     {{ Html::style('css/sweetalert.min.css') }}
 @endsection
 @section('content')
@@ -125,12 +126,46 @@
                 </div>
             </div>
         </div>
+     <div id="account-sanction-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+         <div class="modal-dialog modal-sm">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                     <h4 class="modal-title">Ban: Login</h4>
+                 </div>
+                 <div class="modal-body">
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div class="form-group">
+                                 <label for="BanEndDate" class="control-label">Ban End Date:</label>
+                                 {!! Form::datetime('BanEndDate', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now('Europe/Brussels'))->toDateTimeString(),['class' => 'form-control', 'id' => 'dtpicker']) !!}
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div class="form-group">
+                                 <label for="BanReason" class="control-label">Ban Reason:</label>
+                                 {!! Form::textarea('BanReason',null, ['class' => 'form-control', 'id' => 'BanReason', 'rows' => '3']) !!}
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                     <button id="button-sanction-add" type="submit" class="btn btn-danger waves-effect waves-light"></button>
+                 </div>
+             </div>
+         </div>
+     </div>
 @endsection
 
 @section('bottom')
     {!! Html::script('js/admin/sweetalert.min.js') !!}
+    {{ Html::script('js/admin/jquery.datetimepicker.full.min.js') }}
 <script>
     var token = '{{ Session::token() }}';
+
     $( "#form-game-account-add" ).on( "submit", function( event ) {
         event.preventDefault();
         var $this = $(this);
@@ -164,63 +199,59 @@
     });
 
     $('#accounts-table tbody').on('click', 'tr .ban', function () {
-        // Find ID of the user
+        $('#dtpicker').datetimepicker({
+            format:'Y-m-d H:i:s'
+        });
         var clickedId = $(this).attr('id');
         var accountId = clickedId.replace("ban-", "");
         var element = $(this);
         var banReason = $('#pop-'+accountId).data('content');
+        $('#account-sanction-modal').find('.modal-title').text('Ban: Account #'+accountId);
+        $('#account-sanction-modal').find('.modal-title').attr('id', accountId);
+        $('#account-sanction-modal').find('textarea#BanReason').text(banReason);
+        $('#button-sanction-add').text('Ban');
+        $('#account-sanction-modal').modal();
+    });
+
+    $('#button-sanction-add').on('click', function(e){
+        e.preventDefault();
+        var accountId = $('#account-sanction-modal').find('.modal-title').attr('id');
+        var banReason = $('#account-sanction-modal').find('textarea#BanReason').val();
+        var banEndDate = $('#dtpicker').val();
         var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
-        swal({
-            title: "Are you sure to ban this account?",
-            text: '<input type="password">. </br>Please, write a ban reason:',
-            html: true,
-            type: "input",
-            inputValue: banReason,
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Confirm!",
-            closeOnConfirm: false }, function(inputValue){
-            if (inputValue === false)
-                return false;
-            if (inputValue === "")
-            {     swal.showInputError("You need to write something!");
-                return false
-            }
-            var banReason = inputValue;
+        console.log(banEndDate);
+        $.ajax({
+            method: 'PATCH',
+            url: ''+url_accounts_base+'/'+accountId+'/ban',
+            data: { _token: token, BanReason: banReason, BanEndDate: banEndDate },
 
-            $.ajax({
-                method: 'PATCH',
-                url: ''+url_accounts_base+'/'+accountId+'/ban',
-                data: { _token: token, banReason : banReason},
+            success: function (msg) {
+                toastr.success('Account banned');
+                setTimeout(function(){
+                    swal.close();
+                    location.reload(); }, 1000);
+            },
 
-
-                success: function (msg) {
-                    toastr.success('Account banned');
-                    setTimeout(function(){
-                        swal.close();
-                        location.reload(); }, 1000);
-                },
-
-                error: function(jqXhr, json, errorThrown) {
-                    var errors = jqXhr.responseJSON;
-                    var errorsHtml;
-                    if(errors)
-                    {
-                        errorsHtml= '';
-                        $.each( errors, function( key, value ) {
-                            errorsHtml += '<li>' + value[0] + '</li>';
-                        });
-                    }
-                    else
-                    {
-                        errorsHtml = 'Unknow error';
-                    }
-                    toastr.error(errorsHtml);
+            error: function(jqXhr, json, errorThrown) {
+                var errors = jqXhr.responseJSON;
+                var errorsHtml;
+                if(errors)
+                {
+                    errorsHtml= '';
+                    $.each( errors, function( key, value ) {
+                        errorsHtml += '<li>' + value[0] + '</li>';
+                    });
                 }
+                else
+                {
+                    errorsHtml = 'Unknow error';
+                }
+                toastr.error(errorsHtml);
+            }
+        });
             });
 
-        });
-    });
+
     $('#accounts-table tbody').on('click', 'tr .unban', function () {
         // Find ID of the user
         var clickedId = $(this).attr('id');

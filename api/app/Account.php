@@ -100,6 +100,10 @@ class Account extends Model
             $label = 'success';
             $hidden = 'hidden';
         }
+        if($this->IsJailed == 1 || $this->IsBanned == 1)
+        {
+            $texts[] .= '('.$this->BanEndDate.')';
+        }
 
         $span = '';
         foreach($texts as $text)
