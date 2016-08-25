@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Kamaln7\Toastr\Facades\Toastr;
 
 class GameAccountController extends Controller
 {
@@ -101,11 +102,37 @@ class GameAccountController extends Controller
         {
             abort(404);
         }
-
-        // TODO
+        $database = $server . '_auth';
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $this->validate($request, [
+            'Login'                => 'required|min:3|max:32|unique:'.$database.'.accounts,Login,'.$account->Id.'|alpha_dash',
+            'Nickname'             => 'required|min:3|max:32|unique:'.$database.'.accounts,Nickname,'.$account->Id.'|alpha_dash',
+        ]);
 
-        return redirect()->back();
+        $account->Login = $request->Login;
+        $account->Nickname = $request->Nickname;
+        $account->save();
+
+        Toastr::success('Game account updated');
+        return redirect()->route('admin.user.game.accounts', [$user->id, $server]);
+    }
+    public function password(User $user, $server, $accountId, Request $request)
+    {
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
+        $validator = Validator::make($request->all(), Account::$rules['update']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $account->PasswordHash = md5($request->password);
+        $account->save();
+
+        return response()->json([], 202);
     }
 
     public function ban(User $user, $server, $accountId, Request $request)
@@ -115,19 +142,41 @@ class GameAccountController extends Controller
             abort(404);
         }
 
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $validator = Validator::make($request->all(), Account::$rules['sanction']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
 
         $bannerUser = Auth::user();
         $bannerAccount = Account::on($server . '_auth')->where('Email', $bannerUser->email)->first();
-        $bannerAccountId = $bannerAccount ? $banneraccount->Id : 0;
+        $bannerAccountId = $bannerAccount ? $bannerAccount->Id : 0;
 
-        $account->BanReason = $request->BanReason;
-        $account->BanEndDate = $request->BanEndDate;
-        $account->IsBanned = true;
-        $account->BannerAccountId = $bannerAccountId;
-        $account->save();
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
-        return response()->json([], 202);
+        if($request->allaccounts == '0')
+        {
+            $account->BanReason = $request->BanReason;
+            $account->BanEndDate = $request->BanEndDate;
+            $account->IsBanned = true;
+            $account->BannerAccountId = $bannerAccountId;
+            $account->save();
+        }
+        if($request->allaccounts == '1')
+        {
+            $accounts = Account::on($server . '_auth')->where('Email', $account->Email)->get();
+
+            foreach ($accounts as $account)
+            {
+                $account->BanReason = $request->BanReason;
+                $account->BanEndDate = $request->BanEndDate;
+                $account->IsBanned = true;
+                $account->BannerAccountId = $bannerAccountId;
+                $account->save();
+            }
+        }
+
+        return response()->json(['test' => $request->allaccounts], 202);
     }
 
     public function unban(User $user, $server, $accountId, Request $request)
@@ -152,18 +201,39 @@ class GameAccountController extends Controller
             abort(404);
         }
 
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $validator = Validator::make($request->all(), Account::$rules['sanction']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
 
         $bannerUser = Auth::user();
         $bannerAccount = Account::on($server . '_auth')->where('Email', $bannerUser->email)->first();
-        $bannerAccountId = $bannerAccount ? $banneraccount->Id : 0;
+        $bannerAccountId = $bannerAccount ? $bannerAccount->Id : 0;
 
-        $account->BanReason = $request->banReason;
-        $account->IsJailed = true;
-        $account->BannerAccountId = $bannerAccountId;
-        $account->save();
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
-        return response()->json([], 202);
+        if($request->allaccounts == '0')
+        {
+            $account->BanReason = $request->BanReason;
+            $account->BanEndDate = $request->BanEndDate;
+            $account->IsJailed = true;
+            $account->BannerAccountId = $bannerAccountId;
+            $account->save();
+        }
+        if($request->allaccounts == '1')
+        {
+            $accounts = Account::on($server . '_auth')->where('Email', $account->Email)->get();
+
+            foreach ($accounts as $account)
+            {
+                $account->BanReason = $request->BanReason;
+                $account->BanEndDate = $request->BanEndDate;
+                $account->IsJailed = true;
+                $account->BannerAccountId = $bannerAccountId;
+                $account->save();
+            }
+        }
     }
 
     public function unjail(User $user, $server, $accountId, Request $request)

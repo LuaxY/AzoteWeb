@@ -417,6 +417,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                     'uses' => 'GameAccountController@unjail',
                     'as'   => 'admin.user.game.account.unjail'
                 ])->where('user','[0-9]+')->where('id', '[0-9]+');
+				// Unjail
+				Route::patch('/{id}/password', [
+					'uses' => 'GameAccountController@password',
+					'as'   => 'admin.user.game.account.password'
+				])->where('user','[0-9]+')->where('id', '[0-9]+');
                 // Update
                 Route::patch('/{id}', [
                     'uses' => 'GameAccountController@update',

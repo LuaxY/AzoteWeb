@@ -17,7 +17,7 @@ class Account extends Model
 
     public $server;
 
-    protected $dates = ['CreationDate', 'BanEndDate'];
+    protected $dates = ['CreationDate', 'BanEndDate', 'LastConnection'];
 
     protected $hidden = array('PasswordHash');
 
@@ -42,6 +42,10 @@ class Account extends Model
 	);
 
     public static $rules = [
+        'sanction' => [
+            'BanEndDate'            => 'required|date_format:Y-m-d H:i:s',
+            'BanReason'             => 'required',
+        ],
         'register' => [
             'login'                => 'required|min:3|max:32|unique:{DB}.accounts,Login|alpha_dash',
             'nickname'             => 'required|min:3|max:32|unique:{DB}.accounts,Nickname|alpha_dash',

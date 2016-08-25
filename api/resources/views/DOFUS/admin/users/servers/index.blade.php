@@ -26,13 +26,14 @@
                                 <strong>Info!</strong> User doesn't have any game accounts on this server
                             </div>
                         @else
-                                <table class="table" id="accounts-table">
+                                <table class="table table-striped" id="accounts-table">
                                     <thead>
                                     <tr>
                                         <th>Id</th>
                                         <th>Login</th>
                                         <th>Nickname</th>
                                         <th>Tokens</th>
+                                        <th>Tokens (pending)</th>
                                         <th>Last connection</th>
                                         <th>Last IP</th>
                                         <th>Last KEY</th>
@@ -47,14 +48,19 @@
                                             <td>{{ $account->Login }}</td>
                                             <td>{{ $account->Nickname }}</td>
                                             <td>{{ $account->Tokens }}</td>
-                                            <td>{{ $account->LastConnection }}</td>
+                                            <td>{{ $account->NewTokens }}</td>
+                                            <td>
+                                                @if($account->LastConnection)
+                                                {{ $account->LastConnection->diffForHumans() }}
+                                                @endif
+                                            </td>
                                             <td>{{ $account->LastConnectedIp }}</td>
                                             <td>{{ $account->LastClientKey }}</td>
                                             <td>
                                                 {!! $account->htmlStatus() !!}
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a>
+                                                <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
                                                 @if(!$account->IsBanned)
                                                 <a href="javascript:void(0)" id="ban-{{$account->Id}}" class="ban pull-right btn btn-xs btn-danger m-l-5" data-toggle="tooltip" title="Ban"> <i class="fa fa-ban"></i> </a>
                                                 @else
@@ -131,22 +137,33 @@
              <div class="modal-content">
                  <div class="modal-header">
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                     <h4 class="modal-title">Ban: Login</h4>
+                     <h4 class="modal-title"></h4>
                  </div>
                  <div class="modal-body">
                      <div class="row">
                          <div class="col-md-12">
                              <div class="form-group">
-                                 <label for="BanEndDate" class="control-label">Ban End Date:</label>
-                                 {!! Form::datetime('BanEndDate', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now('Europe/Brussels'))->toDateTimeString(),['class' => 'form-control', 'id' => 'dtpicker']) !!}
+                                 <label for="BanEndDate" class="control-label">End Date:</label>
+                                 {!! Form::datetime('BanEndDate', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now('Europe/Brussels'))->addWeek()->toDateTimeString(),['class' => 'form-control', 'id' => 'dtpicker']) !!}
+                                 <small>Default value = 1 week</small>
                              </div>
                          </div>
                      </div>
                      <div class="row">
                          <div class="col-md-12">
                              <div class="form-group">
-                                 <label for="BanReason" class="control-label">Ban Reason:</label>
+                                 <label for="BanReason" class="control-label">Reason:</label>
                                  {!! Form::textarea('BanReason',null, ['class' => 'form-control', 'id' => 'BanReason', 'rows' => '3']) !!}
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-12">
+                             <div class="form-group">
+                                 <div class="checkbox checkbox-danger">
+                                     {!! Form::checkbox('allaccounts',1,null, ['class' => 'form-control', 'id' => 'allaccounts']) !!}
+                                     <label for="allaccounts" style="color: red;">/!\ Apply for all accounts: /!\</label>
+                                 </div>
                              </div>
                          </div>
                      </div>
@@ -208,25 +225,44 @@
         var banReason = $('#pop-'+accountId).data('content');
         $('#account-sanction-modal').find('.modal-title').text('Ban: Account #'+accountId);
         $('#account-sanction-modal').find('.modal-title').attr('id', accountId);
+        $('#account-sanction-modal').find('.modal-title').attr('type', 'ban');
         $('#account-sanction-modal').find('textarea#BanReason').text(banReason);
         $('#button-sanction-add').text('Ban');
         $('#account-sanction-modal').modal();
     });
-
+    $('#accounts-table tbody').on('click', 'tr .jail', function () {
+        $('#dtpicker').datetimepicker({
+            format:'Y-m-d H:i:s'
+        });
+        var clickedId = $(this).attr('id');
+        var accountId = clickedId.replace("jail-", "");
+        var element = $(this);
+        var banReason = $('#pop-'+accountId).data('content');
+        $('#account-sanction-modal').find('.modal-title').text('Jail: Account #'+accountId);
+        $('#account-sanction-modal').find('.modal-title').attr('id', accountId);
+        $('#account-sanction-modal').find('.modal-title').attr('type', 'jail');
+        $('#account-sanction-modal').find('textarea#BanReason').text(banReason);
+        $('#button-sanction-add').text('Jail');
+        $('#account-sanction-modal').modal();
+    });
     $('#button-sanction-add').on('click', function(e){
         e.preventDefault();
         var accountId = $('#account-sanction-modal').find('.modal-title').attr('id');
+        var type = $('#account-sanction-modal').find('.modal-title').attr('type');
         var banReason = $('#account-sanction-modal').find('textarea#BanReason').val();
         var banEndDate = $('#dtpicker').val();
         var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
-        console.log(banEndDate);
+        var allaccounts = '0';
+        if(document.getElementById('allaccounts').checked == true){
+            allaccounts = '1';
+        }
         $.ajax({
             method: 'PATCH',
-            url: ''+url_accounts_base+'/'+accountId+'/ban',
-            data: { _token: token, BanReason: banReason, BanEndDate: banEndDate },
+            url: ''+url_accounts_base+'/'+accountId+'/'+type,
+            data: { _token: token, BanReason: banReason, BanEndDate: banEndDate, allaccounts: allaccounts},
 
             success: function (msg) {
-                toastr.success('Account banned');
+                toastr.success('Account(s) sanctioned');
                 setTimeout(function(){
                     swal.close();
                     location.reload(); }, 1000);
@@ -250,8 +286,6 @@
             }
         });
             });
-
-
     $('#accounts-table tbody').on('click', 'tr .unban', function () {
         // Find ID of the user
         var clickedId = $(this).attr('id');
@@ -301,65 +335,6 @@
 
         });
     });
-
-    $('#accounts-table tbody').on('click', 'tr .jail', function () {
-        // Find ID of the user
-        var clickedId = $(this).attr('id');
-        var accountId = clickedId.replace("jail-", "");
-        var element = $(this);
-        var banReason = $('#pop-'+accountId).data('content');
-        var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
-        swal({
-            title: "Are you sure to jail this account?",
-            text: "Please, write a jail reason:",
-            type: "input",
-            inputValue: banReason,
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Confirm!",
-            closeOnConfirm: false }, function(inputValue){
-            if (inputValue === false)
-                return false;
-            if (inputValue === "")
-            {     swal.showInputError("You need to write something!");
-                return false
-            }
-            var banReason = inputValue;
-
-            $.ajax({
-                method: 'PATCH',
-                url: ''+url_accounts_base+'/'+accountId+'/jail',
-                data: { _token: token, banReason : banReason},
-
-
-                success: function (msg) {
-                    toastr.success('Account jailed');
-                    setTimeout(function(){
-                        swal.close();
-                        location.reload(); }, 1000);
-                },
-
-                error: function(jqXhr, json, errorThrown) {
-                    var errors = jqXhr.responseJSON;
-                    var errorsHtml;
-                    if(errors)
-                    {
-                        errorsHtml= '';
-                        $.each( errors, function( key, value ) {
-                            errorsHtml += '<li>' + value[0] + '</li>';
-                        });
-                    }
-                    else
-                    {
-                        errorsHtml = 'Unknow error';
-                    }
-                    toastr.error(errorsHtml);
-                }
-            });
-
-        });
-    });
-
     $('#accounts-table tbody').on('click', 'tr .unjail', function () {
         // Find ID of the user
         var clickedId = $(this).attr('id');
