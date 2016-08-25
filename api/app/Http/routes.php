@@ -376,12 +376,60 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 				'as'   => 'admin.user.reset.avatar'
 			])->where('user', '[0-9]+');
 
-			// Game Accounts
-			Route::get('/server/{server}', [
-				'uses' => 'GameAccountController@index',
-				'as'   => 'admin.user.game.accounts'
-			])->where('user','[0-9]+');
 
+            // Game Accounts
+            Route::group(['prefix' => 'server/{server}'], function() {
+
+                // Index
+                Route::get('/', [
+                    'uses' => 'GameAccountController@index',
+                    'as'   => 'admin.user.game.accounts'
+                ])->where('user','[0-9]+');
+
+				// Store
+				Route::post('/store', [
+					'uses' => 'GameAccountController@store',
+					'as'   => 'admin.user.game.account.store'
+				])->where('user','[0-9]+');
+
+                // Edit (view)
+                Route::get('/{id}/edit', [
+                    'uses' => 'GameAccountController@edit',
+                    'as'   => 'admin.user.game.account.edit'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Ban
+                Route::patch('/{id}/ban', [
+                    'uses' => 'GameAccountController@ban',
+                    'as'   => 'admin.user.game.account.ban'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Unban
+                Route::patch('/{id}/unban', [
+                    'uses' => 'GameAccountController@unban',
+                    'as'   => 'admin.user.game.account.unban'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Jail
+                Route::patch('/{id}/jail', [
+                    'uses' => 'GameAccountController@jail',
+                    'as'   => 'admin.user.game.account.jail'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Unjail
+                Route::patch('/{id}/unjail', [
+                    'uses' => 'GameAccountController@unjail',
+                    'as'   => 'admin.user.game.account.unjail'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+				// Unjail
+				Route::patch('/{id}/password', [
+					'uses' => 'GameAccountController@password',
+					'as'   => 'admin.user.game.account.password'
+				])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Update
+                Route::patch('/{id}', [
+                    'uses' => 'GameAccountController@update',
+                    'as'   => 'admin.user.game.account.update'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+
+
+            });
 		});
 
 		Route::resource('user', 'UserController', ['names' => [

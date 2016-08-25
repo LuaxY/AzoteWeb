@@ -1,3 +1,8 @@
+/* SWEET Alert */
+.sweet-alert p{
+    word-wrap: break-word;
+}
+
 /* Dashboard */
 
 .card-box .widget-chart-1 .widget-chart-box-1 i
