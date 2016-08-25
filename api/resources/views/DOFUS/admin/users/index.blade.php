@@ -136,7 +136,6 @@
                         var url_users_base = '{{ route('admin.users')}}';
                         var banReason = $('#'+userId).children('td:hidden').text();
 
-                        console.log(banReason);
                         swal({
                             title: "Are you sure?",
                             text: "This user will be unbanned!<br/>Ban reason:<br/><strong> "+banReason+"</strong>",

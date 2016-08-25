@@ -1,6 +1,9 @@
 @extends('layouts.admin.admin')
 @section('title') User {{ $user->firstname }} @endsection
 @section('page-title') User: {{ $user->firstname }} - Details @endsection
+@section('header')
+    {{ Html::style('css/sweetalert.min.css') }}
+@endsection
 @section('content')
      <!-- Start content -->
     <div class="content">
@@ -22,7 +25,7 @@
                                 <strong>Info!</strong> User doesn't have any game accounts on this server
                             </div>
                         @else
-                                <table class="table">
+                                <table class="table" id="accounts-table">
                                     <thead>
                                     <tr>
                                         <th>Id</th>
@@ -47,16 +50,20 @@
                                             <td>{{ $account->LastConnectedIp }}</td>
                                             <td>{{ $account->LastClientKey }}</td>
                                             <td>
-                                                {!! $account->returnStatus() !!}
+                                                {!! $account->htmlStatus() !!}
                                             </td>
                                             <td>
                                                 <a href="{{ route('admin.user.game.account.edit', [$user->id, $server, $account->Id]) }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-search"></i></a>
                                                 @if(!$account->IsBanned)
-                                                <a href="javascript:void(0)" id="ban-{{$account->Id}}" class="ban pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Ban"> <i class="fa fa-ban"></i> </a>
+                                                <a href="javascript:void(0)" id="ban-{{$account->Id}}" class="ban pull-right btn btn-xs btn-danger m-l-5" data-toggle="tooltip" title="Ban"> <i class="fa fa-ban"></i> </a>
+                                                @else
+                                                    <a href="javascript:void(0)" id="unban-{{$account->Id}}" class="unban pull-right btn btn-xs btn-info m-l-5" data-toggle="tooltip" title="Unban"> <i class="fa fa-ban"></i> </a>
                                                 @endif
 
                                                 @if(!$account->IsJailed)
-                                                    <a href="javascript:void(0)" id="jail-{{$account->Id}}" class="jail pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Jail"> <i class="fa fa-user"></i> </a>
+                                                    <a href="javascript:void(0)" id="jail-{{$account->Id}}" class="jail pull-right btn btn-xs btn-danger m-l-5" data-toggle="tooltip" title="Jail"> <i class="fa fa-lock"></i> </a>
+                                                @else
+                                                    <a href="javascript:void(0)" id="unjail-{{$account->Id}}" class="unjail pull-right btn btn-xs btn-info m-l-5" data-toggle="tooltip" title="Unjail"> <i class="fa fa-unlock"></i> </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -121,7 +128,9 @@
 @endsection
 
 @section('bottom')
+    {!! Html::script('js/admin/sweetalert.min.js') !!}
 <script>
+    var token = '{{ Session::token() }}';
     $( "#form-game-account-add" ).on( "submit", function( event ) {
         event.preventDefault();
         var $this = $(this);
@@ -153,5 +162,222 @@
             }
         });
     });
+
+    $('#accounts-table tbody').on('click', 'tr .ban', function () {
+        // Find ID of the user
+        var clickedId = $(this).attr('id');
+        var accountId = clickedId.replace("ban-", "");
+        var element = $(this);
+        var banReason = $('#pop-'+accountId).data('content');
+        var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
+        swal({
+            title: "Are you sure to ban this account?",
+            text: '<input type="password">. </br>Please, write a ban reason:',
+            html: true,
+            type: "input",
+            inputValue: banReason,
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Confirm!",
+            closeOnConfirm: false }, function(inputValue){
+            if (inputValue === false)
+                return false;
+            if (inputValue === "")
+            {     swal.showInputError("You need to write something!");
+                return false
+            }
+            var banReason = inputValue;
+
+            $.ajax({
+                method: 'PATCH',
+                url: ''+url_accounts_base+'/'+accountId+'/ban',
+                data: { _token: token, banReason : banReason},
+
+
+                success: function (msg) {
+                    toastr.success('Account banned');
+                    setTimeout(function(){
+                        swal.close();
+                        location.reload(); }, 1000);
+                },
+
+                error: function(jqXhr, json, errorThrown) {
+                    var errors = jqXhr.responseJSON;
+                    var errorsHtml;
+                    if(errors)
+                    {
+                        errorsHtml= '';
+                        $.each( errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>';
+                        });
+                    }
+                    else
+                    {
+                        errorsHtml = 'Unknow error';
+                    }
+                    toastr.error(errorsHtml);
+                }
+            });
+
+        });
+    });
+    $('#accounts-table tbody').on('click', 'tr .unban', function () {
+        // Find ID of the user
+        var clickedId = $(this).attr('id');
+        var accountId = clickedId.replace("unban-", "");
+        var element = $(this);
+        var banReason = $('#pop-'+accountId).data('content');
+        var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
+        swal({
+            title: "Are you sure?",
+            text: "This account will be unbanned!<br/>Ban reason:<br/><strong> "+banReason+"</strong>",
+            html: true,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, unban him!",
+            closeOnConfirm: false }, function(){
+
+            $.ajax({
+                method: 'PATCH',
+                url: ''+url_accounts_base+'/'+accountId+'/unban',
+                data: { _token: token },
+
+                success: function (msg) {
+                    toastr.success('Account unbanned');
+                    setTimeout(function(){
+                        swal.close();
+                        location.reload(); }, 1000);
+                },
+
+                error: function(jqXhr, json, errorThrown) {
+                    var errors = jqXhr.responseJSON;
+                    var errorsHtml;
+                    if(errors)
+                    {
+                        errorsHtml= '';
+                        $.each( errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>';
+                        });
+                    }
+                    else
+                    {
+                        errorsHtml = 'Unknow error';
+                    }
+                    toastr.error(errorsHtml);
+                }
+            });
+
+        });
+    });
+
+    $('#accounts-table tbody').on('click', 'tr .jail', function () {
+        // Find ID of the user
+        var clickedId = $(this).attr('id');
+        var accountId = clickedId.replace("jail-", "");
+        var element = $(this);
+        var banReason = $('#pop-'+accountId).data('content');
+        var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
+        swal({
+            title: "Are you sure to jail this account?",
+            text: "Please, write a jail reason:",
+            type: "input",
+            inputValue: banReason,
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Confirm!",
+            closeOnConfirm: false }, function(inputValue){
+            if (inputValue === false)
+                return false;
+            if (inputValue === "")
+            {     swal.showInputError("You need to write something!");
+                return false
+            }
+            var banReason = inputValue;
+
+            $.ajax({
+                method: 'PATCH',
+                url: ''+url_accounts_base+'/'+accountId+'/jail',
+                data: { _token: token, banReason : banReason},
+
+
+                success: function (msg) {
+                    toastr.success('Account jailed');
+                    setTimeout(function(){
+                        swal.close();
+                        location.reload(); }, 1000);
+                },
+
+                error: function(jqXhr, json, errorThrown) {
+                    var errors = jqXhr.responseJSON;
+                    var errorsHtml;
+                    if(errors)
+                    {
+                        errorsHtml= '';
+                        $.each( errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>';
+                        });
+                    }
+                    else
+                    {
+                        errorsHtml = 'Unknow error';
+                    }
+                    toastr.error(errorsHtml);
+                }
+            });
+
+        });
+    });
+
+    $('#accounts-table tbody').on('click', 'tr .unjail', function () {
+        // Find ID of the user
+        var clickedId = $(this).attr('id');
+        var accountId = clickedId.replace("unjail-", "");
+        var element = $(this);
+        var banReason = $('#pop-'+accountId).data('content');
+        var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
+        swal({
+            title: "Are you sure?",
+            text: "This account will be unjailed!<br/> Reason:<br/><strong> "+banReason+"</strong>",
+            html: true,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, unjail!",
+            closeOnConfirm: false }, function(){
+
+            $.ajax({
+                method: 'PATCH',
+                url: ''+url_accounts_base+'/'+accountId+'/unjail',
+                data: { _token: token },
+
+                success: function (msg) {
+                    toastr.success('Account unjailed');
+                    setTimeout(function(){
+                        swal.close();
+                        location.reload(); }, 1000);
+                },
+
+                error: function(jqXhr, json, errorThrown) {
+                    var errors = jqXhr.responseJSON;
+                    var errorsHtml;
+                    if(errors)
+                    {
+                        errorsHtml= '';
+                        $.each( errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>';
+                        });
+                    }
+                    else
+                    {
+                        errorsHtml = 'Unknow error';
+                    }
+                    toastr.error(errorsHtml);
+                }
+            });
+
+        });
+    });
+
 </script>
 @endsection

@@ -80,24 +80,37 @@ class Account extends Model
         return $characters;
     }
 
-    public function returnStatus()
+    public function htmlStatus()
     {
+        $texts = array();
+        $hidden = '';
         if($this->IsJailed == 1)
         {
-            $text = 'Jailed';
+            $texts[] = 'Jailed';
             $label = 'danger';
         }
         if($this->IsBanned == 1)
         {
-            $text = 'Banned';
+            $texts[] = 'Banned';
             $label = 'danger';
         }
         if($this->IsJailed == 0 && $this->IsBanned == 0)
         {
-            $text = 'OK';
+            $texts[] = 'OK';
             $label = 'success';
+            $hidden = 'hidden';
         }
 
-        return '<span class="label label-'.$label.'">'.$text.'</span>';
+        $span = '';
+        foreach($texts as $text)
+        {
+            $span .= ' <span class="label label-'.$label.'">'.$text.'</span>';
+
+        }
+
+        $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$this->BannerAccountId.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';
+
+
+        return $span;
     }
 }

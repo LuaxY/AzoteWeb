@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class GameAccountController extends Controller
@@ -101,11 +102,81 @@ class GameAccountController extends Controller
             abort(404);
         }
 
+        // TODO
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
         return redirect()->back();
-
-
     }
 
+    public function ban(User $user, $server, $accountId, Request $request)
+    {
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+        $bannerUser = Auth::user();
+        $bannerAccount = Account::on($server . '_auth')->where('Email', $bannerUser->email)->first();
+        $bannerAccountId = $bannerAccount ? $banneraccount->Id : 0;
+
+        $account->BanReason = $request->banReason;
+        $account->IsBanned = true;
+        $account->BannerAccountId = $bannerAccountId;
+        $account->save();
+
+        return response()->json([], 202);
+    }
+
+    public function unban(User $user, $server, $accountId, Request $request)
+    {
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+        $account->IsBanned = false;
+        $account->save();
+
+        return response()->json([], 202);
+    }
+
+    public function jail(User $user, $server, $accountId, Request $request)
+    {
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+        $bannerUser = Auth::user();
+        $bannerAccount = Account::on($server . '_auth')->where('Email', $bannerUser->email)->first();
+        $bannerAccountId = $bannerAccount ? $banneraccount->Id : 0;
+
+        $account->BanReason = $request->banReason;
+        $account->IsJailed = true;
+        $account->BannerAccountId = $bannerAccountId;
+        $account->save();
+
+        return response()->json([], 202);
+    }
+
+    public function unjail(User $user, $server, $accountId, Request $request)
+    {
+        if (!$this->isServerExist($server))
+        {
+            abort(404);
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+
+        $account->IsJailed = false;
+        $account->save();
+
+        return response()->json([], 202);
+    }
 }
