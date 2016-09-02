@@ -58,5 +58,18 @@ return [
         ],
 
     ],
+    'ranks'       => [
+
+        '1'  => 'Player',
+
+        '2'  => 'Moderator',
+
+        '3'  => 'GameMaster_Padawan',
+
+        '4'  => 'GameMaster',
+
+        '5'  => 'Administrator',
+
+    ],
 
 ];

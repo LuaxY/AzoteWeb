@@ -26,7 +26,13 @@
                         </div>
                         {!! Form::model($account, ['route' => ['admin.user.game.account.update', $user->id, $server, $account->Id]]) !!}
                         {{ method_field('PATCH') }}
-
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <small class="pull-right">
+                                    Account created {{ $account->CreationDate->diffForHumans() }}
+                                </small>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group {{ $errors->has('Login') ? ' has-error' : '' }}">
@@ -46,6 +52,19 @@
                                     @if ($errors->has('Nickname'))
                                         <span class="help-block">
                                                                     <strong>{{ $errors->first('Nickname') }}</strong>
+                                                                </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group {{ $errors->has('UserGroupId') ? ' has-error' : '' }}">
+                                    <label for="UserGroupId">User Group:</label>
+                                    {!! Form::select('UserGroupId', config('dofus.ranks'), null,['class' => 'form-control', 'id' => 'UserGroupId']) !!}
+                                    @if ($errors->has('UserGroupId'))
+                                        <span class="help-block">
+                                                                    <strong>{{ $errors->first('UserGroupId') }}</strong>
                                                                 </span>
                                     @endif
                                 </div>
@@ -103,6 +122,7 @@
 @section('bottom')
     <script>
         $(document).ready(function () {
+
             // Edit Password (Save ajax)
             $("#form-password-account").on("submit", function (event) {
                 event.preventDefault();

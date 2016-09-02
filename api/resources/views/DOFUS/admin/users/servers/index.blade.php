@@ -32,6 +32,7 @@
                                         <th>Id</th>
                                         <th>Login</th>
                                         <th>Nickname</th>
+                                        <th>User Group</th>
                                         <th>Tokens</th>
                                         <th>Tokens (pending)</th>
                                         <th>Last connection</th>
@@ -47,6 +48,7 @@
                                             <td>{{ $account->Id }}</td>
                                             <td>{{ $account->Login }}</td>
                                             <td>{{ $account->Nickname }}</td>
+                                            <td>{{ config('dofus.ranks')[$account->UserGroupId] }}</td>
                                             <td>{{ $account->Tokens }}</td>
                                             <td>{{ $account->NewTokens }}</td>
                                             <td>

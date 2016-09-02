@@ -64,6 +64,13 @@
                     <a href="{{ route('admin.tasks') }}" class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i> <span> Tasks </span> </a>
                 </li>
 
+                <li class="text-muted menu-title">Links</li>
+                <li>
+                    <a href="{{ route('home') }}" target="_blank" class="waves-effect"><i class="fa fa-globe"></i> <span> Website </span> </a>
+                </li>
+                <li>
+                    <a href="http://forum.azote.us" target="_blank" class="waves-effect"><i class="fa fa-comments-o"></i> <span> Forum </span> </a>
+                </li>
 
             </ul>
             <div class="clearfix"></div>
