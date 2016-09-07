@@ -1,7 +1,16 @@
 @extends('layouts.admin.admin')
 @section('title') Profile @endsection
 @section('page-title') Your profile @endsection
-@section('header') {{ Html::style('css/dropify.min.css') }}@endsection
+@section('header') {{ Html::style('css/dropify.min.css') }}
+<style>
+    .avatar img
+    {
+        width: 110px;
+        height: 110px;
+    }
+</style>
+
+@endsection
 @section('content')
         <!-- Start content -->
         <div class="content">
@@ -11,7 +20,7 @@
                         <div class="card-box">
                             <h4 class="header-title m-t-0 m-b-30">Update</h4>
                                 <div class="avatar">
-                                    {{ Html::image(Auth::user()->avatar, 'avatar',['class' => 'center-block img-responsive img-circle', 'id' => 'avatar']) }}
+                                    {{ Html::image(Auth::user()->avatar, 'avatar',['class' => 'center-block img-responsive img-thumbnail', 'id' => 'avatar']) }}
 
                                     @if(Auth::user()->avatar != config('dofus.default_avatar'))
                                         <br/>
@@ -72,7 +81,6 @@
                 $('.dropify').dropify();
             </script>
             <script>
-
                 // Some variables
                 var token = '{{ Session::token() }}';
                 var root = '{{ route('home') }}'

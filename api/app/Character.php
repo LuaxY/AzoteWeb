@@ -12,6 +12,8 @@ class Character extends Model
 
     protected $table = 'characters';
 
+    protected $dates = ['CreationDate', 'LastUsage', 'DeletedDate'];
+
     public $server;
 
     public function level()
@@ -52,4 +54,10 @@ class Character extends Model
 
         return $classes[$this->Breed];
     }
+
+    public function isDeleted()
+    {
+        return $this->DeletedDate ? true : false;
+    }
+    
 }

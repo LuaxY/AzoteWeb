@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Account;
+use App\Character;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -91,9 +92,9 @@ class GameAccountController extends Controller
 
         $user = User::findOrFail($user->id);
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
-
-        return view('admin.users.servers.edit', compact('user', 'server', 'account'));
-
+        $account->server = $server;
+        $characters = $account->characters();
+        return view('admin.users.servers.edit', compact('user', 'server', 'account', 'characters'));
     }
 
     public function update(User $user, $server, $accountId, Request $request)
@@ -107,10 +108,16 @@ class GameAccountController extends Controller
         $this->validate($request, [
             'Login'                => 'required|min:3|max:32|unique:'.$database.'.accounts,Login,'.$account->Id.'|alpha_dash',
             'Nickname'             => 'required|min:3|max:32|unique:'.$database.'.accounts,Nickname,'.$account->Id.'|alpha_dash',
+            'UserGroupId'          => 'required|numeric',
         ]);
 
+        if(!array_key_exists($request->UserGroupId, config('dofus.ranks')))
+        {
+            return redirect()->back();
+        }
         $account->Login = $request->Login;
         $account->Nickname = $request->Nickname;
+        $account->UserGroupId = $request->UserGroupId;
         $account->save();
 
         Toastr::success('Game account updated');

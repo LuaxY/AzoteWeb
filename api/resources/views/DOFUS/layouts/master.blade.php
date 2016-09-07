@@ -203,6 +203,5 @@
     {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
     @endif
-
 </body>
 </html>

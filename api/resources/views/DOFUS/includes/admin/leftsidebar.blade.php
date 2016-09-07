@@ -5,9 +5,7 @@
         <!-- User -->
         <div class="user-box">
             <div class="user-img">
-
-                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->firstname }}" class="img-circle img-thumbnail img-responsive">
-                <div class="user-status online"><i class="zmdi zmdi-dot-circle"></i></div>
+                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->firstname }}" class="img-thumbnail img-responsive">
             </div>
             <h5><a href="#">{{ Auth::user()->firstname }}</a> </h5>
             <ul class="list-inline">
@@ -64,6 +62,13 @@
                     <a href="{{ route('admin.tasks') }}" class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i> <span> Tasks </span> </a>
                 </li>
 
+                <li class="text-muted menu-title">Links</li>
+                <li>
+                    <a href="{{ route('home') }}" target="_blank" class="waves-effect"><i class="fa fa-globe"></i> <span> Website </span> </a>
+                </li>
+                <li>
+                    <a href="http://forum.azote.us" target="_blank" class="waves-effect"><i class="fa fa-comments-o"></i> <span> Forum </span> </a>
+                </li>
 
             </ul>
             <div class="clearfix"></div>
