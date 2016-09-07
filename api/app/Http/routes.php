@@ -282,9 +282,9 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 		Route::group(['prefix' => 'account'], function() {
 
 			Route::get('/', [
-				'uses' => 'AccountController@index',
-				'as'   => 'admin.account'
-			]);
+                'uses' => 'AccountController@index',
+                'as'   => 'admin.account'
+            ]);
 
 			Route::patch('/update', [
 				'uses' => 'AccountController@accountUpdate',
@@ -436,5 +436,16 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'edit'    => 'admin.user.edit', // GET Edit (view) /user/ID/edit
             'update'  => 'admin.user.update' // PUT OU PATCH for update the edit
 		]]);
-	});
+
+        // CHARACTERS //
+        Route::controller('/characters/data', 'CharacterDatatablesController', [
+            'anyData'  => 'datatables.characterdata'
+        ]);
+
+        Route::get('characters', [
+            'uses' => 'CharacterController@index',
+            'as'   => 'admin.characters'
+        ]);
+
+    });
 });
