@@ -29,7 +29,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <small class="pull-right">
-                                    Account created {{ $account->CreationDate->diffForHumans() }}
+                                    Account created {{ $account->CreationDate->diffForHumans() }} ({{ $account->CreationDate->format('d-m-Y H:i:s') }})
                                 </small>
                             </div>
                         </div>
@@ -73,6 +73,50 @@
                         {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
                         {!! Form::close() !!}
                     </div>
+
+                    <div class="card-box">
+                        <h4 class="header-title m-b-30">#{{$account->Id}} Account: Characters</h4>
+
+                        @if(count($characters) == 0)
+                            <div class="alert alert-info">
+                                <strong>Info!</strong> User doesn't have any characters on this account
+                            </div>
+                        @else
+                            <table class="table table-striped" id="characters-table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Level</th>
+                                    <th>Creation date</th>
+                                    <th>Last usage</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($characters as $character)
+                                    <tr>
+                                        <td>{{ $character->Id }}</td>
+                                        <td>{{ $character->Name }}</td>
+                                        <td>{{ $character->classe() }}</td>
+                                        <td>{{ $character->level() }}</td>
+                                        <td>{{ $character->CreationDate->format('d-m-Y H:i:s') }}</td>
+                                        <td>{{ $character->LastUsage->format('d-m-Y H:i:s') }}</td>
+                                        <td>@if ($character->isDeleted())
+                                                <span class="label label-danger">Deleted</span>
+                                                <span class="label label-danger">{{ $character->DeletedDate->format('d-m-Y H:i:s') }}</span>
+                                            @else
+                                                <span class="label label-success">Running</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+
                 </div>
             </div>
         </div>

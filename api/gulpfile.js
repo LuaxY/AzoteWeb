@@ -144,5 +144,4 @@ elixir(function(mix) {
     // DRAGULA (DRAG AND DROP) //
     mix.styles('./vendor/bower_components/dragula/dist/dragula.css', 'public/css/dragula.min.css');
     mix.scripts('./vendor/bower_components/dragula/dist/dragula.min.js', 'public/js/admin');
-
 });

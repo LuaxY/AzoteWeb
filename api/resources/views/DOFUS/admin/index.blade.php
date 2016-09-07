@@ -70,8 +70,8 @@
                                         <i class="zmdi zmdi-more-vert"></i>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">See all users</a></li>
-                                        <li><a href="#">Add new user</a></li>
+                                        <li><a href="{{route('admin.users')}}">See all users</a></li>
+                                        <li><a href="{{route('admin.user.create')}}">Add new user</a></li>
                                     </ul>
                                 </div>
 
@@ -120,8 +120,8 @@
                                     <i class="zmdi zmdi-more-vert"></i>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">See all news</a></li>
-                                    <li><a href="#">Add new news</a></li>
+                                    <li><a href="{{route('admin.posts')}}">See all news</a></li>
+                                    <li><a href="{{route('admin.post.create')}}">Add new news</a></li>
                                 </ul>
                             </div>
 

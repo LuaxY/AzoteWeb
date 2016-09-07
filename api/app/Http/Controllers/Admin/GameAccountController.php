@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Account;
+use App\Character;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -91,9 +92,9 @@ class GameAccountController extends Controller
 
         $user = User::findOrFail($user->id);
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
-
-        return view('admin.users.servers.edit', compact('user', 'server', 'account'));
-
+        $account->server = $server;
+        $characters = $account->characters();
+        return view('admin.users.servers.edit', compact('user', 'server', 'account', 'characters'));
     }
 
     public function update(User $user, $server, $accountId, Request $request)

@@ -385,13 +385,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                     'uses' => 'GameAccountController@index',
                     'as'   => 'admin.user.game.accounts'
                 ])->where('user','[0-9]+');
-
 				// Store
 				Route::post('/store', [
 					'uses' => 'GameAccountController@store',
 					'as'   => 'admin.user.game.account.store'
 				])->where('user','[0-9]+');
-
                 // Edit (view)
                 Route::get('/{id}/edit', [
                     'uses' => 'GameAccountController@edit',
@@ -427,8 +425,6 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                     'uses' => 'GameAccountController@update',
                     'as'   => 'admin.user.game.account.update'
                 ])->where('user','[0-9]+')->where('id', '[0-9]+');
-
-
             });
 		});
 

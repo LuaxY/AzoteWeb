@@ -5,9 +5,7 @@
         <!-- User -->
         <div class="user-box">
             <div class="user-img">
-
-                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->firstname }}" class="img-circle img-thumbnail img-responsive">
-                <div class="user-status online"><i class="zmdi zmdi-dot-circle"></i></div>
+                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->firstname }}" class="img-thumbnail img-responsive">
             </div>
             <h5><a href="#">{{ Auth::user()->firstname }}</a> </h5>
             <ul class="list-inline">
