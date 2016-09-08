@@ -57,12 +57,20 @@
                         <li class="{{ active_class(if_route('admin.user.create'))}}"><a href="{{ route('admin.user.create') }}">Create</a></li>
                     </ul>
                 </li>
-
+                <li class="has_sub">
+                    <a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\CharacterController'))}}"><i class="fa fa-gamepad"></i> <span> World </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li class="{{ active_class(if_route('admin.characters'))}}"><a href="{{ route('admin.characters') }}">Characters</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{{ route('admin.tasks') }}" class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i> <span> Tasks </span> </a>
                 </li>
 
                 <li class="text-muted menu-title">Links</li>
+                <li>
+                    <a href="http://logger.azote.us" target="_blank" class="waves-effect"><i class="fa fa-database"></i> <span> Logger </span> </a>
+                </li>
                 <li>
                     <a href="{{ route('home') }}" target="_blank" class="waves-effect"><i class="fa fa-globe"></i> <span> Website </span> </a>
                 </li>

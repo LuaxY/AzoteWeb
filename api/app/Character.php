@@ -59,5 +59,9 @@ class Character extends Model
     {
         return $this->DeletedDate ? true : false;
     }
-    
+
+    public function scopeDeleted($query)
+    {
+        $query->where('DeletedDate', '!=', null);
+    }
 }

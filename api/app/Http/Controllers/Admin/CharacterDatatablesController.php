@@ -21,7 +21,7 @@ class CharacterDatatablesController extends Controller
      */
     public function anyData($server)
     {
-        $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->get();
+        $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->Deleted();
 
         return Datatables::of($characters)
             ->editColumn('Class', function ($character) {
