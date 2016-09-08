@@ -19,15 +19,29 @@ class CharacterDatatablesController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function anyData()
+    public function anyData($server)
     {
-        $accounts = Account::on('sigma_auth')->get();
+        $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->get();
 
-        return Datatables::of($accounts)
+        return Datatables::of($characters)
+            ->editColumn('Class', function ($character) {
+                return $character->classe();
+            })
+            ->editColumn('Level', function ($character) {
+                return $character->level();
+            })
+            ->addColumn('Status', function ($character) {
+                if($character->isDeleted())
+                {
+                    $pub = '<span class="label label-danger">Deleted</span> <span class="label label-danger">'.$character->DeletedDate->format('d-m-Y H:i:s').'</span>';
+                }
+                else
+                {
+                    $pub = '<span class="label label-success">Running</span>';
+                }
+                return $pub;
+            })
             ->make(true);
     }
-
-
-
-
+    
 }
