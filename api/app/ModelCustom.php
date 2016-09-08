@@ -39,7 +39,11 @@ class ModelCustom
     public static function hasOneOnOneServer($databaseType, $server, $related, $foreignKey, $localValue)
     {
         $entity = $related::on($server . '_' . $databaseType)->where($foreignKey, $localValue)->first();
-        $entity->server = $server;
+
+        if ($entity)
+        {
+            $entity->server = $server;
+        }
 
         return $entity;
     }
