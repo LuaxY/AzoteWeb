@@ -18,4 +18,9 @@ class WorldCharacter extends Model
     {
         return ModelCustom::hasOneOnOneServer('world', $this->server, Character::class, 'Id', $this->CharacterId);
     }
+
+    public function account()
+    {
+        return ModelCustom::hasOneOnOneServer('auth', $this->server, Account::class, 'Id', $this->AccountId);
+    }
 }

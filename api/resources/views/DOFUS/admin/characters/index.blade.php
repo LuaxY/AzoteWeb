@@ -32,6 +32,7 @@
                                             <th>Class</th>
                                             <th>Level</th>
                                             <th>Status</th>
+                                            <th>Game account</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -54,19 +55,21 @@
             var oTable;
             var servers = '{!! json_encode(config('dofus.servers'))!!}';
             $.each(JSON.parse(servers), function (i,server) {
-                oTable = $('#'+server+'-table').DataTable({
+                oTable = $('#'+server+'-table').on( 'init.dt', function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                } ).DataTable({
                     processing: false,
-                    serverSide: true,
+                    serverSide: false,
                     autoWidth: true,
                     responsive: true,
                     ajax: '{{ route('datatables.characterdata') }}/'+server,
-
                     columns: [
                         {data: 'Id', name: 'Id'},
                         {data: 'Name', name: 'Name'},
-                        {data: 'Class', name: 'Class'},
-                        {data: 'Level', name: 'Level', type: 'html'},
+                        {data: 'Breed', name: 'Breed', type: 'string'},
+                        {data: 'Experience', name: 'Experience'},
                         {data: 'Status', name: 'Status'},
+                        {data: 'GameAccount', name: 'GameAccount'}
                     ],
                     rowId: 'Id'
                 });

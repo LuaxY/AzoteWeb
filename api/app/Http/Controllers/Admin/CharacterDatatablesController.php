@@ -21,13 +21,17 @@ class CharacterDatatablesController extends Controller
      */
     public function anyData($server)
     {
-        $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->Deleted();
+        $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->get();
+        foreach ($characters as $char)
+        {
+            $char->server = $server;
+        }
 
         return Datatables::of($characters)
-            ->editColumn('Class', function ($character) {
+            ->editColumn('Breed', function ($character) {
                 return $character->classe();
             })
-            ->editColumn('Level', function ($character) {
+            ->editColumn('Experience', function ($character) {
                 return $character->level();
             })
             ->addColumn('Status', function ($character) {
@@ -40,6 +44,10 @@ class CharacterDatatablesController extends Controller
                     $pub = '<span class="label label-success">Running</span>';
                 }
                 return $pub;
+            })
+            ->addColumn('GameAccount', function ($character) {
+                $account = $character->account($character->server);
+                return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
             })
             ->make(true);
     }

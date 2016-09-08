@@ -121,4 +121,9 @@ class Account extends Model
 
         return $span;
     }
+
+    public function user()
+    {
+        return User::where('email', $this->Email)->first();
+    }
 }

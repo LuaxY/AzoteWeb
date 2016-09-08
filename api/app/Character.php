@@ -64,4 +64,10 @@ class Character extends Model
     {
         $query->where('DeletedDate', '!=', null);
     }
+
+    public function account($server)
+    {
+        $worldCharacter = ModelCustom::hasOneOnOneServer('auth', $server, WorldCharacter::class, 'CharacterId', $this->Id);
+        return $worldCharacter->account();
+    }
 }
