@@ -47,7 +47,11 @@ class CharacterDatatablesController extends Controller
             })
             ->addColumn('GameAccount', function ($character) {
                 $account = $character->account($character->server);
-                return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
+                if($account)
+                {
+                    return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
+                }
+                return '';
             })
             ->make(true);
     }
