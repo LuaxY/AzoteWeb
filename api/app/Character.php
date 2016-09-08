@@ -59,5 +59,15 @@ class Character extends Model
     {
         return $this->DeletedDate ? true : false;
     }
-    
+
+    public function scopeDeleted($query)
+    {
+        $query->where('DeletedDate', '!=', null);
+    }
+
+    public function account($server)
+    {
+        $worldCharacter = ModelCustom::hasOneOnOneServer('auth', $server, WorldCharacter::class, 'CharacterId', $this->Id);
+        return $worldCharacter->account();
+    }
 }
