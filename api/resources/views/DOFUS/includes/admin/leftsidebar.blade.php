@@ -75,7 +75,7 @@
                     <a href="{{ route('home') }}" target="_blank" class="waves-effect"><i class="fa fa-globe"></i> <span> Website </span> </a>
                 </li>
                 <li>
-                    <a href="http://forum.azote.us" target="_blank" class="waves-effect"><i class="fa fa-comments-o"></i> <span> Forum </span> </a>
+                    <a href="{{ config('dofus.social.forum') }}" target="_blank" class="waves-effect"><i class="fa fa-comments-o"></i> <span> Forum </span> </a>
                 </li>
 
             </ul>
