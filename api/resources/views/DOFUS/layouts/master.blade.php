@@ -203,5 +203,23 @@
     {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
     @endif
+
+    @if (!Auth::guest())
+
+            <!-- ENLEVER LE COMMENTAIRE POUR ACTIVER TAWK TO
+                <script type="text/javascript">
+                    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+                    (function(){
+                        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                        s1.async=true;
+                        s1.src='https://embed.tawk.to/57d328f2c465436c8cdf751a/default';
+                        s1.charset='UTF-8';
+                        s1.setAttribute('crossorigin','*');
+                        s0.parentNode.insertBefore(s1,s0);
+                    })();
+                </script>
+             -->
+        @yield('scriptlogged')
+    @endif
 </body>
 </html>

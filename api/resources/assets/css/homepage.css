@@ -331,12 +331,8 @@
         margin-bottom: 1.2rem
     }
 
-    .ak-main-container .ak-home-facebook > span, .ak-main-container .ak-home-youtube > span {
+    .ak-main-container .ak-home-facebook > span, .ak-main-container .ak-home-youtube > span, .ak-main-container .ak-home-twitter > span {
         display: inline
-    }
-
-    .ak-main-container .ak-home-twitter {
-        background: url("../imgs/assets/btn-twt.jpg") no-repeat
     }
 }
 

@@ -329,7 +329,7 @@ html {
 }
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Roboto",sans-serif;
     font-size: 14px;
     line-height: 1.42857;
     color: #333;
@@ -18487,7 +18487,7 @@ img.mfp-img {
 }
 
 
-.ak-main-container .ak-home-facebook, .ak-main-container .ak-home-youtube {
+.ak-main-container .ak-home-facebook, .ak-main-container .ak-home-youtube, .ak-main-container .ak-home-twitter {
     display: block;
     text-transform: uppercase;
     font-family: "bebas_neueregular", sans-serif;
@@ -18510,7 +18510,7 @@ img.mfp-img {
     text-decoration: none
 }
 
-.ak-main-container .ak-home-facebook:before, .ak-main-container .ak-home-youtube:before {
+.ak-main-container .ak-home-facebook:before, .ak-main-container .ak-home-youtube:before, .ak-main-container .ak-home-twitter:before {
     display: block;
     content: '';
     height: 75px;
@@ -18556,6 +18556,23 @@ img.mfp-img {
     background: #F84D4D
 }
 
+
+.ak-main-container .ak-home-twitter {
+    background: #5e8db1;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)
+}
+
+.ak-main-container .ak-home-twitter:before {
+    background: rgba(0, 0, 0, 0.2) url("../imgs/social/icon-tw.png") no-repeat center center
+}
+
+.ak-main-container .ak-home-twitter span {
+    color: #9cc0dc
+}
+.ak-main-container .ak-home-twitter:hover {
+    background: #6599b1
+}
 
 .ak-main-container .ak-admin-text {
     background: #fff
