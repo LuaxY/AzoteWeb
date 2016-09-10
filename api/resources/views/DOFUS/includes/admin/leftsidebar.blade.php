@@ -66,6 +66,9 @@
                 <li>
                     <a href="{{ route('admin.tasks') }}" class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i> <span> Tasks </span> </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.settings') }}" class="waves-effect {{ active_class(if_route('admin.settings'))}}"><i class="fa fa-cogs"></i> <span> Settings </span> </a>
+                </li>
 
                 <li class="text-muted menu-title">Links</li>
                 <li>

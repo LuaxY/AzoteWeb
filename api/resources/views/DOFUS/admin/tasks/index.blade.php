@@ -515,7 +515,7 @@
                         }
                         else
                         {
-                            errorsHtml = 'Unknow error';
+                            errorsHtml = 'Unknown error';
                         }
                         toastr.error(errorsHtml);
                     }

@@ -58,8 +58,15 @@ class PostController extends Controller
 
     public function destroy(Post $post){
         $this->authorize('destroy', $post);
-        $post->delete();
-        return response()->json([], 200);
+        if($post->id != config('dofus.motd.postid'))
+        {
+            $post->delete();
+            return response()->json([], 200);
+        }
+       else
+       {
+           return response()->json(['motd' => ['0' => 'Can\'t delete this post (MOTD)']], 422);
+       }
     }
 
     public function edit(Post $post)

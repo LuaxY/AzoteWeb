@@ -10,10 +10,10 @@
     </a>
     <div class="ak-carrousel-bg-title ak-carrousel-bg-title-left">
         <div class="ak-block-title">
-            <a href="" class="ak-title-link">
+            <a href="{{route('posts.show', config('dofus.motd.postid'))}}" class="ak-title-link">
                 <div class="ak-layer">
-                    <span class="ak-title">Ouverture du serveur !</span>
-                    <br> <span class="ak-subtitle">Rejoignez-nous maintenant !</span> <span class="ak-banner-more">+</span>
+                    <span class="ak-title">{{config('dofus.motd.title')}}</span>
+                    <br> <span class="ak-subtitle">{{config('dofus.motd.subtitle')}}</span> <span class="ak-banner-more">+</span>
                     <br>
                 </div>
             </a>

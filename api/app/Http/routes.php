@@ -447,5 +447,14 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'as'   => 'admin.characters'
         ]);
 
+		// SETTINGS //
+		Route::get('settings', [
+			'uses' => 'SettingsController@index',
+			'as'   => 'admin.settings'
+		]);
+		Route::patch('settings/update', [
+			'uses' => 'SettingsController@update',
+			'as'   => 'admin.settings.update'
+		]);
     });
 });

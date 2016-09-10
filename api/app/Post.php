@@ -36,7 +36,7 @@ class Post extends Model
 
 	public static $rules = [
 		'store' => [
-			'title' => 'required|min:3|max:32',
+			'title' => 'required|min:3|max:40',
 			'type'  => 'required|in:info,event,dev,other',
 			'preview'  => 'required',
 			'content'  => 'required',

@@ -10,6 +10,8 @@ return [
 
     'details'      => [], // filled in FillServers middleware
 
+    'motd'       => [], // filled in FillMotd middleware
+
     'default_avatar'  => 'imgs/avatar/default.jpg',
 
     'template'     => env('TEMPLATE', 'dofus'),
