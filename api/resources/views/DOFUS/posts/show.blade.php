@@ -16,7 +16,7 @@
             <span class="ak-icon-big ak-news"></span>
         </a>
         {{ $post->title }}
-        <span class="ak-subtitle"><span>@lang('categories.' . $post->type)</span> - {{ date('d F Y', strtotime($post->created_at)) }}</span>
+        <span class="ak-subtitle"><span>@lang('categories.' . $post->type)</span> - {{ date('d F Y', strtotime($post->published_at)) }}</span>
     </h1>
 
     <a href="{{ URL::route('posts') }}" class="ak-backlink-button">Retour à la liste</a>

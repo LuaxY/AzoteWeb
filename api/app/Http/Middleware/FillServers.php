@@ -17,6 +17,7 @@ class FillServers
     public function handle($request, Closure $next)
     {
         $json = json_decode(file_get_contents("../servers.json"));
+
         $servers = [];
         $details = [];
 
@@ -50,6 +51,7 @@ class FillServers
         		Config::set("database.connections.{$server->name}_$db", $database);
         	}
         }
+        
         Config::set('dofus.servers', $servers);
         Config::set('dofus.details', $details);
 

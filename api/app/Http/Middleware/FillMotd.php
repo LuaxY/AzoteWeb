@@ -21,9 +21,9 @@ class FillMotd
         $motd = [];
         $motdjson = $json->motd;
 
-        $motd['title'] = $motdjson->title;
-        $motd['subtitle']   = $motdjson->subtitle;
-        $motd['postid'] = $motdjson->postid;
+        $motd['title']    = $motdjson->title;
+        $motd['subtitle'] = $motdjson->subtitle;
+        $motd['postid']   = $motdjson->postid;
 
         Config::set('dofus.motd', $motd);
 
