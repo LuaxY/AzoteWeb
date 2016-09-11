@@ -17,7 +17,7 @@
     @yield('header')
     <style type="text/css">
         body {
-            background: url('{{ URL::asset('imgs/carousel/common/'.config('dofus.background').'.jpg') }}')  center top no-repeat;;
+            background: url('{{ URL::asset('imgs/carousel/common/'.config('dofus.background').'.jpg') }}')  center top no-repeat;
             background-color: {{ config('dofus.color') }};
         }
     </style>

@@ -100,7 +100,12 @@
             </div>
             <a class="ak-home-facebook" href="{{ config('dofus.social.facebook') }}" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>
             <a class="ak-home-youtube" href="{{ config('dofus.social.youtube') }}" target="_blank">visiter la chaine<br>youtube <span>{{ config('dofus.title') }}</span></a>
-            <a class="ak-home-twitter" href="{{ config('dofus.social.twitter') }}" target="_blank">Nous suivre<br>sur <span>Twitter</span></a>
+            <!--<a class="ak-home-twitter" href="{{ config('dofus.social.twitter') }}" target="_blank">Nous suivre<br>sur <span>Twitter</span></a>-->
+            <div class="ak-twitter-timeline">
+                <a class="twitter-timeline" height="350" href="{{ config('dofus.social.twitter') }}">Nous suivre<br>sur <span>Twitter</span></a>
+                <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
         </div>
     </div>
 </aside>
