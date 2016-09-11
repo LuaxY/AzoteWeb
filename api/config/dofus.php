@@ -26,7 +26,12 @@ return [
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
-    'tawk'         => env('TAWK_KEY', false),
+    'tawk'         => [
+
+            'id'  => env('TAWK_ID', false),
+
+            'api' => env('TAWK_API'),
+    ],
 
     'social'       => [
 
