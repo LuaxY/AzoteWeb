@@ -16,7 +16,13 @@ class FillMotd
      */
     public function handle($request, Closure $next)
     {
-        $json = json_decode(file_get_contents("../motd.json"));
+        $json = json_decode(@file_get_contents("../motd.json"));
+
+        if (!$json)
+        {
+            Config::set('dofus.motd', null);
+            return $next($request);
+        }
 
         $motd = [];
         $motdjson = $json->motd;

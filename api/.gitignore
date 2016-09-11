@@ -12,3 +12,4 @@ Homestead.yaml
 Homestead.json
 .env
 servers.json
+motd.json

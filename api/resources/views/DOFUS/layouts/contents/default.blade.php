@@ -9,6 +9,7 @@
         <div class="img_sm"></div>
     </a>
     <div class="ak-carrousel-bg-title ak-carrousel-bg-title-left">
+        @if (config('dofus.motd'))
         <div class="ak-block-title">
             <a href="{{ route('posts.show', config('dofus.motd.postid')) }}" class="ak-title-link">
                 <div class="ak-layer">
@@ -18,6 +19,7 @@
                 </div>
             </a>
         </div>
+        @endif
     </div>
 </div>
 @endif
