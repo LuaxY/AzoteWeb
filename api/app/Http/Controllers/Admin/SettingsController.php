@@ -34,15 +34,14 @@ class SettingsController extends Controller
 
     public function update(Request $request)
     {
-        switch($request->settings_type)
+        switch ($request->settings_type)
         {
             case 'motd':
                 $motd = [];
-                $json = json_decode(file_get_contents("../motd.json"));
                 $motd['motd']['title'] = $request->title;
                 $motd['motd']['subtitle'] = $request->subtitle;
                 $motd['motd']['postid'] = $request->postid;
-                file_put_contents("../motd.json",json_encode($motd, JSON_UNESCAPED_UNICODE));
+                file_put_contents("../motd.json", json_encode($motd, JSON_UNESCAPED_UNICODE));
                 Toastr::success('Motd updated', $title = null, $options = []);
                 return redirect(route('admin.settings'));
                 break;
