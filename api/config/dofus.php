@@ -26,6 +26,8 @@ return [
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
+    'tawk'         => env('TAWK_KEY', false),
+
     'social'       => [
 
         'forum'    => env('SOCIAL_FORUM'),
@@ -60,6 +62,7 @@ return [
         ],
 
     ],
+
     'ranks'       => [
 
         '1'  => 'Player',
