@@ -204,7 +204,7 @@
     {!! Toastr::render() !!}
     @endif
 
-    @if (!Auth::guest() && config('dofus.tawk.id'))
+    @if (!Auth::guest() && !Auth::user()->isStaff() && config('dofus.tawk.id'))
         <script type="text/javascript">
             var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
             (function(){
