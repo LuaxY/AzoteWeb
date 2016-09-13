@@ -10,10 +10,12 @@ use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Account;
+use App\ForumAccount;
 
 use Mail;
 use Validator;
 use Auth;
+use Cookie;
 
 class AccountController extends Controller
 {
@@ -49,6 +51,24 @@ class AccountController extends Controller
         $user->active    = false;
         $user->ticket    = str_random(self::TICKET_LENGTH);
         $user->save();
+
+        $forumAccount = new ForumAccount;
+        $forumAccount->name              = $request->input('firstname');
+        $forumAccount->member_group_id   = config('dofus.forum.user_group');
+        $forumAccount->email             = $request->input('email');
+        $forumAccount->joined            = time();
+        $forumAccount->ip_address        = '';
+        $forumAccount->member_login_key  = str_random(32);
+        $forumAccount->members_seo_name  = strtolower($request->input('firstname'));
+        $forumAccount->members_pass_salt = $forumAccount->generateSalt();
+    	$forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
+    	$forumAccount->timezone          = 'Europe/Paris';
+        $forumAccount->save();
+
+        $forumAccount = ForumAccount::where('email', $forumAccount->email)->first();
+
+        setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
         Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
             $message->from(config('mail.sender'), 'Azote.us');

@@ -33,6 +33,14 @@ return [
             'api' => env('TAWK_API'),
     ],
 
+    'forum'       => [
+
+        'domain'     => env('FORUM_DOMAIN', ''),
+
+        'user_group' => env('FORUM_USER_GROUP', 3)
+
+    ],
+
     'social'       => [
 
         'forum'    => env('SOCIAL_FORUM'),
