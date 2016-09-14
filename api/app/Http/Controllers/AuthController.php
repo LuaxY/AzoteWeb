@@ -22,15 +22,15 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-		if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
-		{
+        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
+        {
             if (!$user->active)
             {
                 $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte n'est pas activé, vérifiez vos emails."]);
                 return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
             }
 
-			Auth::login($user);
+            Auth::login($user);
 
             $forumAccount = ForumAccount::where('email', $user->email)->first();
             $forumAccount->member_login_key = str_random(32);
@@ -39,18 +39,18 @@ class AuthController extends Controller
             setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
             setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
-			return redirect()->route('profile');
-		}
-		else
-		{
-			return redirect()->back()->withErrors(['auth' => 'Nom de compte ou mot de passe incorrect.'])->withInput();
-		}
+            return redirect()->route('profile');
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['auth' => 'Nom de compte ou mot de passe incorrect.'])->withInput();
+        }
     }
 
     public function logout()
-	{
-		if (Auth::check())
-		{
+    {
+        if (Auth::check())
+        {
             $forumAccount = ForumAccount::where('email', Auth::user()->email)->first();
             $forumAccount->member_login_key = '';
             $forumAccount->save();
@@ -60,7 +60,7 @@ class AuthController extends Controller
             setcookie('ips4_IPSSessionFront', '', time()-3600, '/', config('dofus.forum.domain'));
 
             Auth::logout();
-		}
-		return redirect('/');
-	}
+        }
+        return redirect('/');
+    }
 }

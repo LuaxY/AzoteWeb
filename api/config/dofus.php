@@ -27,10 +27,13 @@ return [
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
     'tawk'         => [
+        'id'  => env('TAWK_ID', false),
+        'api' => env('TAWK_API'),
+    ],
 
-            'id'  => env('TAWK_ID', false),
-
-            'api' => env('TAWK_API'),
+    'forum'       => [
+        'domain'     => env('FORUM_DOMAIN', ''),
+        'user_group' => env('FORUM_USER_GROUP', 3)
     ],
 
     'forum'       => [
@@ -42,15 +45,10 @@ return [
     ],
 
     'social'       => [
-
         'forum'    => env('SOCIAL_FORUM'),
-
         'facebook' => env('SOCIAL_FACEBOOK'),
-
         'twitter'  => env('SOCIAL_TWITTER'),
-
         'youtube'  => env('SOCIAL_YOUTUBE'),
-
     ],
 
     'vote'         => env('POINTS_BY_VOTES', 10),

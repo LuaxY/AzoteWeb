@@ -52,6 +52,9 @@ class AccountController extends Controller
         $user->ticket    = str_random(self::TICKET_LENGTH);
         $user->save();
 
+        // TODO validator for forum account
+        // TODO store forum account id in user
+
         $forumAccount = new ForumAccount;
         $forumAccount->name              = $request->input('firstname');
         $forumAccount->member_group_id   = config('dofus.forum.user_group');
@@ -61,8 +64,9 @@ class AccountController extends Controller
         $forumAccount->member_login_key  = str_random(32);
         $forumAccount->members_seo_name  = strtolower($request->input('firstname'));
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
-    	$forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
-    	$forumAccount->timezone          = 'Europe/Paris';
+        $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
+        $forumAccount->timezone          = 'Europe/Paris';
+
         $forumAccount->save();
 
         $forumAccount = ForumAccount::where('email', $forumAccount->email)->first();
