@@ -15,6 +15,8 @@ use App\Exceptions\GenericException;
 use Config;
 use Mail;
 use Carbon\Carbon;
+use Auth;
+use Session;
 
 class Handler extends ExceptionHandler
 {
@@ -28,6 +30,7 @@ class Handler extends ExceptionHandler
         HttpException::class,
         ModelNotFoundException::class,
         ValidationException::class,
+        NotFoundHttpException::class,
         GenericException::class,
     ];
 
@@ -41,6 +44,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        if ($e instanceof NotFoundHttpException)
+        {
+            return parent::report($e);
+        }
+
         if ($e instanceof Exception && Config::get('app.env') == 'production')
         {
             $debug = Config::get('app.debug');
@@ -57,12 +65,18 @@ class Handler extends ExceptionHandler
 
             Config::set('app.debug', $debug);
 
-            $data['content'] = (!isset($content->original)) ? $e->getMessage() : $content->original;
+            $error = (!isset($content->original)) ? $e->getMessage() : $content->original;
 
-            Mail::send('emails.report', $data, function ($message) {
+            $data['exception'] = $e;
+            $data['content']   = $error;
+            $data['date']      = Carbon::now();
+            $data['user']      = Auth::user();
+
+            Mail::send(['html' => 'emails.report'], $data, function ($message) use($error) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to('kerubim@azote.us', 'Web Developer');
                 $message->subject('Azote.us - PHP Error Report - ' . Carbon::now());
+                $message->attachData($error, 'stacktrace.html');
             });
         }
 

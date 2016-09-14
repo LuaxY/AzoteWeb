@@ -10,9 +10,9 @@ return [
 
     'details'      => [], // filled in FillServers middleware
 
-    'motd'       => [], // filled in FillMotd middleware
+    'motd'         => [], // filled in FillMotd middleware
 
-    'default_avatar'  => 'imgs/avatar/default.jpg',
+    'default_avatar' => 'imgs/avatar/default.jpg',
 
     'template'     => env('TEMPLATE', 'dofus'),
 
@@ -69,17 +69,11 @@ return [
     ],
 
     'ranks'       => [
-
         '1'  => 'Player',
-
         '2'  => 'Moderator',
-
         '3'  => 'GameMaster_Padawan',
-
         '4'  => 'GameMaster',
-
         '5'  => 'Administrator',
-
     ],
 
 ];
