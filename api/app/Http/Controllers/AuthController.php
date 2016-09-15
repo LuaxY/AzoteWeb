@@ -32,7 +32,7 @@ class AuthController extends Controller
 
             Auth::login($user);
 
-            $forumAccount = ForumAccount::where('email', $user->email)->first();
+            $forumAccount = ForumAccount::find($user->forum_id);
 
             if ($forumAccount)
             {
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
                 setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
             }
-    
+
             return redirect()->route('profile');
         }
         else
@@ -55,13 +55,17 @@ class AuthController extends Controller
     {
         if (Auth::check())
         {
-            $forumAccount = ForumAccount::where('email', Auth::user()->email)->first();
-            $forumAccount->member_login_key = '';
-            $forumAccount->save();
+            $forumAccount = ForumAccount::find(Auth::user()->forum_id);
 
-            setcookie('ips4_member_id',       '', time()-3600, '/', config('dofus.forum.domain'));
-            setcookie('ips4_pass_hash',       '', time()-3600, '/', config('dofus.forum.domain'));
-            setcookie('ips4_IPSSessionFront', '', time()-3600, '/', config('dofus.forum.domain'));
+            if ($forumAccount)
+            {
+                $forumAccount->member_login_key = '';
+                $forumAccount->save();
+
+                setcookie('ips4_member_id',       '', time()-3600, '/', config('dofus.forum.domain'));
+                setcookie('ips4_pass_hash',       '', time()-3600, '/', config('dofus.forum.domain'));
+                setcookie('ips4_IPSSessionFront', '', time()-3600, '/', config('dofus.forum.domain'));
+            }
 
             Auth::logout();
         }
