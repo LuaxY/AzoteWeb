@@ -82,6 +82,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Pseudo</th>
                                                 <th>E-mail</th>
                                                 <th>Firstname</th>
                                                 <th>Lastname</th>
@@ -93,6 +94,7 @@
                                             @foreach($newusers as $newuser)
                                             <tr>
                                                 <td>{{ $newuser->id }}</td>
+                                                <td>{{ $newuser->pseudo }}</td>
                                                 <td>{{ $newuser->email }}</td>
                                                 <td>{{ $newuser->firstname }}</td>
                                                 <td>{{ $newuser->lastname }}</td>

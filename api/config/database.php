@@ -58,6 +58,18 @@ return [
             'strict'    => false,
         ],
 
+        'forum' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST_FORUM', ''),
+            'database'  => env('DB_DATABASE_FORUM', ''),
+            'username'  => env('DB_USERNAME_FORUM', ''),
+            'password'  => env('DB_PASSWORD_FORUM', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
     ],
 
     /*

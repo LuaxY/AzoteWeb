@@ -81,10 +81,11 @@ class UserController extends Controller
 
         $user = User::findOrFail($user->id);
 
+        $user->pseudo    = $request['pseudo'];
         $user->firstname = $request['firstname'];
-        $user->lastname = $request['lastname'];
-        $user->rank = $request['rank'];
-        $user->points = $request['points'];
+        $user->lastname  = $request['lastname'];
+        $user->rank      = $request['rank'];
+        $user->points    = $request['points'];
         $user->save();
 
         Toastr::success('Account updated', $title = null, $options = []);

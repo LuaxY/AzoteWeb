@@ -19,6 +19,7 @@
                                 <thead>
                                 <tr>
                                     <th>Id</th>
+                                    <th>Pseudo</th>
                                     <th>Email</th>
                                     <th>Firstname</th>
                                     <th>Lastname</th>
@@ -57,6 +58,7 @@
                         ajax: '{!! route('datatables.userdata') !!}',
                         columns: [
                             {data: 'id', name: 'id'},
+                            {data: 'pseudo', name: 'pseudo'},
                             {data: 'email', name: 'email'},
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},

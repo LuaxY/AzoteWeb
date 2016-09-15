@@ -39,7 +39,7 @@
             <div class="ak-panel-content ak-profile-panel">
                 <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></div>
                 <div class="account-details">
-                    <div class="account-name">{{ Auth::user()->firstname }}</div>
+                    <div class="account-name">{{ Auth::user()->pseudo }}</div>
                     <div class="account-info">
                         <a href="{{ URL::route('profile') }}"><button class="btn btn-primary btn-sm">Gestion de compte</button></a>
                     </div>

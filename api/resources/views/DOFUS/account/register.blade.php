@@ -30,6 +30,12 @@
                                             <div class="row ak-container">
                                                 <div class="ak-column ak-container col-md-12">
 
+                                                    <div class="form-group @if ($errors->has('pseudo')) has-error @endif">
+                                                        <label class="control-label" for="pseudo">Votre pseudo</label>
+                                                        <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="pseudo" placeholder="Votre pseudo" value="{{ Input::old('pseudo') }}" id="pseudo" autocapitalize="off" autocorrect="off" required="required" />
+                                                        @if ($errors->has('pseudo')) <label class="error control-label">{{ $errors->first('pseudo') }}</label> @endif
+                                                    </div>
+
                                                     <div class="form-group @if ($errors->has('firstname')) has-error @endif">
                                                         <label class="control-label" for="firstname">Votre prénom</label>
                                                         <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="firstname" placeholder="Votre prénom" value="{{ Input::old('firstname') }}" id="firstname" autocapitalize="off" autocorrect="off" required="required" />
