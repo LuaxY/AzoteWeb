@@ -4,11 +4,11 @@ $locale = Request::segment(1);
 
 if (in_array($locale, Config::get('app.locales')))
 {
-	App::setLocale($locale);
+    App::setLocale($locale);
 }
 else
 {
-	$locale = null;
+    $locale = null;
 }
 
 Route::group(['prefix' => $locale], function() {
@@ -20,94 +20,94 @@ Route::group(['prefix' => $locale], function() {
 
     /* ============ NEWS ============ */
 
-	Route::get(Lang::get('routes.posts.index'), [
-		'uses' => 'PostController@index',
-		'as'   => 'posts'
-	]);
-	Route::get(Lang::get('routes.posts.show'), [
-		'uses' => 'PostController@show',
-		'as'   => 'posts.show'
-	]);
+    Route::get(Lang::get('routes.posts.index'), [
+        'uses' => 'PostController@index',
+        'as'   => 'posts'
+    ]);
+    Route::get(Lang::get('routes.posts.show'), [
+        'uses' => 'PostController@show',
+        'as'   => 'posts.show'
+    ]);
 
     /* ============ ACCOUNT ============ */
 
     Route::get(Lang::get('routes.account.register'), [
-		'uses'       => 'AccountController@register',
-		'as'         => 'register'
-	]);
+        'uses'       => 'AccountController@register',
+        'as'         => 'register'
+    ]);
 
     Route::post(Lang::get('routes.account.register'), [
-		'middleware' => 'guest',
-		'uses'       => 'AccountController@store',
-		'as'         => 'register'
-	]);
+        'middleware' => 'guest',
+        'uses'       => 'AccountController@store',
+        'as'         => 'register'
+    ]);
 
     Route::get(Lang::get('routes.account.profile'), [
-		'middleware' => 'auth',
-		'uses'       => 'AccountController@profile',
-		'as'         => 'profile'
-	]);
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@profile',
+        'as'         => 'profile'
+    ]);
 
-	Route::get(Lang::get('routes.account.activation'), [
-		'middleware' => 'guest',
-		'uses'       => 'AccountController@activation',
-		'as'         => 'activation'
-	]);
+    Route::get(Lang::get('routes.account.activation'), [
+        'middleware' => 'guest',
+        'uses'       => 'AccountController@activation',
+        'as'         => 'activation'
+    ]);
 
-	Route::get(Lang::get('routes.account.password_lost'), [
-		'middleware' => 'guest',
-		'uses'       => 'AccountController@password_lost',
-		'as'         => 'password-lost'
-	]);
+    Route::get(Lang::get('routes.account.password_lost'), [
+        'middleware' => 'guest',
+        'uses'       => 'AccountController@password_lost',
+        'as'         => 'password-lost'
+    ]);
 
-	Route::post(Lang::get('routes.account.password_lost'), [
-		'middleware' => 'guest',
-		'uses'       => 'AccountController@passord_lost_email',
-		'as'         => 'password-lost'
-	]);
+    Route::post(Lang::get('routes.account.password_lost'), [
+        'middleware' => 'guest',
+        'uses'       => 'AccountController@passord_lost_email',
+        'as'         => 'password-lost'
+    ]);
 
-	Route::get(Lang::get('routes.account.reset'), [
-		'uses'       => 'AccountController@reset_form',
-		'as'         => 'reset'
-	]);
+    Route::get(Lang::get('routes.account.reset'), [
+        'uses'       => 'AccountController@reset_form',
+        'as'         => 'reset'
+    ]);
 
-	Route::post(Lang::get('routes.account.reset'), [
-		'middleware' => 'auth',
-		'uses'       => 'AccountController@reset_password',
-		'as'         => 'reset'
-	]);
+    Route::post(Lang::get('routes.account.reset'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@reset_password',
+        'as'         => 'reset'
+    ]);
 
-	/* ============ GAME ACCOUNT ============ */
+    /* ============ GAME ACCOUNT ============ */
 
-	Route::get(Lang::get('routes.gameaccount.create'), [
-		'middleware' => 'auth',
-		'uses'       => 'GameAccountController@create',
-		'as'         => 'gameaccount.create'
-	]);
+    Route::get(Lang::get('routes.gameaccount.create'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@create',
+        'as'         => 'gameaccount.create'
+    ]);
 
-	Route::post(Lang::get('routes.gameaccount.create'), [
-		'middleware' => 'auth',
-		'uses'       => 'GameAccountController@store',
-		'as'         => 'gameaccount.create'
-	]);
+    Route::post(Lang::get('routes.gameaccount.create'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@store',
+        'as'         => 'gameaccount.create'
+    ]);
 
-	Route::get(Lang::get('routes.gameaccount.view'), [
-		'middleware' => 'auth',
-		'uses'       => 'GameAccountController@view',
-		'as'         => 'gameaccount.view'
-	]);
+    Route::get(Lang::get('routes.gameaccount.view'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@view',
+        'as'         => 'gameaccount.view'
+    ]);
 
-	Route::get(Lang::get('routes.gameaccount.edit'), [
-		'middleware' => 'auth',
-		'uses'       => 'GameAccountController@edit',
-		'as'         => 'gameaccount.edit'
-	]);
+    Route::get(Lang::get('routes.gameaccount.edit'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@edit',
+        'as'         => 'gameaccount.edit'
+    ]);
 
-	Route::post(Lang::get('routes.gameaccount.edit'), [
-		'middleware' => 'auth',
-		'uses'       => 'GameAccountController@update',
-		'as'         => 'gameaccount.edit'
-	]);
+    Route::post(Lang::get('routes.gameaccount.edit'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@update',
+        'as'         => 'gameaccount.edit'
+    ]);
 
     /* ============ AUTH ============ */
 
@@ -132,60 +132,60 @@ Route::group(['prefix' => $locale], function() {
     /* ============ SHOP ============ */
 
     Route::get(Lang::get('routes.shop.payment.choose-country'), [
-		'middleware' => 'auth',
-		'uses'       => 'PaymentController@country',
-		'as'         => 'shop.payment.country'
-	]);
+        'middleware' => 'auth',
+        'uses'       => 'PaymentController@country',
+        'as'         => 'shop.payment.country'
+    ]);
 
-	Route::get(Lang::get('routes.shop.payment.choose-method'), [
-		'middleware' => 'auth',
-		'uses'       => 'PaymentController@method',
-		'as'         => 'shop.payment.method'
-	]);
+    Route::get(Lang::get('routes.shop.payment.choose-method'), [
+        'middleware' => 'auth',
+        'uses'       => 'PaymentController@method',
+        'as'         => 'shop.payment.method'
+    ]);
 
-	Route::any(Lang::get('routes.shop.payment.get-code'), [
-		'middleware' => 'auth',
-		'uses'       => 'PaymentController@code',
-		'as'         => 'shop.payment.code'
-	]);
+    Route::any(Lang::get('routes.shop.payment.get-code'), [
+        'middleware' => 'auth',
+        'uses'       => 'PaymentController@code',
+        'as'         => 'shop.payment.code'
+    ]);
 
-	Route::post(Lang::get('routes.shop.payment.process'), [
-		'middleware' => 'auth',
-		'uses'       => 'PaymentController@process',
-		'as'         => 'shop.payment.process'
-	]);
+    Route::post(Lang::get('routes.shop.payment.process'), [
+        'middleware' => 'auth',
+        'uses'       => 'PaymentController@process',
+        'as'         => 'shop.payment.process'
+    ]);
 
     /* ============ VOTE ============ */
 
     Route::get(Lang::get('routes.vote.index'), [
-		'uses'   => 'VoteController@index',
-		'as'     => 'vote.index'
-	]);
+        'uses'   => 'VoteController@index',
+        'as'     => 'vote.index'
+    ]);
 
-	Route::get(Lang::get('routes.vote.process'), [
-		'middleware' => 'auth',
-		'uses'       => 'VoteController@process',
-		'as'         => 'vote.process'
-	]);
+    Route::get(Lang::get('routes.vote.process'), [
+        'middleware' => 'auth',
+        'uses'       => 'VoteController@process',
+        'as'         => 'vote.process'
+    ]);
 
-	Route::get(Lang::get('routes.vote.palier'), [
-		'middleware' => 'auth',
-		'uses'       => 'VoteController@palier',
-		'as'         => 'vote.palier'
-	]);
+    Route::get(Lang::get('routes.vote.palier'), [
+        'middleware' => 'auth',
+        'uses'       => 'VoteController@palier',
+        'as'         => 'vote.palier'
+    ]);
 
-	Route::get(Lang::get('routes.vote.object'), [
-		'middleware' => 'auth',
-		'uses'       => 'VoteController@object',
-		'as'         => 'vote.object'
-	]);
+    Route::get(Lang::get('routes.vote.object'), [
+        'middleware' => 'auth',
+        'uses'       => 'VoteController@object',
+        'as'         => 'vote.object'
+    ]);
 
-	/* ============ OTHERS ============ */
+    /* ============ OTHERS ============ */
 
-	Route::get(Lang::get('routes.download'), [
-		'uses' => 'PageController@download',
-		'as'   => 'download'
-	]);
+    Route::get(Lang::get('routes.download'), [
+        'uses' => 'PageController@download',
+        'as'   => 'download'
+    ]);
 
 });
 
@@ -268,113 +268,113 @@ Route::group(['prefix' => 'forge'], function()
 
 Route::group(['middleware' => ['auth', 'admin']], function() {
 
-	Route::controller('filemanager', 'FilemanagerLaravelController');
+    Route::controller('filemanager', 'FilemanagerLaravelController');
 
-	/* ============ ADMIN PREFIX ============ */
-	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+    /* ============ ADMIN PREFIX ============ */
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
 
-		Route::any('/', [
-			'uses' => 'AdminController@index',
-			'as'   => 'admin.dashboard'
-		]);
+        Route::any('/', [
+            'uses' => 'AdminController@index',
+            'as'   => 'admin.dashboard'
+        ]);
 
-		// ACCOUNT //
-		Route::group(['prefix' => 'account'], function() {
+        // ACCOUNT //
+        Route::group(['prefix' => 'account'], function() {
 
-			Route::get('/', [
+            Route::get('/', [
                 'uses' => 'AccountController@index',
                 'as'   => 'admin.account'
             ]);
 
-			Route::patch('/update', [
-				'uses' => 'AccountController@accountUpdate',
-				'as'   => 'admin.account.update'
-			]);
+            Route::patch('/update', [
+                'uses' => 'AccountController@accountUpdate',
+                'as'   => 'admin.account.update'
+            ]);
 
-			route::patch('/avatar/reset', [
-				'uses' => 'AccountController@resetAvatar',
-				'as'   => 'admin.account.avatar.reset'
-			]);
+            route::patch('/avatar/reset', [
+                'uses' => 'AccountController@resetAvatar',
+                'as'   => 'admin.account.avatar.reset'
+            ]);
 
-			Route::get('/password', [
-				'uses' => 'AccountController@password',
-				'as'   => 'admin.password'
-			]);
+            Route::get('/password', [
+                'uses' => 'AccountController@password',
+                'as'   => 'admin.password'
+            ]);
 
-			Route::patch('/password/update', [
-				'uses' => 'AccountController@passwordUpdate',
-				'as'   => 'admin.password.update'
-			]);
-		});
+            Route::patch('/password/update', [
+                'uses' => 'AccountController@passwordUpdate',
+                'as'   => 'admin.password.update'
+            ]);
+        });
 
-		// POSTS //
-		Route::controller('/posts/data', 'PostDatatablesController', [
-			'anyData'  => 'datatables.postdata'
-		]);
-		Route::resource('post', 'PostController', ['names' => [
-			'index'   => 'admin.posts', // GET Index
-			'create'  => 'admin.post.create', // GET Create
-			'store'   => 'admin.post.store', // POST Store (create POST)
-			'destroy' => 'admin.post.destroy', // DELETE
-			'edit'    => 'admin.post.edit', // GET Edit (view) /post/ID/edit
-			'update'  => 'admin.post.update' // PUT OU PATCH for update the edit
-		]]);
+        // POSTS //
+        Route::controller('/posts/data', 'PostDatatablesController', [
+            'anyData'  => 'datatables.postdata'
+        ]);
+        Route::resource('post', 'PostController', ['names' => [
+            'index'   => 'admin.posts', // GET Index
+            'create'  => 'admin.post.create', // GET Create
+            'store'   => 'admin.post.store', // POST Store (create POST)
+            'destroy' => 'admin.post.destroy', // DELETE
+            'edit'    => 'admin.post.edit', // GET Edit (view) /post/ID/edit
+            'update'  => 'admin.post.update' // PUT OU PATCH for update the edit
+        ]]);
 
-		// TASKS //
-		Route::patch('/task/updatePositions', [
-			'uses' => 'TaskController@updatePositions',
-			'as'   => 'admin.task.update.positions'
-		]);
-		Route::patch('/task/updateModal', [
+        // TASKS //
+        Route::patch('/task/updatePositions', [
+            'uses' => 'TaskController@updatePositions',
+            'as'   => 'admin.task.update.positions'
+        ]);
+        Route::patch('/task/updateModal', [
             'uses' => 'TaskController@updateModal',
             'as'   => 'admin.task.update.modal'
-		]);
-		Route::resource('task', 'TaskController', ['names' => [
-			'index'   => 'admin.tasks', // GET Index
-			'create'  => 'admin.task.create', // GET Create
-			'store'   => 'admin.task.store', // POST Store (create TASK)
-			'destroy' => 'admin.task.destroy', // DELETE
-			'edit'    => 'admin.task.edit', // GET Edit (view) /task/ID/edit
-			'update'  => 'admin.task.update' // PUT OU PATCH for update the edit
-		]]);
+        ]);
+        Route::resource('task', 'TaskController', ['names' => [
+            'index'   => 'admin.tasks', // GET Index
+            'create'  => 'admin.task.create', // GET Create
+            'store'   => 'admin.task.store', // POST Store (create TASK)
+            'destroy' => 'admin.task.destroy', // DELETE
+            'edit'    => 'admin.task.edit', // GET Edit (view) /task/ID/edit
+            'update'  => 'admin.task.update' // PUT OU PATCH for update the edit
+        ]]);
 
-		// USERS //
-		Route::controller('/users/data', 'UserDatatablesController', [
-			'anyData'  => 'datatables.userdata'
-		]);
+        // USERS //
+        Route::controller('/users/data', 'UserDatatablesController', [
+            'anyData'  => 'datatables.userdata'
+        ]);
 
-		Route::group(['prefix' => 'user/{user}'], function() {
+        Route::group(['prefix' => 'user/{user}'], function() {
 
-			// Users actions
-			Route::patch('ban', [
-				'uses' => 'UserController@ban',
-				'as'   => 'admin.user.ban'
-			])->where('user', '[0-9]+');
+            // Users actions
+            Route::patch('ban', [
+                'uses' => 'UserController@ban',
+                'as'   => 'admin.user.ban'
+            ])->where('user', '[0-9]+');
 
-			Route::patch('unban', [
-				'uses' => 'UserController@unban',
-				'as'   => 'admin.user.unban'
-			])->where('user', '[0-9]+');
+            Route::patch('unban', [
+                'uses' => 'UserController@unban',
+                'as'   => 'admin.user.unban'
+            ])->where('user', '[0-9]+');
 
-			Route::patch('activate', [
-				'uses' => 'UserController@activate',
-				'as'   => 'admin.user.activate'
-			])->where('user', '[0-9]+');
+            Route::patch('activate', [
+                'uses' => 'UserController@activate',
+                'as'   => 'admin.user.activate'
+            ])->where('user', '[0-9]+');
 
-			Route::patch('password', [
-				'uses' => 'UserController@password',
-				'as'   => 'admin.user.password'
-			])->where('user', '[0-9]+');
+            Route::patch('password', [
+                'uses' => 'UserController@password',
+                'as'   => 'admin.user.password'
+            ])->where('user', '[0-9]+');
 
-			Route::patch('avatar/reset', [
-				'uses' => 'UserController@resetAvatar',
-				'as'   => 'admin.user.reset.avatar'
-			])->where('user', '[0-9]+');
+            Route::patch('avatar/reset', [
+                'uses' => 'UserController@resetAvatar',
+                'as'   => 'admin.user.reset.avatar'
+            ])->where('user', '[0-9]+');
 
-			Route::patch('avatar/reset', [
-				'uses' => 'UserController@resetAvatar',
-				'as'   => 'admin.user.reset.avatar'
-			])->where('user', '[0-9]+');
+            Route::patch('avatar/reset', [
+                'uses' => 'UserController@resetAvatar',
+                'as'   => 'admin.user.reset.avatar'
+            ])->where('user', '[0-9]+');
 
 
             // Game Accounts
@@ -385,11 +385,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                     'uses' => 'GameAccountController@index',
                     'as'   => 'admin.user.game.accounts'
                 ])->where('user','[0-9]+');
-				// Store
-				Route::post('/store', [
-					'uses' => 'GameAccountController@store',
-					'as'   => 'admin.user.game.account.store'
-				])->where('user','[0-9]+');
+                // Store
+                Route::post('/store', [
+                    'uses' => 'GameAccountController@store',
+                    'as'   => 'admin.user.game.account.store'
+                ])->where('user','[0-9]+');
                 // Edit (view)
                 Route::get('/{id}/edit', [
                     'uses' => 'GameAccountController@edit',
@@ -415,27 +415,27 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                     'uses' => 'GameAccountController@unjail',
                     'as'   => 'admin.user.game.account.unjail'
                 ])->where('user','[0-9]+')->where('id', '[0-9]+');
-				// Unjail
-				Route::patch('/{id}/password', [
-					'uses' => 'GameAccountController@password',
-					'as'   => 'admin.user.game.account.password'
-				])->where('user','[0-9]+')->where('id', '[0-9]+');
+                // Unjail
+                Route::patch('/{id}/password', [
+                    'uses' => 'GameAccountController@password',
+                    'as'   => 'admin.user.game.account.password'
+                ])->where('user','[0-9]+')->where('id', '[0-9]+');
                 // Update
                 Route::patch('/{id}', [
                     'uses' => 'GameAccountController@update',
                     'as'   => 'admin.user.game.account.update'
                 ])->where('user','[0-9]+')->where('id', '[0-9]+');
             });
-		});
+        });
 
-		Route::resource('user', 'UserController', ['names' => [
+        Route::resource('user', 'UserController', ['names' => [
             'index'   => 'admin.users', // GET Index
             'create'  => 'admin.user.create', // GET Create
             'store'   => 'admin.user.store', // POST Store (create TASK)
             'destroy' => 'admin.user.destroy', // DELETE
             'edit'    => 'admin.user.edit', // GET Edit (view) /user/ID/edit
             'update'  => 'admin.user.update' // PUT OU PATCH for update the edit
-		]]);
+        ]]);
 
         // CHARACTERS //
         Route::controller('/characters/data', 'CharacterDatatablesController', [
@@ -447,14 +447,14 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'as'   => 'admin.characters'
         ]);
 
-		// SETTINGS //
-		Route::get('settings', [
-			'uses' => 'SettingsController@index',
-			'as'   => 'admin.settings'
-		]);
-		Route::patch('settings/update', [
-			'uses' => 'SettingsController@update',
-			'as'   => 'admin.settings.update'
-		]);
+        // SETTINGS //
+        Route::get('settings', [
+            'uses' => 'SettingsController@index',
+            'as'   => 'admin.settings'
+        ]);
+        Route::patch('settings/update', [
+            'uses' => 'SettingsController@update',
+            'as'   => 'admin.settings.update'
+        ]);
     });
 });

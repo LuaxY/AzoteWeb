@@ -12507,7 +12507,8 @@ p a {
         margin-top: 2px
     }
 
-    .ak-idbar .ak-idbar-right .navbar-toggle .ak-support, .ak-idbar .ak-idbar-left .ak-support {
+    .ak-idbar .ak-idbar-right .navbar-toggle .ak-support, .ak-idbar .ak-idbar-left .ak-support,
+    .ak-idbar .ak-idbar-right .navbar-toggle .ak-admin, .ak-idbar .ak-idbar-left .ak-admin {
         font-size: 10px;
         font-size: 1rem;
         padding: 0 12px;
@@ -12517,11 +12518,16 @@ p a {
         vertical-align: top
     }
 
+    .ak-idbar .ak-idbar-right .navbar-toggle .ak-admin, .ak-idbar .ak-idbar-left .ak-admin {
+        margin-left: 5px;
+    }
+
     .ak-idbar .ak-idbar-right .ak-brand {
         display: none
     }
 
-    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support {
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support,
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-admin {
         display: none
     }
 }
@@ -12554,7 +12560,8 @@ p a {
         width: 230px
     }
 
-    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support {
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support,
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-admin {
         display: none
     }
 }
@@ -12575,7 +12582,8 @@ p a {
     color: #656565
 }
 
-.ak-idbar .ak-idbar-left a.ak-support:hover {
+.ak-idbar .ak-idbar-left a.ak-support:hover,
+.ak-idbar .ak-idbar-left a.ak-admin:hover {
     color: #31a2d9;
     background-color: #343434
 }
@@ -12586,16 +12594,19 @@ p a {
         background-size: contain;
     }
 
-    .ak-idbar .ak-idbar-left .ak-support {
+    .ak-idbar .ak-idbar-left .ak-support,
+    .ak-idbar .ak-idbar-left .ak-admin {
         background: #212121;
         color: #fff
     }
 
-    .ak-idbar .ak-idbar-left .ak-support:hover {
+    .ak-idbar .ak-idbar-left .ak-support:hover,
+    .ak-idbar .ak-idbar-left .ak-admin:hover {
         color: #31a2d9
     }
 
-    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support:hover {
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-support:hover,
+    .ak-navbar-fixed .navbar .ak-navbar-left a.ak-admin:hover {
         color: #31a2d9
     }
 }
@@ -15192,7 +15203,8 @@ footer .ak-footer-content .ak-social-network a.go:hover {
     margin: 0
 }
 
-.navbar .ak-navbar-left a.ak-support {
+.navbar .ak-navbar-left a.ak-support,
+.navbar .ak-navbar-left a.ak-admin {
     font-size: 10px;
     font-size: 1rem;
     padding: 0 5px;
@@ -15577,6 +15589,7 @@ footer .ak-footer-content .ak-social-network a.go:hover {
     background: transparent url("../imgs/azote_text.png") center center no-repeat
 }
 
+.navbar .ak-navbar-left a.ak-admin,
 .navbar .ak-navbar-left a.ak-support {
     color: #fff;
     background: #212121
