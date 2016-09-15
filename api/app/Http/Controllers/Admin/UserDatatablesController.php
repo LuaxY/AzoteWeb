@@ -19,7 +19,7 @@ class UserDatatablesController extends Controller
      */
     public function anyData()
     {
-        $users = User::select(['id', 'email', 'firstname', 'lastname', 'rank', 'active', 'points', 'votes','banned', 'banReason'])->orderBy('id', 'desc')->get();;
+        $users = User::select(['id', 'pseudo', 'email', 'firstname', 'lastname', 'rank', 'active', 'points', 'votes','banned', 'banReason'])->orderBy('id', 'desc')->get();;
 
         return Datatables::of($users)
             ->addColumn('action', function ($user) {

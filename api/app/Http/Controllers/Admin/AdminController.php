@@ -28,9 +28,9 @@ class AdminController extends Controller
 
         $count = ['users' => $countuser, 'posts' => $countpost, 'servers' => $countservers];
 
-        $newusers = User::latest('created_at')->take(5)->select('id','email','firstname','lastname','active','created_at')->get();
+        $newusers = User::latest('created_at')->take(5)->select('id','pseudo','email','firstname','lastname','active','created_at')->get();
         $newposts = Post::latest('updated_at')->take(5)->select('id','title','type','author_id','published','updated_at')->get();
-        
+
         return view('admin.index', compact('newusers', 'count', 'newposts'));
     }
 }

@@ -43,6 +43,7 @@ class AccountController extends Controller
         $salt = str_random(self::SALT_LENGTH);
 
         $user = new User;
+        $user->pseudo    = $request->input('pseudo');
         $user->email     = $request->input('email');
         $user->password  = $user->hashPassword($request->input('password'), $salt);
         $user->salt      = $salt;
@@ -53,23 +54,22 @@ class AccountController extends Controller
         $user->save();
 
         // TODO validator for forum account
-        // TODO store forum account id in user
 
         $forumAccount = new ForumAccount;
-        $forumAccount->name              = $request->input('firstname');
+        $forumAccount->name              = $user->pseudo;
         $forumAccount->member_group_id   = config('dofus.forum.user_group');
-        $forumAccount->email             = $request->input('email');
+        $forumAccount->email             = $user->email;
         $forumAccount->joined            = time();
         $forumAccount->ip_address        = '';
         $forumAccount->member_login_key  = str_random(32);
-        $forumAccount->members_seo_name  = strtolower($request->input('firstname'));
+        $forumAccount->members_seo_name  = strtolower($user->pseudo);
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
         $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
         $forumAccount->timezone          = 'Europe/Paris';
-
         $forumAccount->save();
 
-        $forumAccount = ForumAccount::where('email', $forumAccount->email)->first();
+        $user->forum_id = $forumAccount->member_id;
+        $user->save();
 
         setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));

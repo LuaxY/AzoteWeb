@@ -31,6 +31,7 @@ class User extends Authenticatable
 
     public static $rules = [
         'register' => [
+            'pseudo'               => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
             'email'                => 'required|email|unique:users,email',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
@@ -61,6 +62,7 @@ class User extends Authenticatable
             'rank'                 => 'required|in:0,4',
         ],
         'admin-update' => [
+            'pseudo'    => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
             'rank'      => 'required|in:0,4',

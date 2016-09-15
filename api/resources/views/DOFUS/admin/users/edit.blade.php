@@ -35,16 +35,19 @@
                                 <div class="card-box">
                                     <h4 class="header-title m-t-0 m-b-30">Actions</h4>
                                     <div class="text-center buttons">
-                                        @if($user->isBanned())
+                                        @if ($user->isBanned())
                                             <button type="button" id="unban-{{$user->id}}" class="unban btn btn-info waves-effect w-md m-b-5"><i class="fa fa-check-circle-o m-r-5"></i> Unban</button>
                                         @else
                                             <button type="button" id="ban-{{$user->id}}" class="ban btn btn-danger waves-effect w-md m-b-5"><i class="fa fa-ban m-r-5"></i> Ban</button>
                                         @endif
 
-                                        @if(!$user->isActive())
+                                        @if (!$user->isActive())
                                             <button type="button" id="active-{{$user->id}}" class="activ btn btn-warning waves-effect w-md m-b-5"><i class="fa fa-check m-r-5"></i>Active</button>
                                         @endif
                                         <button type="button" class="btn btn-success waves-effect w-md m-b-5" data-toggle="modal" data-target="#user-password-modal"><i class="fa fa-key m-r-5"></i> Change password</button>
+                                        @if ($user->forum_id)
+                                            <a class="btn btn-primary waves-effect w-md m-b-5" href="{{ config('dofus.social.forum') }}profile/{{ $user->forum_id }}-null" target="_blank"><i class="fa fa-users m-r-5"></i> Forum</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -65,13 +68,26 @@
                             {{ method_field('PATCH') }}
                             <div class="row">
                                 <div class="col-sm-6">
+                                    <div class="form-group {{ $errors->has('pseudo') ? ' has-error' : '' }}">
+                                        <label for="firstname">Pseudo:</label>
+                                        {!! Form::text('pseudo', null, ['class' => 'form-control', 'id' => 'pseudo']) !!}
+                                        @if ($errors->has('pseudo'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('pseudo') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
                                     <div class="form-group {{ $errors->has('firstname') ? ' has-error' : '' }}">
                                         <label for="firstname">Firstname:</label>
                                         {!! Form::text('firstname', null, ['class' => 'form-control', 'id' => 'firstname']) !!}
                                         @if ($errors->has('firstname'))
                                             <span class="help-block">
-                                                                        <strong>{{ $errors->first('firstname') }}</strong>
-                                                                    </span>
+                                                <strong>{{ $errors->first('firstname') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -81,8 +97,8 @@
                                         {!! Form::text('lastname', null, ['class' => 'form-control', 'id' => 'lastname']) !!}
                                         @if ($errors->has('lastname'))
                                             <span class="help-block">
-                                                                        <strong>{{ $errors->first('lastname') }}</strong>
-                                                                    </span>
+                                                <strong>{{ $errors->first('lastname') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -95,8 +111,8 @@
                                         {!! Form::text('email', null, ['class' => 'form-control', 'id' => 'email', 'disabled']) !!}
                                         @if ($errors->has('email'))
                                             <span class="help-block">
-                                                                        <strong>{{ $errors->first('email') }}</strong>
-                                                                    </span>
+                                                <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -106,8 +122,8 @@
                                         {!! Form::select('rank', ['0' => 'User', '4' => 'Admin'], null,['class' => 'form-control', 'id' => 'rank']) !!}
                                         @if ($errors->has('rank'))
                                             <span class="help-block">
-                                                                            <strong>{{ $errors->first('rank') }}</strong>
-                                                                        </span>
+                                                <strong>{{ $errors->first('rank') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -119,8 +135,8 @@
                                         {!! Form::text('points', null,['class' => 'form-control', 'id' => 'points']) !!}
                                         @if ($errors->has('points'))
                                             <span class="help-block">
-                                                        <strong>{{ $errors->first('points') }}</strong>
-                                                    </span>
+                                                <strong>{{ $errors->first('points') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -130,8 +146,8 @@
                                         {!! Form::text('votes', null,['class' => 'form-control', 'id' => 'votes', 'disabled']) !!}
                                         @if ($errors->has('votes'))
                                             <span class="help-block">
-                                                        <strong>{{ $errors->first('votes') }}</strong>
-                                                    </span>
+                                                <strong>{{ $errors->first('votes') }}</strong>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -160,8 +176,8 @@
                                     {!! Form::password('password',['class' => 'form-control']) !!}
                                     @if ($errors->has('password'))
                                         <span class="help-block">
-                                                        <strong>{{ $errors->first('password') }}</strong>
-                                                    </span>
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('passwordConfirmation') ? ' has-error' : '' }}">
@@ -169,8 +185,8 @@
                                     {!! Form::password('passwordConfirmation',['class' => 'form-control']) !!}
                                     @if ($errors->has('passwordConfirmation'))
                                         <span class="help-block">
-                                                        <strong>{{ $errors->first('passwordConfirmation') }}</strong>
-                                                    </span>
+                                            <strong>{{ $errors->first('passwordConfirmation') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                             </div>

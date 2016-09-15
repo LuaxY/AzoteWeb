@@ -33,12 +33,16 @@ class AuthController extends Controller
             Auth::login($user);
 
             $forumAccount = ForumAccount::where('email', $user->email)->first();
-            $forumAccount->member_login_key = str_random(32);
-            $forumAccount->save();
 
-            setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
-            setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
+            if ($forumAccount)
+            {
+                $forumAccount->member_login_key = str_random(32);
+                $forumAccount->save();
 
+                setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+                setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
+            }
+    
             return redirect()->route('profile');
         }
         else
