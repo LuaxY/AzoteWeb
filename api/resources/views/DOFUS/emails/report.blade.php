@@ -30,9 +30,9 @@
             <tr>
                 <td style="border-width:1px;border-style:solid;border-color:#b5b5b5;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;font-style:normal;font-variant:normal;font-weight:normal;font-size:12px;font-family:Monaco, Consolas, monospace;line-height:normal;" >User</td>
                 @if ($user)
-                <td style="border-width:1px;border-style:solid;border-color:#b5b5b5;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;font-style:normal;font-variant:normal;font-weight:normal;font-size:12px;font-family:Monaco, Consolas, monospace;line-height:normal;" >#{{ $user->id }} - {{ $user->pseudo }} - {{ $user->email }} - {{ $user->firstname }} {{ $user->lastname }} - {{ $_SERVER['REMOTE_ADDR'] }}</td>
+                <td style="border-width:1px;border-style:solid;border-color:#b5b5b5;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;font-style:normal;font-variant:normal;font-weight:normal;font-size:12px;font-family:Monaco, Consolas, monospace;line-height:normal;" >#{{ $user->id }} - {{ $user->pseudo }} - {{ $user->email }} - {{ $user->firstname }} {{ $user->lastname }}</td>
                 @else
-                <td style="border-width:1px;border-style:solid;border-color:#b5b5b5;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;font-style:normal;font-variant:normal;font-weight:normal;font-size:12px;font-family:Monaco, Consolas, monospace;line-height:normal;" >Guest - {{ $_SERVER['REMOTE_ADDR'] }}</td>
+                <td style="border-width:1px;border-style:solid;border-color:#b5b5b5;padding-top:5px;padding-bottom:5px;padding-right:5px;padding-left:5px;font-style:normal;font-variant:normal;font-weight:normal;font-size:12px;font-family:Monaco, Consolas, monospace;line-height:normal;" >Guest</td>
                 @endif
             </tr>
         </table>
