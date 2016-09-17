@@ -5,9 +5,9 @@
         <!-- User -->
         <div class="user-box">
             <div class="user-img">
-                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->firstname }}" class="img-thumbnail img-responsive">
+                <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="avatar" title="{{ Auth::user()->pseudo }}" class="img-thumbnail img-responsive">
             </div>
-            <h5><a href="#">{{ Auth::user()->firstname }}</a> </h5>
+            <h5><a href="#">{{ Auth::user()->pseudo }}</a> </h5>
             <ul class="list-inline">
                 <li>
                     <a href="{{ route('admin.account') }}" alt="Profile" title="Profile" >
@@ -43,19 +43,21 @@
 
 
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\PostController'))}}"><i class="fa fa-pencil"></i> <span> Posts </span> <span class="menu-arrow"></span></a>
+                    <!--<a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\PostController'))}}"><i class="fa fa-pencil"></i> <span> Posts </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li class="{{ active_class(if_route('admin.posts'))}}"><a href="{{ route('admin.posts') }}">List</a></li>
                         <li class="{{ active_class(if_route('admin.post.create'))}}"><a href="{{ route('admin.post.create') }}">Create</a></li>
-                    </ul>
+                    </ul>-->
+                    <li class="{{ active_class(if_route('admin.posts'))}}"><a href="{{ route('admin.posts') }}"><i class="fa fa-pencil"></i> Posts</a></li>
                 </li>
 
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\UserController'))}}"><i class="fa fa-users"></i> <span> Users</span> <span class="menu-arrow"></span></a>
+                    <!--<a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\UserController'))}}"><i class="fa fa-users"></i> <span> Users</span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li class= "{{ active_class(if_route('admin.users'))}}"><a href="{{ route('admin.users') }}">List</a></li>
                         <li class="{{ active_class(if_route('admin.user.create'))}}"><a href="{{ route('admin.user.create') }}">Create</a></li>
-                    </ul>
+                    </ul>-->
+                    <li class= "{{ active_class(if_route('admin.users'))}}"><a href="{{ route('admin.users') }}"><i class="fa fa-users"></i> Users</a></li>
                 </li>
                 <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\CharacterController'))}}"><i class="fa fa-gamepad"></i> <span> World </span> <span class="menu-arrow"></span></a>

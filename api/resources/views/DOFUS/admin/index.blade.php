@@ -94,7 +94,7 @@
                                             @foreach($newusers as $newuser)
                                             <tr>
                                                 <td>{{ $newuser->id }}</td>
-                                                <td>{{ $newuser->pseudo }}</td>
+                                                <td><a href="{{ URL::route('admin.user.edit', $newuser->id) }}">{{ $newuser->pseudo }}</a></td>
                                                 <td>{{ $newuser->email }}</td>
                                                 <td>{{ $newuser->firstname }}</td>
                                                 <td>{{ $newuser->lastname }}</td>
@@ -145,7 +145,7 @@
                                     @foreach($newposts as $newpost)
                                         <tr>
                                             <td>{{ $newpost->id }}</td>
-                                            <td>{{ $newpost->title }}</td>
+                                            <td><a href="{{ URL::route('admin.post.edit', $newpost->id) }}">{{ $newpost->title }}</a></td>
                                             <td>{{ $newpost->type }}</td>
                                             <td>{{ $newpost->author->firstname }}</td>
                                             <td>
