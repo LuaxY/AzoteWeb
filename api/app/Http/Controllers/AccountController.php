@@ -190,7 +190,7 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->input('firstname') && $request->input('lastname'))
+        /*if ($request->input('firstname') && $request->input('lastname'))
         {
             $validator = Validator::make($request->all(), User::$rules['update-name']);
 
@@ -229,6 +229,76 @@ class AccountController extends Controller
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Profile mis à jour."]);
 
         return redirect()->route('profile');
-        //return $this->success('profile mis à jour');
+        //return $this->success('profile mis à jour');*/
+    }
+
+    public function change_email(Request $request)
+    {
+        if ($request->all())
+        {
+            $rules = User::$rules['update-email'];
+            $rules['passwordOld'] = str_replace('{PASSWORD}', Auth::user()->password, $rules['passwordOld']);
+            $rules['passwordOld'] = str_replace('{SALT}',     Auth::user()->salt,     $rules['passwordOld']);
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            Auth::user()->email = $request->input('email');
+            Auth::user()->save();
+
+            $forumAccount = Auth::user()->forum()->first();
+
+            if ($forumAccount)
+            {
+                $forumAccount->email = $request->input('email');
+                $forumAccount->save();
+            }
+
+            // TODO: send email to user
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);
+            return redirect()->route('profile');
+        }
+
+        return view('account/change-email');
+    }
+
+    public function change_password(Request $request)
+    {
+        if ($request->all())
+        {
+            $rules = User::$rules['update-password'];
+            $rules['passwordOld'] = str_replace('{PASSWORD}', Auth::user()->password, $rules['passwordOld']);
+            $rules['passwordOld'] = str_replace('{SALT}',     Auth::user()->salt,     $rules['passwordOld']);
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            Auth::user()->salt     = str_random(self::SALT_LENGTH);
+            Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
+            Auth::user()->save();
+
+            $forumAccount = Auth::user()->forum()->first();
+
+            if ($forumAccount)
+            {
+                $forumAccount->members_pass_salt = $forumAccount->generateSalt();
+                $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
+                $forumAccount->save();
+            }
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
+            return redirect()->route('profile');
+        }
+
+        return view('account/change-password');
     }
 }

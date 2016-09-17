@@ -15,6 +15,21 @@ Breadcrumbs::register('page', function($breadcrumbs, $page)
     $breadcrumbs->push($page);
 });
 
+// Accueil > Mon Compte
+Breadcrumbs::register('account', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Mon Compte', route('profile'));
+});
+
+// Accueil > Mon Compte > [page]
+Breadcrumbs::register('account.page', function($breadcrumbs, $page)
+{
+    $breadcrumbs->parent('account');
+    $breadcrumbs->push($page);
+});
+
+
 // Accueil > Boutique
 Breadcrumbs::register('shop', function($breadcrumbs)
 {

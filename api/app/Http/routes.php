@@ -77,6 +77,18 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'reset'
     ]);
 
+    Route::any(Lang::get('routes.account.change_email'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@change_email',
+        'as'         => 'account.change_email'
+    ]);
+
+    Route::any(Lang::get('routes.account.change_password'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@change_password',
+        'as'         => 'account.change_password'
+    ]);
+
     /* ============ GAME ACCOUNT ============ */
 
     Route::get(Lang::get('routes.gameaccount.create'), [

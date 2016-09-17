@@ -23,7 +23,7 @@ class AccountController extends Controller
 
     public function accountUpdate(Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['update-profile-admin']);
+        $validator = Validator::make($request->all(), User::$rules['admin-update-profile']);
 
         if ($validator->fails()) {
             return redirect(route('admin.profile'))
@@ -88,7 +88,7 @@ class AccountController extends Controller
 
     public function passwordUpdate(Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['update-password']);
+        $validator = Validator::make($request->all(), User::$rules['admin-update-password']);
 
         if ($validator->fails()) {
             return redirect(route('admin.password'))

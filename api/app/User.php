@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Security;
 use App\ModelCustom;
+use App\ForumAccount;
 
 class User extends Authenticatable
 {
@@ -45,13 +46,13 @@ class User extends Authenticatable
             'lastname'  => 'required|min:3|max:32|alpha_dash',
         ],
         'update-password' => [
+            'passwordOld'          => 'required|old_password:{PASSWORD},{SALT}',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
-        'update-profile-admin' => [
-            'firstname' => 'required|min:3|max:32|alpha_dash',
-            'lastname'  => 'required|min:3|max:32|alpha_dash',
-            'avatar'    => 'image|mimes:jpg,jpeg,png|max:3500',
+        'update-email' => [
+            'passwordOld' => 'required|old_password:{PASSWORD},{SALT}',
+            'email'       => 'required|email|unique:users,email',
         ],
         'admin-store' => [
             'email'                => 'required|email|unique:users,email',
@@ -68,9 +69,18 @@ class User extends Authenticatable
             'rank'      => 'required|in:0,4',
             'points'    => 'required|numeric'
         ],
+        'admin-update-profile' => [
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'avatar'    => 'image|mimes:jpg,jpeg,png|max:3500',
+        ],
+        'admin-update-password' => [
+            'password'             => 'required|min:6',
+            'passwordConfirmation' => 'required|same:password',
+        ],
     ];
 
-    public function hashPassword($password, $salt)
+    public static function hashPassword($password, $salt)
     {
         $password = Security::hash('sha512', $password, 10);
         $salt     = Security::hash('sha512', $salt, 10);
@@ -104,6 +114,11 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function forum()
+    {
+        return $this->hasOne(ForumAccount::class, 'member_id', 'forum_id');
     }
 
     public function isAdmin()

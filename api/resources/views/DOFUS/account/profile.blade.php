@@ -2,7 +2,7 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('page', 'Mon compte') !!}
+{!! Breadcrumbs::render('account') !!}
 @stop
 
 @section('content')
@@ -14,8 +14,19 @@
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
-                <div class="panel-main">
-
+                <div class="panel-main profile">
+                    <div class="pull-left">
+                        <img src="{{ URL::asset(Auth::user()->avatar) }}" />
+                    </div>
+                    <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
+                    <b>Nom</b>: {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}<br>
+                    <b>Email</b>: {{ Auth::user()->email }}<br>
+                    <b>Ogrines</b>: {{ Utils::format_price(Auth::user()->points) }} <span class="ak-icon-small ak-ogrines-icon"></span><br>
+                    <b>Cadeaux</b>: {{ Utils::format_price(Auth::user()->votes / 10) }} <span class="ak-icon-small ak-gifts-icon"></span><br>
+                    <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}<br>
+                    <a href="{{ URL::route('account.change_email') }}" class="btn btn-primary btn-sm">Changer d'email</a>
+                    <a href="{{ URL::route('account.change_password') }}" class="btn btn-primary btn-sm">Changer de mot de passe</a>
+                    <div class="clearfix"></div>
                 </div>
             </div>
             <div class="ak-panel-title">
@@ -26,7 +37,7 @@
 
     <table class="ak-container ak-table">
         <tr>
-            <th class="ak-center">#</th>
+            <th class="ak-center"></th>
             <th>Pseudo</th>
             <th>Serveur</th>
             <th class="ak-center" style="width: 100px;">Personnages</th>
@@ -34,7 +45,7 @@
         </tr>
         @foreach ($accounts as $account)
         <tr>
-            <td class="ak-rank">1</td>
+            <td class="ak-rank"></td>
             <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Nickname }}</a></td>
             <td>{{ ucfirst($account->server) }}</td>
             <td class="ak-center">{{ count($account->characters()) }}</td>

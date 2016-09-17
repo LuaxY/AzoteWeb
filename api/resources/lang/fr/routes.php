@@ -30,6 +30,10 @@ return [
 
     'account.reset' => 'compte/reset/{ticket?}',
 
+    'account.change_email' => 'compte/changement-email',
+
+    'account.change_password' => 'compte/changement-mot-de-passe',
+
     /** Game Account **/
 
     'gameaccount.create' => 'compte/jeu/creation',

@@ -30366,3 +30366,9 @@ body.ak-light-skin .main > .ak-container {
 .ak-reserve-container .row {
     margin: 0;
 }
+.profile img {
+    border: 2px solid #c9c6bb;
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+}

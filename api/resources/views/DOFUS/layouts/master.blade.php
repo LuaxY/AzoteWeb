@@ -55,7 +55,7 @@
                         </a>
                         <div class="ak-button-modal ak-nav-logged">
                             <a class="ak-logged-account" href="{{ URL::route('profile') }}">
-                                <span class="ak-nickname">{{ Auth::user()->firstname }}</span>
+                                <span class="ak-nickname">{{ Auth::user()->pseudo }}</span>
                                 <span class="avatar">
                                     <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="Avatar">
                                 </span>

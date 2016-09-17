@@ -107,6 +107,7 @@ return [
 
     'attributes' => [],
 
-    'recaptcha' => 'The :attribute field is not correct.',
+    'recaptcha'    => 'The :attribute field is not correct.',
+    'old_password' => 'The current password is not valid.',
 
 ];

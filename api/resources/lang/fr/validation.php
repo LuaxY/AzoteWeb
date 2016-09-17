@@ -117,6 +117,7 @@ return [
         'lastname'              => 'Nom',
         'password'              => 'Mot de passe',
         'passwordConfirmation'  => 'Confirmation du mot de passe',
+        'passwordOld'           => 'Mot de passe actuel',
         'city'                  => 'Ville',
         'country'               => 'Pays',
         'address'               => 'Adresse',
@@ -146,6 +147,7 @@ return [
         'nickname'              => 'Pseudo',
     ],
 
-    'recaptcha' => 'Le captcha n\'est pas correcte.',
+    'recaptcha'    => 'Le captcha n\'est pas correcte.',
+    'old_password' => 'Le mot de passe actuel n\'est pas valide.',
 
 ];

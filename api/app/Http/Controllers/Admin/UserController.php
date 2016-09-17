@@ -127,7 +127,7 @@ class UserController extends Controller
 
     public function password(User $user, Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['update-password']);
+        $validator = Validator::make($request->all(), User::$rules['admin-update-password']);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
