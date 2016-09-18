@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Cache;
+use Auth;
 
 use App\Character;
 
@@ -31,5 +32,11 @@ class PageController extends Controller
         $servers = config('dofus.details');
 
         return view('pages.servers', ['servers' => $servers]);
+    }
+
+    public function email()
+    {
+        //return view('emails.transfert_points', ['user' => Auth::user()]);
+        return view('emails.opening');
     }
 }

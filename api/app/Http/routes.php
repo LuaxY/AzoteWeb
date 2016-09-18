@@ -234,6 +234,10 @@ Route::group(['prefix' => $locale], function() {
         'as'   => 'servers'
     ]);
 
+    Route::get('test/email', [
+        'uses' => 'PageController@email'
+    ]);
+
 });
 
 Route::get('support', function () {
