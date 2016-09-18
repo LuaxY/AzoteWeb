@@ -150,5 +150,6 @@ return [
 
     'recaptcha'    => 'Le captcha n\'est pas correcte.',
     'old_password' => 'Le mot de passe actuel n\'est pas valide.',
+    'old_password_stump' => 'Le mot de passe actuel n\'est pas valide.',
 
 ];

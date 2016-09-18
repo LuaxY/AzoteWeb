@@ -109,5 +109,6 @@ return [
 
     'recaptcha'    => 'The :attribute field is not correct.',
     'old_password' => 'The current password is not valid.',
+    'old_password_stump' => 'The current password is not valid.',
 
 ];

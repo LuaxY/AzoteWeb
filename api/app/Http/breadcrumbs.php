@@ -29,6 +29,19 @@ Breadcrumbs::register('account.page', function($breadcrumbs, $page)
     $breadcrumbs->push($page);
 });
 
+// Accueil > Mon Compte > Compte de Jeu
+Breadcrumbs::register('gameaccount', function($breadcrumbs, $params)
+{
+    $breadcrumbs->parent('account');
+    $breadcrumbs->push('Compte de Jeu', route('gameaccount.view', $params));
+});
+
+// Accueil > Mon Compte > Compte de jeu > [page]
+Breadcrumbs::register('gameaccount.page', function($breadcrumbs, $page, $params)
+{
+    $breadcrumbs->parent('gameaccount', $params);
+    $breadcrumbs->push($page);
+});
 
 // Accueil > Boutique
 Breadcrumbs::register('shop', function($breadcrumbs)

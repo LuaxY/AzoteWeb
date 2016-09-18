@@ -30398,8 +30398,20 @@ body.ak-light-skin .main > .ak-container {
     border: 1px solid #af0101;
     text-decoration: none;
 }
-
 .non-certified a:hover {
     color: #ff0606;
     border: 1px solid #ff0606;
+}
+.profile .code {
+    float: right;
+    margin-top: 10px;
+    color: #aaa79c;
+    font-size: 18px;
+    line-height: 20px;
+}
+.profile .code span {
+    color: #ffb332;
+    font-size: 20px;
+    padding: 5px 10px;
+    border: 2px solid #ffb332;
 }

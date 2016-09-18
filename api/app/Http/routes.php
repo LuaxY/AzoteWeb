@@ -121,16 +121,24 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'gameaccount.view'
     ]);
 
-    Route::get(Lang::get('routes.gameaccount.edit'), [
+    Route::any(Lang::get('routes.gameaccount.edit'), [
         'middleware' => 'auth',
         'uses'       => 'GameAccountController@edit',
         'as'         => 'gameaccount.edit'
     ]);
 
-    Route::post(Lang::get('routes.gameaccount.edit'), [
+    Route::any(Lang::get('routes.gameaccount.transfert'), [
         'middleware' => 'auth',
-        'uses'       => 'GameAccountController@update',
-        'as'         => 'gameaccount.edit'
+        'uses'       => 'GameAccountController@transfert',
+        'as'         => 'gameaccount.transfert'
+    ]);
+
+    /* ============ CHARACTERS ============ */
+
+    Route::get(Lang::get('routes.characters.view'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@view',
+        'as'         => 'characters.view'
     ]);
 
     /* ============ AUTH ============ */

@@ -21,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
             $salt     = $parameters[1];
             return $password === User::hashPassword($value, $salt);
         });
+
+        Validator::extend('old_passwordStump', function($attribute, $value, $parameters, $validator) {
+            $password = $parameters[0];
+            return $password === md5($value);
+        });
     }
 
     /**

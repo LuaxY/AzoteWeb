@@ -90,9 +90,7 @@ class GameAccountController extends Controller
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
 
-        // TODO: create game account view
-        //return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
-        return redirect()->route('profile');
+        return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
     }
 
     public function view($server, $accountId)
@@ -109,20 +107,50 @@ class GameAccountController extends Controller
 
         //dd(config('dofus.details')[$server]); // example to get server details (name/description/ip/port);
 
-        // TMP
-        request()->session()->flash('notify', ['type' => 'warning', 'message' => "Modification des comptes de jeu prochainement !"]);
-        return redirect()->route('profile');
-        // END
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $account->server = $server;
+
+        return view('gameaccount/view', ['account' => $account]);
+    }
+
+    public function edit(Request $request, $server, $accountId)
+    {
+        if (!$this->isServerExist($server))
+        {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        if (!$this->isAccountOwnedByMe($server, $accountId))
+        {
+            throw new GenericException('not_account_owner');
+        }
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
 
-        dd($account->Login);
+        if ($request->all())
+        {
+            $rules = Account::$rules['update-password'];
+            $rules['passwordOld'] = str_replace('{PASSWORD}', $account->PasswordHash, $rules['passwordOld']);
 
-        return view('gameaccount/veiw', ['account' => $account]);
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $account->PasswordHash = md5($request->input('password'));
+            $account->save();
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
+            return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
+        }
+
+        return view('gameaccount/edit', ['account' => $account]);
     }
 
-    public function edit($server, $accountId)
+    public function transfert(Request $request, $server, $accountId)
     {
         if (!$this->isServerExist($server))
         {
@@ -133,18 +161,15 @@ class GameAccountController extends Controller
         {
             throw new GenericException('not_account_owner');
         }
-    }
 
-    public function update(Request $request, $server, $accountId)
-    {
-        if (!$this->isServerExist($server))
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $account->server = $server;
+
+        if ($request->all())
         {
-            throw new GenericException('invalid_server', $server);
+
         }
 
-        if (!$this->isAccountOwnedByMe($server, $accountId))
-        {
-            throw new GenericException('not_account_owner');
-        }
+        return view('gameaccount/transfert', ['account' => $account]);
     }
 }

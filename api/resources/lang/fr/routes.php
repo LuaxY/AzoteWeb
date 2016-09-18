@@ -37,7 +37,7 @@ return [
     'account.change_profile' => 'compte/editer-profil',
 
     'account.certify' => 'compte/certification',
-    
+
     /** Game Account **/
 
     'gameaccount.create' => 'compte/jeu/creation',
@@ -45,6 +45,12 @@ return [
     'gameaccount.view' => 'compte/jeu/{server}/{accountId}',
 
     'gameaccount.edit' => 'compte/jeu/{server}/{accountId}/modifier',
+
+    'gameaccount.transfert' => 'compte/jeu/{server}/{accountId}/transfert',
+
+    /** Characters **/
+
+    'characters.view' => 'personnages/{server}/{characterId}',
 
     /** Shop **/
 

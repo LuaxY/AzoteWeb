@@ -1,8 +1,8 @@
 @extends('layouts.contents.default')
 @include('layouts.menus.base')
 
-@section('header')
-    {!! Html::style('css/login.css') !!}
+@section('breadcrumbs')
+{!! Breadcrumbs::render('account.page', 'Créer un compte de jeu') !!}
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
 <div class="ak-container ak-panel-stack">
     <div class="ak-panel">
         <div class="ak-panel-title">
-              <span class="ak-panel-title-icon"></span> Créer un compte de jeu
+            <span class="ak-panel-title-icon"></span> Créer un compte de jeu
         </div>
         <div class="ak-panel-content">
             <div class="panel-main">
