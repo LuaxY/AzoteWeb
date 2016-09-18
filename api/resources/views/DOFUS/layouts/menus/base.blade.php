@@ -1,6 +1,6 @@
 @section('menu')
 <aside class="col-md-3">
-    <div class="ak-container ak-main-aside">
+    <div class="ak-container ak-main-aside" style="margin: 0 6px;">
 
         @if (Auth::guest())
         <div class="row ak-container ak-panel ak-panel-blue">
@@ -73,7 +73,7 @@
         @endif
 
         <div class="row ak-container">
-            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:23px;">Vote et gagne des cadeaux</a>
+            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:22px;">Vote et gagne des cadeaux</a>
         </div>
 
         <div class="row ak-container">
