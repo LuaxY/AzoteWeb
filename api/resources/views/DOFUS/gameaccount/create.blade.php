@@ -26,9 +26,9 @@
                                     <div class="form-group @if ($errors->has('server')) has-error @endif">
                                         <label class="control-label" for="server">Serveur</label>
                                         <select name="server" class="form-control" id="server" />
-                                            <option value="{{ Input::old('server') }}">{{ ucfirst(Input::old('server')) }}</option>
+                                            <option value="">Selectionnez un serveur</option>
                                             @foreach (config('dofus.servers') as $server)
-                                            <option value="{{ $server }}">{{ ucfirst($server) }}</option>
+                                            <option value="{{ $server }}" @if (Input::old('server') == $server) selected="selected" @endif)>{{ ucfirst($server) }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('server')) <label class="error control-label">{{ $errors->first('server') }}</label> @endif
