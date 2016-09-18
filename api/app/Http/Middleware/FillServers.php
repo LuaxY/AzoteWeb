@@ -23,35 +23,35 @@ class FillServers
 
         foreach ($json->servers as $server)
         {
-        	$data = [];
-        	$data['name'] = $server->name;
-        	$data['ip']   = $server->ip;
-        	$data['port'] = $server->port;
-        	$data['desc'] = $server->desc;
+            $data = [];
+            $data['name'] = $server->name;
+            $data['ip']   = $server->ip;
+            $data['port'] = $server->port;
+            $data['desc'] = $server->desc;
 
-        	$servers[] = $server->name;
-        	$details[$server->name] = $data;
+            $servers[] = $server->name;
+            $details[$server->name] = $data;
 
-        	foreach (['auth', 'world'] as $db)
-        	{
-        		$db_var = "db_$db";
+            foreach (['auth', 'world'] as $db)
+            {
+                $db_var = "db_$db";
 
-        		$database = [
-        			'driver'    => 'mysql',
-        			'host'      => $server->db_host,
-        			'database'  => $server->$db_var,
-        			'username'  => $server->db_user,
-        			'password'  => $server->db_pass,
-        			'charset'   => 'utf8',
-        			'collation' => 'utf8_unicode_ci',
-        			'prefix'    => '',
-        			'strict'    => false,
-        		];
+                $database = [
+                    'driver'    => 'mysql',
+                    'host'      => $server->db_host,
+                    'database'  => $server->$db_var,
+                    'username'  => $server->db_user,
+                    'password'  => $server->db_pass,
+                    'charset'   => 'utf8',
+                    'collation' => 'utf8_unicode_ci',
+                    'prefix'    => '',
+                    'strict'    => false,
+                ];
 
-        		Config::set("database.connections.{$server->name}_$db", $database);
-        	}
+                Config::set("database.connections.{$server->name}_$db", $database);
+            }
         }
-        
+
         Config::set('dofus.servers', $servers);
         Config::set('dofus.details', $details);
 

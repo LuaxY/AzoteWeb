@@ -10,19 +10,14 @@ return [
 
     'details'      => [], // filled in FillServers middleware
 
-    'motd'         => [], // filled in FillMotd middleware
+    'motd'         => [], // filled in FillSettings middleware
+
+    'theme'        => [ // modified in FillSettings middleware
+        'background' => 'kolizeum',
+        'color'      => '#3d301e'
+    ],
 
     'default_avatar' => 'imgs/avatar/default.jpg',
-
-    'template'     => env('TEMPLATE', 'dofus'),
-
-    'theme'        => env('THEME', false),
-
-    'background'   => env('BACKGROUND', 'dofus4'),
-
-    'color'        => env('COLOR', '#000'),
-
-    'carousel'     => env('CAROUSEL', false),
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 

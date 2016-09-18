@@ -20,9 +20,9 @@
                                     <label for="title">Title:</label>
                                     {!! Form::text('title', null, ['class' => 'form-control', 'id' => 'title']) !!}
                                     @if ($errors->has('title'))
-                                        <span class="help-block">
-                                                                        <strong>{{ $errors->first('title') }}</strong>
-                                                                    </span>
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
                                     @endif
                                 </div>
                             </div>
@@ -31,22 +31,22 @@
                                     <label for="subtitle">Subtitle:</label>
                                     {!! Form::text('subtitle', null, ['class' => 'form-control', 'id' => 'subtitle']) !!}
                                     @if ($errors->has('subtitle'))
-                                        <span class="help-block">
-                                                                        <strong>{{ $errors->first('subtitle') }}</strong>
-                                                                    </span>
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('subtitle') }}</strong>
+                                    </span>
                                     @endif
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="form-group {{ $errors->has('postid') ? ' has-error' : '' }}">
-                                    <label for="postid">Linked Post:</label>
-                                    {!! Form::select('postid', $posts, null,['class' => 'form-control', 'id' => 'postid']) !!}
-                                    @if ($errors->has('postid'))
-                                        <span class="help-block">
-                                                                        <strong>{{ $errors->first('postid') }}</strong>
-                                                                    </span>
+                                <div class="form-group {{ $errors->has('post_id') ? ' has-error' : '' }}">
+                                    <label for="post_id">Linked Post:</label>
+                                    {!! Form::select('post_id', $posts, null,['class' => 'form-control', 'id' => 'post_id']) !!}
+                                    @if ($errors->has('post_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('post_id') }}</strong>
+                                    </span>
                                     @endif
                                 </div>
                             </div>
@@ -59,11 +59,43 @@
                         </div>
                     @endif
                 </div>
+            </div>
+        </div>
 
-                <!-- <div class="card-box">
-                     <h4 class="header-title m-b-30">Box 2nd</h4>
-                 </div> -->
-
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card-box">
+                    <h4 class="header-title m-b-30">Theme</h4>
+                    {!! Form::model($theme, ['route' => 'admin.settings.update']) !!}
+                    {{ method_field('PATCH') }}
+                    {!! Form::text('settings_type', 'theme', ['class' => 'hidden disabled']) !!}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group {{ $errors->has('background') ? ' has-error' : '' }}">
+                                <label for="background">Background:</label>
+                                {!! Form::text('background', null, ['class' => 'form-control', 'id' => 'background']) !!}
+                                @if ($errors->has('background'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('background') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ $errors->has('color') ? ' has-error' : '' }}">
+                                <label for="color">Color:</label>
+                                {!! Form::text('color', null, ['class' => 'form-control', 'id' => 'color']) !!}
+                                @if ($errors->has('color'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('color') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

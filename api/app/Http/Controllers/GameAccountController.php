@@ -41,7 +41,7 @@ class GameAccountController extends Controller
     {
         if (!$this->isServerExist($request->input('server')))
         {
-            return redirect()->back()->withErrors(['server' => 'Le serveur sélectionner est invalide.'])->withInput();
+            return redirect()->back()->withErrors(['server' => 'Le serveur sélectionné est invalide.'])->withInput();
         }
 
         $database = $request->input('server') . '_auth';
