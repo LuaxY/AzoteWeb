@@ -8,7 +8,7 @@
     <a href="">
         <div class="img_sm"></div>
     </a>
-    <div class="ak-carrousel-bg-title ak-carrousel-bg-title-left">
+    <div class="ak-carrousel-bg-title ak-carrousel-bg-title-left hidden-xs">
         @if (config('dofus.motd'))
         <div class="ak-block-title">
             <a href="{{ route('posts.show', config('dofus.motd.postid')) }}" class="ak-title-link">
@@ -30,12 +30,12 @@
     <div class="ak-main-content">
         <div class="ak-main-page">
             <div class="row">
-                @yield('menu')
-                <div class="main col-md-9">
+                <div class="main col-md-9 col-md-push-3">
                     <div class="ak-container ak-main-center">
                         @yield('content')
                     </div>
                 </div>
+                @yield('menu')
             </div>
         </div>
     </div>
