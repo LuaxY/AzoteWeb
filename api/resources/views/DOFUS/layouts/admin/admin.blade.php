@@ -12,6 +12,12 @@
     {!! Html::style('css/vendor_admin.min.css') !!}
     {!! Html::style('css/app_admin.min.css') !!}
 
+    <style>
+        .topbar {
+            z-index: 0 !important;
+        }
+    </style>
+
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -55,5 +61,3 @@
         {!! Toastr::render() !!}
 </body>
 </html>
-
-
