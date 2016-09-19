@@ -142,9 +142,9 @@
                                     <span class="ak-link-title">Serveur</span>
                                 </div>
                                 <a href="{{ URL::to('server/list') }}">Infos serveurs</a>
-                                <a href="{{ URL::to('events') }}">Évenemtns</a>
+                                <a href="{{ URL::to('events') }}">Évènements</a>
                                 <a href="{{ URL::to('ladder') }}">Classement</a>
-                                <a href="{{ URL::to('gifts') }}">Cadeaux</a>
+                                <a href="{{ URL::route('vote.index') }}">Cadeaux</a>
                             </div>
                         </div>
                     </div>
@@ -165,10 +165,10 @@
                                 <div>
                                     <span class="ak-link-title">Support</span>
                                 </div>
-                                <a href="{{ URL::to('support/help') }}">Aide</a>
+                                <a href="{{ URL::to('support') }}">Aide</a>
                                 <a href="{{ config('dofus.social.forum') }}">Forum</a>
-                                <a href="mailto:{{ config('dofus.email') }}">Contact</a>
-                                <a href="{{ URL::to('support/faq') }}">FAQ</a>
+                                <a href="http://forum.azote.us/contact">Contact</a>
+                                <a href="http://forum.azote.us/faq">FAQ</a>
                             </div>
                         </div>
                     </div>
@@ -219,7 +219,7 @@
                 s0.parentNode.insertBefore(s1,s0);
                 Tawk_API = Tawk_API || {};
                 Tawk_API.visitor = {
-                	name  : '{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
+                	name  : '{{ Auth::user()->pseudo }} {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
                 	email : '{{ Auth::user()->email }}',
                 	hash  : '{{ hash_hmac('sha256', Auth::user()->email, config('dofus.tawk.api') ) }}'
                 };
