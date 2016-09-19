@@ -62,13 +62,6 @@ class User extends Authenticatable
             'lastname'             => 'required|min:3|max:32|alpha_dash',
             'rank'                 => 'required|in:0,4',
         ],
-        'admin-update' => [
-            'pseudo'    => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
-            'firstname' => 'required|min:3|max:32|alpha_dash',
-            'lastname'  => 'required|min:3|max:32|alpha_dash',
-            'rank'      => 'required|in:0,4',
-            'points'    => 'required|numeric'
-        ],
         'admin-update-profile' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',

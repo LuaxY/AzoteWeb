@@ -71,15 +71,21 @@ class UserController extends Controller
 
     public function update(User $user, Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['admin-update']);
+        $rules = [
+            'pseudo'    => 'required|min:3|max:32|alpha_dash|unique:users,pseudo,' . $user->id,
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'rank'      => 'required|in:0,4',
+            'points'    => 'required|numeric'
+        ];
+        
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-
-        $user = User::findOrFail($user->id);
 
         $user->pseudo    = $request['pseudo'];
         $user->firstname = $request['firstname'];
