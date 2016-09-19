@@ -114,12 +114,12 @@
                         </div>
 
                         <div class="ak-inner-block">
-                            <a class="btn btn-info ak-btn-big" href="">télécharger le jeu <span>Version : Windows</span></a>
+                            <a class="btn btn-info ak-btn-big" href="{{ config('dofus.download.win') }}">télécharger le jeu <span>Version : Windows</span></a>
                             <div class="clearfix"></div>
                             <div class="ak-other-version">
                                 <div class="ak-list-link">
-                                    <a href="">Windows</a>
-                                    <a href="">MacOS</a>
+                                    <a href="{{ config('dofus.download.win') }}">Windows</a>
+                                    <a href="{{ config('dofus.download.mac') }}">MacOS</a>
                                 </div>
                             </div>
                             <a class="ak-problems" href="{{ URL::to('support') }}" target="_blank">Un problème d'installation ?</a>

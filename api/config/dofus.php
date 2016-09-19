@@ -21,6 +21,11 @@ return [
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
+    'download'     => [
+        'mac' => 'http://dl.azote.us/Azote_Setup.dmg',
+        'win' => 'http://dl.azote.us/Azote_Setup.exe',
+    ],
+
     'tawk'         => [
         'id'  => env('TAWK_ID', false),
         'api' => env('TAWK_API'),
@@ -32,11 +37,8 @@ return [
     ],
 
     'forum'       => [
-
         'domain'     => env('FORUM_DOMAIN', ''),
-
         'user_group' => env('FORUM_USER_GROUP', 3)
-
     ],
 
     'social'       => [
