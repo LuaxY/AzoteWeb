@@ -34,6 +34,10 @@ return [
 
     'account.change_password' => 'compte/changement-mot-de-passe',
 
+    'account.change_profile' => 'compte/editer-profil',
+
+    'account.certify' => 'compte/certification',
+    
     /** Game Account **/
 
     'gameaccount.create' => 'compte/jeu/creation',

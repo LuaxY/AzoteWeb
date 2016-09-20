@@ -115,6 +115,7 @@ return [
         'email'                 => 'Adresse E-mail',
         'firstname'             => 'Prénom',
         'lastname'              => 'Nom',
+        'birthday'              => 'Date de naissance',
         'password'              => 'Mot de passe',
         'passwordConfirmation'  => 'Confirmation du mot de passe',
         'passwordOld'           => 'Mot de passe actuel',

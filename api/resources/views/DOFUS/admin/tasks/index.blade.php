@@ -499,7 +499,6 @@
 
                     success: function (msg) {
                         toastr.success('Adding task..');
-                       console.log(msg.maxnummer);
                         setTimeout(function(){ location.reload(); }, 500);
                     },
 

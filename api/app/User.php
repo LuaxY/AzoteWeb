@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use HasRoles; // CanResetPassword
 
+    protected $dates = ['birthday', 'last_vote'];
+
     protected $fillable = [
         'email',
         'password',
@@ -53,6 +55,15 @@ class User extends Authenticatable
         'update-email' => [
             'passwordOld' => 'required|old_password:{PASSWORD},{SALT}',
             'email'       => 'required|email|unique:users,email',
+        ],
+        'update-profile' => [
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+        ],
+        'certify' => [
+            'firstname' => 'required|min:3|max:32|alpha_dash',
+            'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'birthday'  => 'required|date'
         ],
         'admin-store' => [
             'email'                => 'required|email|unique:users,email',
@@ -146,5 +157,10 @@ class User extends Authenticatable
     public function isBanned()
     {
         return $this->banned == 1;
+    }
+
+    public function isCertified()
+    {
+        return $this->certified == 1;
     }
 }

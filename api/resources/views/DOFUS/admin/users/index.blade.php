@@ -23,6 +23,8 @@
                                     <th>Email</th>
                                     <th>Firstname</th>
                                     <th>Lastname</th>
+                                    <th>Birthday</th>
+                                    <th>Certified</th>
                                     <th>Rank</th>
                                     <th>Points</th>
                                     <th>Votes</th>
@@ -62,6 +64,8 @@
                             {data: 'email', name: 'email'},
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},
+                            {data: 'birthday', name: 'birthday'},
+                            {data: 'certified', name: 'certified'},
                             {data: 'rank', name: 'rank'},
                             {data: 'points', name: 'points'},
                             {data: 'votes', name: 'votes'},
@@ -196,7 +200,7 @@
                                 data: { _token: token },
 
                                 success: function (msg) {
-                                    var button = '<td class=" activate"><span class="label label-success">Confirmed</span></td>';
+                                    var button = '<td class=" activate"><span class="label label-success"><i class="fa fa-check-circle"></i> Confirmed</span></td>';
                                     $('[data-toggle="tooltip"]').tooltip()
                                     $('#'+userId).children('td.activate').replaceWith(button);
                                     element.hide();

@@ -301,4 +301,70 @@ class AccountController extends Controller
 
         return view('account/change-password');
     }
+
+    public function change_profile(Request $request)
+    {
+        if ($request->all())
+        {
+            $rules = User::$rules['update-profile'];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            Auth::user()->firstname = $request->input('firstname');
+            Auth::user()->lastname = $request->input('lastname');
+            Auth::user()->save();
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Profil mis à jour."]);
+            return redirect()->route('profile');
+        }
+
+        if(Auth::user()->certified == 0)
+        {
+            $authuser = Auth::user();
+            return view('account/change-profile', compact('authuser'));
+        }
+        else
+        {
+            abort(404);
+        }
+    }
+    public function certify(Request $request)
+    {
+        if ($request->all())
+        {
+            $rules = User::$rules['certify'];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            Auth::user()->certified = 1;
+            Auth::user()->firstname = $request->input('firstname');
+            Auth::user()->lastname = $request->input('lastname');
+            Auth::user()->birthday = $request->input('birthday');
+            Auth::user()->save();
+
+            // TODO: send email to user with explications
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Votre compte est certifié!"]);
+            return redirect()->route('profile');
+        }
+
+        if(Auth::user()->certified == 0)
+        {
+            $authuser = Auth::user();
+            return view('account/certify', compact('authuser'));
+        }
+        else
+        {
+            abort(404);
+        }
+    }
 }

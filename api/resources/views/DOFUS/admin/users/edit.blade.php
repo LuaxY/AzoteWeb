@@ -27,9 +27,20 @@
                             <div class="alert-active">
                                 @if(!$user->isActive())
                                     <div class="alert alert-warning">
-                                        <strong>Info!</strong> This account is not confirmed by the user.
+                                        <strong><i class="fa fa-minus-circle"></i> Info!</strong> This account is not confirmed by the user.
                                     </div>
                                 @endif
+                            </div>
+                            <div class="alert-certified">
+                                    @if($user->isCertified())
+                                        <div class="alert alert-danger">
+                                            <strong><i class="fa fa-lock"></i> Certified!</strong> This account is certified. It's not recommanded to change user details.
+                                        </div>
+                                        @else
+                                        <div class="alert alert-warning">
+                                            <strong><i class="fa fa-unlock"></i> Info!</strong> This account is not certified.
+                                        </div>
+                                    @endif
                             </div>
                             <div class="col-lg-12">
                                 <div class="card-box">
@@ -44,7 +55,12 @@
                                         @if (!$user->isActive())
                                             <button type="button" id="active-{{$user->id}}" class="activ btn btn-warning waves-effect w-md m-b-5"><i class="fa fa-check m-r-5"></i>Active</button>
                                         @endif
-                                        <button type="button" class="btn btn-success waves-effect w-md m-b-5" data-toggle="modal" data-target="#user-password-modal"><i class="fa fa-key m-r-5"></i> Change password</button>
+                                        @if (!$user->isCertified())
+                                                <button type="button" id="certify-{{$user->id}}" data-toggle="modal" data-target="#user-certify-modal" class="certif btn btn-success waves-effect w-md m-b-5"><i class="fa fa-lock m-r-5"></i>Certify</button>
+                                        @else
+                                                <button type="button" id="decertify-{{$user->id}}" class="decertif btn btn-info waves-effect w-md m-b-5"><i class="fa fa-unlock m-r-5"></i>Decertify</button>
+                                            @endif
+                                        <button type="button" class="btn btn-warning waves-effect w-md m-b-5" data-toggle="modal" data-target="#user-password-modal"><i class="fa fa-key m-r-5"></i> Change password</button>
                                         @if ($user->forum_id)
                                             <a class="btn btn-primary waves-effect w-md m-b-5" href="{{ config('dofus.social.forum') }}profile/{{ $user->forum_id }}-null" target="_blank"><i class="fa fa-users m-r-5"></i> Forum</a>
                                         @endif
@@ -65,15 +81,27 @@
                                 </div>
                             </div>
                             {!! Form::model($user, ['route' => ['admin.user.update',$user->id], 'files' => true]) !!}
+
                             {{ method_field('PATCH') }}
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group {{ $errors->has('pseudo') ? ' has-error' : '' }}">
-                                        <label for="firstname">Pseudo:</label>
+                                        <label for="pseudo">Pseudo:</label>
                                         {!! Form::text('pseudo', null, ['class' => 'form-control', 'id' => 'pseudo']) !!}
                                         @if ($errors->has('pseudo'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('pseudo') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group {{ $errors->has('birthday') ? ' has-error' : '' }}">
+                                        <label for="birthday">Date of birth:</label>
+                                        {!! Form::date('birthday', $user->birthday, ['class' => 'form-control', 'id' => 'birthday']) !!}
+                                        @if ($errors->has('birthday'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('birthday') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -108,12 +136,16 @@
                                 <div class="col-sm-6">
                                     <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
                                         <label for="email">Email:</label>
-                                        {!! Form::text('email', null, ['class' => 'form-control', 'id' => 'email', 'disabled']) !!}
+                                        {!! Form::text('email', null, ['class' => 'form-control', 'id' => 'email']) !!}
                                         @if ($errors->has('email'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('email') }}</strong>
                                             </span>
                                         @endif
+                                        <div class="checkbox checkbox-info">
+                                            {!! Form::checkbox('useradvert',1,false, ['id' => 'useradvert']) !!}
+                                            <label for="useradvert">Send an email to user for this change</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -200,6 +232,57 @@
                 </div>
             </div>
         </div>
+
+        <div id="user-certify-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{ $user->pseudo }}: Certify account</h4>
+                <p><strong>This action will certify the account and block the editing of user identity</strong></p>
+            </div>
+            <div class="modal-body">
+                {!! Form::model($user, [ 'route' => ['admin.user.certify', $user->id], 'id' => 'form-certify-user']) !!}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group {{ $errors->has('lastname') ? ' has-error' : '' }}">
+                            <label for="lastname">Name:</label>
+                            {!! Form::text('lastname', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                            @if ($errors->has('lastname'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('lastname') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                        <div class="form-group {{ $errors->has('firstname') ? ' has-error' : '' }}">
+                            <label for="firstname">Firstname:</label>
+                            {!! Form::text('firstname', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                            @if ($errors->has('firstname'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('firstname') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                        <div class="form-group {{ $errors->has('birthday') ? ' has-error' : '' }}">
+                            <label for="birthday">Date of birth:</label>
+                            {!! Form::date('birthday', $user->birthday, ['class' => 'form-control', 'required' => 'required']) !!}
+                            @if ($errors->has('birthday'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('birthday') }}</strong>
+                                        </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger waves-effect waves-light">Certify</button>
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+</div>
         @endsection
 
         @section('bottom')
@@ -426,6 +509,92 @@
                            },
 
                            error: function(jqXhr, json, errorThrown) {
+                               var errors = jqXhr.responseJSON;
+                               var errorsHtml;
+                               if(errors)
+                               {
+                                   errorsHtml= '';
+                                   $.each( errors, function( key, value ) {
+                                       errorsHtml += '<li>' + value[0] + '</li>';
+                                   });
+                               }
+                               else
+                               {
+                                   errorsHtml = 'Unknow error';
+                               }
+                               toastr.error(errorsHtml);
+                           }
+                       });
+                   });
+                   // Uncertify user account
+                   $("body").on("click", ".decertif", function (e) {
+                       e.preventDefault();
+                       // Find ID of the user
+                       var clickedId = $(this).attr('id');
+                       var userId = clickedId.replace("decertify-", "");
+                       var element = $(this);
+
+                       swal({
+                           title: "Are you sure?",
+                           text: "This account will be decertified!",
+                           type: "warning",
+                           showCancelButton: true,
+                           confirmButtonColor: "#DD6B55",
+                           confirmButtonText: "Yes!",
+                           closeOnConfirm: false }, function(){
+
+                           $.ajax({
+                               method: 'PATCH',
+                               url: ''+url_users_base+'/'+userId+'/decertify',
+                               data: { _token: token },
+
+                               success: function (msg) {
+                                   swal("Decertified!", "User account is not certified anymore.", "success");
+                                   var button = ' <button type="button" id="certify-'+userId+'" data-toggle="modal" data-target="#user-certify-modal" class="certif btn btn-success waves-effect w-md m-b-5"><i class="fa fa-lock m-r-5"></i>Certify</button>';
+                                   element.replaceWith(button);
+                                   var html = '<div class="alert alert-warning"> <strong><i class="fa fa-unlock"></i> Info!</strong> This account is not certified. </div>';
+                                   $('div.alert-certified').html('');
+                                   $('div.alert-certified').append(html);
+                               },
+
+                               error: function(jqXhr, json, errorThrown) {
+                                   var errors = jqXhr.responseJSON;
+                                   var errorsHtml;
+                                   if(errors)
+                                   {
+                                       errorsHtml= '';
+                                       $.each( errors, function( key, value ) {
+                                           errorsHtml += '<li>' + value[0] + '</li>';
+                                       });
+                                   }
+                                   else
+                                   {
+                                       errorsHtml = 'Unknow error';
+                                   }
+                                   toastr.error(errorsHtml);
+                               }
+                           });
+
+                       });
+                   });
+                   // Certify user account
+                   $( "#form-certify-user" ).on( "submit", function( event ) {
+                       event.preventDefault();
+                       var $this = $(this);
+                       var datas = $this.serialize();
+
+                       $.ajax({
+                           method: 'PATCH',
+                           url: $this.attr("action"),
+                           data: datas,
+
+                           success: function (msg) {
+                               $('#user-password-modal').modal('hide');
+                               toastr.success('Account certified!');
+                               setTimeout(function(){ location.reload(); }, 500);
+                           },
+
+                           error: function (jqXhr, json, errorThrown) {
                                var errors = jqXhr.responseJSON;
                                var errorsHtml;
                                if(errors)

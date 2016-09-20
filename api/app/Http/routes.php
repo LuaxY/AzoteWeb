@@ -89,6 +89,18 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'account.change_password'
     ]);
 
+    Route::any(Lang::get('routes.account.change_profile'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@change_profile',
+        'as'         => 'account.change_profile'
+    ]);
+
+    Route::any(Lang::get('routes.account.certify'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@certify',
+        'as'         => 'account.certify'
+    ]);
+
     /* ============ GAME ACCOUNT ============ */
 
     Route::get(Lang::get('routes.gameaccount.create'), [
@@ -371,6 +383,16 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             Route::patch('activate', [
                 'uses' => 'UserController@activate',
                 'as'   => 'admin.user.activate'
+            ])->where('user', '[0-9]+');
+
+            Route::patch('decertify', [
+                'uses' => 'UserController@decertify',
+                'as'   => 'admin.user.decertify'
+            ])->where('user', '[0-9]+');
+
+            Route::patch('certify', [
+                'uses' => 'UserController@certify',
+                'as'   => 'admin.user.certify'
             ])->where('user', '[0-9]+');
 
             Route::patch('password', [

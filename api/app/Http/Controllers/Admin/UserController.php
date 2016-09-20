@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yuansir\Toastr\Facades\Toastr;
 
@@ -56,6 +57,7 @@ class UserController extends Controller
         $user->active = $request->active == 1 ? true : false;
         $user->ticket = $request->active == 1 ? null : str_random(32);
         $user->save();
+
         if(!$request->active)
         {
             Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
@@ -75,6 +77,8 @@ class UserController extends Controller
             'pseudo'    => 'required|min:3|max:32|alpha_dash|unique:users,pseudo,' . $user->id,
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'birthday'  => 'date',
+            'email'     => 'required|email|unique:users,email, ' . $user->id,
             'rank'      => 'required|in:0,4',
             'points'    => 'required|numeric'
         ];
@@ -92,12 +96,25 @@ class UserController extends Controller
         $user->lastname  = $request['lastname'];
         $user->rank      = $request['rank'];
         $user->points    = $request['points'];
+        $user->email     = $request['email'];
+        $user->birthday  = empty($request['birthday']) ? null : $request['birthday'];
         $user->save();
+
+        if($request->useradvert == true)
+        {
+            Mail::send('emails.admin-email-update', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Changement d\'adresse e-mail');
+            });
+            Toastr::success('E-mail send', $title = null, $options = []);
+        }
 
         Toastr::success('Account updated', $title = null, $options = []);
 
         return redirect()->back();
     }
+
     public function ban(User $user, Request $request)
     {
         $user = User::findOrFail($user->id);
@@ -126,6 +143,35 @@ class UserController extends Controller
 
         $user->active = true;
         $user->ticket = null;
+        $user->save();
+
+        return response()->json([], 200);
+    }
+
+    public function decertify(User $user, Request $request)
+    {
+        $user = User::findOrFail($user->id);
+
+        $user->certified = false;
+        $user->save();
+
+        return response()->json([], 200);
+    }
+
+    public function certify(User $user, Request $request)
+    {
+        $validator = Validator::make($request->all(), User::$rules['certify']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
+        $user = User::findOrFail($user->id);
+
+        $user->firstname  = $request->firstname;
+        $user->lastname   = $request->lastname;
+        $user->birthday   = $request->birthday;
+        $user->certified = true;
         $user->save();
 
         return response()->json([], 200);

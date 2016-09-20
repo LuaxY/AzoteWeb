@@ -18,12 +18,29 @@
                     <div class="pull-left">
                         <img src="{{ URL::asset(Auth::user()->avatar) }}" />
                     </div>
+                    @if(Auth::user()->certified == 0)
+                    <div class="pull-right">
+                      <h3>Attention, votre compte est vulnérable.</h3>
+                        <a class="btn btn-danger btn-lg" href="{{ URL::route('account.certify') }}">Certifier mon compte maintenant</a>
+                    </div>
+                    @else
+                        <div class="pull-right">
+                            <h3 style="color: green;">Bravo, votre compte est certifié!</h3>
+                            <button class="btn btn-info btn-lg" href="#">Voir les promotions</button>
+                        </div>
+                    @endif
                     <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
-                    <b>Nom</b>: {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}<br>
+                    <b>Identité</b>: {{ Auth::user()->lastname }} {{ Auth::user()->firstname }}<br>
+                    @if(Auth::user()->birthday)
+                        <b>Date de naissance</b>: {{ Auth::user()->birthday->format('j F Y') }}<br>
+                    @endif
                     <b>Email</b>: {{ Auth::user()->email }}<br>
                     <b>Ogrines</b>: {{ Utils::format_price(Auth::user()->points) }} <span class="ak-icon-small ak-ogrines-icon"></span><br>
                     <b>Cadeaux</b>: {{ Utils::format_price(Auth::user()->votes / 10) }} <span class="ak-icon-small ak-gifts-icon"></span><br>
-                    <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}<br>
+                    <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}<br><br>
+                    @if(Auth::user()->certified == 0)
+                    <a href="{{ URL::route('account.change_profile') }}" class="btn btn-primary btn-sm">Éditer le profil</a>
+                    @endif
                     <a href="{{ URL::route('account.change_email') }}" class="btn btn-primary btn-sm">Changer d'email</a>
                     <a href="{{ URL::route('account.change_password') }}" class="btn btn-primary btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>
