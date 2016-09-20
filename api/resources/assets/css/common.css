@@ -30372,3 +30372,9 @@ body.ak-light-skin .main > .ak-container {
     height: 150px;
     margin-right: 10px;
 }
+.ak-main-logo {
+    background-size: 100px !important;
+}
+.burger-btn {
+    display: none !important;
+}

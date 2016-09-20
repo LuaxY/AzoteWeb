@@ -1113,7 +1113,7 @@ li.ak-selected .ak-breed-icon.breed17_0 {
 }
 .container.ak-main-container {
     min-height: 450px;
-    padding: 0 12px 12px 12px
+    /*padding: 0 12px 12px 12px*/
 }
 .ak-body-breed-7 .ak-breed-render img {
     margin-left: -7px

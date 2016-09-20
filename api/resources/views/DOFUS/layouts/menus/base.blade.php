@@ -1,5 +1,5 @@
 @section('menu')
-<aside class="col-md-3">
+<aside class="col-md-3 col-md-pull-9">
     <div class="ak-container ak-main-aside" style="margin: 0 6px;">
 
         @if (Auth::guest())
