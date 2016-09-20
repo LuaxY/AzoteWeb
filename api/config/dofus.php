@@ -19,6 +19,8 @@ return [
 
     'default_avatar' => 'imgs/avatar/default.jpg',
 
+    'accounts_limit' => 8,
+
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
     'download'     => [

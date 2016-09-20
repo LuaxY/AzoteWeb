@@ -39,12 +39,20 @@ class GameAccountController extends Controller
 
     public function store(Request $request)
     {
-        if (!$this->isServerExist($request->input('server')))
+        $server = $request->input('server');
+
+        if (!$this->isServerExist($server))
         {
             return redirect()->back()->withErrors(['server' => 'Le serveur sélectionné est invalide.'])->withInput();
         }
 
-        $database = $request->input('server') . '_auth';
+        if (count(Auth::user()->accounts($server)) >= config('dofus.accounts_limit'))
+        {
+            $request->session()->flash('notify', ['type' => 'error', 'message' => "Vous avez atteint la limite de compte possible sur ce serveur !"]);
+            return redirect()->back()->withInput();
+        }
+
+        $database = $server . '_auth';
 
         $rules = Account::$rules['register'];
         $rules['login']    = str_replace('{DB}', $database, $rules['login']);
@@ -77,7 +85,7 @@ class GameAccountController extends Controller
         $account->SubscriptionEnd = '2016-01-01 00:00:00';
         $account->IsJailed        = false;
         $account->IsBanned        = false;
-        $account->server          = $request->input('server');
+        $account->server          = $server;
         $account->save();
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
