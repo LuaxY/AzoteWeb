@@ -42,6 +42,10 @@ class UserDatatablesController extends Controller
                 }
                 return $buttons;
             })
+            ->editColumn('pseudo', function ($user) {
+                $ac = '<a href="user/'.$user->id.'/edit">'.$user->pseudo.'</a>';
+                return $ac;
+            })
             ->editColumn('birthday', function ($user) {
                 if($user->birthday)
                 {
