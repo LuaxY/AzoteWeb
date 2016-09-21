@@ -316,14 +316,14 @@ class AccountController extends Controller
             }
 
             Auth::user()->firstname = $request->input('firstname');
-            Auth::user()->lastname = $request->input('lastname');
+            Auth::user()->lastname  = $request->input('lastname');
             Auth::user()->save();
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Profil mis à jour."]);
             return redirect()->route('profile');
         }
 
-        if(Auth::user()->certified == 0)
+        if(!Auth::user()->certified)
         {
             $authuser = Auth::user();
             return view('account/change-profile', compact('authuser'));
@@ -345,10 +345,11 @@ class AccountController extends Controller
             {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            Auth::user()->certified = 1;
+            
+            Auth::user()->certified = true;
             Auth::user()->firstname = $request->input('firstname');
-            Auth::user()->lastname = $request->input('lastname');
-            Auth::user()->birthday = $request->input('birthday');
+            Auth::user()->lastname  = $request->input('lastname');
+            Auth::user()->birthday  = $request->input('birthday');
             Auth::user()->save();
 
             // TODO: send email to user with explications
@@ -357,7 +358,7 @@ class AccountController extends Controller
             return redirect()->route('profile');
         }
 
-        if(Auth::user()->certified == 0)
+        if(!Auth::user()->certified)
         {
             $authuser = Auth::user();
             return view('account/certify', compact('authuser'));

@@ -19,15 +19,18 @@
                         <img src="{{ URL::asset(Auth::user()->avatar) }}" />
                     </div>
                     @if(Auth::user()->certified == 0)
-                    <div class="pull-right">
-                      <h3>Attention, votre compte est vulnérable.</h3>
+                    <!--<div class="pull-right">
+                        <h3>Attention, votre compte est vulnérable.</h3>
                         <a class="btn btn-danger btn-lg" href="{{ URL::route('account.certify') }}">Certifier mon compte maintenant</a>
+                    </div>-->
+                    <div class="non-certified">
+                        <a href="{{ URL::route('account.certify') }}">Compte non certifié</a>
                     </div>
                     @else
-                        <div class="pull-right">
-                            <h3 style="color: green;">Bravo, votre compte est certifié!</h3>
-                            <button class="btn btn-info btn-lg" href="#">Voir les promotions</button>
-                        </div>
+                    <div class="certified">
+                        <span>Compte certifié</span>
+                        <!--<button class="btn btn-info btn-lg" href="#">Voir les promotions</button>-->
+                    </div>
                     @endif
                     <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
                     <b>Identité</b>: {{ Auth::user()->lastname }} {{ Auth::user()->firstname }}<br>

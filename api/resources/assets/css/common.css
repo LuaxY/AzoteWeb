@@ -30378,3 +30378,28 @@ body.ak-light-skin .main > .ak-container {
 .burger-btn {
     display: none !important;
 }
+.certified,
+.non-certified {
+    float: right;
+    margin-top: 10px;
+    line-height: 20px;
+}
+.certified span,
+.non-certified a {
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+.certified span {
+    color: #01af17;
+    border: 1px solid #01af17;
+}
+.non-certified a {
+    color: #af0101;
+    border: 1px solid #af0101;
+    text-decoration: none;
+}
+
+.non-certified a:hover {
+    color: #ff0606;
+    border: 1px solid #ff0606;
+}

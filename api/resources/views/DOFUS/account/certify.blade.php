@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="form-group @if ($errors->has('birthday')) has-error @endif">
-                        <label class="control-label" for="birthday">Date de naissance</label>
+                        <label class="control-label" for="birthday">Date de naissance (AAAA-MM-JJ)</label>
                         {!! Form::date('birthday', null, ['class' => 'form-control ak-tooltip', 'id' => 'birthday', 'required' => 'required']) !!}
                         @if ($errors->has('birthday')) <label class="error control-label">{{ $errors->first('birthday') }}</label> @endif
                     </div>
