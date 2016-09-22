@@ -4,6 +4,7 @@
 @section('header')
     {{ Html::style('css/sweetalert.min.css') }}
     {{ Html::style('css/jquery.bootstrap-touchspin.min.css') }}
+    {{ Html::style('css/jquery.datetimepicker.min.css') }}
 @endsection
 @section('content')
         <!-- Start content -->
@@ -98,7 +99,10 @@
                                 <div class="col-sm-6">
                                     <div class="form-group {{ $errors->has('birthday') ? ' has-error' : '' }}">
                                         <label for="birthday">Date of birth:</label>
-                                        {!! Form::date('birthday', $user->birthday, ['class' => 'form-control', 'id' => 'birthday']) !!}
+                                        <div class="input-group">
+                                        {!! Form::text('birthday',  $user->birthday ? $user->birthday->format('Y-m-d') : null, ['class' => 'form-control', 'id' => 'datepicker', 'placeholder' => 'yyyy-mm-dd']) !!}
+                                        <span class="input-group-addon bg-primary b-0 text-white"><i class="fa fa-calendar"></i></span>
+                                        </div>
                                         @if ($errors->has('birthday'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('birthday') }}</strong>
@@ -265,11 +269,14 @@
                         </div>
                         <div class="form-group {{ $errors->has('birthday') ? ' has-error' : '' }}">
                             <label for="birthday">Date of birth:</label>
-                            {!! Form::date('birthday', $user->birthday, ['class' => 'form-control', 'required' => 'required']) !!}
+                            <div class="input-group">
+                                {!! Form::text('birthday',  $user->birthday ? $user->birthday->format('Y-m-d') : null, ['class' => 'form-control', 'id' => 'datepickermodal', 'placeholder' => 'yyyy-mm-dd']) !!}
+                                <span class="input-group-addon bg-primary b-0 text-white"><i class="fa fa-calendar"></i></span>
+                            </div>
                             @if ($errors->has('birthday'))
                                 <span class="help-block">
-                                            <strong>{{ $errors->first('birthday') }}</strong>
-                                        </span>
+                                                <strong>{{ $errors->first('birthday') }}</strong>
+                                            </span>
                             @endif
                         </div>
                     </div>
@@ -288,6 +295,7 @@
         @section('bottom')
             {!! Html::script('js/admin/sweetalert.min.js') !!}
             {!! Html::script('js/admin/jquery.bootstrap-touchspin.min.js') !!}
+            {{ Html::script('js/admin/jquery.datetimepicker.full.min.js') }}
             <script>
 
                $(document).ready(function () {
@@ -309,7 +317,20 @@
                        postfix: 'Ogrines'
                    });
 
-                    // Edit Password (Save ajax)
+                   // Datepicker initialize
+                   $('#datepicker').datetimepicker({
+                       timepicker: false,
+                       format: 'Y-m-d',
+                       yearEnd: '{{\Carbon\Carbon::now()->year}}'
+                   });
+
+                   // Datepicker modal initialize
+                   $('#datepickermodal').datetimepicker({
+                       timepicker: false,
+                       format: 'Y-m-d',
+                       yearEnd: '{{\Carbon\Carbon::now()->year}}'
+                   });
+                   // Edit Password (Save ajax)
                    $( "#form-password-user" ).on( "submit", function( event ) {
                        event.preventDefault();
                        var $this = $(this);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -345,12 +346,23 @@ class AccountController extends Controller
             {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            
-            Auth::user()->certified = true;
-            Auth::user()->firstname = $request->input('firstname');
-            Auth::user()->lastname  = $request->input('lastname');
-            Auth::user()->birthday  = $request->input('birthday');
-            Auth::user()->save();
+
+            $date = Carbon::parse($request->birthday);
+            $year_max = Carbon::now()->year - config('dofus.certify.min_age');
+            $year_min = Carbon::now()->year - config('dofus.certify.max_age');
+
+            if($date->year <= $year_max && $date->year >= $year_min)
+            {
+                Auth::user()->certified = true;
+                Auth::user()->firstname = $request->input('firstname');
+                Auth::user()->lastname  = $request->input('lastname');
+                Auth::user()->birthday  = $request->input('birthday');
+                Auth::user()->save();
+            }
+            else
+            {
+                return redirect()->back()->withErrors(['birthday' => 'Vous devez être âgé d\'au moins '.config('dofus.certify.min_age').' ans.'])->withInput();
+            }
 
             // TODO: send email to user with explications
 

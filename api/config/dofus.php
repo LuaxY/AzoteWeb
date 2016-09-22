@@ -28,6 +28,12 @@ return [
         'win' => 'http://dl.azote.us/Azote_Setup.exe',
     ],
 
+    'certify'     => [
+        'min_age'  => '10',
+        'max_age'  => '100',
+        'article'  => 'http://forum.azote.us/topic/26-compte-web-certifi%C3%A9-quest-ce/'
+    ],
+
     'tawk'         => [
         'id'  => env('TAWK_ID', false),
         'api' => env('TAWK_API'),

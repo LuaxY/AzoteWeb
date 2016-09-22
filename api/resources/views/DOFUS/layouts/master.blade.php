@@ -12,9 +12,9 @@
     {!! Html::style('css/common.css') !!}
     {!! Html::style('css/toastr.min.css') !!}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    @yield('header')
     {!! Html::script('js/admin/toastr.min.js') !!}
     {!! Html::script('js/common.js') !!}
-    @yield('header')
     <style type="text/css">
         body {
             background: url('{{ URL::asset('imgs/carousel/common/'.config('dofus.theme.background').'.jpg') }}')  center top no-repeat;
@@ -227,5 +227,6 @@
         </script>
         @yield('scriptlogged')
     @endif
+    @yield('bottom')
 </body>
 </html>

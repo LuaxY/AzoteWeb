@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yuansir\Toastr\Facades\Toastr;
+use App\ForumAccount;
 
 class UserController extends Controller
 {
@@ -48,6 +49,7 @@ class UserController extends Controller
         $salt = str_random(8);
 
         $user = new User;
+        $user->pseudo    = $request->pseudo;
         $user->firstname = $request->firstname;
         $user->lastname  = $request->lastname;
         $user->email     = $request->email;
@@ -57,6 +59,27 @@ class UserController extends Controller
         $user->active = $request->active == 1 ? true : false;
         $user->ticket = $request->active == 1 ? null : str_random(32);
         $user->save();
+
+        // TODO validator for forum account
+
+        $forumAccount = new ForumAccount;
+        $forumAccount->name              = $user->pseudo;
+        $forumAccount->member_group_id   = config('dofus.forum.user_group');
+        $forumAccount->email             = $user->email;
+        $forumAccount->joined            = time();
+        $forumAccount->ip_address        = '';
+        $forumAccount->member_login_key  = str_random(32);
+        $forumAccount->members_seo_name  = strtolower($user->pseudo);
+        $forumAccount->members_pass_salt = $forumAccount->generateSalt();
+        $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->password);
+        $forumAccount->timezone          = 'Europe/Paris';
+        $forumAccount->save();
+
+        $user->forum_id = $forumAccount->member_id;
+        $user->save();
+
+        setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
         if(!$request->active)
         {

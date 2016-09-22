@@ -66,6 +66,7 @@ class User extends Authenticatable
             'birthday'  => 'required|date_format:Y-m-d'
         ],
         'admin-store' => [
+            'pseudo'               => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
             'email'                => 'required|email|unique:users,email',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',

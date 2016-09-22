@@ -16,6 +16,19 @@
                             <div class="row">
                                 <div class="row">
                                     {{ Html::image('imgs/avatar/default.jpg', 'avatar', ['class' => 'img-circle img-thumbnail center-block m-b-30']) }}
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-12">
+                                            <div class="form-group {{ $errors->has('pseudo') ? ' has-error' : '' }}">
+                                                <label for="pseudo">Pseudo:</label>
+                                                {!! Form::text('pseudo', null, ['class' => 'form-control', 'id' => 'pseudo']) !!}
+                                                @if ($errors->has('pseudo'))
+                                                    <span class="help-block">
+                                                                        <strong>{{ $errors->first('pseudo') }}</strong>
+                                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-sm-12">
                                         <div class="col-sm-6">
