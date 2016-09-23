@@ -20,6 +20,7 @@ class AuthController extends Controller
 
     public function auth(Request $request)
     {
+        $clientIp = $request->ip();
         $user = User::where('email', $request->input('email'))->first();
 
         if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
@@ -29,8 +30,17 @@ class AuthController extends Controller
                 $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte n'est pas activé, vérifiez vos emails."]);
                 return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
             }
+            $user->last_ip_address = $clientIp;
+            $user->save();
 
-            Auth::login($user);
+            if($request->remember)
+            {
+                Auth::login($user, true);
+            }
+            else
+            {
+                Auth::login($user);
+            }
 
             $forumAccount = ForumAccount::find($user->forum_id);
 

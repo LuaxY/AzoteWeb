@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\ForumAccountValidating;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -78,6 +79,15 @@ class UserController extends Controller
         $user->forum_id = $forumAccount->member_id;
         $user->save();
 
+        if(!$request->active)
+        {
+            $forumAccountValidating = new ForumAccountValidating;
+            $forumAccountValidating->vid = $user->forum_id;
+            $forumAccountValidating->member_id = $user->forum_id;
+            $forumAccountValidating->new_reg = 1;
+            $forumAccountValidating->save();
+        }
+
         setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
@@ -88,6 +98,7 @@ class UserController extends Controller
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Confirmation d\'inscription');
             });
+            Toastr::success('Email send to user', $title = null, $options = []);
         }
 
         Toastr::success('User created', $title = null, $options = []);
@@ -167,6 +178,9 @@ class UserController extends Controller
         $user->active = true;
         $user->ticket = null;
         $user->save();
+
+        $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
+        $userForumValidating->delete();
 
         return response()->json([], 200);
     }

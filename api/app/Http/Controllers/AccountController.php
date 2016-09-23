@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ForumAccountValidating;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,6 +35,8 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
+        $clientIp = \Illuminate\Support\Facades\Request::ip();
+
         $validator = Validator::make($request->all(), User::$rules['register']);
 
         if ($validator->fails())
@@ -52,6 +55,7 @@ class AccountController extends Controller
         $user->lastname  = $request->input('lastname');
         $user->active    = false;
         $user->ticket    = str_random(self::TICKET_LENGTH);
+
         $user->save();
 
         // TODO validator for forum account
@@ -72,6 +76,13 @@ class AccountController extends Controller
         $user->forum_id = $forumAccount->member_id;
         $user->save();
 
+        $forumAccountValidating = new ForumAccountValidating;
+        $forumAccountValidating->vid = $user->forum_id;
+        $forumAccountValidating->member_id = $user->forum_id;
+        $forumAccountValidating->new_reg = 1;
+        $forumAccountValidating->ip_address = $clientIp;
+        $forumAccountValidating->save();
+
         setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
@@ -86,9 +97,10 @@ class AccountController extends Controller
         return redirect('/');
     }
 
-    public function activation($ticket = null)
+    public function activation($ticket = null, Request $request)
     {
         $user = User::where('ticket', $ticket)->first();
+        $clientIp = $request->ip();
 
         if (!$user)
         {
@@ -100,12 +112,16 @@ class AccountController extends Controller
         $user->active = true;
         $user->update([
             'ticket' => $user->ticket,
-            'active' => $user->active
+            'active' => $user->active,
+            'last_ip_address' => $clientIp
         ]);
+
+        $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
+        $userForumValidating->delete();
 
         Auth::login($user);
 
-        request()->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenu {$user->firstname} !"]);
+        request()->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenue {$user->firstname} !"]);
 
         return redirect('/');
     }
@@ -334,6 +350,7 @@ class AccountController extends Controller
             abort(404);
         }
     }
+
     public function certify(Request $request)
     {
         if ($request->all())
