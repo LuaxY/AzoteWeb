@@ -100,7 +100,7 @@ class User extends Authenticatable
     {
         if ($server && in_array($server, config('dofus.servers')))
         {
-            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function() {
+            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function() use($server) {
                 return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
             });
 
