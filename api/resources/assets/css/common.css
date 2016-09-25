@@ -30415,3 +30415,6 @@ body.ak-light-skin .main > .ak-container {
     padding: 5px 10px;
     border: 2px solid #ffb332;
 }
+#toast-container {
+    z-index: 100;
+}
