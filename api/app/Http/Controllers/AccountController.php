@@ -58,8 +58,6 @@ class AccountController extends Controller
 
         $user->save();
 
-        // TODO validator for forum account
-
         $forumAccount = new ForumAccount;
         $forumAccount->name              = $user->pseudo;
         $forumAccount->member_group_id   = config('dofus.forum.user_group');

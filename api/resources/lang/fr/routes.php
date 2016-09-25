@@ -70,6 +70,8 @@ return [
 
     'download' => 'telecharger',
 
+    'ladder' => 'classement',
+
     /** Events **/
 
     'event.st-patrick' => 'event/st-patrick',

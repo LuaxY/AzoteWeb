@@ -211,6 +211,11 @@ Route::group(['prefix' => $locale], function() {
         'as'   => 'download'
     ]);
 
+    Route::get(Lang::get('routes.ladder'), [
+        'uses' => 'PageController@ladder',
+        'as'   => 'ladder'
+    ]);
+
 });
 
 Route::get('support', function () {

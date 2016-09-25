@@ -86,7 +86,7 @@
                                         <ul>
                                             <li class="lvl2"><a href="{{ URL::route('posts') }}">Actualités</a></li>
                                             <li class="lvl2"><a href="{{ URL::to('servers') }}">Serveurs</a></li>
-                                            <li class="lvl2"><a href="{{ URL::to('ladder') }}">Classement</a></li>
+                                            <li class="lvl2"><a href="{{ URL::route('ladder') }}">Classement</a></li>
                                             <li class="lvl2"><a href="{{ URL::to('event') }}">Événements</a></li>
                                         </ul>
                                     </li>
@@ -143,7 +143,7 @@
                                 </div>
                                 <a href="{{ URL::to('server/list') }}">Infos serveurs</a>
                                 <a href="{{ URL::to('events') }}">Évènements</a>
-                                <a href="{{ URL::to('ladder') }}">Classement</a>
+                                <a href="{{ URL::route('ladder') }}">Classement</a>
                                 <a href="{{ URL::route('vote.index') }}">Cadeaux</a>
                             </div>
                         </div>
