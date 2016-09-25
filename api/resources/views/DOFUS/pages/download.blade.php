@@ -32,7 +32,11 @@
                                 </div>
                                 <a class="ak-problems" href="{{ URL::to('support') }}">Un problème d'installation ?</a>
                                 <div class="ak-create-account-block">
+                                    @if (Auth::guest())
                                     Pour jouer à {{ config('dofus.title') }}, vous devez posséder un compte. <a href="{{ URL::route('register') }}">Créer un compte {{ config('dofus.title') }}</a>
+                                    @else
+                                    Bon jeu sur {{ config('dofus.title') }}, {{ Auth::user()->pseudo }} !<br><br>
+                                    @endif
                                 </div>
                             </div>
                         </div>
