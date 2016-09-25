@@ -190,8 +190,9 @@ Route::group(['prefix' => $locale], function() {
     /* ============ VOTE ============ */
 
     Route::get(Lang::get('routes.vote.index'), [
-        'uses'   => 'VoteController@index',
-        'as'     => 'vote.index'
+        'middleware' => 'auth',
+        'uses'       => 'VoteController@index',
+        'as'         => 'vote.index'
     ]);
 
     Route::get(Lang::get('routes.vote.process'), [
