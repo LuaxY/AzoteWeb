@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use \Cache;
 
 use App\Experience;
 
@@ -18,7 +19,9 @@ class Character extends Model
 
     public function level()
     {
-        $exp = Experience::where('CharacterExp', '<=', $this->Experience)->orderBy('Level', 'desc')->first();
+        $exp = Cache::remember('exp_'.$this->Experience, 1000, function() {
+            return Experience::where('CharacterExp', '<=', $this->Experience)->orderBy('Level', 'desc')->first();
+        });
 
         if ($exp)
         {

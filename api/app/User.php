@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use \Cache;
+
 use App\Security;
 use App\ModelCustom;
 use App\ForumAccount;
@@ -98,17 +100,29 @@ class User extends Authenticatable
     {
         if ($server && in_array($server, config('dofus.servers')))
         {
-            return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
+            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function() {
+                return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
+            });
+
+            return $accounts;
         }
         else
         {
-            return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
+            $accounts = Cache::remember('accounts_'.$this->id, 10, function() {
+                return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
+            });
+
+            return $accounts;
         }
     }
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
+        $transactions = Cache::remember('transactions_'.$this->id, 10, function() {
+            return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
+        });
+
+        return $transactions;
     }
 
     public function posts()

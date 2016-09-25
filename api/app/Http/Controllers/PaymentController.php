@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Validator;
 use Auth;
+use \Cache;
 
 use App\Transaction;
 use App\Services\Payment\DediPass;
@@ -150,6 +151,7 @@ class PaymentController extends Controller
                 ];
 
                 Transaction::create($transaction);
+                Cache::forget('transactions_' . Auth::user()->id);
 
                 Auth::user()->points += $validation->points;
                 Auth::user()->save();
@@ -171,6 +173,7 @@ class PaymentController extends Controller
                 ];
 
                 Transaction::create($transaction);
+                Cache::forget('transactions_' . Auth::user()->id);
 
                 return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->message])->withInput();
             }
