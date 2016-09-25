@@ -72,12 +72,12 @@ class Handler extends ExceptionHandler
             $data['date']      = Carbon::now();
             $data['user']      = Auth::user();
 
-            /*Mail::send(['html' => 'emails.report'], $data, function ($message) use($error) {
+            Mail::send(['html' => 'emails.report'], $data, function ($message) use($error) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to('kerubim@azote.us', 'Web Developer');
                 $message->subject('Azote.us - PHP Error Report - ' . Carbon::now());
                 $message->attachData($error, 'stacktrace.html');
-            });*/
+            });
         }
 
         return parent::report($e);
