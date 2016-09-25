@@ -25,4 +25,11 @@ class PageController extends Controller
 
         return view('pages.ladder', ['characters' => $characters]);
     }
+
+    public function servers()
+    {
+        $servers = config('dofus.details');
+
+        return view('pages.servers', ['servers' => $servers]);
+    }
 }

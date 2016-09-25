@@ -85,7 +85,7 @@
                                     <li class="lvl1">
                                         <ul>
                                             <li class="lvl2"><a href="{{ URL::route('posts') }}">Actualités</a></li>
-                                            <li class="lvl2"><a href="{{ URL::to('servers') }}">Serveurs</a></li>
+                                            <li class="lvl2"><a href="{{ URL::route('servers') }}">Serveurs</a></li>
                                             <li class="lvl2"><a href="{{ URL::route('ladder') }}">Classement</a></li>
                                             <li class="lvl2"><a href="{{ URL::to('event') }}">Événements</a></li>
                                         </ul>
@@ -141,7 +141,7 @@
                                 <div>
                                     <span class="ak-link-title">Serveur</span>
                                 </div>
-                                <a href="{{ URL::to('server/list') }}">Infos serveurs</a>
+                                <a href="{{ URL::route('servers') }}">Infos serveurs</a>
                                 <a href="{{ URL::to('events') }}">Évènements</a>
                                 <a href="{{ URL::route('ladder') }}">Classement</a>
                                 <a href="{{ URL::route('vote.index') }}">Cadeaux</a>
