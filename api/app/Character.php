@@ -71,6 +71,6 @@ class Character extends Model
     public function account($server)
     {
         $worldCharacter = ModelCustom::hasOneOnOneServer('auth', $server, WorldCharacter::class, 'CharacterId', $this->Id);
-        return $worldCharacter->account();
+        return $worldCharacter ? $worldCharacter->account() : null;
     }
 }

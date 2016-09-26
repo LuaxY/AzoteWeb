@@ -14,6 +14,8 @@ return [
 
     'posts.show' => 'article/{id}/{slug?}',
 
+    'posts.comment.store' => 'article/{id}/{slug?}/commentaire',
+    
     /** Account **/
 
     'account.register' => 'inscription',

@@ -65,7 +65,7 @@
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},
                             {data: 'birthday', name: 'birthday'},
-                            {data: 'certified', name: 'certified'},
+                            {data: 'certified', name: 'certified', class},
                             {data: 'rank', name: 'rank'},
                             {data: 'points', name: 'points'},
                             {data: 'votes', name: 'votes'},

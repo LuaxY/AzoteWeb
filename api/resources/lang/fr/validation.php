@@ -146,6 +146,7 @@ return [
         'server'                => 'Serveur',
         'login'                 => 'Identifiant',
         'nickname'              => 'Pseudo',
+        'comment'               => 'commentaire'
     ],
 
     'recaptcha'    => 'Le captcha n\'est pas correcte.',

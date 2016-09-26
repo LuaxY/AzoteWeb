@@ -10,4 +10,11 @@ class Comment extends Model
 	{
 		return $this->hasOne(User::class, 'id', 'author_id');
 	}
+
+	public static $rules = [
+		'store' => [
+			'comment' => 'required|min:3|max:140',
+		]
+	];
+
 }

@@ -71,22 +71,22 @@ class UserDatatablesController extends Controller
             ->editColumn('certified', function ($user) {
                 if($user->isCertified())
                 {
-                    $ac = '<span class="label label-success"><i class="fa fa-lock"></i> Certified</span>';
+                    $ac = '<span class="label label-success"><i class="fa fa-lock"></i></span>';
                 }
                 else
                 {
-                    $ac = '<span class="label label-danger"><i class="fa fa-unlock"></i> Not certified</span>';
+                    $ac = '<span class="label label-danger text-center"><i class="fa fa-unlock"></i></span>';
                 }
                 return $ac;
             })
             ->editColumn('active', function ($user) {
                 if($user->isActive())
                 {
-                    $ac = '<span class="label label-success"><i class="fa fa-check-circle"></i> Confirmed</span>';
+                    $ac = '<span class="label label-success"><i class="fa fa-check-circle"></i></span>';
                 }
                 else
                 {
-                    $ac = '<span class="label label-danger"><i class="fa fa-minus-circle"></i> Unconfirmed</span>';
+                    $ac = '<span class="label label-danger"><i class="fa fa-minus-circle"></i></span>';
                 }
                 return $ac;
             })

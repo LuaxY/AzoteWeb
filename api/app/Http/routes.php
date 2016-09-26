@@ -28,6 +28,10 @@ Route::group(['prefix' => $locale], function() {
         'uses' => 'PostController@show',
         'as'   => 'posts.show'
     ]);
+    Route::post(Lang::get('routes.posts.comment.store'), [
+        'uses' => 'PostController@commentStore',
+        'as'   => 'posts.comment.store'
+    ]);
 
     /* ============ ACCOUNT ============ */
 
