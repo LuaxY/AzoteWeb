@@ -27,8 +27,8 @@
                             <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
                         </div>
                     </div>
-                    <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-primary btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>
-                    <a href="{{ URL::route('gameaccount.edit', [$account->server, $account->Id]) }}" class="btn btn-primary btn-sm">Changer de mot de passe</a>
+                    <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>
+                    <a href="{{ URL::route('gameaccount.edit', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>
                 </div>
             </div>

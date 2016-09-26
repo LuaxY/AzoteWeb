@@ -42,10 +42,10 @@
                     <b>Cadeaux</b>: {{ Utils::format_price(Auth::user()->votes / 10) }} <span class="ak-icon-small ak-gifts-icon"></span><br>
                     <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}<br><br>
                     @if(Auth::user()->certified == 0)
-                    <a href="{{ URL::route('account.change_profile') }}" class="btn btn-primary btn-sm">Éditer le profil</a>
+                    <a href="{{ URL::route('account.change_profile') }}" class="btn btn-default btn-sm">Éditer le profil</a>
                     @endif
-                    <a href="{{ URL::route('account.change_email') }}" class="btn btn-primary btn-sm">Changer d'email</a>
-                    <a href="{{ URL::route('account.change_password') }}" class="btn btn-primary btn-sm">Changer de mot de passe</a>
+                    <a href="{{ URL::route('account.change_email') }}" class="btn btn-default btn-sm">Changer d'email</a>
+                    <a href="{{ URL::route('account.change_password') }}" class="btn btn-default btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -69,7 +69,10 @@
             <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Nickname }}</a></td>
             <td>{{ ucfirst($account->server) }}</td>
             <td class="ak-center">{{ count($account->characters()) }}</td>
-            <td class="ak-center"><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+            <td class="ak-center">
+                <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a>
+                <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon"></span></a>
+            </td>
         </tr>
         @endforeach
     </table>
