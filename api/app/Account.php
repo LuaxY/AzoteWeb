@@ -7,6 +7,7 @@ use \Cache;
 
 use App\WorldCharacter;
 use App\ModelCustom;
+use App\Transfert;
 
 class Account extends Model
 {
@@ -87,6 +88,15 @@ class Account extends Model
         }
 
         return $characters;
+    }
+
+    public function transferts()
+    {
+        $transferts = Cache::remember('transferts_'.$this->server.'_'.$this->Id, 10, function() {
+            return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->get();
+        });
+
+        return $transferts;
     }
 
     public function htmlStatus()

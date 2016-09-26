@@ -23,6 +23,8 @@ return [
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
+    'api_key'      => env('API_KEY'),
+
     'download'     => [
         'mac' => 'http://dl.azote.us/Azote_Setup.dmg',
         'win' => 'http://dl.azote.us/Azote_Setup.exe',

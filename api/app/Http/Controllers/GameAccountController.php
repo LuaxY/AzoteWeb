@@ -9,9 +9,16 @@ use App\Exceptions\GenericException;
 
 use App\User;
 use App\Account;
+use App\Transfert;
+use App\Helpers\Utils;
 
 use Validator;
 use Auth;
+use \Cache;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\TransferException;
 
 class GameAccountController extends Controller
 {
@@ -105,8 +112,6 @@ class GameAccountController extends Controller
             throw new GenericException('not_account_owner');
         }
 
-        //dd(config('dofus.details')[$server]); // example to get server details (name/description/ip/port);
-
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
 
@@ -167,7 +172,87 @@ class GameAccountController extends Controller
 
         if ($request->all())
         {
+            $ogrines = str_replace(' ', '', $request->input('ogrines'));
 
+            $validator = Validator::make([ 'ogrines' => $ogrines ], [ 'ogrines' => 'required|integer|min:0|max:' . Auth::user()->points ]);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $transfert = new Transfert;
+            $transfert->account_id = $accountId;
+            $transfert->server     = $server;
+            $transfert->state      = Transfert::IN_PROGRESS;
+            $transfert->amount     = $ogrines;
+            $transfert->save();
+
+            Auth::user()->points -= $ogrines;
+            Auth::user()->save();
+
+            $api = config('dofus.details')[$server];
+            $success = false;
+
+            try
+            {
+                $client = new Client();
+                $res = $client->request('PUT', "http://{$api->ip}:{$api->port}/account/$accountId/addtokens/$ogrines", [
+                    'headers' => [
+                        'APIKey' => config('dofus.api_key')
+                    ],
+                    'timeout' => 10, // seconds
+                ]);
+
+                if ($res->getStatusCode() == 200)
+                {
+                    $transfert->state = Transfert::OK_API;
+                    $transfert->save();
+
+                    $success = true;
+                }
+
+            }
+            catch (ClientException $e)
+            {
+                if ($e->getResponse()->getStatusCode() == 404)
+                {
+                    $account->NewTokens += $ogrines;
+                    $account->save();
+
+                    $transfert->state = Transfert::OK_SQL;
+                    $transfert->save();
+
+                    $success = true;
+                }
+                else
+                {
+                    $transfert->state = Transfert::FAIL;
+                    $transfert->save();
+
+                    $success = false;
+                }
+            }
+            catch (TransferException $e)
+            {
+                $transfert->state = Transfert::FAIL;
+                $transfert->save();
+
+                $success = false;
+            }
+
+            Cache::forget('transferts_' . $server . '_' . $accountId);
+
+            if ($success)
+            {
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte " . $account->Nickname]);
+            }
+            else
+            {
+                $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué, merci de contacter le support !"]);
+            }
+
+            return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
         }
 
         return view('gameaccount/transfert', ['account' => $account]);
