@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->Tokens + $account->NewTokens) }}" id="ogrinesGame" readonly />
+                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
                         </div>
                     </div>
                     <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-primary btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>

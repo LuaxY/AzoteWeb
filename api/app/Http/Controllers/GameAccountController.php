@@ -217,7 +217,7 @@ class GameAccountController extends Controller
             {
                 if ($e->getResponse()->getStatusCode() == 404)
                 {
-                    $account->NewTokens += $ogrines;
+                    $account->addPoints($ogrines);
                     $account->save();
 
                     $transfert->state = Transfert::OK_SQL;

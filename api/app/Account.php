@@ -99,6 +99,35 @@ class Account extends Model
         return $transferts;
     }
 
+    public function points()
+    {
+        $account = Account::on($this->server . '_world')->where('Id', $this->Id)->first();
+
+        if ($account)
+        {
+            return $account->Tokens + $account->NewTokens;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public function addPoints($amount)
+    {
+        $account = Account::on($this->server . '_world')->where('Id', $this->Id)->first();
+
+        if ($account)
+        {
+            $account->NewTokens += $amount;
+            $account->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function htmlStatus()
     {
         $texts = array();
