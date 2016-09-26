@@ -88,6 +88,7 @@
             });
         }
         $jQuery("#form-add-comment").on("submit", function (event) {
+            $jQuery('#form-add-comment input[type="submit"]').prop('disabled', true);
             event.preventDefault();
             if(location.search)
             {
