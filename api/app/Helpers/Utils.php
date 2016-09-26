@@ -48,7 +48,7 @@ class Utils
         return $status_text;
     }
 
-    static public function format_price($price, $delimiter = ".")
+    static public function format_price($price, $delimiter = ' ')
     {
         return number_format($price, 0, ",", $delimiter);
     }

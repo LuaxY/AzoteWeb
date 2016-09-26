@@ -103,7 +103,7 @@
         <tr>
             <td class="ak-center">{{ $transaction->id }}</td>
             <td>{{ $transaction->created_at }}</td>
-            <td>{{ Utils::format_price($transaction->points, ' ') }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+            <td>{{ Utils::format_price($transaction->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
             <td>{{ $transaction->code }}</td>
             <td>{{ Utils::transaction_status($transaction->state) }}</td>
         </tr>

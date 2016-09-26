@@ -22,7 +22,7 @@
                         <label class="control-label" for="ogrinesWeb">Ogrines disponible</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price(Auth::user()->points, ' ') }}" id="ogrinesWeb" readonly />
+                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price(Auth::user()->points) }}" id="ogrinesWeb" readonly />
                         </div>
                     </div>
 
@@ -30,7 +30,7 @@
                         <label class="control-label" for="ogrinesGame">Ogrines en jeu ({{ $account->Nickname }})</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points(), ' ') }}" id="ogrinesGame" readonly />
+                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
                         </div>
                     </div>
 
