@@ -50,9 +50,9 @@
                     </div>
                     @else
                     <div class="ak-idbar-right">
-                        <a class="ak-nav-notifications ak-button-modal">
+                        <!--<a class="ak-nav-notifications ak-button-modal">
                             <span class="label label-danger">0</span>
-                        </a>
+                        </a>-->
                         <div class="ak-button-modal ak-nav-logged">
                             <a class="ak-logged-account" href="{{ URL::route('profile') }}">
                                 <span class="ak-nickname">{{ Auth::user()->pseudo }}</span>
