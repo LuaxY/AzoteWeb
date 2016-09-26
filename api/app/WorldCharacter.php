@@ -17,19 +17,11 @@ class WorldCharacter extends Model
 
     public function character()
     {
-        $character = Cache::remember('world_character_'.$this->server.'_'.$this->Id, 10, function() {
-            return ModelCustom::hasOneOnOneServer('world', $this->server, Character::class, 'Id', $this->CharacterId);
-        });
-
-        return $character;
+        return ModelCustom::hasOneOnOneServer('world', $this->server, Character::class, 'Id', $this->CharacterId);
     }
 
     public function account()
     {
-        $character = Cache::remember('world_character_account_'.$this->server.'_'.$this->Id, 10, function() {
-            return ModelCustom::hasOneOnOneServer('auth', $this->server, Account::class, 'Id', $this->AccountId);
-        });
-
-        return $character;
+        return ModelCustom::hasOneOnOneServer('auth', $this->server, Account::class, 'Id', $this->AccountId);
     }
 }

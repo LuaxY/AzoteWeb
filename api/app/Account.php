@@ -76,16 +76,18 @@ class Account extends Model
 
     public function characters()
     {
-        $characters = [];
+        $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function() {
+            $characters = [];
 
-        $worldCharacters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function() {
-            return ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+            $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+            foreach ($worldCharacters as $worldCharacter)
+            {
+                $characters[] = $worldCharacter->character();
+            }
+
+            return $characters;
         });
-
-        foreach ($worldCharacters as $worldCharacter)
-        {
-            $characters[] = $worldCharacter->character();
-        }
 
         return $characters;
     }
