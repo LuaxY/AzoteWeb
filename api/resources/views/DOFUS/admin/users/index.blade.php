@@ -23,7 +23,6 @@
                                     <th>Email</th>
                                     <th>Firstname</th>
                                     <th>Lastname</th>
-                                    <th>Birthday</th>
                                     <th>Certified</th>
                                     <th>Rank</th>
                                     <th>Points</th>
@@ -64,12 +63,11 @@
                             {data: 'email', name: 'email'},
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},
-                            {data: 'birthday', name: 'birthday'},
-                            {data: 'certified', name: 'certified', class},
+                            {data: 'certified', name: 'certified', class: 'text-center'},
                             {data: 'rank', name: 'rank'},
                             {data: 'points', name: 'points'},
                             {data: 'votes', name: 'votes'},
-                            {data: 'active', name: 'active', class: 'activate'},
+                            {data: 'active', name: 'active', class: 'activate text-center'},
                             {data: 'action', name: 'action',  orderable: false, searchable: false},
                             {data: 'banReason', name: 'banReason', class:'banReason hidden'}
                         ],
