@@ -3,6 +3,7 @@
         {
             "name":     "sigma",
             "desc":     "Ankalike",
+            "version":  "2.10",
             "ip":       "0.0.0.0",
             "port":     9000,
             "db_host":  "127.0.0.1",
@@ -14,6 +15,7 @@
         {
             "name":     "epsilon",
             "desc":     "Semi-Cheat",
+            "version":  "2.10",
             "ip":       "0.0.0.0",
             "port":     9000,
             "db_host":  "127.0.0.1",

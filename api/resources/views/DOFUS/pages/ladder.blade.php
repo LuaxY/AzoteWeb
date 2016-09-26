@@ -6,6 +6,10 @@
     {!! Html::style('css/ladder-tiny.css') !!}
 @stop
 
+@section('breadcrumbs')
+{!! Breadcrumbs::render('page', 'Classement') !!}
+@stop
+
 @section('content')
 <div class="ak-container ak-main-center">
     <div class="ak-title-container">
@@ -16,7 +20,7 @@
         <table border="1" class="ak-ladder ak-container ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
             <thead>
                 <tr class="ak-ajaxloader">
-                    <th >#</th>
+                    <th>#</th>
                     <th>Nom</th>
                     <th>Classe</th>
                     <th class="ak-center">Niveau</th>

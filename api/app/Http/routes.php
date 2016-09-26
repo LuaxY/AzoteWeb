@@ -229,6 +229,11 @@ Route::group(['prefix' => $locale], function() {
         'as'   => 'ladder'
     ]);
 
+    Route::get(Lang::get('routes.servers'), [
+        'uses' => 'PageController@servers',
+        'as'   => 'servers'
+    ]);
+
 });
 
 Route::get('support', function () {

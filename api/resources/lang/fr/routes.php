@@ -80,6 +80,8 @@ return [
 
     'ladder' => 'classement',
 
+    'servers' => 'serveurs',
+
     /** Events **/
 
     'event.st-patrick' => 'event/st-patrick',

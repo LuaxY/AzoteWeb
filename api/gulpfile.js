@@ -40,6 +40,7 @@ elixir(function(mix) {
     mix.styles('vote.css');
     mix.styles('ladder.css');
     mix.styles('ladder-tiny.css');
+    mix.styles('server.css');
 
     mix.scripts('common.js');
     mix.scripts('jquery-2.1.4.min.js');

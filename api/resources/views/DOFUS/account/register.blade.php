@@ -156,7 +156,7 @@
                                     <div class="ak-illu-link ak-illu-link1"></div>
                                     <div class="ak-link-text">Sachez qu'ici tout est possible à l'intrépide, il vous suffit de suivre le guide !</div>
                                     <div class="ak-bottom-link">
-                                        <a class="btn btn-info btn-lg" href="{{ URL::to('tuto') }}">voir les tutoriels</a>
+                                        <a class="btn btn-info btn-lg" href="http://forum.azote.us/forum/22-tutorials/">voir les tutoriels</a>
                                     </div>
                                 </div>
                                 <div class="ak-link-block col-sm-4">
