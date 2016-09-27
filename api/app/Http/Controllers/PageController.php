@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Cache;
 use Auth;
+use Mail;
 
 use App\Character;
 
@@ -37,6 +38,13 @@ class PageController extends Controller
     public function email()
     {
         //return view('emails.transfert_points', ['user' => Auth::user()]);
-        return view('emails.opening');
+
+        /*Mail::send(['html' => 'emails.newsletter'], [], function ($message) {
+            $message->from(config('mail.sender'), 'Azote.us');
+            $message->to('yann@voidmx.net', 'Web Developer');
+            $message->subject('Azote.us');
+        });*/
+
+        return view('emails.newsletter');
     }
 }
