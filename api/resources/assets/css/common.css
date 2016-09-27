@@ -30419,5 +30419,5 @@ header {
     z-index: 1;
 }
 #toast-container {
-    z-index: 2000;
+    z-index: 2000 !important;
 }
