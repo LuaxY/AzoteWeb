@@ -47,8 +47,9 @@
                     oTable = $('#posts-table').on( 'init.dt', function () {
                         $('[data-toggle="tooltip"]').tooltip()
                     } ).DataTable({
+                        "order": [[ 0, "desc" ]],
                         processing: false,
-                        serverSide: true,
+                        serverSide: false,
                         autoWidth: true,
                         responsive: true,
                         ajax: '{!! route('datatables.postdata') !!}',

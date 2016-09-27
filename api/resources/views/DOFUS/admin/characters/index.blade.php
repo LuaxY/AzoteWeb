@@ -58,6 +58,7 @@
                 oTable = $('#'+server+'-table').on( 'init.dt', function () {
                     $('[data-toggle="tooltip"]').tooltip()
                 } ).DataTable({
+                    "order": [[ 0, "desc" ]],
                     processing: false,
                     serverSide: false,
                     autoWidth: true,
