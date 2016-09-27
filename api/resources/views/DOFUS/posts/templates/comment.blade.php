@@ -9,10 +9,12 @@
             <strong>{{ $comment->author->firstname }}</strong>
             <small class="ak-time">{{ date('d F Y à H:i', strtotime($comment->created_at)) }}</small>
             <span class="actions pull-right">
-                {!! Form::open(['route' => ['posts.comment.destroy', $post->id, $post->slug, $comment->id], 'class' => 'form-inline']) !!}
-                {{ method_field('DELETE') }}
-                <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
-                {!! Form::close() !!}
+                @if(Auth::user()->isAdmin())
+                    {!! Form::open(['route' => ['posts.comment.destroy', $post->id, $post->slug, $comment->id], 'class' => 'form-inline']) !!}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
+                    {!! Form::close() !!}
+                @endif
             </span>
         </div>
         <div class="ak-text-content">{{ $comment->text }}</div>
