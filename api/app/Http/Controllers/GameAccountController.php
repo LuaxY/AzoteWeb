@@ -87,8 +87,6 @@ class GameAccountController extends Controller
         $account->Lang            = 'fr';
         $account->Email           = Auth::user()->email;
         $account->CreationDate    = date('Y-m-d H:i:s');
-        $account->Tokens          = 0;
-        $account->NewTokens       = 0;
         $account->SubscriptionEnd = '2016-01-01 00:00:00';
         $account->IsJailed        = false;
         $account->IsBanned        = false;
