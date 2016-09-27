@@ -134,6 +134,15 @@ class UserController extends Controller
         $user->birthday  = empty($request['birthday']) ? null : $request['birthday'];
         $user->save();
 
+        $forumAccount = $user->forum()->first();
+
+        if ($forumAccount)
+        {
+            $forumAccount->email = $request['email'];
+            $forumAccount->name = $request['pseudo'];
+            $forumAccount->save();
+        }
+
         if($request->useradvert == true)
         {
             Mail::send('emails.admin-email-update', ['user' => $user], function ($message) use ($user) {

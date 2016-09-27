@@ -30,7 +30,7 @@ class FillSettings
 
             $motd['title']    = $json->motd->title;
             $motd['subtitle'] = $json->motd->subtitle;
-            $motd['postid']   = $json->motd->post_id;
+            $motd['post_id']   = $json->motd->post_id;
 
             Config::set('dofus.motd',  $motd);
         }

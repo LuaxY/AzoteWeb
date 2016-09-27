@@ -18,7 +18,7 @@
                                 </span>
                         </div>
                         <div class="ak-item-elt-desc">
-                            <p>{!! $post->preview !!}</p>
+                            {!! $post->preview !!}
                         </div>
                     </div>
                     <div class="ak-ellipsis-text"></div>

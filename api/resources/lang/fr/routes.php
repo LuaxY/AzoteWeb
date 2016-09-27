@@ -15,6 +15,8 @@ return [
     'posts.show' => 'article/{id}/{slug?}',
 
     'posts.comment.store' => 'article/{id}/{slug?}/commentaire',
+
+    'posts.comment.destroy' => 'article/{id}/{slug?}/{commentid}/destroy',
     
     /** Account **/
 

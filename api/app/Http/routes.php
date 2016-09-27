@@ -32,6 +32,10 @@ Route::group(['prefix' => $locale], function() {
         'uses' => 'PostController@commentStore',
         'as'   => 'posts.comment.store'
     ]);
+    Route::delete(Lang::get('routes.posts.comment.destroy'), [
+        'uses' => 'PostController@commentDestroy',
+        'as'   => 'posts.comment.destroy'
+    ]);
 
     /* ============ ACCOUNT ============ */
 
