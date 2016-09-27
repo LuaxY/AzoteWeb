@@ -5,9 +5,12 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Validation\ValidationException;
+use Illuminate\Session\TokenMismatchException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 use App\Exceptions\GenericException;
@@ -33,6 +36,7 @@ class Handler extends ExceptionHandler
         NotFoundHttpException::class,
         GenericException::class,
         TokenMismatchException::class,
+        MethodNotAllowedHttpException::class,
     ];
 
     /**
@@ -45,7 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if ($e instanceof NotFoundHttpException)
+        if ($e instanceof NotFoundHttpException || $e instanceof TokenMismatchException || $e instanceof MethodNotAllowedHttpException)
         {
             return parent::report($e);
         }
