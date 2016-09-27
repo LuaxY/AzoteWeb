@@ -72,8 +72,20 @@ class PostController extends Controller
         $comment->text = $request->comment;
         $comment->save();
 
+        $post = Post::findOrFail($id);
+
         Cache::forget('posts_' . $id . '_comments_'. $page);
 
-        return view('posts.templates.comment', compact('comment'));
+        return view('posts.templates.comment', compact('comment', 'post'));
     }
+
+    public function commentDestroy(Request $request, $id, $slug = "", $commentid)
+    {
+        $comment = Comment::findOrFail($commentid);
+        $this->authorize('destroy', $comment);
+        $comment->delete();
+        Cache::forget('posts_' . $id . '_comments_1');
+        return redirect()->back();
+    }
+
 }
