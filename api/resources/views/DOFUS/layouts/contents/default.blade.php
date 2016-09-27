@@ -11,7 +11,7 @@
     <div class="ak-carrousel-bg-title ak-carrousel-bg-title-left hidden-xs">
         @if (config('dofus.motd'))
         <div class="ak-block-title">
-            <a href="{{ route('posts.show', config('dofus.motd.postid')) }}" class="ak-title-link">
+            <a href="{{ route('posts.show', config('dofus.motd.post_id')) }}" class="ak-title-link">
                 <div class="ak-layer">
                     <span class="ak-title">{{ config('dofus.motd.title') }}</span>
                     <br> <span class="ak-subtitle">{{ config('dofus.motd.subtitle') }}</span> <span class="ak-banner-more">+</span>
