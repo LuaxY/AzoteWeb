@@ -58,18 +58,18 @@
         <div class="ak-block-rewards">
             <div class="ak-menu-left ak-ajaxloader">
                 <a data="1">1 <sup>èr</sup> Palier</a>
-                <a data="2">2 <sup>ème</sup> Palier</a>
+                <!--<a data="2">2 <sup>ème</sup> Palier</a>
                 <a data="3">3 <sup>ème</sup> Palier</a>
                 <a data="4">4 <sup>ème</sup> Palier</a>
-                <a data="5">5 <sup>ème</sup> Palier</a>
+                <a data="5">5 <sup>ème</sup> Palier</a>-->
             </div>
             <div class="ak-select-menu-left ak-ajaxloader">
                 <select onchange="$('.ak-block-rewards .ak-menu-left a[data='+this.value+']').trigger('click');">
                     <option value="1">Palier 1</option>
-                    <option value="2">Palier 2</option>
+                    <!--<option value="2">Palier 2</option>
                     <option value="3">Palier 3</option>
                     <option value="4">Palier 4</option>
-                    <option value="5">Palier 5</option>
+                    <option value="5">Palier 5</option>-->
                 </select>
                 <a class="ak-select-link hide"></a>
             </div>

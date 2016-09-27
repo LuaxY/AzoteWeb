@@ -59,6 +59,10 @@ class Account extends Model
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
+        'admin-update-password' => [
+            'password'             => 'required|min:6',
+            'passwordConfirmation' => 'required|same:password',
+        ],
     ];
 
     public function changeConnection($conn)

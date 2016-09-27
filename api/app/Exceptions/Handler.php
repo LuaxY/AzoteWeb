@@ -32,6 +32,7 @@ class Handler extends ExceptionHandler
         ValidationException::class,
         NotFoundHttpException::class,
         GenericException::class,
+        TokenMismatchException::class,
     ];
 
     /**

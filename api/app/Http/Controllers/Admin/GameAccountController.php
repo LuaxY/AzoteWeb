@@ -79,7 +79,7 @@ class GameAccountController extends Controller
         $account->IsBanned        = false;
         $account->server          = $request->server;
         $account->save();
-        
+
         return response()->json([], 202);
     }
 
@@ -120,6 +120,8 @@ class GameAccountController extends Controller
         $account->UserGroupId = $request->UserGroupId;
         $account->save();
 
+        Cache::forget('accounts_' . $account->user()->id);
+
         Toastr::success('Game account updated');
         return redirect()->route('admin.user.game.accounts', [$user->id, $server]);
     }
@@ -129,7 +131,7 @@ class GameAccountController extends Controller
         {
             abort(404);
         }
-        $validator = Validator::make($request->all(), Account::$rules['update']);
+        $validator = Validator::make($request->all(), Account::$rules['admin-update-password']);
 
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
