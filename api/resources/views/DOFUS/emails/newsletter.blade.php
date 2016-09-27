@@ -4,21 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>AZOTE - OPENING !</title>
     <meta name="language" content="fr"> </head>
-<body style="width:750px;margin:auto;text-align:center;overflow-x:hidden">
-    <a target="_blank" href="http://www.azote.us/inscription" style="display:block;max-height:405px;"><img src="http://news.azote.us/opening/imgs/header.png" title="Bienvenue sur Azote"></a>
-    <a target="_blank" href="http://www.azote.us/inscription" style="display:block;max-height:86px;"><img src="http://news.azote.us/opening/imgs/playforfree.png" title="Jouez gratuitement"></a>
-    <a target="_blank" href="http://www.azote.us" style="display:block;max-height:52px;"><img src="http://news.azote.us/opening/imgs/exploresite.png" title="Découvrez le site" ></a>
-    <a target="_blank" href="http://forum.azote.us" style="display:block;max-height:52px;"><img src="http://news.azote.us/opening/imgs/gotoforum.png" title="Rendez-vous sur le forum" ></a>
-    <div style="background-color:#c43537"> <img src="http://news.azote.us/opening/imgs/middle.png"><br>
-        <table>
+<body style="width:750px;margin:auto;text-align:center;overflow:hidden">
+    <a target="_blank" href="http://www.azote.us/inscription" style="display:block;max-height:405px;overflow:hidden"><img src="http://news.azote.us/opening/imgs/header.png" title="Bienvenue sur Azote"></a>
+    <a target="_blank" href="http://www.azote.us/inscription" style="display:block;max-height:86px;overflow:hidden"><img src="http://news.azote.us/opening/imgs/playforfree.png" title="Jouez gratuitement"></a>
+    <a target="_blank" href="http://www.azote.us" style="display:block;max-height:52px;overflow:hidden"><img src="http://news.azote.us/opening/imgs/exploresite.png" title="Découvrez le site" ></a>
+    <a target="_blank" href="http://forum.azote.us" style="display:block;max-height:52px;overflow:hidden"><img src="http://news.azote.us/opening/imgs/gotoforum.png" title="Rendez-vous sur le forum" ></a>
+    <div style="background-color:#c43537">
+        <img src="http://news.azote.us/opening/imgs/middle.png"><br>
+        <table border="0" style="width:750px;">
             <tr>
-                <td>
+                <td style="width:245px;">
                     <a href="http://azote.us/article/4/sigma-est-ouvert" target="_blank" style="color:white;font-size:24px"> <img src="http://news.azote.us/opening/imgs/col_eco.png" width="230"><img src="http://news.azote.us/opening/imgs/eco_btn.png"></a>
                 </td>
-                <td>
+                <td style="width:245px;">
                     <a href="http://azote.us/article/4/sigma-est-ouvert" target="_blank" style="color:white;font-size:24px"> <img src="http://news.azote.us/opening/imgs/col_staff.png" width="230"><img src="http://news.azote.us/opening/imgs/staff_btn.png"></a>
                 </td>
-                <td>
+                <td style="width:245px;">
                     <a href="http://azote.us/article/4/sigma-est-ouvert" target="_blank" style="color:white;font-size:24px"> <img src="http://news.azote.us/opening/imgs/col_nopay2win.png" width="230"><img src="http://news.azote.us/opening/imgs/pay2win_btn.png"></a>
                 </td>
             </tr>
