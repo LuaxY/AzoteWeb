@@ -140,6 +140,7 @@ class UserController extends Controller
         {
             $forumAccount->email = $request['email'];
             $forumAccount->name = $request['pseudo'];
+            $forumAccount->members_seo_name  = strtolower($request['pseudo'];);
             $forumAccount->save();
         }
 
