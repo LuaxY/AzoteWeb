@@ -92,6 +92,8 @@ class GameAccountController extends Controller
         $account->IsBanned        = false;
         $account->server          = $server;
         $account->save();
+        
+        Cache::forget('accounts_' . Auth::user()->id);
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
 
