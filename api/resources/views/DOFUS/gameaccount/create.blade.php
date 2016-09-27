@@ -67,14 +67,12 @@
                     <div class="col-sm-6">
                         <div class="ak-container">
                             <div class="row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <h2>Sigma</h2>
-                                    <p>Serveur Ankalike</p>
+                                @foreach (config('dofus.details') as $i => $server)
+                                <div class="col-sm-4 @if ($i == 0) col-sm-offset-2 @endif">
+                                    <h2>{{ ucfirst($server->name) }}</h2>
+                                    <p>{{ $server->desc }}</p>
                                 </div>
-                                <div class="col-sm-4">
-                                    <h2>Epsilon</h2>
-                                    <p>Serveur semi-cheat</p>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
