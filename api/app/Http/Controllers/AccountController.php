@@ -69,6 +69,7 @@ class AccountController extends Controller
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
         $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
         $forumAccount->timezone          = 'Europe/Paris';
+        $forumAccount->members_bitoptions        = '1073807360';
         $forumAccount->save();
 
         $user->forum_id = $forumAccount->member_id;
@@ -115,7 +116,18 @@ class AccountController extends Controller
         ]);
 
         $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
-        $userForumValidating->delete();
+        if($userForumValidating)
+        {
+            $userForumValidating->delete();
+        }
+
+        $forumAccount = $user->forum()->first();
+
+        if ($forumAccount)
+        {
+            $forumAccount->members_bitoptions = '0';
+            $forumAccount->save();
+        }
 
         Auth::login($user);
 

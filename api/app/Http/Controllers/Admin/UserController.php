@@ -189,7 +189,18 @@ class UserController extends Controller
         $user->save();
 
         $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
-        $userForumValidating->delete();
+        if($userForumValidating)
+        {
+            $userForumValidating->delete();
+        }
+
+        $forumAccount = $user->forum()->first();
+
+        if ($forumAccount)
+        {
+            $forumAccount->members_bitoptions = '0';
+            $forumAccount->save();
+        }
 
         return response()->json([], 200);
     }
