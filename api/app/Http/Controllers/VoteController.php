@@ -61,6 +61,14 @@ class VoteController extends Controller
         Auth::user()->last_vote = date('Y-m-d H:i:s');
         Auth::user()->save();
 
+        $accounts = Auth::user()->accounts();
+
+        foreach ($accounts as $account)
+        {
+            $account->LastVote = date('Y-m-d H:i:s');
+            $account->save();
+        }
+
         if (Auth::user()->votes % 10 == 0)
         {
             request()->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
