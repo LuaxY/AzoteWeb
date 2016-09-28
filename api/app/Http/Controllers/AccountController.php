@@ -69,7 +69,7 @@ class AccountController extends Controller
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
         $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
         $forumAccount->timezone          = 'Europe/Paris';
-        $forumAccount->members_bitoptions        = '1073807360';
+        $forumAccount->members_bitoptions = '1073807360';
         $forumAccount->save();
 
         $user->forum_id = $forumAccount->member_id;
@@ -107,7 +107,7 @@ class AccountController extends Controller
             return redirect('/');
         }
 
-        $user->ticket = str_random(self::TICKET_LENGTH);
+        //$user->ticket = str_random(self::TICKET_LENGTH);
         $user->active = true;
         $user->update([
             'ticket' => $user->ticket,
@@ -173,6 +173,9 @@ class AccountController extends Controller
             request()->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
+
+        $user->active = true;
+        $user->save();
 
         Auth::login($user);
 
