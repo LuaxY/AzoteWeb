@@ -6,9 +6,10 @@
     <title>{{ config('dofus.title') }} - {{ config('dofus.subtitle') }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <meta name="description" content="{{ config('dofus.title') }} Serveurs Dofus 2.10 & 2.35" />
+    <meta name="description" content="{{ config('dofus.title') }} Serveurs Dofus 2.10" />
 	<meta name="keywords" content="azote,sigma,epsilon,dofus,server,serveur,kamas,jetons,orbes,gratuit,dofus gratuit,serveur dofus,dofus serveur,jeu,jouer,serveur privé dofus,dofus serveur privé,mmorpg,jeu en ligne" />
     <link rel="alternate" type="application/rss+xml" title="News RSS" href="{{ URL::to('news.rss') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ URL::asset('imgs/azote_simple.png') }}"/>
     {!! Html::style('css/common.css') !!}
     {!! Html::style('css/toastr.min.css') !!}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
