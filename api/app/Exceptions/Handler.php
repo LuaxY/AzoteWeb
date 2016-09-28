@@ -37,6 +37,7 @@ class Handler extends ExceptionHandler
         GenericException::class,
         TokenMismatchException::class,
         MethodNotAllowedHttpException::class,
+        GenericException::class,
     ];
 
     /**
@@ -49,7 +50,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if ($e instanceof NotFoundHttpException || $e instanceof TokenMismatchException || $e instanceof MethodNotAllowedHttpException)
+        if ($e instanceof NotFoundHttpException ||
+            $e instanceof TokenMismatchException ||
+            $e instanceof MethodNotAllowedHttpException ||
+            $e instanceof ModelNotFoundException ||
+            $e instanceof GenericException)
         {
             return parent::report($e);
         }
