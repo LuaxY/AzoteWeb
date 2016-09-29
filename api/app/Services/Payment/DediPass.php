@@ -122,8 +122,16 @@ class DediPass extends Payment
             }
             else
             {
-                $check->country = strtolower($identifier[1]);
-                $check->type    = strtolower($identifier[2]);
+                if (count($identifier >= 2))
+                {
+                    $check->country = strtolower($identifier[1]);
+                    $check->type    = strtolower($identifier[2]);
+                }
+                else
+                {
+                    $check->country = strtolower($identifier[1]);
+                    $check->type    = strtolower($result->identifier);
+                }
             }
 
             $check->palier_name = $result->identifier;
