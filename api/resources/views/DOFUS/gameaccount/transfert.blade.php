@@ -18,6 +18,10 @@
                 <div class="panel-main ak-form">
                     {!! Form::open(['route' => ['gameaccount.transfert', $account->server, $account->Id]]) !!}
 
+                    <div class="form-group @if ($errors->has('offline')) has-error @endif">
+                        @if ($errors->has('offline')) <label class="error control-label">{{ $errors->first('offline') }}</label> @endif
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label" for="ogrinesWeb">Ogrines disponible</label>
                         <div class="input-group">

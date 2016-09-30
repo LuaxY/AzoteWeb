@@ -20,8 +20,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 
-use Kamaln7\Toastr\Facades\Toastr;
-
 class GameAccountController extends Controller
 {
     const TICKET_LENGTH = 32;
@@ -94,7 +92,7 @@ class GameAccountController extends Controller
         $account->IsBanned        = false;
         $account->server          = $server;
         $account->save();
-        
+
         Cache::forget('accounts_' . Auth::user()->id);
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
@@ -219,15 +217,10 @@ class GameAccountController extends Controller
             {
                 if ($e->getResponse()->getStatusCode() == 404)
                 {
-                    //$account->addPoints($ogrines);
-                    //$account->save();
-                    
-                    Toastr::add('warning', 'Transfert hors ligne désactivé, connectez-vous en jeu puis re-tentez le transfert');
-
                     $transfert->state = Transfert::FAIL;
                     $transfert->save();
-
-                    $success = false;
+                    
+                    return redirect()->back()->withErrors(['offline' => 'Transfert hors ligne désactivé, connectez-vous en jeu puis re-tentez le transfert'])->withInput();
                 }
                 else
                 {
