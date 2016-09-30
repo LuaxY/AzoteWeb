@@ -217,13 +217,15 @@ class GameAccountController extends Controller
             {
                 if ($e->getResponse()->getStatusCode() == 404)
                 {
-                    $account->addPoints($ogrines);
-                    $account->save();
+                    //$account->addPoints($ogrines);
+                    //$account->save();
+                    
+                    Toastr::add('warning', 'Transfert hors ligne désactivé, connectez-vous en jeu puis re-tentez le transfert');
 
-                    $transfert->state = Transfert::OK_SQL;
+                    $transfert->state = Transfert::FAIL;
                     $transfert->save();
 
-                    $success = true;
+                    $success = false;
                 }
                 else
                 {
