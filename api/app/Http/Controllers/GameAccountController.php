@@ -174,7 +174,7 @@ class GameAccountController extends Controller
         {
             $ogrines = str_replace(' ', '', $request->input('ogrines'));
 
-            $validator = Validator::make([ 'ogrines' => $ogrines ], [ 'ogrines' => 'required|integer|min:0|max:' . Auth::user()->points ]);
+            $validator = Validator::make([ 'ogrines' => $ogrines ], [ 'ogrines' => 'required|integer|min:1|max:' . Auth::user()->points ]);
 
             if ($validator->fails())
             {
