@@ -50,6 +50,6 @@ class Utils
 
     static public function format_price($price, $delimiter = ' ')
     {
-        return round(number_format($price, 1, ",", $delimiter), 0, PHP_ROUND_HALF_DOWN);
+        return number_format(round($price, 0, PHP_ROUND_HALF_DOWN), 0, ",", $delimiter);
     }
 }
