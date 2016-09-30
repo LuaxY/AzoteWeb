@@ -20,6 +20,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\TransferException;
 
+use Kamaln7\Toastr\Facades\Toastr;
+
 class GameAccountController extends Controller
 {
     const TICKET_LENGTH = 32;
