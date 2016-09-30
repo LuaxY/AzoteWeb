@@ -182,6 +182,7 @@ class GameAccountController extends Controller
             }
 
             $transfert = new Transfert;
+            $transfert->user_id    = Auth::user()->id;
             $transfert->account_id = $accountId;
             $transfert->server     = $server;
             $transfert->state      = Transfert::IN_PROGRESS;
