@@ -211,7 +211,13 @@ class GameAccountController extends Controller
 
                     $success = true;
                 }
+                else
+                {
+                    $transfert->state = Transfert::FAIL;
+                    $transfert->save();
 
+                    $success = false;
+                }
             }
             catch (ClientException $e)
             {
@@ -219,7 +225,7 @@ class GameAccountController extends Controller
                 {
                     $transfert->state = Transfert::FAIL;
                     $transfert->save();
-                    
+
                     return redirect()->back()->withErrors(['offline' => 'Transfert hors ligne désactivé, connectez-vous en jeu puis re-tentez le transfert'])->withInput();
                 }
                 else
