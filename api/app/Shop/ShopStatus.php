@@ -7,4 +7,5 @@ class ShopStatus
     const PAYMENT_SUCCESS = 0;
     const PAYMENT_FAIL    = 1;
     const PAYMENT_ERROR   = 2;
+    const IN_PROGRESS     = 3;
 }

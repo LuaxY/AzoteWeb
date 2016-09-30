@@ -97,8 +97,10 @@ class DediPass extends Payment
 
         $check->provider = config('dofus.payment.dedipass.name');
 
-        $result = @file_get_contents($validation);
-        $result = json_decode($result);
+        $json   = @file_get_contents($validation);
+        $result = json_decode($json);
+
+        $check->raw = $json;
 
         if (isset($result->status) && $result->status == "success")
         {

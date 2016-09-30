@@ -117,21 +117,26 @@ class PaymentController extends Controller
             return redirect()->route('shop.payment.code')->withErrors(['palier' => 'Le palier selectionné est invalide.'])->withInput($data);
         }
 
+        $transaction = new Transaction;
+        $transaction->user_id     = Auth::user()->id;
+        $transaction->state       = ShopStatus::IN_PROGRESS;
+        $transaction->code        = $data['code'];
+        $transaction->points      = 0;
+        $transaction->country     = $data['country'];
+        $transaction->palier_name = $data['method'];
+        $transaction->save();
+
         $validation = $this->payment->check($data['palier'], $data['code']);
+
+        $transaction->raw = $validation->raw;
 
         if ($validation->error)
         {
-            $transaction = [
-                'user_id'     => Auth::user()->id,
-                'state'       => ShopStatus::PAYMENT_ERROR,
-                'code'        => $data['code'],
-                'points'      => 0,
-                'country'     => $data['country'],
-                'palier_name' => $data['method'],
-                'type'        => 'error',
-            ];
+            $transaction->state = ShopStatus::PAYMENT_ERROR;
+            $transaction->type  = 'error';
+            $transaction->save();
 
-            Transaction::create($transaction);
+            Cache::forget('transactions_' . Auth::user()->id);
 
             return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->error])->withInput();
         }
@@ -139,18 +144,15 @@ class PaymentController extends Controller
         {
             if ($validation->success)
             {
-                $transaction = [
-                    'user_id'     => Auth::user()->id,
-                    'state'       => ShopStatus::PAYMENT_SUCCESS,
-                    'code'        => $validation->code,
-                    'points'      => $validation->points,
-                    'country'     => $validation->country,
-                    'palier_name' => $validation->palier_name,
-                    'palier_id'   => $validation->palier_id,
-                    'type'        => $validation->type,
-                ];
+                $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
+                $transaction->code        = $validation->code;
+                $transaction->points      = $validation->points;
+                $transaction->country     = $validation->country;
+                $transaction->palier_name = $validation->palier_name;
+                $transaction->palier_id   = $validation->palier_id;
+                $transaction->type        = $validation->type;
+                $transaction->save();
 
-                Transaction::create($transaction);
                 Cache::forget('transactions_' . Auth::user()->id);
 
                 Auth::user()->points += $validation->points;
@@ -162,17 +164,11 @@ class PaymentController extends Controller
             }
             else
             {
-                $transaction = [
-                    'user_id'     => Auth::user()->id,
-                    'state'       => ShopStatus::PAYMENT_FAIL,
-                    'code'        => $validation->code,
-                    'points'      => 0,
-                    'country'     => $data['country'],
-                    'palier_name' => $data['method'],
-                    'type'        => 'fail',
-                ];
+                $transaction->state = ShopStatus::PAYMENT_FAIL;
+                $transaction->code  = $validation->code;
+                $transaction->type  = 'fail';
+                $transaction->save();
 
-                Transaction::create($transaction);
                 Cache::forget('transactions_' . Auth::user()->id);
 
                 return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->message])->withInput();
