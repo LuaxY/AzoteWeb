@@ -84,8 +84,14 @@ class DofusForge
         }
         else
         {*/
-            $obj = Lang::select('French')->where('Id', $id)->first();
-            $text = $obj->French;
+            $lang = Lang::select('French')->where('Id', $id)->first();
+            $text = null;
+
+            if ($lang)
+            {
+                $text = $lang->French;
+            }
+
             if (!$text)
             {
                 return "Text not found.";
