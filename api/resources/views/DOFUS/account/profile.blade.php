@@ -58,6 +58,7 @@
     <table class="ak-container ak-table">
         <tr>
             <th class="ak-center"></th>
+            <th>Identifiant</th>
             <th>Pseudo</th>
             <th>Serveur</th>
             <th class="ak-center" style="width: 100px;">Personnages</th>
@@ -66,6 +67,7 @@
         @foreach ($accounts as $account)
         <tr>
             <td class="ak-rank"></td>
+            <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Login }}</a></td>
             <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Nickname }}</a></td>
             <td>{{ ucfirst($account->server) }}</td>
             <td class="ak-center">{{ count($account->characters()) }}</td>

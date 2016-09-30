@@ -8,7 +8,7 @@
 @section('content')
 <div class="ak-container ak-main-center">
     <div class="ak-title-container">
-        <h1><span class="ak-icon-big ak-bank"></span></a> Compte de Jeu</h1>
+        <h1><span class="ak-icon-big ak-bank"></span></a> Compte de Jeu - ( {{$account->Nickname}} )</h1>
     </div>
 
     <div class="ak-container ak-panel-stack">
@@ -18,6 +18,7 @@
                     <div class="code">
                         Code : <span>{{ $account->SecretAnswer }}</span>
                     </div>
+                    <b>Identifiant</b>: {{ $account->Login }}<br>
                     <b>Pseudo</b>: {{ $account->Nickname }}<br>
                     <b>Serveur</b>: {{ ucfirst($account->server) }}<br><br>
                     <b>Ogrines</b>:
