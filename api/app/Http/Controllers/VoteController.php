@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
+use Validator;
+use \Cache;
 
+use App\Vote;
 use App\VoteReward;
 use App\ItemTemplate;
 use App\Services\DofusForge;
@@ -47,17 +50,46 @@ class VoteController extends Controller
         return view('vote.index', $data);
     }
 
-    public function process()
+    public function confirm()
     {
         $delay = $this->delay();
 
         if (!$delay->canVote)
         {
-            return $this->index();
+            return redirect()->route('vote.index');
+        }
+        
+        return view ('vote.confirm');
+    }
+
+    public function process(Request $request)
+    {
+        $delay = $this->delay();
+
+        if (!$delay->canVote)
+        {
+            return redirect()->route('vote.index');
+        }
+
+        $rules = [
+            'out'                  => 'required|integer',
+            'g-recaptcha-response' => 'required|recaptcha'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->input('out') != $this->getOuts())
+        {
+            return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
 
         Auth::user()->votes    += 1;
-        Auth::user()->points   += 10;
+        Auth::user()->points   += config('dofus.vote');
         Auth::user()->last_vote = date('Y-m-d H:i:s');
         Auth::user()->save();
 
@@ -71,12 +103,17 @@ class VoteController extends Controller
 
         if (Auth::user()->votes % 10 == 0)
         {
-            request()->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
-            $reward = VoteReward::where('votes', Auth::user()->votes)->firstOrFail();
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
+            $reward = VoteReward::where('votes', Auth::user()->votes)->first();
             // TODO: add $reward->itemId to account
         }
 
-        return redirect()->to('http://www.rpg-paradize.com/?page=vote&vote=' . config('dofus.rpg-paradize.id'));
+        $vote = new Vote;
+        $vote->user_id = Auth::user()->id;
+        $vote->points  = config('dofus.vote');
+        $vote->save();
+
+        return redirect()->route('vote.index');
     }
 
     public function palier($id)
@@ -164,5 +201,47 @@ class VoteController extends Controller
         $obj->seconds  = intval((($obj->wait % 3600) % 60));
 
         return $obj;
+    }
+
+    private function getOuts()
+    {
+        $outs = Cache::remember('rpg_outs', 1, function () {
+            $curl = curl_init();
+
+            $header[0] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,";
+            $header[0] .= "text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
+            $header[] = "Cache-Control: max-age=0";
+            $header[] = "Connection: keep-alive";
+            $header[] = "Keep-Alive: 5";
+            $header[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
+            $header[] = "Accept-Language: fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3";
+
+            curl_setopt($curl, CURLOPT_URL, 'http://www.rpg-paradize.com/site--' . config('dofus.rpg-paradize.id'));
+            curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0");
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($curl, CURLOPT_REFERER, 'http://www.rpg-paradize.com');
+            curl_setopt($curl, CURLOPT_ENCODING, "gzip,deflate");
+            curl_setopt($curl, CURLOPT_AUTOREFERER, true);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 5);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION,true);
+            curl_setopt($curl, CURLOPT_VERBOSE, false);
+            curl_setopt($curl, CURLOPT_COOKIEFILE,'cookieRPG.txt');
+            curl_setopt($curl, CURLOPT_COOKIEJAR,'cookieRPG.txt');
+
+            $webpage  = curl_exec($curl);
+            $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            preg_match('#Clic Sortant : ([0-9]+)#', $webpage, $matches);
+
+            if (!isset($matches[0]))
+            {
+                return 0;
+            }
+
+            return substr($matches[0], 15);
+        });
+
+        return $outs;
     }
 }

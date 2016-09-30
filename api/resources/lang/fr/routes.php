@@ -17,7 +17,7 @@ return [
     'posts.comment.store' => 'article/{id}/{slug?}/commentaire',
 
     'posts.comment.destroy' => 'article/{id}/{slug?}/{commentid}/destroy',
-    
+
     /** Account **/
 
     'account.register' => 'inscription',
@@ -69,6 +69,8 @@ return [
     /** Vote **/
 
     'vote.index' => 'vote',
+
+    'vote.confirm' => 'vote/confirmation',
 
     'vote.process' => 'vote/process',
 

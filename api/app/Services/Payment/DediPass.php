@@ -131,8 +131,8 @@ class DediPass extends Payment
                 }
                 else
                 {
-                    $check->country = strtolower($identifier[1]);
-                    $check->type    = strtolower($result->identifier);
+                    $check->country = 'xx';
+                    $check->type    = strtolower($identifier[1]);
                 }
             }
 
