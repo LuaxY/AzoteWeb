@@ -18,7 +18,7 @@
 @section('background') ak-background-type-homepage @stop
 
 @section('breadcrumbs')
-{? $page_name = 'Actualités' ?}
+{? $page_name = config('dofus.subtitle') ?}
 {!! Breadcrumbs::render('page', $page_name) !!}
 @stop
 
