@@ -30,6 +30,11 @@ class AuthController extends Controller
                 $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte n'est pas activé, vérifiez vos emails."]);
                 return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
             }
+            if ($user->isBanned())
+            {
+                $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte est banni."]);
+                return redirect()->back()->withErrors(['auth' => 'Votre compte est banni.'])->withInput();
+            }
             $user->last_ip_address = $clientIp;
             $user->save();
 
@@ -57,6 +62,7 @@ class AuthController extends Controller
         }
         else
         {
+            $request->session()->flash('notify', ['type' => 'error', 'message' => "Nom de compte ou mot de passe incorrect."]);
             return redirect()->back()->withErrors(['auth' => 'Nom de compte ou mot de passe incorrect.'])->withInput();
         }
     }
