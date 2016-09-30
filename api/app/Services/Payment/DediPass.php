@@ -100,7 +100,7 @@ class DediPass extends Payment
         $result = @file_get_contents($validation);
         $result = json_decode($result);
 
-        if ($result->status == "success")
+        if (isset($result->status) && $result->status == "success")
         {
             $check->success = true;
 
@@ -122,7 +122,7 @@ class DediPass extends Payment
             }
             else
             {
-                if (count($identifier >= 2))
+                if (count($identifier >= 3))
                 {
                     $check->country = strtolower($identifier[1]);
                     $check->type    = strtolower($identifier[2]);
