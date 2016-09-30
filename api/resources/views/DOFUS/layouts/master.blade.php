@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>{{ config('dofus.title') }} - {{ config('dofus.subtitle') }}</title>
+    <title>{{ config('dofus.title') }} - {{ config('dofus.subtitle') }} @if (isset($page_name)) - {{ $page_name }} @endif</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="description" content="{{ config('dofus.title') }} Serveurs Dofus 2.10" />

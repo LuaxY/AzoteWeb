@@ -5,6 +5,8 @@
     {!! Html::style('css/download.css') !!}
 @stop
 
+{? $page_name = 'Télécharger' ?}
+
 @section('page')
 @yield('top')
 <div class="container ak-main-container ">

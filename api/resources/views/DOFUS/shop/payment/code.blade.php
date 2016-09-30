@@ -7,7 +7,8 @@
 @stop
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('shop.page', 'Paiement') !!}
+{? $page_name = 'Paiement' ?}
+{!! Breadcrumbs::render('shop.page', $page_name) !!}
 @stop
 
 @section('content')

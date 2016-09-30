@@ -4,6 +4,8 @@
     {!! Html::style('css/404.css') !!}
 @stop
 
+{? $page_name = '404' ?}
+
 @section('page')
 <div class="container ak-main-container ">
     <div class="ak-404">

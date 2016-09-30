@@ -2,6 +2,7 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
+{? $page_name = 'Mon Compte' ?}
 {!! Breadcrumbs::render('account') !!}
 @stop
 

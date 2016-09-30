@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('account.page', 'Éditer le profil') !!}
+{? $page_name = 'Éditer le profil' ?}
+{!! Breadcrumbs::render('account.page', $page_name) !!}
 @stop
 
 @section('content')

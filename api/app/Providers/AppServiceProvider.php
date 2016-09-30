@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 use Validator;
 use App\User;
@@ -25,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('old_passwordStump', function($attribute, $value, $parameters, $validator) {
             $password = $parameters[0];
             return $password === md5($value);
+        });
+
+        Blade::extend(function($value) {
+            return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
         });
     }
 

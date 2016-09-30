@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('page', 'Connexion') !!}
+{? $page_name = 'Connexion' ?}
+{!! Breadcrumbs::render('page', $page_name) !!}
 @stop
 
 @section('content')

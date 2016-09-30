@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('account.page', 'Changer d\'email') !!}
+{? $page_name = 'Changer d\'email' ?}
+{!! Breadcrumbs::render('account.page', $page_name) !!}
 @stop
 
 @section('content')

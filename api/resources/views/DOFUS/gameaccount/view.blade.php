@@ -2,6 +2,7 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
+{? $page_name = 'Compte de Jeu' ?}
 {!! Breadcrumbs::render('gameaccount', [$account->server, $account->Id]) !!}
 @stop
 

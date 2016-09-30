@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('gameaccount.page', 'Transférer des Ogrines', [$account->server, $account->Id]) !!}
+{? $page_name = 'Transférer des Ogrines' ?}
+{!! Breadcrumbs::render('gameaccount.page', $page_name, [$account->server, $account->Id]) !!}
 @stop
 
 @section('content')

@@ -1,12 +1,9 @@
 @extends('layouts.contents.default')
 @include('layouts.menus.base')
 
-@section('header')
-    {!! Html::style('css/login.css') !!}
-@stop
-
 @section('breadcrumbs')
-{!! Breadcrumbs::render('page', 'Mot de passe oublié') !!}
+{? $page_name = 'Mot de passe oublié' ?}
+{!! Breadcrumbs::render('page', $page_name) !!}
 @stop
 
 @section('content')

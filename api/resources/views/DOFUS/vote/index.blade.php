@@ -7,7 +7,8 @@
 @stop
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('page', 'Voter') !!}
+{? $page_name = 'Voter' ?}
+{!! Breadcrumbs::render('page', $page_name) !!}
 @stop
 
 @section('content')

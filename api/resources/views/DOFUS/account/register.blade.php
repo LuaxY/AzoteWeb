@@ -5,6 +5,8 @@
     {!! Html::script('https://www.google.com/recaptcha/api.js') !!}
 @stop
 
+{? $page_name = 'Inscription' ?}
+
 @section('background') bg-play2 @stop
 
 @section('page')

@@ -6,7 +6,8 @@
 @stop
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('page', 'Mot de passe oublié') !!}
+{? $page_name = 'Mot de passe oublié' ?}
+{!! Breadcrumbs::render('page', $page_name) !!}
 @stop
 
 @section('content')

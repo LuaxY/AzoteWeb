@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('gameaccount.page', 'Changer de mot de passe', [$account->server, $account->Id]) !!}
+{? $page_name = 'Changer de mot de passe' ?}
+{!! Breadcrumbs::render('gameaccount.page', $page_name, [$account->server, $account->Id]) !!}
 @stop
 
 @section('content')

@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('account.page', 'Certification') !!}
+{? $page_name = 'Certification' ?}
+{!! Breadcrumbs::render('account.page', $page_name) !!}
 @stop
 
 @section('header')

@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('account.page', 'Créer un compte de jeu') !!}
+{? $page_name = 'Créer un compte de jeu' ?}
+{!! Breadcrumbs::render('account.page', $page_name) !!}
 @stop
 
 @section('content')

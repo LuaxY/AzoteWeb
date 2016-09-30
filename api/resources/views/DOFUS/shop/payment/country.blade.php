@@ -6,7 +6,8 @@
 @stop
 
 @section('breadcrumbs')
-{!! Breadcrumbs::render('shop.page', 'Choix du pays') !!}
+{? $page_name = 'Choix du pays' ?}
+{!! Breadcrumbs::render('shop.page', $page_name) !!}
 @stop
 
 @section('content')
