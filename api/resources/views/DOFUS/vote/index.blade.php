@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     @if ($delay->canVote)
-                    <a id="vote-link" href="{{ URL::route('vote.process') }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
+                    <a id="vote-link" href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
                     @else
                     <p><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
                     @endif
@@ -140,8 +140,9 @@
 
     $("#vote-link").on("click", function() {
         setTimeout(function() {
-            location.reload();
-        }, 2500);
+            //location.reload();
+            window.location.href = "{{ URL::route('vote.confirm') }}";
+        }, 1000);
     });
 
     function loader(seletor, state) {

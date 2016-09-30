@@ -203,7 +203,13 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'vote.index'
     ]);
 
-    Route::get(Lang::get('routes.vote.process'), [
+    Route::get(Lang::get('routes.vote.confirm'), [
+        'middleware' => 'auth',
+        'uses'       => 'VoteController@confirm',
+        'as'         => 'vote.confirm'
+    ]);
+
+    Route::post(Lang::get('routes.vote.process'), [
         'middleware' => 'auth',
         'uses'       => 'VoteController@process',
         'as'         => 'vote.process'
