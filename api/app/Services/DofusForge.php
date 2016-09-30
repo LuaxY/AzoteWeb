@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Lang;
 use Redis;
 
 class DofusForge
@@ -83,11 +84,8 @@ class DofusForge
         }
         else
         {*/
-            $obj = json_decode(file_get_contents("i18n_fr.json"));
-            $texts = $obj->texts;
-
-            $text = @$texts->$id;
-
+            $obj = Lang::select('French')->where('Id', $id)->first();
+            $text = $obj->French;
             if (!$text)
             {
                 return "Text not found.";
