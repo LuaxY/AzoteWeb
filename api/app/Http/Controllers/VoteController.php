@@ -52,11 +52,25 @@ class VoteController extends Controller
 
     public function confirm()
     {
+        $delay = $this->delay();
+
+        if (!$delay->canVote)
+        {
+            return redirect()->route('vote.index');
+        }
+        
         return view ('vote.confirm');
     }
 
     public function process(Request $request)
     {
+        $delay = $this->delay();
+
+        if (!$delay->canVote)
+        {
+            return redirect()->route('vote.index');
+        }
+
         $rules = [
             'out'                  => 'required|integer',
             'g-recaptcha-response' => 'required|recaptcha'
@@ -72,13 +86,6 @@ class VoteController extends Controller
         if ($request->input('out') != $this->getOuts())
         {
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
-        }
-
-        $delay = $this->delay();
-
-        if (!$delay->canVote)
-        {
-            return redirect()->route('vote.index');
         }
 
         Auth::user()->votes    += 1;
