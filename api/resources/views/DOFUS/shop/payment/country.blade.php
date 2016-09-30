@@ -16,6 +16,13 @@
 
 <div class="ak-container ak-panel-stack ak-payments-process-choice">
     <div class="ak-container ak-panel">
+        <div class="ak-intro-connection">
+            <div class="ak-panel-content ak-text-intro">
+                <h3>Astuce:</h3>
+                <p style="text-align: center;">
+                    Les paiements hors SMS et Appels comme <strong>paysafecard, neosurf et carte bancaire</strong> se trouvent dans le <strong>drapeau européen {{Html::image('imgs/shop/europe.png', 'europe')}}</strong>
+            </div>
+        </div>
         <div class="ak-panel-title">
               <span class="ak-panel-title-icon"></span> Choisissez votre pays
         </div>
