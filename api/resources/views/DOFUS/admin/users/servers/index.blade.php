@@ -34,7 +34,6 @@
                                         <th>Nickname</th>
                                         <th>User Group</th>
                                         <th>Tokens</th>
-                                        <th>Tokens (pending)</th>
                                         <th>Last connection</th>
                                         <th>Last IP</th>
                                         <th>Last KEY</th>
@@ -49,8 +48,7 @@
                                             <td>{{ $account->Login }}</td>
                                             <td>{{ $account->Nickname }}</td>
                                             <td>{{ config('dofus.ranks')[$account->UserGroupId] }}</td>
-                                            <td>{{ $account->Tokens }}</td>
-                                            <td>{{ $account->NewTokens }}</td>
+                                            <td>{{ $account->points() }}</td>
                                             <td>
                                                 @if($account->LastConnection)
                                                 {{ $account->LastConnection->diffForHumans() }}

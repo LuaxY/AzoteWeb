@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group {{ $errors->has('UserGroupId') ? ' has-error' : '' }}">
                                     <label for="UserGroupId">User Group:</label>
                                     {!! Form::select('UserGroupId', config('dofus.ranks'), null,['class' => 'form-control', 'id' => 'UserGroupId']) !!}
@@ -67,6 +67,12 @@
                                                                     <strong>{{ $errors->first('UserGroupId') }}</strong>
                                                                 </span>
                                     @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tokens:</label>
+                                    {!! Form::text('Tokens', $account->points(),['class' => 'form-control', 'id' => 'UserGroupId', 'disabled', 'readonly']) !!}
                                 </div>
                             </div>
                         </div>

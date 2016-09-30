@@ -18500,7 +18500,7 @@ img.mfp-img {
 }
 
 
-.ak-main-container .ak-home-facebook, .ak-main-container .ak-home-youtube, .ak-main-container .ak-home-twitter {
+.ak-main-container .ak-home-facebook, .ak-main-container .ak-home-youtube, .ak-main-container .ak-home-twitter, .ak-main-container .ak-home-discord {
     display: block;
     text-transform: uppercase;
     font-family: "bebas_neueregular", sans-serif;
@@ -18523,7 +18523,7 @@ img.mfp-img {
     text-decoration: none
 }
 
-.ak-main-container .ak-home-facebook:before, .ak-main-container .ak-home-youtube:before, .ak-main-container .ak-home-twitter:before {
+.ak-main-container .ak-home-facebook:before, .ak-main-container .ak-home-youtube:before, .ak-main-container .ak-home-twitter:before, .ak-main-container .ak-home-discord:before {
     display: block;
     content: '';
     height: 75px;
@@ -18585,6 +18585,24 @@ img.mfp-img {
 }
 .ak-main-container .ak-home-twitter:hover {
     background: #6599b1
+}
+
+.ak-main-container .ak-home-discord {
+    background: #3f4146;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)
+}
+
+.ak-main-container .ak-home-discord:before {
+    background: rgba(0, 0, 0, 0.2) url("../imgs/social/icon-discord.png") no-repeat center center
+}
+
+.ak-main-container .ak-home-discord span {
+    color: #7489d8
+}
+
+.ak-main-container .ak-home-discord:hover {
+    background-color: #4c4e53
 }
 
 .ak-main-container .ak-admin-text {
