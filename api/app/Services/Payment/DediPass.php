@@ -122,7 +122,7 @@ class DediPass extends Payment
             }
             else
             {
-                if (count($identifier >= 3))
+                if (count($identifier) >= 3)
                 {
                     $check->country = strtolower($identifier[1]);
                     $check->type    = strtolower($identifier[2]);
