@@ -19,7 +19,7 @@
 
 @section('breadcrumbs')
 {? $page_name = config('dofus.subtitle') ?}
-{!! Breadcrumbs::render('page', $page_name) !!}
+{!! Breadcrumbs::render('page', 'Actualités') !!}
 @stop
 
 @section('content')

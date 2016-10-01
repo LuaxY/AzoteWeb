@@ -35,7 +35,7 @@
                     </div>
                     <a class="ak-support" href="{{ URL::to('support') }}">Support</a>
                     @if (!Auth::guest() && Auth::user()->isAdmin())
-                    <a class="ak-admin" href="{{ URL::route('admin.dashboard') }}">Admin</a>
+                    <a class="ak-admin" href="{{ URL::route('admin.dashboard') }}" target="_blank">Admin</a>
                     @endif
                 </div>
                 <div class="ak-idbar-right">
