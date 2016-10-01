@@ -9,6 +9,7 @@ use \Cache;
 use App\Security;
 use App\ModelCustom;
 use App\ForumAccount;
+use App\Vote;
 
 class User extends Authenticatable
 {
@@ -123,6 +124,15 @@ class User extends Authenticatable
         });
 
         return $transactions;
+    }
+
+    public function votes()
+    {
+        $votes = Cache::remember('votes_'.$this->id, 10, function() {
+            return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take(10)->get();
+        });
+
+        return $votes;
     }
 
     public function posts()

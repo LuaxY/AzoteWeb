@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="ak-panel-title">
-                  <span class="ak-panel-title-icon"></span> Mes comptes de jeu
+                <span class="ak-panel-title-icon"></span> Mes comptes de jeu
             </div>
         </div>
     </div>
@@ -89,7 +89,7 @@
             </div>
 
             <div class="ak-panel-title">
-                  <span class="ak-panel-title-icon"></span> Mes achats
+                <span class="ak-panel-title-icon"></span> Mes achats
             </div>
         </div>
     </div>
@@ -109,6 +109,30 @@
             <td>{{ Utils::format_price($transaction->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
             <td>{{ $transaction->code }}</td>
             <td>{{ Utils::transaction_status($transaction->state) }}</td>
+        </tr>
+        @endforeach
+    </table>
+
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-title">
+                <br>
+                <span class="ak-panel-title-icon"></span> Mes 10 derniers votes
+            </div>
+        </div>
+    </div>
+
+    <table class="ak-container ak-table">
+        <tr>
+            <th></th>
+            <th>Date du vote</th>
+            <th>Ogrines</th>
+        </tr>
+        @foreach (Auth::user()->votes() as $vote)
+        <tr>
+            <td></td>
+            <td>{{ $vote->created_at->format('d/m/Y H:i:s') }}</td>
+            <td>+{{ Utils::format_price($vote->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
         </tr>
         @endforeach
     </table>

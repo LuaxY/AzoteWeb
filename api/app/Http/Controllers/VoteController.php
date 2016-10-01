@@ -89,7 +89,7 @@ class VoteController extends Controller
         {
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
-        
+
         Auth::user()->votes    += 1;
         Auth::user()->points   += config('dofus.vote');
         Auth::user()->last_vote = date('Y-m-d H:i:s');
@@ -114,6 +114,8 @@ class VoteController extends Controller
         $vote->user_id = Auth::user()->id;
         $vote->points  = config('dofus.vote');
         $vote->save();
+
+        Cache::forget('votes_' . Auth::user()->id);
 
         return redirect()->route('vote.index');
     }
