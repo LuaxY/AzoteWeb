@@ -137,10 +137,7 @@ class GameAccountController extends Controller
 
         if ($request->all())
         {
-            $rules = Account::$rules['update-password'];
-            $rules['passwordOld'] = str_replace('{PASSWORD}', $account->PasswordHash, $rules['passwordOld']);
-
-            $validator = Validator::make($request->all(), $rules);
+            $validator = Validator::make($request->all(), Account::$rules['update-password']);
 
             if ($validator->fails())
             {

@@ -55,7 +55,6 @@ class Account extends Model
             'passwordConfirmation' => 'required|same:password',
         ],
         'update-password' => [
-            'passwordOld'          => 'required|old_passwordStump:{PASSWORD}',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],

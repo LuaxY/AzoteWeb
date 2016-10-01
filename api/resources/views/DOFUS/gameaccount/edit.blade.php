@@ -19,12 +19,6 @@
                 <div class="panel-main ak-form">
                     {!! Form::open(['route' => ['gameaccount.edit', $account->server, $account->Id]]) !!}
 
-                    <div class="form-group @if ($errors->has('passwordOld')) has-error @endif">
-                        <label class="control-label" for="passwordOld">Mot de passe actuel</label>
-                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="passwordOld" placeholder="Mot de passe actuel" value="{{ Input::old('passwordOld') }}" id="passwordOld" autocapitalize="off" autocorrect="off" required="required" />
-                        @if ($errors->has('passwordOld')) <label class="error control-label">{{ $errors->first('passwordOld') }}</label> @endif
-                    </div>
-
                     <div class="form-group @if ($errors->has('password')) has-error @endif">
                         <label class="control-label" for="password">Nouveau mot de passe</label>
                         <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="password" placeholder="Nouveau mot de passe" value="{{ Input::old('password') }}" id="password" autocapitalize="off" autocorrect="off" required="required" />
