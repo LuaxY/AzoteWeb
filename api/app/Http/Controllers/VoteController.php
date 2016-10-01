@@ -58,7 +58,7 @@ class VoteController extends Controller
         {
             return redirect()->route('vote.index');
         }
-        
+
         return view ('vote.confirm');
     }
 
@@ -83,11 +83,13 @@ class VoteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if ($request->input('out') != $this->getOuts())
+        $actualOUT = $this->getOuts();
+
+        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
         {
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
-
+        
         Auth::user()->votes    += 1;
         Auth::user()->points   += config('dofus.vote');
         Auth::user()->last_vote = date('Y-m-d H:i:s');
