@@ -80,7 +80,7 @@
         @foreach ($account->transferts() as $transfert)
         <tr>
             <td class="ak-center">{{ $transfert->id }}</td>
-            <td>{{ $transfert->created_at }}</td>
+            <td>{{ $transfert->created_at->format('d/m/Y H:i:s') }}</td>
             <td>{{ Utils::format_price($transfert->amount, ' ') }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
             <td>{{ Utils::transfert_status($transfert->state) }}</td>
         </tr>
