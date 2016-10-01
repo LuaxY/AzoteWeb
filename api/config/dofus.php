@@ -56,6 +56,7 @@ return [
         'facebook' => env('SOCIAL_FACEBOOK'),
         'twitter'  => env('SOCIAL_TWITTER'),
         'youtube'  => env('SOCIAL_YOUTUBE'),
+        'discord'  => env('SOCIAL_DISCORD'),
     ],
 
     'vote'         => env('POINTS_BY_VOTES', 10),
