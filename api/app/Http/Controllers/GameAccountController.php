@@ -94,6 +94,7 @@ class GameAccountController extends Controller
         $account->server          = $server;
         $account->save();
 
+        Cache::forget('accounts_' . $server . '_' . Auth::user()->id);
         Cache::forget('accounts_' . Auth::user()->id);
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
