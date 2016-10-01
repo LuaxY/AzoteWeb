@@ -10,6 +10,7 @@ use App\Exceptions\GenericException;
 use App\User;
 use App\Account;
 use App\Transfert;
+use App\World;
 use App\Helpers\Utils;
 
 use Validator;
@@ -41,7 +42,7 @@ class GameAccountController extends Controller
 
     public function create()
     {
-        return view('gameaccount/create');
+        return view('gameaccount.create');
     }
 
     public function store(Request $request)
@@ -115,7 +116,7 @@ class GameAccountController extends Controller
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
 
-        return view('gameaccount/view', ['account' => $account]);
+        return view('gameaccount.view', ['account' => $account]);
     }
 
     public function edit(Request $request, $server, $accountId)
@@ -152,7 +153,7 @@ class GameAccountController extends Controller
             return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
         }
 
-        return view('gameaccount/edit', ['account' => $account]);
+        return view('gameaccount.edit', ['account' => $account]);
     }
 
     public function transfert(Request $request, $server, $accountId)
@@ -169,6 +170,13 @@ class GameAccountController extends Controller
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
+
+        $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
+
+        if (!$world || !$world->isOnline())
+        {
+            return view('gameaccount.maintenance', ['account' => $account]);
+        }
 
         if ($request->all())
         {
@@ -259,6 +267,6 @@ class GameAccountController extends Controller
             return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
         }
 
-        return view('gameaccount/transfert', ['account' => $account]);
+        return view('gameaccount.transfert', ['account' => $account]);
     }
 }
