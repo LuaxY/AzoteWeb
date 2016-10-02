@@ -50,7 +50,7 @@ class PostController extends Controller
 
         if ($request->ajax())
         {
-            return response()->json(View::make('posts.templates.comments', compact('comments'))->render());
+            return response()->json(View::make('posts.templates.comments', compact('post', 'comments'))->render());
         }
 
         return view('posts.show', compact('post', 'comments'));
