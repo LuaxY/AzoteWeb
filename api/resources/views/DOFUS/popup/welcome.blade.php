@@ -35,7 +35,7 @@
                                 <span class="ak-panel-title-icon"></span> Sécurisez votre compte
                             </div>
                             <p>Afin de vous protéger contre le vol de compte, vous pouvez certifier votre compte avec vos informations personnelles. Celles-ci vous seront demandées en cas de problème afin de valider que vous en êtes bien l'auteur.<p>
-                            <a href="{{ URL::route('gameaccount.create') }}"><button class="btn btn-danger btn-lg">Certifier mon compte</button></a>
+                            <a href="{{ URL::route('account.certify') }}"><button class="btn btn-danger btn-lg">Certifier mon compte</button></a>
 
                         </div>
                     </div>
