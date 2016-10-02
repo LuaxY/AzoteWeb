@@ -33,11 +33,12 @@ class Utils
             case Transfert::IN_PROGRESS:
                 $status_text = "En cours";
                 break;
-            case Transfert::OK_API:
-                $status_text = "Terminée (Rapide)";
-                break;
             case Transfert::OK_SQL:
-                $status_text = "Terminée (Normale)";
+            case Transfert::OK_API:
+                $status_text = "Terminée";
+                break;
+            case Transfert::REFUND:
+                $status_text = "Remboursé";
                 break;
             case Transfert::FAIL:
             default:

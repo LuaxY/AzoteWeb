@@ -10,4 +10,5 @@ class Transfert extends Model
     const OK_API      = 1;
     const OK_SQL      = 2;
     const FAIL        = 3;
+    const REFUND      = 4;
 }
