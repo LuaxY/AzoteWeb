@@ -47,6 +47,11 @@ class VoteController extends Controller
             'delay'      => $delay,
         ];
 
+        if (Auth::user()->isFirstVote)
+        {
+            $data['popup'] = 'vote';
+        }
+
         return view('vote.index', $data);
     }
 
@@ -93,6 +98,12 @@ class VoteController extends Controller
         Auth::user()->votes    += 1;
         Auth::user()->points   += config('dofus.vote');
         Auth::user()->last_vote = date('Y-m-d H:i:s');
+
+        if (Auth::user()->isFirstVote)
+        {
+            Auth::user()->isFirstVote = false;
+        }
+        
         Auth::user()->save();
 
         $accounts = Auth::user()->accounts();
@@ -116,6 +127,8 @@ class VoteController extends Controller
         $vote->save();
 
         Cache::forget('votes_' . Auth::user()->id);
+
+        $request->session()->flash('popup', 'ogrines');
 
         return redirect()->route('vote.index');
     }

@@ -203,11 +203,15 @@
         </div>
     </footer>
 
-    @if(Session::has('popup'))
-    @include('popup.' . Session::get('popup'))
+    @if (Session::has('popup'))
+    {? $popup = Session::get('popup') ?}
     @endif
 
-    @if(Session::has('notify'))
+    @if (isset($popup))
+    @include('popup.' . $popup)
+    @endif
+
+    @if (Session::has('notify'))
     {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
     @endif

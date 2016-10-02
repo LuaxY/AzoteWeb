@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-sm-6">
                     <p>Pour obtenir vos Ogrines vous devez récupérer la valeur OUT sur la ligne « AZOTE 2.10 » et la reporter dans le formulaire:</p>
-                    <img src="{{ URL::asset('imgs/help/vote.jpg') }}" alt="Valeur OUT" width="300px">
+                    <img src="{{ URL::asset('imgs/help/out.jpg') }}" alt="Valeur OUT" width="300px">
                 </div>
             </div>
         </div>
