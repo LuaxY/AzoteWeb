@@ -131,7 +131,8 @@ class AccountController extends Controller
 
         Auth::login($user);
 
-        request()->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenue {$user->firstname} !"]);
+        $request->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenue {$user->firstname} !"]);
+        $request->session()->flash('popup', 'welcome');
 
         return redirect('/');
     }

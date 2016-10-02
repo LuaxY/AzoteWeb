@@ -140,7 +140,6 @@
 
     $("#vote-link").on("click", function() {
         setTimeout(function() {
-            //location.reload();
             window.location.href = "{{ URL::route('vote.confirm') }}";
         }, 1000);
     });

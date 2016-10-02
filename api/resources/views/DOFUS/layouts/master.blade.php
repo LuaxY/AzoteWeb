@@ -203,6 +203,10 @@
         </div>
     </footer>
 
+    @if(Session::has('popup'))
+    @include('popup.' . Session::get('popup'))
+    @endif
+
     @if(Session::has('notify'))
     {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
@@ -228,6 +232,7 @@
         </script>
         @yield('scriptlogged')
     @endif
+
     @yield('bottom')
 
     <script type="text/javascript">
@@ -243,5 +248,19 @@
         })();
     </script>
     <noscript><p><img src="//analytics.azote.us/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+
+    <script type="text/javascript">
+        var $ = require('jquery');
+
+        $('.ui-dialog-titlebar-close').hide();
+
+        setTimeout(function() {
+            $('.ui-dialog-titlebar-close').fadeIn();
+        }, 3000);
+
+        $('.ui-dialog-titlebar-close').on('click', function() {
+            $('.ui-dialog').fadeOut();
+        });
+    </script>
 </body>
 </html>
