@@ -19,7 +19,9 @@ use \Cache;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\TransferException;
+use GuzzleHttp\Psr7;
 
 class GameAccountController extends Controller
 {
@@ -195,9 +197,6 @@ class GameAccountController extends Controller
             $transfert->amount     = $ogrines;
             $transfert->save();
 
-            Auth::user()->points -= $ogrines;
-            Auth::user()->save();
-
             $api = config('dofus.details')[$server];
             $success = false;
 
@@ -213,39 +212,56 @@ class GameAccountController extends Controller
 
                 if ($res->getStatusCode() == 200)
                 {
-                    $transfert->state = Transfert::OK_API;
+                    // Server return 200 (Good)
+                    Auth::user()->points -= $ogrines;
+                    Auth::user()->save();
+
+                    $transfert->state  = Transfert::OK_API;
+                    $transfert->rawIn  = Psr7\str($e->getRequest());
+                    $transfert->rawOut = Psr7\str($e->getResponse());
                     $transfert->save();
 
                     $success = true;
                 }
                 else
                 {
-                    $transfert->state = Transfert::FAIL;
+                    // Server return 2xx (Bad)
+                    $transfert->state  = Transfert::REFUND;
+                    $transfert->rawIn  = Psr7\str($e->getRequest());
+                    $transfert->rawOut = Psr7\str($e->getResponse());
                     $transfert->save();
 
                     $success = false;
                 }
             }
-            catch (ClientException $e)
+            catch (ServerException $e)
             {
-                if ($e->getResponse()->getStatusCode() == 404)
-                {
-                    $transfert->state = Transfert::FAIL;
-                    $transfert->save();
+                // Server return 5xx error
+                Auth::user()->points -= $ogrines;
+                Auth::user()->save();
 
-                    return redirect()->back()->withErrors(['offline' => 'Transfert hors ligne désactivé, connectez-vous en jeu puis re-tentez le transfert'])->withInput();
-                }
-                else
-                {
-                    $transfert->state = Transfert::FAIL;
-                    $transfert->save();
+                $transfert->state  = Transfert::FAIL;
+                $transfert->rawIn  = Psr7\str($e->getRequest());
+                $transfert->rawOut = Psr7\str($e->getResponse());
+                $transfert->save();
 
-                    $success = false;
-                }
+                $success = false;
             }
             catch (TransferException $e)
             {
-                $transfert->state = Transfert::FAIL;
+                // Other errors
+                $transfert->state  = Transfert::REFUND;
+                $transfert->rawIn  = Psr7\str($e->getRequest());
+
+                if ($e->hasResponse())
+                {
+                    $transfert->rawOut = Psr7\str($e->getResponse());
+                }
+                else
+                {
+                    $transfert->rawOut = "NO RESPONSE";
+                }
+
                 $transfert->save();
 
                 $success = false;
@@ -259,7 +275,7 @@ class GameAccountController extends Controller
             }
             else
             {
-                $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué, merci de contacter le support !"]);
+                $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué !"]);
             }
 
             return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
