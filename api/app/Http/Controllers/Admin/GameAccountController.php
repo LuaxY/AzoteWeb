@@ -186,6 +186,8 @@ class GameAccountController extends Controller
             }
         }
 
+        Cache::forget('accounts_' . $server . '_' . $account->user()->id);
+
         return response()->json(['test' => $request->allaccounts], 202);
     }
 
@@ -200,6 +202,8 @@ class GameAccountController extends Controller
 
         $account->IsBanned = false;
         $account->save();
+
+        Cache::forget('accounts_' . $server . '_' . $account->user()->id);
 
         return response()->json([], 202);
     }
@@ -231,6 +235,7 @@ class GameAccountController extends Controller
             $account->BannerAccountId = $bannerAccountId;
             $account->save();
         }
+
         if($request->allaccounts == '1')
         {
             $accounts = Account::on($server . '_auth')->where('Email', $account->Email)->get();
@@ -244,6 +249,8 @@ class GameAccountController extends Controller
                 $account->save();
             }
         }
+
+        Cache::forget('accounts_' . $server . '_' . $account->user()->id);
     }
 
     public function unjail(User $user, $server, $accountId, Request $request)
@@ -257,6 +264,8 @@ class GameAccountController extends Controller
 
         $account->IsJailed = false;
         $account->save();
+
+        Cache::forget('accounts_' . $server . '_' . $account->user()->id);
 
         return response()->json([], 202);
     }
