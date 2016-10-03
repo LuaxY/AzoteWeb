@@ -19,7 +19,8 @@
         "hieu-le/active": "^3.2",
         "yajra/laravel-datatables-oracle": "~6.0",
         "cviebrock/eloquent-sluggable": "^4.0",
-        "pqb/filemanager-laravel": "2.*"
+        "pqb/filemanager-laravel": "2.*",
+        "mattketmo/email-checker": "^1.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

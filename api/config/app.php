@@ -170,6 +170,7 @@ return [
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
+        EmailChecker\Laravel\EmailCheckerServiceProvider::class,
     ],
 
     /*
@@ -229,6 +230,7 @@ return [
         'Active'      => HieuLe\Active\Facades\Active::class,
         'Datatables'  => Yajra\Datatables\Facades\Datatables::class,
         'FilemanagerLaravel'=> Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel::class,
+        'EmailChecker'=> EmailChecker\Laravel\EmailCheckerFacade::class
     ],
 
 ];

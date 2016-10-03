@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2dbd16dc22b7dde46148d82cc4e5643a",
-    "content-hash": "b9ea26ffa1fc1603849c619a87b90584",
+    "hash": "bd3092c4002430b8b40d3fe9f9eea3e5",
+    "content-hash": "20053996602f1f411d01e089e5c28987",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1266,6 +1266,58 @@
                 "laravel"
             ],
             "time": "2016-08-28 20:25:51"
+        },
+        {
+            "name": "mattketmo/email-checker",
+            "version": "v1.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MattKetmo/EmailChecker.git",
+                "reference": "24f08365b0d425d463d552059b539c175bc1e686"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MattKetmo/EmailChecker/zipball/24f08365b0d425d463d552059b539c175bc1e686",
+                "reference": "24f08365b0d425d463d552059b539c175bc1e686",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "^1.9",
+                "knplabs/gaufrette": "^0.1",
+                "phpunit/phpunit": "^4.8",
+                "symfony/validator": "^2.1"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Use filesystem abstraction layer to read data",
+                "symfony/validator": "Add validation constraints"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EmailChecker\\": "src/EmailChecker"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthieu Moquet",
+                    "email": "matthieu@moquet.net"
+                }
+            ],
+            "description": "Throwaway email detection library",
+            "keywords": [
+                "check",
+                "disposable",
+                "email",
+                "throwaway"
+            ],
+            "time": "2016-08-12 13:58:02"
         },
         {
             "name": "monolog/monolog",

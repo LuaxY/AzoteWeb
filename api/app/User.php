@@ -38,7 +38,7 @@ class User extends Authenticatable
     public static $rules = [
         'register' => [
             'pseudo'               => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
-            'email'                => 'required|email|unique:users,email',
+            'email'                => 'required|email|not_throw_away|unique:users,email',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
             'firstname'            => 'required|min:3|max:32|alpha_dash',
