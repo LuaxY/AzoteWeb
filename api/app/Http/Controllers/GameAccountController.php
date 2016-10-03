@@ -217,8 +217,8 @@ class GameAccountController extends Controller
                     Auth::user()->save();
 
                     $transfert->state  = Transfert::OK_API;
-                    $transfert->rawIn  = Psr7\str($e->getRequest());
-                    $transfert->rawOut = Psr7\str($e->getResponse());
+                    $transfert->rawIn  = Psr7\str($res->getRequest());
+                    $transfert->rawOut = Psr7\str($res->getResponse());
                     $transfert->save();
 
                     $success = true;
@@ -227,8 +227,8 @@ class GameAccountController extends Controller
                 {
                     // Server return 2xx (Bad)
                     $transfert->state  = Transfert::REFUND;
-                    $transfert->rawIn  = Psr7\str($e->getRequest());
-                    $transfert->rawOut = Psr7\str($e->getResponse());
+                    $transfert->rawIn  = Psr7\str($res->getRequest());
+                    $transfert->rawOut = Psr7\str($res->getResponse());
                     $transfert->save();
 
                     $success = false;
