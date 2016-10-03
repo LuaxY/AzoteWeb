@@ -34,7 +34,7 @@
                         <div class="payment-number">Envoyer <b>{{ $payment->keyword }}</b> au <b>{{ $payment->number }}</b></div>
                         @else
                         Cliquez sur le lien suivant pour obtenir le code :
-                        <div class="payment-number"><a href="{{ $payment->link }}" target="_blank">Payer avec <img src="{{ URL::asset('imgs/shop/payment/' . $method . '.png') }}" /></a></div>
+                        <div class="payment-number"><a href="{{ $payment->link }}&email={{ Auth::user()->email }}" target="_blank">Payer avec <img src="{{ URL::asset('imgs/shop/payment/' . $method . '.png') }}" /></a></div>
                         @endif
                         <div class="payment-cost">{!! $payment->text !!}</div>
                     </div>

@@ -228,7 +228,7 @@
                 s0.parentNode.insertBefore(s1,s0);
                 Tawk_API = Tawk_API || {};
                 Tawk_API.visitor = {
-                	name  : '{{ Auth::user()->pseudo }} {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
+                	name  : '{{ Auth::user()->pseudo }} - {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
                 	email : '{{ Auth::user()->email }}',
                 	hash  : '{{ hash_hmac('sha256', Auth::user()->email, config('dofus.tawk.api') ) }}'
                 };
