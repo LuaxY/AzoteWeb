@@ -6,16 +6,20 @@
         </div>
         <div class="ak-time-line">
             @foreach ($steps as $i => $step)
+            @if ($step != null)
             <div class="ak-ajaxloader ak-block-step ak-block-step{{ $i }}" item="{{ $step->itemId }}" step="{{ $i }}" votes="{{ $step->votes }}">
                 <span class="arrow"></span>
                 <a class="@if ($current == $i) ak-selected @endif"><span class="ak-text"><span>{{ $step->votes }}</span> votes</span> <span class="ak-gift"></span></a>
             </div>
+            @endif
             @endforeach
         </div>
         <div class="ak-select-time-line ak-ajaxloader">
             <select onchange="$('.ak-block-step'+this.value+' a').trigger('click');">
                 @foreach ($steps as $i => $step)
+                @if ($step != null)
                 <option @if ($current == $i) selected="" @endif value="{{ $i }}">{{ $step->votes }} votes</option>
+                @endif
                 @endforeach
             </select>
         </div>
@@ -44,6 +48,8 @@
         <div class="ak-container">
             <div class="ak-social"></div>
         </div>
+        @if ($steps[$current] != null)
         <div id="load-item" item="{{ $steps[$current]->itemId }}" step="{{ $current }}" votes="{{ $steps[$current]->votes }}"></div>
+        @endif
     </div>
 </div>

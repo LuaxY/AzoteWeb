@@ -103,7 +103,7 @@ class VoteController extends Controller
         {
             Auth::user()->isFirstVote = false;
         }
-        
+
         Auth::user()->save();
 
         $accounts = Auth::user()->accounts();
@@ -197,11 +197,11 @@ class VoteController extends Controller
     private function stepsList($palierId)
     {
         return array(
-            1 => VoteReward::where('votes', 50 * ($palierId - 1) + 10)->firstOrFail(),
-            2 => VoteReward::where('votes', 50 * ($palierId - 1) + 20)->firstOrFail(),
-            3 => VoteReward::where('votes', 50 * ($palierId - 1) + 30)->firstOrFail(),
-            4 => VoteReward::where('votes', 50 * ($palierId - 1) + 40)->firstOrFail(),
-            5 => VoteReward::where('votes', 50 * ($palierId - 1) + 50)->firstOrFail(),
+            1 => VoteReward::where('votes', 50 * ($palierId - 1) + 10)->first(),
+            2 => VoteReward::where('votes', 50 * ($palierId - 1) + 20)->first(),
+            3 => VoteReward::where('votes', 50 * ($palierId - 1) + 30)->first(),
+            4 => VoteReward::where('votes', 50 * ($palierId - 1) + 40)->first(),
+            5 => VoteReward::where('votes', 50 * ($palierId - 1) + 50)->first(),
         );
     }
 

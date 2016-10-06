@@ -95,7 +95,13 @@
     $(".ak-block-rewards .ak-select-menu-left option[value={{ $palierId }}]").attr('selected','selected');
 
     progress();
+
+    @if ($steps[$current] != null)
     showItem({{ $steps[$current]->itemId }}, {{ $current }}, {{ $steps[$current]->votes }});
+    @else
+    //showItem(15752, 1, 1);
+    loader('ak-block-rewards', false);
+    @endif
 
     $(".ak-block-rewards .ak-menu-left a").on("click", function() {
         var self = $(this);
