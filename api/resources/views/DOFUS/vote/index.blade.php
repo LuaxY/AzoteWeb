@@ -99,7 +99,6 @@
     @if ($steps[$current] != null)
     showItem({{ $steps[$current]->itemId }}, {{ $current }}, {{ $steps[$current]->votes }});
     @else
-    //showItem(15752, 1, 1);
     loader('ak-block-rewards', false);
     @endif
 

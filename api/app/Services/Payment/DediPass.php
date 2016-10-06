@@ -144,7 +144,7 @@ class DediPass extends Payment
         }
         else
         {
-            $check->message = $result->message;
+            $check->message = isset($result->message) ? $result->message : "!!! NO MESSAGE RETURN !!!";
             $check->success = false;
         }
 
