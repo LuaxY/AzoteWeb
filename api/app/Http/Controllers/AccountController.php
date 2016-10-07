@@ -19,6 +19,9 @@ use Validator;
 use Auth;
 use Cookie;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\TransferException;
+
 class AccountController extends Controller
 {
     const SALT_LENGTH   = 8;
@@ -42,6 +45,37 @@ class AccountController extends Controller
         if ($validator->fails())
         {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $isValidEmil = false;
+
+        try
+        {
+            $client = new Client();
+            $res = $client->request('GET', "https://api.mailgun.net/v3/address/validate", [
+                'auth'    => [ 'api', config('dofus.mailgun_key') ],
+                'query'   => [ 'address' => $request->input('email') ],
+                'timeout' => 10, // seconds
+            ]);
+
+            if ($res->getStatusCode() == 200)
+            {
+                $json = json_decode((string)$res->getBody());
+
+                if (isset($json->is_valid))
+                {
+                    $isValidEmil = $json->is_valid;
+                }
+            }
+        }
+        catch (TransferException $e)
+        {
+            // continue
+        }
+
+        if (!$isValidEmil)
+        {
+            return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
         }
 
         $salt = str_random(self::SALT_LENGTH);

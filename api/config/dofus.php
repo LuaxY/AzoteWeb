@@ -23,6 +23,8 @@ return [
 
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
+    'mailgun_key'  => env('MAILGUN_KEY'),
+
     'api_key'      => env('API_KEY'),
 
     'download'     => [
