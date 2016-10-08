@@ -137,6 +137,7 @@ class PaymentController extends Controller
             $transaction->save();
 
             Cache::forget('transactions_' . Auth::user()->id);
+            Cache::forget('transactions_' . Auth::user()->id . '_10');
 
             return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->error])->withInput();
         }
@@ -154,6 +155,7 @@ class PaymentController extends Controller
                 $transaction->save();
 
                 Cache::forget('transactions_' . Auth::user()->id);
+                Cache::forget('transactions_' . Auth::user()->id . '_10');
 
                 Auth::user()->points += $validation->points;
                 Auth::user()->save();
@@ -171,6 +173,7 @@ class PaymentController extends Controller
                 $transaction->save();
 
                 Cache::forget('transactions_' . Auth::user()->id);
+                Cache::forget('transactions_' . Auth::user()->id . '_10');
 
                 return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->message])->withInput();
             }

@@ -95,11 +95,22 @@ class Account extends Model
         return $characters;
     }
 
-    public function transferts()
+    public function transferts($take = null)
     {
-        $transferts = Cache::remember('transferts_'.$this->server.'_'.$this->Id, 10, function() {
-            return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->get();
-        });
+        $transferts = null;
+
+        if ($take)
+        {
+            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id . '_' . $take, 10, function() use($take) {
+                return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->take($take)->get();
+            });
+        }
+        else
+        {
+            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id, 10, function() {
+                return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->get();
+            });
+        }
 
         return $transferts;
     }

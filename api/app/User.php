@@ -117,20 +117,42 @@ class User extends Authenticatable
         }
     }
 
-    public function transactions()
+    public function transactions($take = null)
     {
-        $transactions = Cache::remember('transactions_'.$this->id, 10, function() {
-            return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
-        });
+        $transactions = null;
+
+        if ($take)
+        {
+            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function() use($take) {
+                return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->take($take)->get();
+            });
+        }
+        else
+        {
+            $transactions = Cache::remember('transactions_' . $this->id, 10, function() {
+                return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
+            });
+        }
 
         return $transactions;
     }
 
-    public function votes()
+    public function votes($take = null)
     {
-        $votes = Cache::remember('votes_'.$this->id, 10, function() {
-            return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take(10)->get();
-        });
+        $votes = null;
+
+        if ($take)
+        {
+            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function() use($take) {
+                return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take($take)->get();
+            });
+        }
+        else
+        {
+            $votes = Cache::remember('votes_' . $this->id, 10, function() {
+                return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->get();
+            });
+        }
 
         return $votes;
     }

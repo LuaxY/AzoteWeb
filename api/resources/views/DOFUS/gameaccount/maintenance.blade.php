@@ -25,10 +25,10 @@
                         <img src="{{ URL::asset('imgs/assets/maintenance.png') }}" alt="Maintenance">
                         <br><br>
                         <h3>Serveur en maintenance</h3>
-                        Le transfert d'Ogrines est actuellement indisponible<br>
-                        suite à une maintenance en cours du serveur.<br>
+                        Le transfert d'Ogrines/Cadeaux est actuellement<br>
+                        indisponible suite à une maintenance en cours du serveur.<br>
                         Merci de ressayer ulterieurement.<br><br>
-                        <i>L'équipe Azote</i>.
+                        <i>L'équipe {{ config('dofus.title') }}</i>.
                     </center>
                 </div>
             </div>

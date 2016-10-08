@@ -127,6 +127,7 @@ class VoteController extends Controller
         $vote->save();
 
         Cache::forget('votes_' . Auth::user()->id);
+        Cache::forget('votes_' . Auth::user()->id . '_10');
 
         $request->session()->flash('popup', 'ogrines');
 

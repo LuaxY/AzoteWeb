@@ -268,6 +268,7 @@ class GameAccountController extends Controller
             }
 
             Cache::forget('transferts_' . $server . '_' . $accountId);
+            Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
 
             if ($success)
             {

@@ -89,7 +89,7 @@
             </div>
 
             <div class="ak-panel-title">
-                <span class="ak-panel-title-icon"></span> Mes achats
+                <span class="ak-panel-title-icon"></span> Mes 10 derniers achats
             </div>
         </div>
     </div>
@@ -102,7 +102,7 @@
             <th>Code</th>
             <th>Statut</th>
         </tr>
-        @foreach (Auth::user()->transactions() as $transaction)
+        @foreach (Auth::user()->transactions(10) as $transaction)
         <tr>
             <td class="ak-center">{{ $transaction->id }}</td>
             <td>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</td>
@@ -128,7 +128,7 @@
             <th>Date du vote</th>
             <th>Ogrines</th>
         </tr>
-        @foreach (Auth::user()->votes() as $vote)
+        @foreach (Auth::user()->votes(10) as $vote)
         <tr>
             <td></td>
             <td>{{ $vote->created_at->format('d/m/Y H:i:s') }}</td>

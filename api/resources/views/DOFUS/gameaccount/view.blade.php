@@ -65,7 +65,7 @@
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-title">
-                  <span class="ak-panel-title-icon"></span> Mes transferts
+                  <span class="ak-panel-title-icon"></span> Mes 10 derniers transferts
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
             <th>Montant</th>
             <th>Statut</th>
         </tr>
-        @foreach ($account->transferts() as $transfert)
+        @foreach ($account->transferts(10) as $transfert)
         <tr>
             <td class="ak-center">{{ $transfert->id }}</td>
             <td>{{ $transfert->created_at->format('d/m/Y H:i:s') }}</td>
