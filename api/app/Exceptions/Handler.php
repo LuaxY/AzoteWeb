@@ -66,6 +66,11 @@ class Handler extends ExceptionHandler
 
             if (ExceptionHandler::isHttpException($e))
             {
+                if ($e->getStatusCode() == 503)
+                {
+                    return;
+                }
+
                 $content = ExceptionHandler::toIlluminateResponse(ExceptionHandler::renderHttpException($e), $e);
             }
             else
