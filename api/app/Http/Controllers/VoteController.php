@@ -11,6 +11,7 @@ use \Cache;
 use App\Vote;
 use App\VoteReward;
 use App\ItemTemplate;
+use App\Gift;
 use App\Services\DofusForge;
 
 class VoteController extends Controller
@@ -118,7 +119,18 @@ class VoteController extends Controller
         {
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
             $reward = VoteReward::where('votes', Auth::user()->votes)->first();
-            // TODO: add $reward->itemId to account
+
+            if ($reward)
+            {
+                $gift = new Gift;
+                $gift->user_id     = Auth::user()->id;
+                $gift->item_id     = $reward->itemId;
+                $gift->description = "Cadeau " . $reward->votes . " votes";
+                $gift->save();
+
+                // TODO popup gifts
+                //$request->session()->flash('popup', 'gifts');
+            }
         }
 
         $vote = new Vote;
