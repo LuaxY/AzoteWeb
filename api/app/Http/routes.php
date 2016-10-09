@@ -141,6 +141,12 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'gameaccount.transfert'
     ]);
 
+    Route::any(Lang::get('routes.gameaccount.gifts'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@gifts',
+        'as'         => 'gameaccount.gifts'
+    ]);
+
     /* ============ CHARACTERS ============ */
 
     Route::get(Lang::get('routes.characters.view'), [

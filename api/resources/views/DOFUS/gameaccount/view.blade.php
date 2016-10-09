@@ -30,6 +30,7 @@
                         </div>
                     </div>
                     <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>
+                    <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Cadeaux <span class="ak-icon-small ak-gifts-icon"></span></a>
                     <a href="{{ URL::route('gameaccount.edit', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>
                 </div>
@@ -74,14 +75,18 @@
         <tr>
             <th class="ak-center">#</th>
             <th>Date du transfert</th>
-            <th>Montant</th>
+            <th>Objet</th>
             <th>Statut</th>
         </tr>
         @foreach ($account->transferts(10) as $transfert)
         <tr>
             <td class="ak-center">{{ $transfert->id }}</td>
             <td>{{ $transfert->created_at->format('d/m/Y H:i:s') }}</td>
-            <td>{{ Utils::format_price($transfert->amount, ' ') }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+            @if ($transfert->type == 'Ogrines' || $transfert->type == '')
+            <td>{{ Utils::format_price($transfert->amount, ' ') }} Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></td>
+            @else
+            <td>{{ Utils::format_price($transfert->amount, ' ') }} {{ $transfert->item()->name() }} <img src="{{ $transfert->item()->image() }}" width="25" height="25"></td>
+            @endif
             <td>{{ Utils::transfert_status($transfert->state) }}</td>
         </tr>
         @endforeach

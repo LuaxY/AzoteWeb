@@ -172,11 +172,11 @@ class VoteController extends Controller
     {
         $object = ItemTemplate::where('Id', $item)->firstOrFail();
 
-        $json = array(
-            'name'        => DofusForge::text($object->NameId),
-            'description' => DofusForge::text($object->DescriptionId),
-            'image'       => DofusForge::asset('dofus/www/game/items/200/' . $object->IconId . '.png'),
-        );
+        $json = [
+            'name'        => $object->name(),
+            'description' => $object->description(),
+            'image'       => $object->image(),
+        ];
 
         return json_encode($json);
     }

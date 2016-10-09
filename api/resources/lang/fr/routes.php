@@ -52,6 +52,8 @@ return [
 
     'gameaccount.transfert' => 'compte/jeu/{server}/{accountId}/transfert',
 
+    'gameaccount.gifts' => 'compte/jeu/{server}/{accountId}/cadeaux',
+
     /** Characters **/
 
     'characters.view' => 'personnages/{server}/{characterId}',

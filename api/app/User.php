@@ -157,6 +157,26 @@ class User extends Authenticatable
         return $votes;
     }
 
+    public function gifts($onlyAvailable = false)
+    {
+        $gifts = null;
+
+        if ($onlyAvailable)
+        {
+            $gifts = Cache::remember('gifts_available_' . $this->id, 10, function() {
+                return $this->hasMany(Gift::class)->where('delivred', false)->get();
+            });
+        }
+        else
+        {
+            $gifts = Cache::remember('gifts_' . $this->id, 10, function() {
+                return $this->hasMany(Gift::class)->get();
+            });
+        }
+
+        return $gifts;
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class, 'author_id', 'id');

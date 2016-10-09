@@ -75,6 +75,7 @@
             <td class="ak-center">
                 <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a>
                 <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon"></span></a>
+                <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-gifts-icon"></span></a>
             </td>
         </tr>
         @endforeach

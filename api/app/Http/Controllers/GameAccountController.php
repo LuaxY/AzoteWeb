@@ -11,7 +11,9 @@ use App\User;
 use App\Account;
 use App\Transfert;
 use App\World;
+use App\Gift;
 use App\Helpers\Utils;
+use App\Services\Stump;
 
 use Validator;
 use Auth;
@@ -189,83 +191,10 @@ class GameAccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $transfert = new Transfert;
-            $transfert->user_id    = Auth::user()->id;
-            $transfert->account_id = $accountId;
-            $transfert->server     = $server;
-            $transfert->state      = Transfert::IN_PROGRESS;
-            $transfert->amount     = $ogrines;
-            $transfert->save();
-
-            $api = config('dofus.details')[$server];
-            $success = false;
-
-            try
-            {
-                $client = new Client();
-                $res = $client->request('PUT', "http://{$api->ip}:{$api->port}/account/$accountId/addtokens/$ogrines", [
-                    'headers' => [
-                        'APIKey' => config('dofus.api_key')
-                    ],
-                    'timeout' => 10, // seconds
-                ]);
-
-                if ($res->getStatusCode() == 200)
-                {
-                    // Server return 200 (Good)
-                    Auth::user()->points -= $ogrines;
-                    Auth::user()->save();
-
-                    $transfert->state  = Transfert::OK_API;
-                    //$transfert->rawIn  = Psr7\str($res->getRequest());
-                    //$transfert->rawOut = Psr7\str($res->getResponse());
-                    $transfert->save();
-
-                    $success = true;
-                }
-                else
-                {
-                    // Server return 2xx (Bad)
-                    $transfert->state  = Transfert::REFUND;
-                    //$transfert->rawIn  = Psr7\str($res->getRequest());
-                    //$transfert->rawOut = Psr7\str($res->getResponse());
-                    $transfert->save();
-
-                    $success = false;
-                }
-            }
-            catch (ServerException $e)
-            {
-                // Server return 5xx error
+            $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($ogrines) {
                 Auth::user()->points -= $ogrines;
                 Auth::user()->save();
-
-                $transfert->state  = Transfert::FAIL;
-                $transfert->rawIn  = Psr7\str($e->getRequest());
-                $transfert->rawOut = Psr7\str($e->getResponse());
-                $transfert->save();
-
-                $success = false;
-            }
-            catch (TransferException $e)
-            {
-                // Other errors
-                $transfert->state  = Transfert::REFUND;
-                $transfert->rawIn  = Psr7\str($e->getRequest());
-
-                if ($e->hasResponse())
-                {
-                    $transfert->rawOut = Psr7\str($e->getResponse());
-                }
-                else
-                {
-                    $transfert->rawOut = "NO RESPONSE";
-                }
-
-                $transfert->save();
-
-                $success = false;
-            }
+            });
 
             Cache::forget('transferts_' . $server . '_' . $accountId);
             Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
@@ -283,5 +212,64 @@ class GameAccountController extends Controller
         }
 
         return view('gameaccount.transfert', ['account' => $account]);
+    }
+
+    public function gifts(Request $request, $server, $accountId)
+    {
+        if (!$this->isServerExist($server))
+        {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        if (!$this->isAccountOwnedByMe($server, $accountId))
+        {
+            throw new GenericException('not_account_owner');
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $account->server = $server;
+
+        $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
+
+        if (!$world || !$world->isOnline())
+        {
+            return view('gameaccount.maintenance', ['account' => $account]);
+        }
+
+        if ($request->all())
+        {
+            // is gift owned by me and not already delivred ?
+            $gift = Gift::where('id', $request->input('gift_id'))->where('delivred', false)->where('user_id', Auth::user()->id)->first();
+
+            if (!$gift)
+            {
+                return redirect()->back()->withErrors(['gift' => 'Cadeau selectionné invalide.'])->withInput();
+            }
+
+            $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1", function() use($gift, $accountId) {
+                $gift->delivred   = true;
+                $gift->account_id = $accountId;
+                $gift->save();
+            });
+
+            Cache::forget('transferts_' . $server . '_' . $accountId);
+            Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
+
+            Cache::forget('gifts_available_' . Auth::user()->id);
+            Cache::forget('gifts_' . Auth::user()->id);
+
+            if ($success)
+            {
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name() ." sur votre compte " . $account->Nickname]);
+            }
+            else
+            {
+                $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué !"]);
+            }
+
+            return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
+        }
+
+        return view('gameaccount.gifts', ['account' => $account]);
     }
 }
