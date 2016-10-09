@@ -19,7 +19,8 @@
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
                 <div class="panel-main ak-form">
-                    Selectionnez le cadeau à transférer sur votre compte.
+                    Selectionnez le cadeau à transférer sur votre compte.<br>
+                    <b style="color:#b10000">Vous devez être connecté en jeu pour recevoir vos cadeaux dans votre coffre de banque.</b>
                     @if ($errors->has('gift'))
                     <div class="form-group  has-error" style="margin-bottom:0">
                         <label class="error control-label">{{ $errors->first('gift') }}</label>

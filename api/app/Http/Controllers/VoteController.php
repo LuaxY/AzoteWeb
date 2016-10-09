@@ -128,6 +128,9 @@ class VoteController extends Controller
                 $gift->description = "Cadeau " . $reward->votes . " votes";
                 $gift->save();
 
+                Cache::forget('gifts_available_' . Auth::user()->id);
+                Cache::forget('gifts_' . Auth::user()->id);
+
                 // TODO popup gifts
                 //$request->session()->flash('popup', 'gifts');
             }
