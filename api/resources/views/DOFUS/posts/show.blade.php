@@ -9,8 +9,8 @@
 @stop
 
 @section('breadcrumbs')
-{? $page_name = 'Actualités' ?}
-{!! Breadcrumbs::render('page', $page_name) !!}
+{? $page_name = $post->title ?}
+{!! Breadcrumbs::render('page', 'Actualités') !!}
 @stop
 
 @section('content')
