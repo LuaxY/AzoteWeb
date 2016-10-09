@@ -260,7 +260,7 @@ class GameAccountController extends Controller
 
             if ($success)
             {
-                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name() ." sur votre compte " . $account->Nickname]);
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name() ." dans votre banque sur votre compte " . $account->Nickname]);
             }
             else
             {
