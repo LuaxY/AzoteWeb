@@ -117,7 +117,7 @@
         <div class="mobile device-profile visible-xs" data-deviceprofile="mobile"></div>
     </header>
 
-    <div class="ak-beta"></div>
+    <!--<div class="ak-beta"></div>-->
 
     @yield('page')
 
