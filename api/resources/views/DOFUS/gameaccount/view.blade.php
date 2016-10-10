@@ -50,16 +50,18 @@
             <th class="ak-center" style="width: 200px;">Actions</th>
         </tr>
         @foreach ($account->characters() as $character)
-        <tr>
-            <td class="ak-rank"></td>
-            <td class="ak-name">
-                <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                <a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}">{{ $character->Name }}</a>
-            </td>
-            <td class="ak-class">{{ $character->classe() }}</td>
-            <td class="ak-center">{{ $character->level() }}</td>
-            <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
-        </tr>
+            @if(!$character->DeletedDate)
+                <tr>
+                    <td class="ak-rank"></td>
+                    <td class="ak-name">
+                        <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
+                        <a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}">{{ $character->Name }}</a>
+                    </td>
+                    <td class="ak-class">{{ $character->classe() }}</td>
+                    <td class="ak-center">{{ $character->level() }}</td>
+                    <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+                </tr>
+            @endif
         @endforeach
     </table>
 
