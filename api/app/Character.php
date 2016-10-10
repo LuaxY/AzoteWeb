@@ -58,6 +58,20 @@ class Character extends Model
         return $classes[$this->Breed];
     }
 
+    public function alignement()
+    {
+        $alignement = [
+            0 => [ 'Neutre',     '' ],
+            1 => [ 'Bontarien',  '#59d7ff' ],
+            2 => [ 'Brakmarien', '#ff6161' ],
+            3 => [ 'Mercenaire', '#7d6b54' ],
+        ];
+
+        $align = $alignement[$this->AlignmentSide];
+
+        return '<font color="' . $align[1] . '">' . $align[0] . '</font>';
+    }
+
     public function isDeleted()
     {
         return $this->DeletedDate ? true : false;

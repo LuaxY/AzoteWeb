@@ -7,14 +7,20 @@
 @stop
 
 @section('breadcrumbs')
-{? $page_name = 'Classement' ?}
-{!! Breadcrumbs::render('page', $page_name) !!}
+{? $page_name = 'Général' ?}
+{!! Breadcrumbs::render('ladder.page', $page_name) !!}
 @stop
 
 @section('content')
 <div class="ak-container ak-main-center">
     <div class="ak-title-container">
-        <h1><span class="ak-icon-big ak-ladder-general"></span></a> Classement</h1>
+        <h1><span class="ak-icon-big ak-ladder-general"></span></a> Classement {{ $page_name }}</h1>
+    </div>
+
+    @include('ladder.menu')
+
+    <div class="ak-container ak-banner-header">
+        <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_general.jpg') }}">
     </div>
 
     <div class="ak-responsivetable-wrapper">

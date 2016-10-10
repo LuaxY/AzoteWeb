@@ -233,16 +233,28 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'vote.object'
     ]);
 
+    /* ============ LADDER ============ */
+
+    Route::get(Lang::get('routes.ladder.general'), [
+        'uses' => 'LadderController@general',
+        'as'   => 'ladder.general'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.pvp'), [
+        'uses' => 'LadderController@pvp',
+        'as'   => 'ladder.pvp'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.guild'), [
+        'uses' => 'LadderController@guild',
+        'as'   => 'ladder.guild'
+    ]);
+
     /* ============ OTHERS ============ */
 
     Route::get(Lang::get('routes.download'), [
         'uses' => 'PageController@download',
         'as'   => 'download'
-    ]);
-
-    Route::get(Lang::get('routes.ladder'), [
-        'uses' => 'PageController@ladder',
-        'as'   => 'ladder'
     ]);
 
     Route::get(Lang::get('routes.servers'), [

@@ -56,3 +56,17 @@ Breadcrumbs::register('shop.page', function($breadcrumbs, $page)
     $breadcrumbs->parent('shop');
     $breadcrumbs->push($page);
 });
+
+// Accueil > Boutique
+Breadcrumbs::register('ladder', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Classement', route('ladder.general'));
+});
+
+// Accueil > Classement > [page]
+Breadcrumbs::register('ladder.page', function($breadcrumbs, $page)
+{
+    $breadcrumbs->parent('ladder');
+    $breadcrumbs->push($page);
+});

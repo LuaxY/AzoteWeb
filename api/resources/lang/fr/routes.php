@@ -80,11 +80,17 @@ return [
 
     'vote.object' => 'vote/objet/{item?}',
 
+    /** Ladder **/
+
+    'ladder.general' => 'classement/general',
+
+    'ladder.pvp' => 'classement/pvp',
+
+    'ladder.guild' => 'classement/guilde',
+
     /** Others **/
 
     'download' => 'telecharger',
-
-    'ladder' => 'classement',
 
     'servers' => 'serveurs',
 
