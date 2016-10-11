@@ -65,8 +65,7 @@ class LadderController extends Controller
     {
         $guilds = Cache::remember('ladder.guilds', self::LADDER_CACHE_EXPIRE_MINUTES, function() {
             $server = 'sigma';
-            return Guild::on($server.'_world')->where('Id', '!=', '2')->take(100)->get();
-            //return Guild::on($server.'_world')->take(100)->get();
+            return Guild::on($server.'_world')->orderBy('Experience', 'DESC')->take(100)->get();
         });
 
         return view('ladder.guild', ['guilds' => $guilds]);
