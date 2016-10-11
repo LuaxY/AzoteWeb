@@ -188,7 +188,7 @@ class GameAccountController extends Controller
 
         Cache::forget('accounts_' . $server . '_' . $account->user()->id);
 
-        return response()->json(['test' => $request->allaccounts], 202);
+        return response()->json([], 202);
     }
 
     public function unban(User $user, $server, $accountId, Request $request)
