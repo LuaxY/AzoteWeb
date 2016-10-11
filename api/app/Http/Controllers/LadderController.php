@@ -52,6 +52,7 @@ class LadderController extends Controller
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1)
                 ->orderBy('ch.Honor', 'DESC')
+                ->where('ch.Honor', '>', 0)
                 ->where('ch.AlignmentSide', '>', 0)
                 ->take(100)
                 ->get();
