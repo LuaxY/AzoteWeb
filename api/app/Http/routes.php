@@ -62,6 +62,11 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'activation'
     ]);
 
+    Route::post(Lang::get('routes.account.re_send_email'), [
+        'uses'       => 'AccountController@re_send_email',
+        'as'         => 're-send-email'
+    ]);
+
     Route::get(Lang::get('routes.account.password_lost'), [
         'middleware' => 'guest',
         'uses'       => 'AccountController@password_lost',

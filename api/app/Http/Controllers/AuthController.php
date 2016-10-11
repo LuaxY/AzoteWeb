@@ -27,8 +27,7 @@ class AuthController extends Controller
         {
             if (!$user->active)
             {
-                $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte n'est pas activé, vérifiez vos emails."]);
-                return redirect()->back()->withErrors(['auth' => 'Votre compte n\'est pas activé, vérifiez vos emails.'])->withInput();
+                return view('account/re-send-email', ['user' => $user]);
             }
             if ($user->isBanned())
             {

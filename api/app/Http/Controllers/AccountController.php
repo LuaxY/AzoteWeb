@@ -137,11 +137,18 @@ class AccountController extends Controller
 
         if (!$user)
         {
-            request()->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
+            $request->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
 
-        //$user->ticket = str_random(self::TICKET_LENGTH);
+        Auth::login($user);
+
+        if ($user->active)
+        {
+            return redirect('/');
+        }
+
+        $user->ticket = str_random(self::TICKET_LENGTH);
         $user->active = true;
         $user->update([
             'ticket' => $user->ticket,
@@ -163,10 +170,26 @@ class AccountController extends Controller
             $forumAccount->save();
         }
 
-        Auth::login($user);
-
         $request->session()->flash('notify', ['type' => 'success', 'message' => "Compte activé, bienvenue {$user->firstname} !"]);
         $request->session()->flash('popup', 'welcome');
+
+        return redirect('/');
+    }
+
+    public function re_send_email(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ($user && !$user->active)
+        {
+            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Confirmation d\'inscription');
+            });
+
+            $request->session()->flash('notify', ['type' => 'info', 'message' => "Vous allez recevoir un nouvel email d'activation !"]);
+        }
 
         return redirect('/');
     }

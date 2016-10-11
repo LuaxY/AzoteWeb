@@ -30,6 +30,8 @@ return [
 
     'account.activation' => 'compte/activation/{ticket?}',
 
+    'account.re_send_email' => 'compte/re-activation',
+
     'account.password_lost' => 'compte/mot-de-passe-oublie',
 
     'account.reset' => 'compte/reset/{ticket?}',
