@@ -546,5 +546,42 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'uses' => 'SettingsController@update',
             'as'   => 'admin.settings.update'
         ]);
+
+        // ANNOUNCES //
+        Route::group(['prefix' => 'announces/{server}'], function() {
+
+            // Users actions
+            Route::get('/', [
+                'uses' => 'AnnounceController@index',
+                'as'   => 'admin.announces'
+            ]);
+
+            Route::get('/create', [
+                'uses' => 'AnnounceController@create',
+                'as'   => 'admin.announce.create'
+            ]);
+
+            Route::post('/', [
+                'uses' => 'AnnounceController@store',
+                'as'   => 'admin.announce.store'
+            ]);
+
+            Route::delete('/{Id}', [
+                'uses' => 'AnnounceController@destroy',
+                'as'   => 'admin.announce.destroy'
+            ]);
+
+            Route::get('/{Id}/edit', [
+                'uses' => 'AnnounceController@edit',
+                'as'   => 'admin.announce.edit'
+            ]);
+
+            Route::patch('/{Id}', [
+                'uses' => 'AnnounceController@update',
+                'as'   => 'admin.announce.update'
+            ]);
+
+        });
+
     });
 });

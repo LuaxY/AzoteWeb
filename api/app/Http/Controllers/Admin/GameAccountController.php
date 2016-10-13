@@ -73,13 +73,14 @@ class GameAccountController extends Controller
         $account->Lang            = 'fr';
         $account->Email           = $user->email;
         $account->CreationDate    = date('Y-m-d H:i:s');
-        $account->Tokens          = 0;
-        $account->NewTokens       = 0;
         $account->SubscriptionEnd = '2016-01-01 00:00:00';
         $account->IsJailed        = false;
         $account->IsBanned        = false;
         $account->server          = $request->server;
         $account->save();
+
+        Cache::forget('accounts_' . $server . '_' . $user->id);
+        Cache::forget('accounts_' . $user->id);
 
         return response()->json([], 202);
     }

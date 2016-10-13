@@ -51,7 +51,7 @@ class CharacterDatatablesController extends Controller
                 {
                     return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
                 }
-                return '';
+                return '<span class="label label-danger">Not associated with an account</span>';
             })
             ->make(true);
     }

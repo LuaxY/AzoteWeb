@@ -60,10 +60,12 @@ class PostController extends Controller
     {
         $page = $request->page ? $request->page : 1;
 
-        $validator = Validator::make($request->all(), Comment::$rules['store']);
-
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
+        if(!Auth::user()->isAdmin())
+        {
+            $validator = Validator::make($request->all(), Comment::$rules['store']);
+            if ($validator->fails()) {
+                return response()->json($validator->messages(), 400);
+            }
         }
 
         $comment = new Comment;
