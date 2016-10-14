@@ -466,6 +466,10 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                 'as'   => 'admin.user.reset.avatar'
             ])->where('user', '[0-9]+');
 
+            Route::post('re-send-email', [
+                'uses'       => 'AccountController@re_send_email',
+                'as'         => 're-send-email'
+            ]);
 
             // Game Accounts
             Route::group(['prefix' => 'server/{server}'], function() {

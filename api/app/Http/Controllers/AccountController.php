@@ -244,7 +244,7 @@ class AccountController extends Controller
 
     public function reset_password(Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['update-password']);
+        $validator = Validator::make($request->all(), User::$rules['recover-password']);
 
         if ($validator->fails())
         {

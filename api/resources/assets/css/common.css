@@ -4623,9 +4623,9 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 }
 
 .alert-danger {
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    color: #a94442
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    color: white;
 }
 
 .alert-danger hr {
@@ -28545,7 +28545,10 @@ a.ak-content-nav-button.ak-next {
     background-image: url("../imgs/assets/sprite_zoom.png");
     background-repeat: no-repeat
 }
-
+.ak-icon-small.ak-banned {
+    background-image: url("../imgs/assets/less_red.png");
+    background-repeat: no-repeat
+}
 .ak-icon-big {
     background-size: 65px auto
 }

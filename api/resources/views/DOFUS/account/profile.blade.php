@@ -68,7 +68,9 @@
         @foreach ($accounts as $account)
         <tr>
             <td class="ak-rank"></td>
-            <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Login }}</a></td>
+            <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Login }}</a>@if($account->isBanned())
+                    <span class="ak-icon-small ak-banned"></span>
+                @endif</td>
             <td><a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}">{{ $account->Nickname }}</a></td>
             <td>{{ ucfirst($account->server) }}</td>
             <td class="ak-center">{{ count($account->characters()) }}</td>

@@ -145,7 +145,11 @@
                              <div class="form-group">
                                  <label for="BanEndDate" class="control-label">End Date:</label>
                                  {!! Form::datetime('BanEndDate', \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', \Carbon\Carbon::now('Europe/Brussels'))->addWeek()->toDateTimeString(),['class' => 'form-control', 'id' => 'dtpicker']) !!}
-                                 <small>Default value = 1 week</small>
+                                 <small id="ban_default">Default value = 1 week</small>
+                                 <div class="checkbox checkbox-success">
+                                 {!! Form::checkbox('life', 1, false, ['id' => 'life']) !!}
+                                     <label for="banlife">Life</label>
+                                 </div>
                              </div>
                          </div>
                      </div>
@@ -182,7 +186,16 @@
     {{ Html::script('js/admin/jquery.datetimepicker.full.min.js') }}
 <script>
     var token = '{{ Session::token() }}';
-
+    $("#life").change(function() {
+        if(this.checked) {
+            $('#dtpicker').fadeOut(800);
+            $('#ban_default').fadeOut(800);
+        }
+        else{
+            $('#dtpicker').fadeIn(1000);
+            $('#ban_default').fadeIn(1000);
+        }
+    });
     $( "#form-game-account-add" ).on( "submit", function( event ) {
         event.preventDefault();
         var $this = $(this);
@@ -253,13 +266,18 @@
         var banEndDate = $('#dtpicker').val();
         var url_accounts_base = '{{ route('admin.user.game.accounts', [$user->id, $server])}}';
         var allaccounts = '0';
+        var life = '0';
+        if(document.getElementById('life').checked == true){
+            life = '1';
+        }
         if(document.getElementById('allaccounts').checked == true){
             allaccounts = '1';
         }
+        console.log(life);
         $.ajax({
             method: 'PATCH',
             url: ''+url_accounts_base+'/'+accountId+'/'+type,
-            data: { _token: token, BanReason: banReason, BanEndDate: banEndDate, allaccounts: allaccounts},
+            data: { _token: token, BanReason: banReason, BanEndDate: banEndDate, allaccounts: allaccounts, life: life},
 
             success: function (msg) {
                 toastr.success('Account(s) sanctioned');

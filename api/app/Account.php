@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use \Cache;
 
@@ -39,13 +40,11 @@ class Account extends Model
 		'VoteCount',
         'IsJailed',
         'IsBanned',
-        'Tokens',
-        'NewTokens',
 	);
 
     public static $rules = [
         'sanction' => [
-            'BanEndDate'            => 'required|date_format:Y-m-d H:i:s',
+            'BanEndDate'            => 'date_format:Y-m-d H:i:s',
             'BanReason'             => 'required',
         ],
         'register' => [
@@ -72,6 +71,14 @@ class Account extends Model
     public function isAdmin()
     {
         if ($this->Role >= 4)
+            return true;
+        else
+            return false;
+    }
+
+    public function isBanned()
+    {
+        if ($this->IsBanned == '1' && ($this->BanEndDate > Carbon::now() || $this->BanEndDate == null))
             return true;
         else
             return false;
@@ -146,6 +153,7 @@ class Account extends Model
 
     public function htmlStatus()
     {
+        $bannerAccountLogin = '';
         $texts = array();
         $hidden = '';
         if($this->IsJailed == 1)
@@ -166,7 +174,22 @@ class Account extends Model
         }
         if($this->IsJailed == 1 || $this->IsBanned == 1)
         {
-            $texts[] .= '('.$this->BanEndDate.')';
+            $bannerAccount = $this->findOrFail($this->BannerAccountId);
+            if($bannerAccount)
+            {
+                $bannerAccountLogin = $bannerAccount->Login;
+            }
+            else
+                {
+                $bannerAccountLogin = 'Unknown';
+            }
+            if($this->BanEndDate)
+            {
+                $texts[] .= '('.$this->BanEndDate.')';
+            }
+            else{
+                $texts[] .= '()';
+            }
         }
 
         $span = '';
@@ -176,7 +199,7 @@ class Account extends Model
 
         }
 
-        $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$this->BannerAccountId.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';
+        $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$bannerAccountLogin.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';
 
 
         return $span;
