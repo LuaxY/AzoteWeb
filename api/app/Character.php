@@ -92,6 +92,6 @@ class Character extends Model
 
     public function recoverPrice()
     {
-        return $this->level();
+        return $this->level() * 5;
     }
 }
