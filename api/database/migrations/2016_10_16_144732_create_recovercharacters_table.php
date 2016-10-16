@@ -20,11 +20,6 @@ class CreateRecovercharactersTable extends Migration
             $table->string('oldName');
             $table->string('newName')->nullable();
             $table->timestamps();
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
         });
     }
 
