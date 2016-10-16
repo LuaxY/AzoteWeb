@@ -73,13 +73,14 @@ class GameAccountController extends Controller
         $account->Lang            = 'fr';
         $account->Email           = $user->email;
         $account->CreationDate    = date('Y-m-d H:i:s');
-        $account->Tokens          = 0;
-        $account->NewTokens       = 0;
         $account->SubscriptionEnd = '2016-01-01 00:00:00';
         $account->IsJailed        = false;
         $account->IsBanned        = false;
         $account->server          = $request->server;
         $account->save();
+
+        Cache::forget('accounts_' . $server . '_' . $user->id);
+        Cache::forget('accounts_' . $user->id);
 
         return response()->json([], 202);
     }
@@ -94,7 +95,7 @@ class GameAccountController extends Controller
         $user = User::findOrFail($user->id);
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
-        $characters = $account->characters();
+        $characters = $account->characters(1);
         return view('admin.users.servers.edit', compact('user', 'server', 'account', 'characters'));
     }
 
@@ -167,7 +168,7 @@ class GameAccountController extends Controller
         if($request->allaccounts == '0')
         {
             $account->BanReason = $request->BanReason;
-            $account->BanEndDate = $request->BanEndDate;
+            $account->BanEndDate = $request->life == '1' ? null : $request->BanEndDate;
             $account->IsBanned = true;
             $account->BannerAccountId = $bannerAccountId;
             $account->save();
@@ -179,7 +180,7 @@ class GameAccountController extends Controller
             foreach ($accounts as $account)
             {
                 $account->BanReason = $request->BanReason;
-                $account->BanEndDate = $request->BanEndDate;
+                $account->BanEndDate = $request->life == '1' ? null : $request->BanEndDate;
                 $account->IsBanned = true;
                 $account->BannerAccountId = $bannerAccountId;
                 $account->save();
@@ -201,6 +202,7 @@ class GameAccountController extends Controller
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
         $account->IsBanned = false;
+        $account->BanEndDate = null;
         $account->save();
 
         Cache::forget('accounts_' . $server . '_' . $account->user()->id);
@@ -230,7 +232,7 @@ class GameAccountController extends Controller
         if($request->allaccounts == '0')
         {
             $account->BanReason = $request->BanReason;
-            $account->BanEndDate = $request->BanEndDate;
+            $account->BanEndDate = $request->life == '1' ? null : $request->BanEndDate;
             $account->IsJailed = true;
             $account->BannerAccountId = $bannerAccountId;
             $account->save();
@@ -243,7 +245,7 @@ class GameAccountController extends Controller
             foreach ($accounts as $account)
             {
                 $account->BanReason = $request->BanReason;
-                $account->BanEndDate = $request->BanEndDate;
+                $account->BanEndDate = $request->life == '1' ? null : $request->BanEndDate;
                 $account->IsJailed = true;
                 $account->BannerAccountId = $bannerAccountId;
                 $account->save();
@@ -263,6 +265,7 @@ class GameAccountController extends Controller
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
         $account->IsJailed = false;
+        $account->BanEndDate = null;
         $account->save();
 
         Cache::forget('accounts_' . $server . '_' . $account->user()->id);

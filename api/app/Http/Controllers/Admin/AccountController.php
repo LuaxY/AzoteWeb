@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
@@ -106,5 +107,23 @@ class AccountController extends Controller
         Toastr::success('Password updated', $title = null, $options = []);
         return redirect()->route('admin.account');
 
+    }
+
+    public function re_send_email(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ($user && !$user->active)
+        {
+            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Confirmation d\'inscription');
+            });
+
+            Toastr::success('E-mail sended', $title = null, $options = []);
+        }
+
+        return redirect()->back();
     }
 }

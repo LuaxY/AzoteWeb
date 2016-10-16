@@ -55,6 +55,10 @@ class User extends Authenticatable
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
+        'recover-password' => [
+            'password'             => 'required|min:6',
+            'passwordConfirmation' => 'required|same:password',
+        ],
         'update-email' => [
             'passwordOld' => 'required|old_password:{PASSWORD},{SALT}',
             'email'       => 'required|email|unique:users,email',

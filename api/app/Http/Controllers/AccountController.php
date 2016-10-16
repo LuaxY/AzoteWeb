@@ -244,7 +244,7 @@ class AccountController extends Controller
 
     public function reset_password(Request $request)
     {
-        $validator = Validator::make($request->all(), User::$rules['update-password']);
+        $validator = Validator::make($request->all(), User::$rules['recover-password']);
 
         if ($validator->fails())
         {
@@ -344,6 +344,17 @@ class AccountController extends Controller
             {
                 $forumAccount->email = $request->input('email');
                 $forumAccount->save();
+            }
+
+            $gameAccounts = Auth::user()->accounts();
+
+            if($gameAccounts)
+            {
+                foreach ($gameAccounts as $gameAccount)
+                {
+                    $gameAccount->Email = $request->input('email');
+                    $gameAccount->save();
+                }
             }
 
             // TODO: send email to user

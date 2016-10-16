@@ -19,9 +19,8 @@
                                 @if($user->isBanned())
                                     <div class="alert alert-danger fade in m-b-30">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                        <h4>This account is banned!</h4>
-                                        <p style="text-decoration: underline;">Ban reason:</p>
-                                        <p style="font-weight: bold;" class="banreason">{{ $user->banReason }}</p>
+                                        <span class="center-block text-center"><strong>This account is banned.</strong></span>
+                                        @if($user->banReason)<br><strong><u>Reason:</u></strong> {{$user->banReason}}@endif
                                     </div>
                                 @endif
                             </div>
@@ -29,6 +28,11 @@
                                 @if(!$user->isActive())
                                     <div class="alert alert-warning">
                                         <strong><i class="fa fa-minus-circle"></i> Info!</strong> This account is not confirmed by the user.
+                                            <br/><button type="button" id="active-{{$user->id}}" class="activ btn btn-warning waves-effect w-md m-b-5"><i class="fa fa-check m-r-5"></i>Active</button>
+                                            {!! Form::open(['route' => ['re-send-email', $user->id], 'class' => 'form-inline']) !!}
+                                            <input type="hidden" name="email" value="{{ $user->email }}">
+                                            <button typ="submit" class="btn btn-primary m-b-5"><i class="fa fa-envelope-o m-r-5"></i>Re-send email</button>
+                                            {!! Form::close() !!}
                                     </div>
                                 @endif
                             </div>
@@ -52,10 +56,6 @@
                                         @else
                                             <button type="button" id="ban-{{$user->id}}" class="ban btn btn-danger waves-effect w-md m-b-5"><i class="fa fa-ban m-r-5"></i> Ban</button>
                                         @endif
-
-                                        @if (!$user->isActive())
-                                            <button type="button" id="active-{{$user->id}}" class="activ btn btn-warning waves-effect w-md m-b-5"><i class="fa fa-check m-r-5"></i>Active</button>
-                                        @endif
                                         @if (!$user->isCertified())
                                                 <button type="button" id="certify-{{$user->id}}" data-toggle="modal" data-target="#user-certify-modal" class="certif btn btn-success waves-effect w-md m-b-5"><i class="fa fa-lock m-r-5"></i>Certify</button>
                                         @else
@@ -65,6 +65,7 @@
                                         @if ($user->forum_id)
                                             <a class="btn btn-primary waves-effect w-md m-b-5" href="{{ config('dofus.social.forum') }}profile/{{ $user->forum_id }}-null" target="_blank"><i class="fa fa-users m-r-5"></i> Forum</a>
                                         @endif
+
                                     </div>
                                 </div>
                             </div>
@@ -78,6 +79,8 @@
                                     @endif
                                     <small class="pull-right">
                                         Member since: {{ $user->created_at->format('d M Y, g:i A') }}
+                                        <br>
+                                        Last connected IP: {{ ($user->last_ip_address && !$user->isAdmin()) ? $user->last_ip_address : 'Unknown' }}
                                     </small>
                                 </div>
                             </div>

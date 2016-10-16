@@ -58,7 +58,9 @@ return [
 
     /** Characters **/
 
-    'characters.view' => 'personnages/{server}/{characterId}',
+    'characters.view' => 'personnages/{server}/{accountId}/{characterId}',
+
+    'characters.recover' => 'personnages/{server}/{accountId}/{characterId}/recuperer',
 
     /** Shop **/
 

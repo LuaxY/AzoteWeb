@@ -16,6 +16,15 @@
                         </div>
 
                         <h4 class="header-title m-b-30">#{{$account->Id}} Account: Edit</h4>
+                        <div class="alert-ban">
+                            @if($account->isBanned())
+                                <div class="alert alert-danger fade in m-b-30">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <span class="center-block text-center"><strong>This game account is banned @if($account->BanEndDate)until {{ $account->BanEndDate->format('d/m/Y H\hi') }} @else permanently. @endif</strong></span>
+                                    @if($account->BanReason)<br><strong><u>Reason:</u></strong> {{$account->BanReason}}@endif
+                                </div>
+                            @endif
+                        </div>
                         <div class="col-lg-12">
                             <div class="card-box">
                                 <h4 class="header-title m-t-0 m-b-30">Actions</h4>

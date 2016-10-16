@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use \Cache;
 
@@ -39,13 +40,11 @@ class Account extends Model
 		'VoteCount',
         'IsJailed',
         'IsBanned',
-        'Tokens',
-        'NewTokens',
 	);
 
     public static $rules = [
         'sanction' => [
-            'BanEndDate'            => 'required|date_format:Y-m-d H:i:s',
+            'BanEndDate'            => 'date_format:Y-m-d H:i:s',
             'BanReason'             => 'required',
         ],
         'register' => [
@@ -77,20 +76,90 @@ class Account extends Model
             return false;
     }
 
-    public function characters()
+    public function isBanned()
     {
-        $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function() {
-            $characters = [];
+        if ($this->IsBanned == '1' && ($this->BanEndDate > Carbon::now() || $this->BanEndDate == null))
+            return true;
+        else
+            return false;
+    }
 
+    public function characters($deleted = null, $nocache = null)
+    {
+        if(!$nocache)
+        {
+            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 0.4, function() use($deleted) {
+                $characters = [];
+                $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+                foreach ($worldCharacters as $worldCharacter)
+                {
+                    if($deleted)
+                    {
+                        $characters[] = $worldCharacter->character();
+                    }
+                    else
+                    {
+                        if($worldCharacter->character()->DeletedDate == null)
+                            $characters[] = $worldCharacter->character();
+                    }
+                }
+                return $characters;
+            });
+        }
+        else
+        {
+            $characters = [];
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
             foreach ($worldCharacters as $worldCharacter)
             {
-                $characters[] = $worldCharacter->character();
+                if($deleted)
+                {
+                    $characters[] = $worldCharacter->character();
+                }
+                else
+                {
+                    if($worldCharacter->character()->DeletedDate == null)
+                        $characters[] = $worldCharacter->character();
+                }
+            }
+            return $characters;
+        }
+
+        return $characters;
+    }
+
+    public function DeletedCharacters($nocache = null)
+    {
+        if(!$nocache)
+        {
+            $characters = Cache::remember('characters_deleted_'.$this->server.'_'.$this->Id, 0.4, function() {
+                $characters = [];
+                $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+                foreach ($worldCharacters as $worldCharacter)
+                {
+                    if($worldCharacter->character()->DeletedDate)
+                        $characters[] = $worldCharacter->character();
+                }
+
+                return $characters;
+            });
+        }
+        else
+        {
+            $characters = [];
+            $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+            foreach ($worldCharacters as $worldCharacter)
+            {
+                if($worldCharacter->character()->DeletedDate)
+                    $characters[] = $worldCharacter->character();
             }
 
             return $characters;
-        });
+        }
 
         return $characters;
     }
@@ -146,6 +215,7 @@ class Account extends Model
 
     public function htmlStatus()
     {
+        $bannerAccountLogin = '';
         $texts = array();
         $hidden = '';
         if($this->IsJailed == 1)
@@ -166,7 +236,22 @@ class Account extends Model
         }
         if($this->IsJailed == 1 || $this->IsBanned == 1)
         {
-            $texts[] .= '('.$this->BanEndDate.')';
+            $bannerAccount = $this->findOrFail($this->BannerAccountId);
+            if($bannerAccount)
+            {
+                $bannerAccountLogin = $bannerAccount->Login;
+            }
+            else
+                {
+                $bannerAccountLogin = 'Unknown';
+            }
+            if($this->BanEndDate)
+            {
+                $texts[] .= '('.$this->BanEndDate.')';
+            }
+            else{
+                $texts[] .= '()';
+            }
         }
 
         $span = '';
@@ -176,7 +261,7 @@ class Account extends Model
 
         }
 
-        $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$this->BannerAccountId.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';
+        $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$bannerAccountLogin.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';
 
 
         return $span;

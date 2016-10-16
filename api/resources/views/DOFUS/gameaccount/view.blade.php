@@ -8,14 +8,21 @@
 
 @section('content')
 <div class="ak-container ak-main-center">
-    <div class="ak-title-container">
+    <div class="ak-title-container ak-backlink">
         <h1><span class="ak-icon-big ak-bank"></span></a> Compte de Jeu - ( {{$account->Nickname}} )</h1>
+        <a href="{{ URL::route('profile') }}" class="ak-backlink-button">Retour à mon compte</a>
     </div>
 
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
                 <div class="panel-main profile ak-form">
+                    @if($account->isBanned())
+                        <div class="alert alert-danger">
+                            <span class="center-block text-center"><strong>Votre compte est banni @if($account->BanEndDate)jusqu'au {{ $account->BanEndDate->format('d/m/Y à H\hi') }} @else définitivement. @endif</strong></span>
+                            @if($account->BanReason)<br><strong><u>Raison:</u></strong> {{$account->BanReason}}@endif
+                        </div>
+                    @endif
                     <div class="code">
                         Code : <span>{{ $account->SecretAnswer }}</span>
                     </div>
@@ -50,18 +57,46 @@
             <th class="ak-center" style="width: 200px;">Actions</th>
         </tr>
         @foreach ($account->characters() as $character)
-            @if(!$character->DeletedDate)
                 <tr>
                     <td class="ak-rank"></td>
                     <td class="ak-name">
                         <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                        <a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}">{{ $character->Name }}</a>
+                        <a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}">{{ $character->Name }}</a>
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
                     <td class="ak-center">{{ $character->level() }}</td>
-                    <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+                    <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
                 </tr>
-            @endif
+        @endforeach
+    </table>
+
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span> Mes personnages supprimés
+            </div>
+        </div>
+    </div>
+
+    <table class="ak-ladder ak-container ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
+        <tr>
+            <th class="ak-center"></th>
+            <th>Pseudo</th>
+            <th>Classe</th>
+            <th class="ak-center">Niveau</th>
+            <th class="ak-center" style="width: 200px;">Actions</th>
+        </tr>
+        @foreach ($account->DeletedCharacters() as $characterDeleted)
+                <tr>
+                    <td class="ak-rank"></td>
+                    <td class="ak-name">
+                        <span class="ak-breed-icon breed{{ $characterDeleted->Breed }}_{{ $characterDeleted->Sex }}"></span>
+                        <a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}">{{ $characterDeleted->Name }}</a>
+                    </td>
+                    <td class="ak-class">{{ $characterDeleted->classe() }}</td>
+                    <td class="ak-center">{{ $characterDeleted->level() }}</td>
+                    <td class="ak-center"><a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}"><span class="fa fa-undo"></span> Récupérer</a></td>
+                </tr>
         @endforeach
     </table>
 

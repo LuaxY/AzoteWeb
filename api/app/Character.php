@@ -15,6 +15,8 @@ class Character extends Model
 
     protected $dates = ['CreationDate', 'LastUsage', 'DeletedDate'];
 
+    public $timestamps = false;
+
     public $server;
 
     public function level()
@@ -86,5 +88,10 @@ class Character extends Model
     {
         $worldCharacter = ModelCustom::hasOneOnOneServer('auth', $server, WorldCharacter::class, 'CharacterId', $this->Id);
         return $worldCharacter ? $worldCharacter->account() : null;
+    }
+
+    public function recoverPrice()
+    {
+        return $this->level();
     }
 }

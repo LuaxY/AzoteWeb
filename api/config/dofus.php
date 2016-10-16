@@ -21,6 +21,8 @@ return [
 
     'accounts_limit' => 8,
 
+    'characters_limit' => 5,
+
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
     'mailgun_key'  => env('MAILGUN_KEY'),
