@@ -57,18 +57,46 @@
             <th class="ak-center" style="width: 200px;">Actions</th>
         </tr>
         @foreach ($account->characters() as $character)
-            @if(!$character->DeletedDate)
                 <tr>
                     <td class="ak-rank"></td>
                     <td class="ak-name">
                         <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                        <a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}">{{ $character->Name }}</a>
+                        <a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}">{{ $character->Name }}</a>
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
                     <td class="ak-center">{{ $character->level() }}</td>
-                    <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+                    <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
                 </tr>
-            @endif
+        @endforeach
+    </table>
+
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span> Mes personnages supprimés
+            </div>
+        </div>
+    </div>
+
+    <table class="ak-ladder ak-container ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
+        <tr>
+            <th class="ak-center"></th>
+            <th>Pseudo</th>
+            <th>Classe</th>
+            <th class="ak-center">Niveau</th>
+            <th class="ak-center" style="width: 200px;">Actions</th>
+        </tr>
+        @foreach ($account->DeletedCharacters() as $characterDeleted)
+                <tr>
+                    <td class="ak-rank"></td>
+                    <td class="ak-name">
+                        <span class="ak-breed-icon breed{{ $characterDeleted->Breed }}_{{ $characterDeleted->Sex }}"></span>
+                        <a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}">{{ $characterDeleted->Name }}</a>
+                    </td>
+                    <td class="ak-class">{{ $characterDeleted->classe() }}</td>
+                    <td class="ak-center">{{ $characterDeleted->level() }}</td>
+                    <td class="ak-center"><a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}"><span class="fa fa-undo"></span> Récupérer</a></td>
+                </tr>
         @endforeach
     </table>
 

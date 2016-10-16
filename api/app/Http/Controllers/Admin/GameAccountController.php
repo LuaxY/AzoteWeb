@@ -95,7 +95,7 @@ class GameAccountController extends Controller
         $user = User::findOrFail($user->id);
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
-        $characters = $account->characters();
+        $characters = $account->characters(1);
         return view('admin.users.servers.edit', compact('user', 'server', 'account', 'characters'));
     }
 

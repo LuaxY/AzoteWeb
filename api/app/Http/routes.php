@@ -160,6 +160,12 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'characters.view'
     ]);
 
+    Route::any(Lang::get('routes.characters.recover'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@recover',
+        'as'         => 'characters.recover'
+    ]);
+
     /* ============ AUTH ============ */
 
     Route::get(Lang::get('routes.account.login'), [

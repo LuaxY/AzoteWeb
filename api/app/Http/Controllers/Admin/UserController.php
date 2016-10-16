@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -153,6 +154,28 @@ class UserController extends Controller
             });
             Toastr::success('E-mail send', $title = null, $options = []);
         }
+
+        $gameAccounts = $user->accounts();
+
+        if($gameAccounts)
+        {
+            foreach ($gameAccounts as $gameAccount)
+            {
+                $gameAccount->Email = $request->input('email');
+                $gameAccount->save();
+            }
+        }
+
+        $servers = config('dofus.servers');
+        if($servers)
+        {
+            foreach ($servers as $server)
+            {
+                Cache::forget('accounts_' . $server . '_' . $user->id);
+            }
+        }
+
+        Cache::forget('accounts_' . $user->id);
 
         Toastr::success('Account updated', $title = null, $options = []);
 

@@ -346,6 +346,17 @@ class AccountController extends Controller
                 $forumAccount->save();
             }
 
+            $gameAccounts = Auth::user()->accounts();
+
+            if($gameAccounts)
+            {
+                foreach ($gameAccounts as $gameAccount)
+                {
+                    $gameAccount->Email = $request->input('email');
+                    $gameAccount->save();
+                }
+            }
+
             // TODO: send email to user
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);

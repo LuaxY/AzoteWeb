@@ -11,7 +11,13 @@ return [
     'not_account_owner' => [
         'status'  => 401,
         'title'   => 'Le compte sélectionné est invalide',
-        'details' => 'Le compte sélectionné ne vous appartient pas, vous ne pouvez donc pas le consulter.',
+        'details' => 'Le compte sélectionné n\'est pas valide.',
+    ],
+
+    'owner_error' => [
+        'status'  => 401,
+        'title'   => 'Le compte ou personnage sélectionné est invalide',
+        'details' => 'Le compte ou le personnage sélectionné n\'est pas valide.',
     ],
 
 ];

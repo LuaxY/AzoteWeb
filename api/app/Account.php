@@ -84,20 +84,82 @@ class Account extends Model
             return false;
     }
 
-    public function characters()
+    public function characters($deleted = null, $nocache = null)
     {
-        $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function() {
-            $characters = [];
+        if(!$nocache)
+        {
+            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 0.4, function() use($deleted) {
+                $characters = [];
+                $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
+                foreach ($worldCharacters as $worldCharacter)
+                {
+                    if($deleted)
+                    {
+                        $characters[] = $worldCharacter->character();
+                    }
+                    else
+                    {
+                        if($worldCharacter->character()->DeletedDate == null)
+                            $characters[] = $worldCharacter->character();
+                    }
+                }
+                return $characters;
+            });
+        }
+        else
+        {
+            $characters = [];
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
             foreach ($worldCharacters as $worldCharacter)
             {
-                $characters[] = $worldCharacter->character();
+                if($deleted)
+                {
+                    $characters[] = $worldCharacter->character();
+                }
+                else
+                {
+                    if($worldCharacter->character()->DeletedDate == null)
+                        $characters[] = $worldCharacter->character();
+                }
+            }
+            return $characters;
+        }
+
+        return $characters;
+    }
+
+    public function DeletedCharacters($nocache = null)
+    {
+        if(!$nocache)
+        {
+            $characters = Cache::remember('characters_deleted_'.$this->server.'_'.$this->Id, 0.4, function() {
+                $characters = [];
+                $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+                foreach ($worldCharacters as $worldCharacter)
+                {
+                    if($worldCharacter->character()->DeletedDate)
+                        $characters[] = $worldCharacter->character();
+                }
+
+                return $characters;
+            });
+        }
+        else
+        {
+            $characters = [];
+            $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
+
+            foreach ($worldCharacters as $worldCharacter)
+            {
+                if($worldCharacter->character()->DeletedDate)
+                    $characters[] = $worldCharacter->character();
             }
 
             return $characters;
-        });
+        }
 
         return $characters;
     }
