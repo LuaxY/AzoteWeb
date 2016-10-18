@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 use \Cache;
 
@@ -13,6 +14,7 @@ use App\Vote;
 
 class User extends Authenticatable
 {
+use Notifiable;
     use HasRoles; // CanResetPassword
 
     protected $dates = ['birthday', 'last_vote'];
