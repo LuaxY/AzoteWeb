@@ -72,7 +72,7 @@ class PostController extends Controller
             'published_at' => $published_at
         ]);
 
-        $this->clearCache();
+        $this->clearCache(null, $request->type);
 
         Toastr::success('Post created', $title = null, $options = []);
         return redirect(route('admin.posts'));
@@ -85,7 +85,7 @@ class PostController extends Controller
         if ($post->id != config('dofus.motd.postid'))
         {
             $post->delete();
-            $this->clearCache();
+            $this->clearCache($post->id, $post->type);
 
             return response()->json([], 200);
         }
@@ -139,23 +139,27 @@ class PostController extends Controller
             'published_at' => $published_at
         ]);
 
-        $this->clearCache($post->id);
+        $this->clearCache($post->id, $post->type);
 
         Toastr::success('Post updated', $title = null, $options = []);
         return redirect(route('admin.posts'));
     }
 
-    private function clearCache($id = null)
+    private function clearCache($id = null,$type = null)
     {
         // Clear specified post
         if ($id)
         {
             Cache::forget('posts_'.$id);
         }
+        if($type)
+        {
+            Cache::forget('posts_'.$type.'_page_1');
+            Cache::forget('posts_'.$type.'_page_2');
+        }
 
-        // Clear first 2 pages
-        Cache::forget('posts_page_1');
-        Cache::forget('posts_page_2');
+        // Clear posts index page
+        Cache::forget('posts_index');
     }
 
 }
