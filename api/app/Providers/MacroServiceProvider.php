@@ -14,7 +14,7 @@ class MacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Form::macro('datetimelocal', function ($name, $default = null, $attrs = array()) {
+        Form::macro('datetimelocal', function ($name, $default = null, $attrs = []) {
             $item = '<input type="date" name="'. $name .'" ';
 
             if ($default) {

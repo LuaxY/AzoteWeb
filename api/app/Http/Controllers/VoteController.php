@@ -149,12 +149,12 @@ class VoteController extends Controller
         $steps      = $this->stepsList($id);
         $current    = 1;
 
-        $data = array(
+        $data = [
             'palierId' => $id,
             'progress' => $progress,
             'steps'    => $steps,
             'current'  => $current,
-        );
+        ];
 
         return view('vote.paliers', $data);
     }
@@ -200,13 +200,13 @@ class VoteController extends Controller
 
     private function stepsList($palierId)
     {
-        return array(
+        return [
             1 => VoteReward::where('votes', 50 * ($palierId - 1) + 10)->first(),
             2 => VoteReward::where('votes', 50 * ($palierId - 1) + 20)->first(),
             3 => VoteReward::where('votes', 50 * ($palierId - 1) + 30)->first(),
             4 => VoteReward::where('votes', 50 * ($palierId - 1) + 40)->first(),
             5 => VoteReward::where('votes', 50 * ($palierId - 1) + 50)->first(),
-        );
+        ];
     }
 
     private function delay()

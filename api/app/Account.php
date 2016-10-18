@@ -21,9 +21,9 @@ class Account extends Model
 
     protected $dates = ['CreationDate', 'BanEndDate', 'LastConnection'];
 
-    protected $hidden = array('PasswordHash');
+    protected $hidden = ['PasswordHash'];
 
-    protected $fillable = array(
+    protected $fillable = [
         'Login',
         'PasswordHash',
         'Nickname',
@@ -41,7 +41,7 @@ class Account extends Model
         'IsBanned',
         'Tokens',
         'NewTokens',
-    );
+    ];
 
     public static $rules = [
         'sanction' => [
@@ -139,7 +139,7 @@ class Account extends Model
 
     public function htmlStatus()
     {
-        $texts = array();
+        $texts = [];
         $hidden = '';
         if ($this->IsJailed == 1) {
             $texts[] = 'Jailed';
