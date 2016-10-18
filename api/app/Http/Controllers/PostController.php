@@ -27,8 +27,7 @@ class PostController extends Controller
             return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
         });
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return response()->json(View::make('posts.templates.posts', compact('posts'))->render());
         }
 
@@ -48,8 +47,7 @@ class PostController extends Controller
             return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE);
         });
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return response()->json(View::make('posts.templates.comments', compact('post', 'comments'))->render());
         }
 
@@ -87,5 +85,4 @@ class PostController extends Controller
         Cache::forget('posts_' . $id . '_comments_1');
         return redirect()->back();
     }
-
 }

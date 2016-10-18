@@ -29,15 +29,12 @@ class UserDatatablesController extends Controller
                 <a href="user/'.$user->id.'/edit" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>
                     ';
 
-                if($user->isBanned())
-                {
+                if ($user->isBanned()) {
                     $buttons .= '<a id="unban-'.$user->id.'" class="unban pull-right btn btn-xs btn-info" data-toggle="tooltip" title="Unban"><i class="fa fa-check-circle-o"></i></a>';
-                }
-                else
-                {
+                } else {
                     $buttons .= '<a id="ban-'.$user->id.'" class="ban pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Ban"><i class="fa fa-ban"></i></a>';
                 }
-                if(!$user->isActive()){
+                if (!$user->isActive()) {
                     $buttons .= '<a id="active-'.$user->id.'" class="activ btn btn-xs btn-warning" data-toggle="tooltip" title="Confirm"><i class="fa fa-check"></i></a>';
                 }
                 return $buttons;
@@ -47,53 +44,37 @@ class UserDatatablesController extends Controller
                 return $ac;
             })
             ->editColumn('birthday', function ($user) {
-                if($user->birthday)
-                {
+                if ($user->birthday) {
                     $ac = $user->birthday->format('j F Y');
-                }
-                else
-                {
-                   $ac = 'N/C';
+                } else {
+                    $ac = 'N/C';
                 }
                 return $ac;
             })
             ->editColumn('rank', function ($user) {
-                if($user->isAdmin())
-                {
+                if ($user->isAdmin()) {
                     $ac = 'Admin';
-                }
-                else
-                {
+                } else {
                     $ac = 'User';
                 }
                 return $ac;
             })
             ->editColumn('certified', function ($user) {
-                if($user->isCertified())
-                {
+                if ($user->isCertified()) {
                     $ac = '<span class="label label-success"><i class="fa fa-lock"></i></span>';
-                }
-                else
-                {
+                } else {
                     $ac = '<span class="label label-danger text-center"><i class="fa fa-unlock"></i></span>';
                 }
                 return $ac;
             })
             ->editColumn('active', function ($user) {
-                if($user->isActive())
-                {
+                if ($user->isActive()) {
                     $ac = '<span class="label label-success"><i class="fa fa-check-circle"></i></span>';
-                }
-                else
-                {
+                } else {
                     $ac = '<span class="label label-danger"><i class="fa fa-minus-circle"></i></span>';
                 }
                 return $ac;
             })
             ->make(true);
     }
-
-
-
-
 }

@@ -9,18 +9,14 @@ class SelectForm implements IForm
         $html  = "$name: <select name=\"$name\">\n";
         $html .= "<option value=\"r|null\"></option>\n";
 
-        foreach ($data as $obj)
-        {
+        foreach ($data as $obj) {
             $value = $obj->value;
             $child = (isset($obj->child) ? $obj->child : false);
             $v;
 
-            if ($child)
-            {
+            if ($child) {
                 $v = "c|$child";
-            }
-            else
-            {
+            } else {
                 $v = "f|$value";
             }
 

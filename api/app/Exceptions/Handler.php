@@ -54,27 +54,21 @@ class Handler extends ExceptionHandler
             $e instanceof TokenMismatchException ||
             $e instanceof MethodNotAllowedHttpException ||
             $e instanceof ModelNotFoundException ||
-            $e instanceof GenericException)
-        {
+            $e instanceof GenericException) {
             return parent::report($e);
         }
 
-        if ($e instanceof Exception && Config::get('app.env') == 'production')
-        {
+        if ($e instanceof Exception && Config::get('app.env') == 'production') {
             $debug = Config::get('app.debug');
             Config::set('app.debug', true);
 
-            if (ExceptionHandler::isHttpException($e))
-            {
-                if ($e->getStatusCode() == 503)
-                {
+            if (ExceptionHandler::isHttpException($e)) {
+                if ($e->getStatusCode() == 503) {
                     return;
                 }
 
                 $content = ExceptionHandler::toIlluminateResponse(ExceptionHandler::renderHttpException($e), $e);
-            }
-            else
-            {
+            } else {
                 $content = ExceptionHandler::toIlluminateResponse(ExceptionHandler::convertExceptionToResponse($e), $e);
             }
 
@@ -87,7 +81,7 @@ class Handler extends ExceptionHandler
             $data['date']      = Carbon::now();
             $data['user']      = Auth::user();
 
-            Mail::send(['html' => 'emails.report'], $data, function ($message) use($error) {
+            Mail::send(['html' => 'emails.report'], $data, function ($message) use ($error) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to('kerubim@azote.us', 'Web Developer');
                 $message->subject('Azote.us - PHP Error Report - ' . Carbon::now());
@@ -107,8 +101,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof GenericException)
-        {
+        if ($e instanceof GenericException) {
             $data   = $e->toArray();
             $status = $e->getStatus();
 

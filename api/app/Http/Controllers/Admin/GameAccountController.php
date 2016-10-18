@@ -20,8 +20,7 @@ class GameAccountController extends Controller
 
     private function isServerExist($server)
     {
-        if (!in_array($server, config('dofus.servers')))
-        {
+        if (!in_array($server, config('dofus.servers'))) {
             return false;
         }
 
@@ -30,9 +29,8 @@ class GameAccountController extends Controller
 
     public function index(User $user, $server)
     {
-        if (!$this->isServerExist($server))
-        {
-           abort(404);
+        if (!$this->isServerExist($server)) {
+            abort(404);
         }
             $user = User::findOrFail($user->id);
             $accounts = $user->accounts($server);
@@ -41,8 +39,7 @@ class GameAccountController extends Controller
 
     public function store(User $user, $server, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 
@@ -86,8 +83,7 @@ class GameAccountController extends Controller
 
     public function edit(User $user, $server, $accountId)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 
@@ -100,8 +96,7 @@ class GameAccountController extends Controller
 
     public function update(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
         $database = $server . '_auth';
@@ -112,8 +107,7 @@ class GameAccountController extends Controller
             'UserGroupId'          => 'required|numeric',
         ]);
 
-        if(!array_key_exists($request->UserGroupId, config('dofus.ranks')))
-        {
+        if (!array_key_exists($request->UserGroupId, config('dofus.ranks'))) {
             return redirect()->back();
         }
         $account->Login = $request->Login;
@@ -128,8 +122,7 @@ class GameAccountController extends Controller
     }
     public function password(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
         $validator = Validator::make($request->all(), Account::$rules['admin-update-password']);
@@ -147,8 +140,7 @@ class GameAccountController extends Controller
 
     public function ban(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 
@@ -164,20 +156,17 @@ class GameAccountController extends Controller
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
-        if($request->allaccounts == '0')
-        {
+        if ($request->allaccounts == '0') {
             $account->BanReason = $request->BanReason;
             $account->BanEndDate = $request->BanEndDate;
             $account->IsBanned = true;
             $account->BannerAccountId = $bannerAccountId;
             $account->save();
         }
-        if($request->allaccounts == '1')
-        {
+        if ($request->allaccounts == '1') {
             $accounts = Account::on($server . '_auth')->where('Email', $account->Email)->get();
 
-            foreach ($accounts as $account)
-            {
+            foreach ($accounts as $account) {
                 $account->BanReason = $request->BanReason;
                 $account->BanEndDate = $request->BanEndDate;
                 $account->IsBanned = true;
@@ -193,8 +182,7 @@ class GameAccountController extends Controller
 
     public function unban(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 
@@ -210,8 +198,7 @@ class GameAccountController extends Controller
 
     public function jail(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 
@@ -227,8 +214,7 @@ class GameAccountController extends Controller
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
-        if($request->allaccounts == '0')
-        {
+        if ($request->allaccounts == '0') {
             $account->BanReason = $request->BanReason;
             $account->BanEndDate = $request->BanEndDate;
             $account->IsJailed = true;
@@ -236,12 +222,10 @@ class GameAccountController extends Controller
             $account->save();
         }
 
-        if($request->allaccounts == '1')
-        {
+        if ($request->allaccounts == '1') {
             $accounts = Account::on($server . '_auth')->where('Email', $account->Email)->get();
 
-            foreach ($accounts as $account)
-            {
+            foreach ($accounts as $account) {
                 $account->BanReason = $request->BanReason;
                 $account->BanEndDate = $request->BanEndDate;
                 $account->IsJailed = true;
@@ -255,8 +239,7 @@ class GameAccountController extends Controller
 
     public function unjail(User $user, $server, $accountId, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             abort(404);
         }
 

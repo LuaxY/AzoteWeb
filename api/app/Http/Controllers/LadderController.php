@@ -17,7 +17,7 @@ class LadderController extends Controller
 
     public function general()
     {
-        $characters = Cache::remember('ladder.general', self::LADDER_CACHE_EXPIRE_MINUTES, function() {
+        $characters = Cache::remember('ladder.general', self::LADDER_CACHE_EXPIRE_MINUTES, function () {
             $server = 'sigma';
             $db = config('database.connections');
             $auth  = $db[$server.'_auth']['database'];
@@ -40,7 +40,7 @@ class LadderController extends Controller
 
     public function pvp()
     {
-        $characters = Cache::remember('ladder.pvp', self::LADDER_CACHE_EXPIRE_MINUTES, function() {
+        $characters = Cache::remember('ladder.pvp', self::LADDER_CACHE_EXPIRE_MINUTES, function () {
             $server = 'sigma';
             $db = config('database.connections');
             $auth  = $db[$server.'_auth']['database'];
@@ -65,7 +65,7 @@ class LadderController extends Controller
 
     public function guild()
     {
-        $guilds = Cache::remember('ladder.guilds', self::LADDER_CACHE_EXPIRE_MINUTES, function() {
+        $guilds = Cache::remember('ladder.guilds', self::LADDER_CACHE_EXPIRE_MINUTES, function () {
             $server = 'sigma';
             return Guild::on($server.'_world')->orderBy('Experience', 'DESC')->take(100)->get();
         });

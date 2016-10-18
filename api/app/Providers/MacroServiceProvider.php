@@ -14,8 +14,7 @@ class MacroServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Form::macro('datetimelocal', function($name, $default = NULL, $attrs = array())
-        {
+        Form::macro('datetimelocal', function ($name, $default = null, $attrs = array()) {
             $item = '<input type="date" name="'. $name .'" ';
 
             if ($default) {
@@ -23,14 +22,14 @@ class MacroServiceProvider extends ServiceProvider
             }
 
             if (is_array($attrs)) {
-                foreach ($attrs as $a => $v)
+                foreach ($attrs as $a => $v) {
                     $item .= $a .'="'. $v .'" ';
+                }
             }
             $item .= ">";
 
             return $item;
         });
-
     }
 
     /**

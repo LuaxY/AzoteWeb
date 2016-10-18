@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
+
 class SettingsController extends Controller
 {
     public function index()
@@ -22,13 +23,11 @@ class SettingsController extends Controller
         $motd  = config('dofus.motd');
         $theme = config('dofus.theme');
 
-        $posts_id_object = Post::select('id','title')->get();
+        $posts_id_object = Post::select('id', 'title')->get();
         $posts = [];
 
-        if ($posts_id_object)
-        {
-            foreach ($posts_id_object as $post_id_object)
-            {
+        if ($posts_id_object) {
+            foreach ($posts_id_object as $post_id_object) {
                 $posts[$post_id_object->id] = "{$post_id_object->title} (id: {$post_id_object->id})";
             }
         }
@@ -40,9 +39,10 @@ class SettingsController extends Controller
     {
         $json = json_decode(@file_get_contents("../settings.json"));
 
-        if ($request->settings_type == 'motd')
-        {
-            if (@!isset($json->motd)) $json->motd = new \stdClass;
+        if ($request->settings_type == 'motd') {
+            if (@!isset($json->motd)) {
+                $json->motd = new \stdClass;
+            }
 
             $json->motd->title    = $request->title;
             $json->motd->subtitle = $request->subtitle;
@@ -51,9 +51,10 @@ class SettingsController extends Controller
             Toastr::success('Motd updated', $title = null, $options = []);
         }
 
-        if ($request->settings_type == 'theme')
-        {
-            if (@!isset($json->theme)) $json->theme = new \stdClass;
+        if ($request->settings_type == 'theme') {
+            if (@!isset($json->theme)) {
+                $json->theme = new \stdClass;
+            }
 
             $json->theme->background = $request->background;
             $json->theme->color      = $request->color;

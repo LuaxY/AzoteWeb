@@ -22,8 +22,7 @@ class GameAccountController extends Controller
         $validator = Validator::make($request->all(), Account::$rules['register']);
         $validator->setPresenceVerifier($verifier);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
         }
 
@@ -56,15 +55,13 @@ class GameAccountController extends Controller
         // is account id owned by me ?
         $account = Account::where('Id', $request->input('id'))->where('Email', Auth::user()->email)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $verifier = app()->make('validation.presence');
             $verifier->setConnection('auth');
             $validator = Validator::make($request->all(), Account::$rules['update']);
             $validator->setPresenceVerifier($verifier);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
             }
 
@@ -82,14 +79,12 @@ class GameAccountController extends Controller
         // is account id owned by me ?
         $account = Account::where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $_characters = $account->characters();
 
             $characters = [];
 
-            foreach ($_characters as $_character)
-            {
+            foreach ($_characters as $_character) {
                 $character = new \stdClass;
                 $character->name = $_character->Name;
                 $character->level = $_character->level();

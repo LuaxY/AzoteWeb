@@ -18,8 +18,7 @@ class VoteController extends Controller
 {
     public function index()
     {
-        if(Auth::guest())
-        {
+        if (Auth::guest()) {
             return view('vote.guest');
         }
 
@@ -32,8 +31,7 @@ class VoteController extends Controller
         $current    = (($votesCount + $nextGifts) / 10) % 5;
         $delay      = $this->delay();
 
-        if ($current <= 0)
-        {
+        if ($current <= 0) {
             $current = 5;
         }
 
@@ -43,13 +41,12 @@ class VoteController extends Controller
             'giftsCount' => $giftsCount,
             'nextGifts'  => $nextGifts,
             'progress'   => $progress,
-            'steps'	     => $steps,
+            'steps'      => $steps,
             'current'    => $current,
             'delay'      => $delay,
         ];
 
-        if (Auth::user()->isFirstVote)
-        {
+        if (Auth::user()->isFirstVote) {
             $data['popup'] = 'vote';
         }
 
@@ -60,20 +57,18 @@ class VoteController extends Controller
     {
         $delay = $this->delay();
 
-        if (!$delay->canVote)
-        {
+        if (!$delay->canVote) {
             return redirect()->route('vote.index');
         }
 
-        return view ('vote.confirm');
+        return view('vote.confirm');
     }
 
     public function process(Request $request)
     {
         $delay = $this->delay();
 
-        if (!$delay->canVote)
-        {
+        if (!$delay->canVote) {
             return redirect()->route('vote.index');
         }
 
@@ -84,15 +79,13 @@ class VoteController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $actualOUT = $this->getOuts();
 
-        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
-        {
+        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0) {
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
 
@@ -100,8 +93,7 @@ class VoteController extends Controller
         Auth::user()->points   += config('dofus.vote');
         Auth::user()->last_vote = date('Y-m-d H:i:s');
 
-        if (Auth::user()->isFirstVote)
-        {
+        if (Auth::user()->isFirstVote) {
             Auth::user()->isFirstVote = false;
         }
 
@@ -109,19 +101,16 @@ class VoteController extends Controller
 
         $accounts = Auth::user()->accounts();
 
-        foreach ($accounts as $account)
-        {
+        foreach ($accounts as $account) {
             $account->LastVote = date('Y-m-d H:i:s');
             $account->save();
         }
 
-        if (Auth::user()->votes % 10 == 0)
-        {
+        if (Auth::user()->votes % 10 == 0) {
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
             $reward = VoteReward::where('votes', Auth::user()->votes)->first();
 
-            if ($reward)
-            {
+            if ($reward) {
                 $gift = new Gift;
                 $gift->user_id     = Auth::user()->id;
                 $gift->item_id     = $reward->itemId;
@@ -151,8 +140,7 @@ class VoteController extends Controller
 
     public function palier($id)
     {
-        if ($id < 1 || $id > 1) // > 5
-        {
+        if ($id < 1 || $id > 1) { // > 5
             $id = 1;
         }
 
@@ -164,7 +152,7 @@ class VoteController extends Controller
         $data = array(
             'palierId' => $id,
             'progress' => $progress,
-            'steps'	   => $steps,
+            'steps'    => $steps,
             'current'  => $current,
         );
 
@@ -257,18 +245,17 @@ class VoteController extends Controller
             curl_setopt($curl, CURLOPT_AUTOREFERER, true);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION,true);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($curl, CURLOPT_VERBOSE, false);
-            curl_setopt($curl, CURLOPT_COOKIEFILE,'cookieRPG.txt');
-            curl_setopt($curl, CURLOPT_COOKIEJAR,'cookieRPG.txt');
+            curl_setopt($curl, CURLOPT_COOKIEFILE, 'cookieRPG.txt');
+            curl_setopt($curl, CURLOPT_COOKIEJAR, 'cookieRPG.txt');
 
             $webpage  = curl_exec($curl);
             $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
             preg_match('#Clic Sortant : ([0-9]+)#', $webpage, $matches);
 
-            if (!isset($matches[0]))
-            {
+            if (!isset($matches[0])) {
                 return 0;
             }
 

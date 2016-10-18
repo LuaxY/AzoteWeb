@@ -23,44 +23,35 @@ class AuthController extends Controller
         $clientIp = $request->ip();
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
-        {
-            if (!$user->active)
-            {
+        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt))) {
+            if (!$user->active) {
                 return view('account/re-send-email', ['user' => $user]);
             }
-            if ($user->isBanned())
-            {
+            if ($user->isBanned()) {
                 $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte est banni."]);
                 return redirect()->back()->withErrors(['auth' => 'Votre compte est banni.'])->withInput();
             }
             $user->last_ip_address = $clientIp;
             $user->save();
 
-            if($request->remember)
-            {
+            if ($request->remember) {
                 Auth::login($user, true);
-            }
-            else
-            {
+            } else {
                 Auth::login($user);
             }
 
             $forumAccount = ForumAccount::find($user->forum_id);
 
-            if ($forumAccount)
-            {
+            if ($forumAccount) {
                 $forumAccount->member_login_key = str_random(32);
                 $forumAccount->save();
 
-                setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+                setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
                 setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
             }
 
             return redirect()->route('profile');
-        }
-        else
-        {
+        } else {
             $request->session()->flash('notify', ['type' => 'error', 'message' => "Nom de compte ou mot de passe incorrect."]);
             return redirect()->back()->withErrors(['auth' => 'Nom de compte ou mot de passe incorrect.'])->withInput();
         }
@@ -68,17 +59,15 @@ class AuthController extends Controller
 
     public function logout()
     {
-        if (Auth::check())
-        {
+        if (Auth::check()) {
             $forumAccount = ForumAccount::find(Auth::user()->forum_id);
 
-            if ($forumAccount)
-            {
+            if ($forumAccount) {
                 $forumAccount->member_login_key = '';
                 $forumAccount->save();
 
-                setcookie('ips4_member_id',       '', time()-3600, '/', config('dofus.forum.domain'));
-                setcookie('ips4_pass_hash',       '', time()-3600, '/', config('dofus.forum.domain'));
+                setcookie('ips4_member_id', '', time()-3600, '/', config('dofus.forum.domain'));
+                setcookie('ips4_pass_hash', '', time()-3600, '/', config('dofus.forum.domain'));
                 setcookie('ips4_IPSSessionFront', '', time()-3600, '/', config('dofus.forum.domain'));
             }
 

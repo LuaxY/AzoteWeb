@@ -19,16 +19,13 @@ class Character extends Model
 
     public function level()
     {
-        $exp = Cache::remember('exp_'.$this->Experience, 1000, function() {
+        $exp = Cache::remember('exp_'.$this->Experience, 1000, function () {
             return Experience::where('CharacterExp', '<=', $this->Experience)->orderBy('Level', 'desc')->first();
         });
 
-        if ($exp)
-        {
+        if ($exp) {
             return $exp->Level;
-        }
-        else
-        {
+        } else {
             return 1;
         }
     }

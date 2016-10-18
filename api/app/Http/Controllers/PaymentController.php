@@ -20,9 +20,13 @@ class PaymentController extends Controller
     {
         $used = config('dofus.payment.used');
 
-        if ($used == "dedipass") $this->payment = new DediPass;
+        if ($used == "dedipass") {
+            $this->payment = new DediPass;
+        }
 
-        if (!$this->payment) die("No valid payment method found");
+        if (!$this->payment) {
+            die("No valid payment method found");
+        }
     }
 
     public function country()
@@ -32,12 +36,9 @@ class PaymentController extends Controller
 
     public function method($country = 'fr')
     {
-        if (isset($this->payment->rates()->$country))
-        {
+        if (isset($this->payment->rates()->$country)) {
             $methods = $this->payment->rates()->$country;
-        }
-        else
-        {
+        } else {
             $methods = $this->payment->rates()->fr;
             $country = 'fr';
         }
@@ -68,17 +69,13 @@ class PaymentController extends Controller
             'cgv'     => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->route('shop.payment.method', $data['country'])->withErrors($validator);
         }
 
-        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null)
-        {
+        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null) {
             return redirect()->route('shop.payment.method', $data['country'])->withErrors(['palier' => 'Le palier selectionné est invalide.']);
-        }
-        else
-        {
+        } else {
             $payment = $this->payment->palier($data['country'], $data['method_'], $data['palier']);
             $country = $data['country'];
 
@@ -107,13 +104,11 @@ class PaymentController extends Controller
             'cgv'     => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->route('shop.payment.code')->withErrors($validator)->withInput($data);
         }
 
-        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null)
-        {
+        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null) {
             return redirect()->route('shop.payment.code')->withErrors(['palier' => 'Le palier selectionné est invalide.'])->withInput($data);
         }
 
@@ -130,8 +125,7 @@ class PaymentController extends Controller
 
         $transaction->raw = $validation->raw;
 
-        if ($validation->error)
-        {
+        if ($validation->error) {
             $transaction->state = ShopStatus::PAYMENT_ERROR;
             $transaction->type  = 'error';
             $transaction->save();
@@ -140,11 +134,8 @@ class PaymentController extends Controller
             Cache::forget('transactions_' . Auth::user()->id . '_10');
 
             return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->error])->withInput();
-        }
-        else
-        {
-            if ($validation->success)
-            {
+        } else {
+            if ($validation->success) {
                 $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
                 $transaction->code        = $validation->code;
                 $transaction->points      = $validation->points;
@@ -164,9 +155,7 @@ class PaymentController extends Controller
                 $request->session()->flash('popup', 'ogrines');
 
                 return redirect()->route('home');
-            }
-            else
-            {
+            } else {
                 $transaction->state = ShopStatus::PAYMENT_FAIL;
                 $transaction->code  = $validation->code;
                 $transaction->type  = 'fail';

@@ -2,16 +2,13 @@
 
 $locale = Request::segment(1);
 
-if (in_array($locale, Config::get('app.locales')))
-{
+if (in_array($locale, Config::get('app.locales'))) {
     App::setLocale($locale);
-}
-else
-{
+} else {
     $locale = null;
 }
 
-Route::group(['prefix' => $locale], function() {
+Route::group(['prefix' => $locale], function () {
 
     Route::any('/', [
         'uses' => 'PostController@index',
@@ -266,7 +263,6 @@ Route::group(['prefix' => $locale], function() {
         'uses' => 'PageController@servers',
         'as'   => 'servers'
     ]);
-
 });
 
 Route::get('support', function () {
@@ -277,8 +273,7 @@ Route::get('news.rss', [ 'uses' => 'RssController@news' ]);
 
 /* ============ API ============ */
 
-Route::group(['prefix' => 'api'], function()
-{
+Route::group(['prefix' => 'api'], function () {
     /*Route::group(['prefix' => 'account'], function()
     {
         Route::post('register', 'Api\AccountController@register');
@@ -314,8 +309,7 @@ Route::group(['prefix' => 'api'], function()
         });
     });*/
 
-    Route::group(['prefix' => 'support'], function()
-    {
+    Route::group(['prefix' => 'support'], function () {
         Route::get('create', 'SupportController@create');
 
         Route::get('child/{child}/{params?}', [
@@ -329,8 +323,7 @@ Route::group(['prefix' => 'api'], function()
 
 /* ============ FORGE ============ */
 
-Route::group(['prefix' => 'forge'], function()
-{
+Route::group(['prefix' => 'forge'], function () {
     Route::get('image/{request}', 'Api\ForgeController@image')->where('request', '(.*)');
 
     Route::get('player/{id}/{mode}/{orientation}/{sizeX}/{sizeY}', 'Api\ForgeController@player')->where([
@@ -346,12 +339,12 @@ Route::group(['prefix' => 'forge'], function()
 
 /* ============ ADMIN PANEL ============ */
 
-Route::group(['middleware' => ['auth', 'admin']], function() {
+Route::group(['middleware' => ['auth', 'admin']], function () {
 
     Route::controller('filemanager', 'FilemanagerLaravelController');
 
     /* ============ ADMIN PREFIX ============ */
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 
         Route::any('/', [
             'uses' => 'AdminController@index',
@@ -359,7 +352,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]);
 
         // ACCOUNT //
-        Route::group(['prefix' => 'account'], function() {
+        Route::group(['prefix' => 'account'], function () {
 
             Route::get('/', [
                 'uses' => 'AccountController@index',
@@ -423,7 +416,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'anyData'  => 'datatables.userdata'
         ]);
 
-        Route::group(['prefix' => 'user/{user}'], function() {
+        Route::group(['prefix' => 'user/{user}'], function () {
 
             // Users actions
             Route::patch('ban', [
@@ -468,53 +461,53 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
 
             // Game Accounts
-            Route::group(['prefix' => 'server/{server}'], function() {
+            Route::group(['prefix' => 'server/{server}'], function () {
 
                 // Index
                 Route::get('/', [
                     'uses' => 'GameAccountController@index',
                     'as'   => 'admin.user.game.accounts'
-                ])->where('user','[0-9]+');
+                ])->where('user', '[0-9]+');
                 // Store
                 Route::post('/store', [
                     'uses' => 'GameAccountController@store',
                     'as'   => 'admin.user.game.account.store'
-                ])->where('user','[0-9]+');
+                ])->where('user', '[0-9]+');
                 // Edit (view)
                 Route::get('/{id}/edit', [
                     'uses' => 'GameAccountController@edit',
                     'as'   => 'admin.user.game.account.edit'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Ban
                 Route::patch('/{id}/ban', [
                     'uses' => 'GameAccountController@ban',
                     'as'   => 'admin.user.game.account.ban'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unban
                 Route::patch('/{id}/unban', [
                     'uses' => 'GameAccountController@unban',
                     'as'   => 'admin.user.game.account.unban'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Jail
                 Route::patch('/{id}/jail', [
                     'uses' => 'GameAccountController@jail',
                     'as'   => 'admin.user.game.account.jail'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unjail
                 Route::patch('/{id}/unjail', [
                     'uses' => 'GameAccountController@unjail',
                     'as'   => 'admin.user.game.account.unjail'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unjail
                 Route::patch('/{id}/password', [
                     'uses' => 'GameAccountController@password',
                     'as'   => 'admin.user.game.account.password'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Update
                 Route::patch('/{id}', [
                     'uses' => 'GameAccountController@update',
                     'as'   => 'admin.user.game.account.update'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
             });
         });
 

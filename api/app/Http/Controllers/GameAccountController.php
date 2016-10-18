@@ -36,8 +36,7 @@ class GameAccountController extends Controller
 
     private function isServerExist($server)
     {
-        if (!in_array($server, config('dofus.servers')))
-        {
+        if (!in_array($server, config('dofus.servers'))) {
             return false;
         }
 
@@ -53,13 +52,11 @@ class GameAccountController extends Controller
     {
         $server = $request->input('server');
 
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             return redirect()->back()->withErrors(['server' => 'Le serveur sélectionné est invalide.'])->withInput();
         }
 
-        if (count(Auth::user()->accounts($server)) >= config('dofus.accounts_limit'))
-        {
+        if (count(Auth::user()->accounts($server)) >= config('dofus.accounts_limit')) {
             $request->session()->flash('notify', ['type' => 'error', 'message' => "Vous avez atteint la limite de compte possible sur ce serveur !"]);
             return redirect()->back()->withInput();
         }
@@ -75,8 +72,7 @@ class GameAccountController extends Controller
         $validator = Validator::make($request->all(), $rules);
         $validator->setPresenceVerifier($verifier);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -108,13 +104,11 @@ class GameAccountController extends Controller
 
     public function view($server, $accountId)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!$this->isAccountOwnedByMe($server, $accountId))
-        {
+        if (!$this->isAccountOwnedByMe($server, $accountId)) {
             throw new GenericException('not_account_owner');
         }
 
@@ -126,25 +120,21 @@ class GameAccountController extends Controller
 
     public function edit(Request $request, $server, $accountId)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!$this->isAccountOwnedByMe($server, $accountId))
-        {
+        if (!$this->isAccountOwnedByMe($server, $accountId)) {
             throw new GenericException('not_account_owner');
         }
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $account->server = $server;
 
-        if ($request->all())
-        {
+        if ($request->all()) {
             $validator = Validator::make($request->all(), Account::$rules['update-password']);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -160,13 +150,11 @@ class GameAccountController extends Controller
 
     public function transfert(Request $request, $server, $accountId)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!$this->isAccountOwnedByMe($server, $accountId))
-        {
+        if (!$this->isAccountOwnedByMe($server, $accountId)) {
             throw new GenericException('not_account_owner');
         }
 
@@ -175,23 +163,20 @@ class GameAccountController extends Controller
 
         $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
 
-        if (!$world || !$world->isOnline())
-        {
+        if (!$world || !$world->isOnline()) {
             return view('gameaccount.maintenance', ['account' => $account]);
         }
 
-        if ($request->all())
-        {
+        if ($request->all()) {
             $ogrines = str_replace(' ', '', $request->input('ogrines'));
 
             $validator = Validator::make([ 'ogrines' => $ogrines ], [ 'ogrines' => 'required|integer|min:1|max:' . Auth::user()->points ]);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($ogrines) {
+            $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function () use ($ogrines) {
                 Auth::user()->points -= $ogrines;
                 Auth::user()->save();
             });
@@ -199,12 +184,9 @@ class GameAccountController extends Controller
             Cache::forget('transferts_' . $server . '_' . $accountId);
             Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
 
-            if ($success)
-            {
+            if ($success) {
                 $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte " . $account->Nickname]);
-            }
-            else
-            {
+            } else {
                 $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué !"]);
             }
 
@@ -216,13 +198,11 @@ class GameAccountController extends Controller
 
     public function gifts(Request $request, $server, $accountId)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!$this->isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!$this->isAccountOwnedByMe($server, $accountId))
-        {
+        if (!$this->isAccountOwnedByMe($server, $accountId)) {
             throw new GenericException('not_account_owner');
         }
 
@@ -231,22 +211,19 @@ class GameAccountController extends Controller
 
         $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
 
-        if (!$world || !$world->isOnline())
-        {
+        if (!$world || !$world->isOnline()) {
             return view('gameaccount.maintenance', ['account' => $account]);
         }
 
-        if ($request->all())
-        {
-            // is gift owned by me and not already delivred ?
+        if ($request->all()) {
+        // is gift owned by me and not already delivred ?
             $gift = Gift::where('id', $request->input('gift_id'))->where('delivred', false)->where('user_id', Auth::user()->id)->first();
 
-            if (!$gift)
-            {
+            if (!$gift) {
                 return redirect()->back()->withErrors(['gift' => 'Cadeau selectionné invalide.'])->withInput();
             }
 
-            $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1", function() use($gift, $accountId) {
+            $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1", function () use ($gift, $accountId) {
                 $gift->delivred   = true;
                 $gift->account_id = $accountId;
                 $gift->save();
@@ -258,12 +235,9 @@ class GameAccountController extends Controller
             Cache::forget('gifts_available_' . Auth::user()->id);
             Cache::forget('gifts_' . Auth::user()->id);
 
-            if ($success)
-            {
+            if ($success) {
                 $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name() ." dans votre banque sur votre compte " . $account->Nickname]);
-            }
-            else
-            {
+            } else {
                 $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué !"]);
             }
 

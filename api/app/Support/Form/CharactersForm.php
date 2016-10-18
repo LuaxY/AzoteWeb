@@ -12,8 +12,7 @@ class CharactersForm implements IForm
         $child = (isset($data->child) ? $data->child : false);
         $account = Account::where('Id', $params)->where('Email', Auth::user()->email)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $characters = $account->characters();
 
             return view('support/form/character', compact('name', 'characters'));
