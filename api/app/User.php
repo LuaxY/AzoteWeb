@@ -14,7 +14,7 @@ use App\Vote;
 
 class User extends Authenticatable
 {
-use Notifiable;
+    use Notifiable;
     use HasRoles; // CanResetPassword
 
     protected $dates = ['birthday', 'last_vote'];
