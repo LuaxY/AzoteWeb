@@ -14,7 +14,7 @@ use Auth;
 
 class Stump
 {
-    static public function transfert($server, $accountId, $type, $amount, $url, $successCallback)
+    public static function transfert($server, $accountId, $type, $amount, $url, $successCallback)
     {
         $transfert = new Transfert;
         $transfert->user_id    = Auth::user()->id;
@@ -30,8 +30,7 @@ class Stump
 
         $success = false;
 
-        try
-        {
+        try {
             $client = new Client();
             $res = $client->request('PUT', "http://{$api->ip}:{$api->port}$url", [
                 'headers' => [
@@ -40,9 +39,8 @@ class Stump
                 'timeout' => 10, // seconds
             ]);
 
-            if ($res->getStatusCode() == 200)
-            {
-                // Server return 200 (Good)
+            if ($res->getStatusCode() == 200) {
+            // Server return 200 (Good)
                 $successCallback();
 
                 $transfert->state  = Transfert::OK_API;
@@ -51,9 +49,7 @@ class Stump
                 $transfert->save();
 
                 $success = true;
-            }
-            else
-            {
+            } else {
                 // Server return 2xx (Bad)
                 $transfert->state  = Transfert::REFUND;
                 //$transfert->rawIn  = Psr7\str($res->getRequest());
@@ -62,10 +58,8 @@ class Stump
 
                 $success = false;
             }
-        }
-        catch (ServerException $e)
-        {
-            // Server return 5xx error
+        } catch (ServerException $e) {
+        // Server return 5xx error
             // Not success but call it to avoid duplication
             $successCallback();
 
@@ -75,19 +69,14 @@ class Stump
             $transfert->save();
 
             $success = false;
-        }
-        catch (TransferException $e)
-        {
-            // Other errors
+        } catch (TransferException $e) {
+        // Other errors
             $transfert->state  = Transfert::REFUND;
             $transfert->rawIn  = Psr7\str($e->getRequest());
 
-            if ($e->hasResponse())
-            {
+            if ($e->hasResponse()) {
                 $transfert->rawOut = Psr7\str($e->getResponse());
-            }
-            else
-            {
+            } else {
                 $transfert->rawOut = "NO RESPONSE";
             }
 

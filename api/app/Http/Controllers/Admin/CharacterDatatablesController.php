@@ -22,8 +22,7 @@ class CharacterDatatablesController extends Controller
     public function anyData($server)
     {
         $characters = Character::on($server.'_world')->select('Id', 'Name', 'Experience', 'Breed', 'DeletedDate')->get();
-        foreach ($characters as $char)
-        {
+        foreach ($characters as $char) {
             $char->server = $server;
         }
 
@@ -35,25 +34,20 @@ class CharacterDatatablesController extends Controller
                 return $character->level();
             })
             ->addColumn('Status', function ($character) {
-                if($character->isDeleted())
-                {
+                if ($character->isDeleted()) {
                     $pub = '<span class="label label-danger">Deleted</span> <span class="label label-danger">'.$character->DeletedDate->format('d-m-Y H:i:s').'</span>';
-                }
-                else
-                {
+                } else {
                     $pub = '<span class="label label-success">Running</span>';
                 }
                 return $pub;
             })
             ->addColumn('GameAccount', function ($character) {
                 $account = $character->account($character->server);
-                if($account)
-                {
+                if ($account) {
                     return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
                 }
                 return '';
             })
             ->make(true);
     }
-    
 }

@@ -79,8 +79,7 @@ class UserController extends Controller
         $user->forum_id = $forumAccount->member_id;
         $user->save();
 
-        if(!$request->active)
-        {
+        if (!$request->active) {
             $forumAccountValidating = new ForumAccountValidating;
             $forumAccountValidating->vid = $user->forum_id;
             $forumAccountValidating->member_id = $user->forum_id;
@@ -88,11 +87,10 @@ class UserController extends Controller
             $forumAccountValidating->save();
         }
 
-        setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
-        if(!$request->active)
-        {
+        if (!$request->active) {
             Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
                 $message->from('welcome@azote.us', 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
@@ -136,16 +134,14 @@ class UserController extends Controller
 
         $forumAccount = $user->forum()->first();
 
-        if ($forumAccount)
-        {
+        if ($forumAccount) {
             $forumAccount->email = $request['email'];
             $forumAccount->name = $request['pseudo'];
             $forumAccount->members_seo_name  = strtolower($request['pseudo']);
             $forumAccount->save();
         }
 
-        if($request->useradvert == true)
-        {
+        if ($request->useradvert == true) {
             Mail::send('emails.admin-email-update', ['user' => $user], function ($message) use ($user) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
@@ -190,15 +186,13 @@ class UserController extends Controller
         $user->save();
 
         $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
-        if($userForumValidating)
-        {
+        if ($userForumValidating) {
             $userForumValidating->delete();
         }
 
         $forumAccount = $user->forum()->first();
 
-        if ($forumAccount)
-        {
+        if ($forumAccount) {
             $forumAccount->members_bitoptions = '0';
             $forumAccount->save();
         }
@@ -259,19 +253,15 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user->id);
         $old_avatar = $user->avatar;
-        if($old_avatar != config('dofus.default_avatar'))
-        {
+        if ($old_avatar != config('dofus.default_avatar')) {
             File::delete($old_avatar);
             $new_avatar = config('dofus.default_avatar');
             $user->avatar = $new_avatar;
             $user->save();
 
             return response()->json([], 200);
-        }
-        else
-        {
+        } else {
             return response()->json([], 403);
         }
-
     }
 }

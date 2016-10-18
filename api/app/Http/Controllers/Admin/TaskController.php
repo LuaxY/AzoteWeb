@@ -44,15 +44,13 @@ class TaskController extends Controller
         $task->status = $request['status'];
         $task->save();
         return response()->json([], 200);
-
     }
 
     public function updatePositions(Request $request)
     {
-        if($request['positions']){
-            foreach ($request['positions'] as $position => $item)
-            {
-                $itemok = preg_replace("/[^0-9]/","",$item);
+        if ($request['positions']) {
+            foreach ($request['positions'] as $position => $item) {
+                $itemok = preg_replace("/[^0-9]/", "", $item);
                 $positionok = $position +1;
                 $task = Task::find($itemok);
 
@@ -61,9 +59,7 @@ class TaskController extends Controller
             }
         }
 
-            return response()->json([],200);
-
-
+            return response()->json([], 200);
     }
 
     public function destroy(Task $task, Request $request)
@@ -93,6 +89,5 @@ class TaskController extends Controller
                 'old_description' => $old_description,
                 'new_name' => $task->task
             ], 200);
-
     }
 }

@@ -15,8 +15,7 @@ class AccountsForm implements IForm
         $child = (isset($data->child) ? $data->child : false);
         $accounts = Account::where('Email', Auth::user()->email)->get();
 
-        foreach ($accounts as $account)
-        {
+        foreach ($accounts as $account) {
             $html .= "<option value=\"c|$child|$account->Id\">$account->Nickname</option>\n";
         }
 

@@ -63,17 +63,14 @@ class PostController extends Controller
     {
         $this->authorize('destroy', $post);
 
-        if ($post->id != config('dofus.motd.postid'))
-        {
+        if ($post->id != config('dofus.motd.postid')) {
             $post->delete();
             $this->clearCache();
 
             return response()->json([], 200);
+        } else {
+            return response()->json(['motd' => ['0' => 'Can\'t delete this post (MOTD)']], 422);
         }
-       else
-       {
-           return response()->json(['motd' => ['0' => 'Can\'t delete this post (MOTD)']], 422);
-       }
     }
 
     public function edit(Post $post)
@@ -122,8 +119,7 @@ class PostController extends Controller
     private function clearCache($id = null)
     {
         // Clear specified post
-        if ($id)
-        {
+        if ($id) {
             Cache::forget('posts_'.$id);
         }
 
@@ -131,5 +127,4 @@ class PostController extends Controller
         Cache::forget('posts_page_1');
         Cache::forget('posts_page_2');
     }
-
 }

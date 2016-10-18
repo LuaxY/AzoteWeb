@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-
 use App\Task;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Foundation\Auth\User;
@@ -22,10 +21,10 @@ class TaskPolicy
     }
     public function update(User $user, Task $task)
     {
-        return $user->isAdmin() AND $user->id == $task->user_id;
+        return $user->isAdmin() and $user->id == $task->user_id;
     }
     public function destroy(User $user, Task $task)
     {
-        return $user->isAdmin() AND $user->id == $task->user_id;
+        return $user->isAdmin() and $user->id == $task->user_id;
     }
 }

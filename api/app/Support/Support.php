@@ -18,16 +18,14 @@ class Support
         $json = json_decode(file_get_contents("support_files/$child.json"));
         $html = "";
 
-        foreach ($json->fields as $field)
-        {
+        foreach ($json->fields as $field) {
             $type = $field->type;
             $name = $field->name;
             $data = (isset($field->data) ? $field->data : false);
 
             $form = false;
 
-            switch($type)
-            {
+            switch ($type) {
                 case 'text':
                 case 'integer':
                     $form = new TextForm;
@@ -52,8 +50,7 @@ class Support
                     break;
             }
 
-            if ($form)
-            {
+            if ($form) {
                 $html .= $form->render($name, $data, $params);
             }
         }

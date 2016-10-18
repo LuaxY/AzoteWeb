@@ -20,8 +20,7 @@ class AccountController extends Controller
     {
         $validator = Validator::make($request->all(), User::$rules['register']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
         }
 
@@ -42,8 +41,7 @@ class AccountController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
-        {
+        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt))) {
             Auth::login($user);
             Auth::user()->ticket = str_random(32);
             Auth::user()->update(['ticket' => Auth::user()->ticket]);
@@ -64,8 +62,7 @@ class AccountController extends Controller
 
         $accounts = Account::where('Email', Auth::user()->email)->get();
 
-        foreach ($accounts as $account)
-        {
+        foreach ($accounts as $account) {
             $gameAccount = new \stdClass;
             $gameAccount->id              = $account->Id;
             $gameAccount->login           = $account->Login;
@@ -85,12 +82,10 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
-        if ($request->input('firstname') && $request->input('lastname'))
-        {
+        if ($request->input('firstname') && $request->input('lastname')) {
             $validator = Validator::make($request->all(), User::$rules['update-name']);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return $this->error(401, 'nom/prénom incorrect', $validator->errors()->all());
             }
 
@@ -102,12 +97,10 @@ class AccountController extends Controller
             ]);
         }
 
-        if ($request->input('password') && $request->input('passwordConfirmation'))
-        {
+        if ($request->input('password') && $request->input('passwordConfirmation')) {
             $validator = Validator::make($request->all(), User::$rules['update-password']);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return $this->error(401, 'mot de passe incorrect', $validator->errors()->all());
             }
 

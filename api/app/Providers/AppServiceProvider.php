@@ -17,18 +17,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('old_password', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('old_password', function ($attribute, $value, $parameters, $validator) {
             $password = $parameters[0];
             $salt     = $parameters[1];
             return $password === User::hashPassword($value, $salt);
         });
 
-        Validator::extend('old_passwordStump', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('old_passwordStump', function ($attribute, $value, $parameters, $validator) {
             $password = $parameters[0];
             return $password === md5($value);
         });
 
-        Blade::extend(function($value) {
+        Blade::extend(function ($value) {
             return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
         });
     }

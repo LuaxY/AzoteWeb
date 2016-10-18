@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 use \Cache;
 
@@ -13,6 +14,7 @@ use App\Vote;
 
 class User extends Authenticatable
 {
+    use Notifiable;
     use HasRoles; // CanResetPassword
 
     protected $dates = ['birthday', 'last_vote'];
@@ -99,17 +101,14 @@ class User extends Authenticatable
 
     public function accounts($server = null)
     {
-        if ($server && in_array($server, config('dofus.servers')))
-        {
-            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function() use($server) {
+        if ($server && in_array($server, config('dofus.servers'))) {
+            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function () use ($server) {
                 return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
             });
 
             return $accounts;
-        }
-        else
-        {
-            $accounts = Cache::remember('accounts_'.$this->id, 10, function() {
+        } else {
+            $accounts = Cache::remember('accounts_'.$this->id, 10, function () {
                 return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
             });
 
@@ -121,15 +120,12 @@ class User extends Authenticatable
     {
         $transactions = null;
 
-        if ($take)
-        {
-            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function() use($take) {
+        if ($take) {
+            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function () use ($take) {
                 return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->take($take)->get();
             });
-        }
-        else
-        {
-            $transactions = Cache::remember('transactions_' . $this->id, 10, function() {
+        } else {
+            $transactions = Cache::remember('transactions_' . $this->id, 10, function () {
                 return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
             });
         }
@@ -141,15 +137,12 @@ class User extends Authenticatable
     {
         $votes = null;
 
-        if ($take)
-        {
-            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function() use($take) {
+        if ($take) {
+            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function () use ($take) {
                 return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take($take)->get();
             });
-        }
-        else
-        {
-            $votes = Cache::remember('votes_' . $this->id, 10, function() {
+        } else {
+            $votes = Cache::remember('votes_' . $this->id, 10, function () {
                 return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->get();
             });
         }
@@ -161,15 +154,12 @@ class User extends Authenticatable
     {
         $gifts = null;
 
-        if ($onlyAvailable)
-        {
-            $gifts = Cache::remember('gifts_available_' . $this->id, 10, function() {
+        if ($onlyAvailable) {
+            $gifts = Cache::remember('gifts_available_' . $this->id, 10, function () {
                 return $this->hasMany(Gift::class)->where('delivred', false)->get();
             });
-        }
-        else
-        {
-            $gifts = Cache::remember('gifts_' . $this->id, 10, function() {
+        } else {
+            $gifts = Cache::remember('gifts_' . $this->id, 10, function () {
                 return $this->hasMany(Gift::class)->get();
             });
         }
@@ -194,24 +184,18 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if ($this->rank >= 4)
-        {
+        if ($this->rank >= 4) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     public function isStaff()
     {
-        if ($this->rank > 1)
-        {
+        if ($this->rank > 1) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

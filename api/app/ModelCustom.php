@@ -9,12 +9,10 @@ class ModelCustom
         $servers = config('dofus.servers');
         $entities = [];
 
-        foreach ($servers as $server)
-        {
+        foreach ($servers as $server) {
             $entitiesList = self::hasManyOnOneServer($databaseType, $server, $related, $foreignKey, $localValue);
 
-            foreach ($entitiesList as $entity)
-            {
+            foreach ($entitiesList as $entity) {
                 $entities[] = $entity;
             }
         }
@@ -27,8 +25,7 @@ class ModelCustom
         $entities = [];
         $entitiesList = $related::on($server . '_' . $databaseType)->where($foreignKey, $localValue)->get();
 
-        foreach ($entitiesList as $entity)
-        {
+        foreach ($entitiesList as $entity) {
             $entity->server = $server;
             $entities[] = $entity;
         }
@@ -40,8 +37,7 @@ class ModelCustom
     {
         $entity = $related::on($server . '_' . $databaseType)->where($foreignKey, $localValue)->first();
 
-        if ($entity)
-        {
+        if ($entity) {
             $entity->server = $server;
         }
 

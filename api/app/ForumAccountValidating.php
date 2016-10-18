@@ -13,5 +13,4 @@ class ForumAccountValidating extends Model
     protected $primaryKey = 'vid';
 
     public $timestamps = false;
-
 }

@@ -15,22 +15,19 @@ class ForumAccount extends Model
     public $timestamps = false;
 
     public function generateSalt()
-	{
-		$salt = '';
+    {
+        $salt = '';
 
-		for ( $i=0; $i<22; $i++ )
-		{
-			do
-			{
-				$chr = rand( 48, 122 );
-			}
-			while ( in_array( $chr, range( 58,  64 ) ) or in_array( $chr, range( 91,  96 ) ) );
+        for ($i=0; $i<22; $i++) {
+            do {
+                $chr = rand(48, 122);
+            } while (in_array($chr, range(58, 64)) or in_array($chr, range(91, 96)));
 
-			$salt .= chr( $chr );
-		}
+            $salt .= chr($chr);
+        }
 
-		return $salt;
-	}
+        return $salt;
+    }
 
     public function encryptedPassword($password)
     {
