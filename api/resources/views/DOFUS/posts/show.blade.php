@@ -20,10 +20,10 @@
             <span class="ak-icon-big ak-news"></span>
         </a>
         {{ $post->title }}
-        <span class="ak-subtitle"><span>@lang('categories.' . $post->type)</span> - {{ date('d F Y', strtotime($post->published_at)) }}</span>
+        <span class="ak-subtitle"><span>{{  config('dofus.news_type.'.$post->type.'.name') }}</span> - {{ date('d F Y', strtotime($post->published_at)) }}</span>
     </h1>
 
-    <a href="{{ URL::route('posts') }}" class="ak-backlink-button">Retour à la liste</a>
+    <a href="{{ URL::route('posts.type', $post->type ) }}" class="ak-backlink-button">Retour à la liste</a>
 </div>
 
 <div class="ak-container ak-panel-stack ak-glue">

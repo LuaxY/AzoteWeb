@@ -12,6 +12,10 @@ return [
 
     'posts.index' => 'nouveautes',
 
+    'posts.news' => 'actualites/news',
+
+    'posts.type' => 'actualites/{type}',
+
     'posts.show' => 'article/{id}/{slug?}',
 
     'posts.comment.store' => 'article/{id}/{slug?}/commentaire',

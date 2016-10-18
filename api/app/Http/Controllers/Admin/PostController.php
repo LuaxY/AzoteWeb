@@ -15,6 +15,18 @@ use Yuansir\Toastr\Facades\Toastr;
 
 class PostController extends Controller
 {
+    private function fetchNewsType()
+    {
+        $typeArray = [];
+        if(config('dofus.news_type'))
+        {
+            foreach (config('dofus.news_type') as $type)
+            {
+                $typeArray[$type['db']] = $type['name'];
+            }
+        }
+        return $typeArray;
+    }
     public function index()
     {
         return view('admin.posts.index');
@@ -22,13 +34,20 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('admin.posts.create');
+        $typeArray = $this->fetchNewsType();
+        return view('admin.posts.create', compact('typeArray'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), Post::$rules['store']);
 
+        if(!array_key_exists($request->type, config('dofus.news_type')))
+        {
+            return redirect(route('admin.post.create'))
+                ->withErrors(['type' => 'Le type est invalide'])
+                ->withInput();
+        }
         if ($validator->fails()) {
             return redirect(route('admin.post.create'))
                 ->withErrors($validator)
@@ -78,9 +97,9 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $typeArray = $this->fetchNewsType();
         $post = Post::findOrFail($post->id);
-
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post', 'typeArray'));
     }
 
     public function update(Post $post, Request $request)
@@ -88,6 +107,13 @@ class PostController extends Controller
         $post = Post::findOrFail($post->id);
 
         $validator = Validator::make($request->all(), Post::$rules['store']);
+
+        if(!array_key_exists($request->type, config('dofus.news_type')))
+        {
+            return redirect()->back()
+                ->withErrors(['type' => 'Le type est invalide'])
+                ->withInput();
+        }
 
         if ($validator->fails()) {
             return redirect()->back()

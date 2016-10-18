@@ -3,7 +3,7 @@
 
 @section('breadcrumbs')
 {? $page_name = 'Récupérer un personnage' ?}
-{!! Breadcrumbs::render('account.page', $page_name) !!}
+{!! Breadcrumbs::render('gameaccount.page', $page_name, [$account->server, $account->Id]) !!}
 @stop
 
 @section('content')

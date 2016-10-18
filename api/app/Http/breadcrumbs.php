@@ -15,6 +15,20 @@ Breadcrumbs::register('page', function($breadcrumbs, $page)
     $breadcrumbs->push($page);
 });
 
+// Accueil > Actualités
+Breadcrumbs::register('actuality', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Actualités', route('posts.news'));
+});
+
+// Accueil > Actualités > [page]
+Breadcrumbs::register('actuality.page', function($breadcrumbs, $page)
+{
+    $breadcrumbs->parent('actuality');
+    $breadcrumbs->push($page);
+});
+
 // Accueil > Mon Compte
 Breadcrumbs::register('account', function($breadcrumbs)
 {

@@ -14,7 +14,7 @@
                             </a>
 
                                 <span class="ak-text"><a href="{{ URL::route('posts.show', [$post->id, $post->slug]) }}">{{ $post->title }}</a>
-                                    <span class="ak-publication"><span><a href="">@lang('categories.' . $post->type)</a> -</span> {{ date('d F Y', strtotime($post->published_at)) }}</span>
+                                    <span class="ak-publication"><span><a href="{{ route('posts.type', $post->type) }}">{{  config('dofus.news_type.'.$post->type.'.name') }}</a> -</span> {{ date('d F Y', strtotime($post->published_at)) }}</span>
                                 </span>
                         </div>
                         <div class="ak-item-elt-desc">
