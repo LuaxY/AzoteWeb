@@ -42,8 +42,10 @@
         </div>
     @endforeach
 </div>
+@if($posts->links())
 <div class="ak-pagination text-center">
     <nav>
         {{  $posts->links() }}
     </nav>
 </div>
+@endif

@@ -17,7 +17,7 @@ use App\Comment;
 class PostController extends Controller
 {
     const CACHE_EXPIRE_MINUTES = 10;
-    const POSTS_PER_PAGE = 2;
+    const POSTS_PER_PAGE = 8;
     const POSTS_IN_INDEX = 6;
     const COMMENTS_PER_PAGE = 10;
 
