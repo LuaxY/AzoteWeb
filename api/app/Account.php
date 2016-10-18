@@ -100,8 +100,10 @@ class Account extends Model
                     }
                     else
                     {
-                        if($worldCharacter->character()->DeletedDate == null)
+                        if($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null)
+                        {
                             $characters[] = $worldCharacter->character();
+                        }
                     }
                 }
                 return $characters;
