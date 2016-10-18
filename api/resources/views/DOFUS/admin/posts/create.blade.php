@@ -35,7 +35,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
                                                 <label for="type">Type:</label>
-                                                {!! Form::select('type', ['info' => 'Information', 'event' => 'Evénement', 'dev' => 'Développement', 'other' => 'Autre'], null, ['class' => 'form-control', 'id' => 'type']) !!}
+                                                {!! Form::select('type', $typeArray, null, ['class' => 'form-control', 'id' => 'type']) !!}
                                                 @if ($errors->has('type'))
                                                     <span class="help-block">
                                                                                 <strong>{{ $errors->first('type') }}</strong>

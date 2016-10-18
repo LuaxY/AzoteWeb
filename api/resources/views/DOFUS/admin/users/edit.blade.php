@@ -29,7 +29,7 @@
                                     <div class="alert alert-warning">
                                         <strong><i class="fa fa-minus-circle"></i> Info!</strong> This account is not confirmed by the user.
                                             <br/><button type="button" id="active-{{$user->id}}" class="activ btn btn-warning waves-effect w-md m-b-5"><i class="fa fa-check m-r-5"></i>Active</button>
-                                            {!! Form::open(['route' => ['re-send-email', $user->id], 'class' => 'form-inline']) !!}
+                                            {!! Form::open(['route' => ['re-send-email-admin', $user->id], 'class' => 'form-inline']) !!}
                                             <input type="hidden" name="email" value="{{ $user->email }}">
                                             <button typ="submit" class="btn btn-primary m-b-5"><i class="fa fa-envelope-o m-r-5"></i>Re-send email</button>
                                             {!! Form::close() !!}

@@ -94,4 +94,17 @@ return [
         '5'  => 'Administrator',
     ],
 
+    'news_type' => [
+        'infos' => [
+            'name' => 'Information',
+            'title' => 'Toutes les infos',
+            'db' => 'infos'
+        ],
+        'patchs' => [
+            'name' => 'Patch',
+            'title' => 'Tous les patchs',
+            'db' => 'patchs'
+        ]
+    ]
+
 ];

@@ -20,4 +20,10 @@ return [
         'details' => 'Le compte ou le personnage sélectionné n\'est pas valide.',
     ],
 
+    'invalid_news_type' => [
+        'status' => 401,
+        'title'  => 'Type de news invalide',
+        'details' => 'Le type de news n\'éxiste pas.',
+    ],
+
 ];

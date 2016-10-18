@@ -47,11 +47,11 @@ class CharacterDatatablesController extends Controller
             })
             ->addColumn('GameAccount', function ($character) {
                 $account = $character->account($character->server);
-                if($account)
+                if($account && $account->user())
                 {
                     return ''.$account->Login.' ('.$account->Email.')<a href="'.route('admin.user.game.account.edit', [$account->user()->id, $character->server,$account->Id]).'" class="pull-right btn btn-xs btn-default" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></a>';
                 }
-                return '<span class="label label-danger">Not associated with an account</span>';
+                return '<span class="label label-danger">ERROR with this account</span>';
             })
             ->make(true);
     }

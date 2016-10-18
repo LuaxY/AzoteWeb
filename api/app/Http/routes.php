@@ -24,6 +24,17 @@ Route::group(['prefix' => $locale], function() {
         'uses' => 'PostController@index',
         'as'   => 'posts'
     ]);
+
+    Route::get(Lang::get('routes.posts.news'), [
+        'uses' => 'PostController@news',
+        'as'   => 'posts.news'
+    ]);
+
+    Route::get(Lang::get('routes.posts.type'), [
+        'uses' => 'PostController@newsType',
+        'as'   => 'posts.type'
+    ]);
+
     Route::get(Lang::get('routes.posts.show'), [
         'uses' => 'PostController@show',
         'as'   => 'posts.show'
@@ -474,7 +485,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
             Route::post('re-send-email', [
                 'uses'       => 'AccountController@re_send_email',
-                'as'         => 're-send-email'
+                'as'         => 're-send-email-admin'
             ]);
 
             // Game Accounts

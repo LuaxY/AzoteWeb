@@ -211,7 +211,7 @@
 }
 
 .ak-main-container .ak-link-news, .ak-main-container .ak-link-devblog,
-.ak-main-container .ak-link-patch {
+.ak-main-container .ak-link-patch, .ak-main-container .ak-link-calandar {
     display: block;
     text-transform: uppercase;
     font-family: "bebas_neueregular", sans-serif;
@@ -255,7 +255,7 @@
 }
 
 .ak-main-container .ak-link-news, .ak-main-container .ak-link-devblog,
-.ak-main-container .ak-link-patch {
+.ak-main-container .ak-link-patch, .ak-main-container .ak-link-calandar {
     font-size: 26px;
     font-size: 2.6rem;
     margin: 12px 0;
@@ -268,7 +268,7 @@
 }
 
 .ak-main-container .ak-link-news:before, .ak-main-container .ak-link-devblog:before,
-.ak-main-container .ak-link-patch:before {
+.ak-main-container .ak-link-patch:before, .ak-main-container .ak-link-calandar:before {
     content: '';
     height: 63px;
     left: 15px;
@@ -287,7 +287,7 @@
 }
 
 .ak-main-container .ak-link-news, .ak-main-container .ak-link-devblog,
-.ak-main-container .ak-link-patch {
+.ak-main-container .ak-link-patch, .ak-main-container .ak-link-calandar {
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)
 }
@@ -302,6 +302,10 @@
 
 .ak-main-container .ak-link-patch:before {
     background: url("../imgs/assets/btn-patch.png") top center no-repeat
+}
+
+.ak-main-container .ak-link-calandar:before {
+    background: url("../imgs/assets/btn-calandar.png") top center no-repeat
 }
 
 .ak-main-container .ak-twitter-timeline {
@@ -539,6 +543,14 @@
     background-color: #B04739
 }
 
+.ak-main-container .ak-link-calandar {
+    background-color: #77372E
+}
+
+.ak-main-container .ak-link-calandar:hover {
+    background-color: #B04739
+}
+
 .ak-main-container .ak-link-patch {
     background-color: #3585A2
 }
@@ -658,7 +670,7 @@
 
 @media all and (min-width: 768px) {
     .pt .ak-main-container .ak-link-news, .pt .ak-main-container .ak-link-devblog,
-    .pt .ak-main-container .ak-link-patch {
+    .pt .ak-main-container .ak-link-patch, .pt .ak-main-container .ak-link-calandar {
         font-size: 18px;
         font-size: 1.8rem
     }

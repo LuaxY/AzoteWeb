@@ -44,7 +44,8 @@ class PostDatatablesController extends Controller
                 }
                 return $pub;
             })
-            ->editColumn('title', '{!! str_limit($title, 60) !!}')
+            ->editColumn('title', '{{ str_limit($title, 60) }}')
+            ->editColumn('type', '{{ config("dofus.news_type.".$type.".name") }}')
             ->make(true);
     }
 
