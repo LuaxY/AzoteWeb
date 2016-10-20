@@ -194,6 +194,9 @@ class GameAccountController extends Controller
             $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($ogrines) {
                 Auth::user()->points -= $ogrines;
                 Auth::user()->save();
+            }, function() use($ogrines) {
+                Auth::user()->points += $ogrines;
+                Auth::user()->save();
             });
 
             Cache::forget('transferts_' . $server . '_' . $accountId);
@@ -248,6 +251,10 @@ class GameAccountController extends Controller
 
             $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1", function() use($gift, $accountId) {
                 $gift->delivred   = true;
+                $gift->account_id = $accountId;
+                $gift->save();
+            }, function() use($gift, $accountId) {
+                $gift->delivred   = false;
                 $gift->account_id = $accountId;
                 $gift->save();
             });

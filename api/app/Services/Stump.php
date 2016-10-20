@@ -14,7 +14,7 @@ use Auth;
 
 class Stump
 {
-    static public function transfert($server, $accountId, $type, $amount, $url, $successCallback)
+    static public function transfert($server, $accountId, $type, $amount, $url, $process, $fallback)
     {
         $transfert = new Transfert;
         $transfert->user_id    = Auth::user()->id;
@@ -28,7 +28,7 @@ class Stump
         $api = config('dofus.details')[$server];
         $success = false;
 
-        $success = false;
+        $process();
 
         try
         {
@@ -43,7 +43,6 @@ class Stump
             if ($res->getStatusCode() == 200)
             {
                 // Server return 200 (Good)
-                $successCallback();
 
                 $transfert->state  = Transfert::OK_API;
                 //$transfert->rawIn  = Psr7\str($res->getRequest());
@@ -60,14 +59,14 @@ class Stump
                 //$transfert->rawOut = Psr7\str($res->getResponse());
                 $transfert->save();
 
+                $fallback();
+
                 $success = false;
             }
         }
         catch (ServerException $e)
         {
             // Server return 5xx error
-            // Not success but call it to avoid duplication
-            $successCallback();
 
             $transfert->state  = Transfert::FAIL;
             $transfert->rawIn  = Psr7\str($e->getRequest());
@@ -79,6 +78,9 @@ class Stump
         catch (TransferException $e)
         {
             // Other errors
+
+            $fallback();
+
             $transfert->state  = Transfert::REFUND;
             $transfert->rawIn  = Psr7\str($e->getRequest());
 
