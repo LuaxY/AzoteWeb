@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use App\Http\Requests;
 use Auth;
 use Validator;
@@ -168,13 +169,24 @@ class VoteController extends Controller
 
     public function object($item)
     {
-        $object = ItemTemplate::where('Id', $item)->firstOrFail();
+        $json = [];
 
-        $json = [
-            'name'        => $object->name(),
-            'description' => $object->description(),
-            'image'       => $object->image(),
-        ];
+        if ($item % 50 == 0)
+        {
+            $json = [
+                'name'        => 'Ticket de loterie doré',
+                'description' => 'Ce ticket permet de jouer à la loterie premium.',
+                'image'       => URL::asset('imgs/lottery/ticket_gold.png'),
+            ];
+        }
+        else
+        {
+            $json = [
+                'name'        => 'Ticket de loterie',
+                'description' => 'Ce ticket permet de jouer à la loterie.',
+                'image'       => URL::asset('imgs/lottery/ticket_normal.png'),
+            ];
+        }
 
         return json_encode($json);
     }

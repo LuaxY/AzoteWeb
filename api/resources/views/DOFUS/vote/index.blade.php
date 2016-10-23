@@ -44,13 +44,13 @@
             <div class="row">
                 <div class="col-sm-6">
                     @if ($delay->canVote)
-                    <a id="vote-link" href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
+                    <a id="vote-link" href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info" style="margin-top:30px">Voter</a>
                     @else
-                    <p><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
+                    <p style="margin-top:30px"><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <p>Chaque vote permet d'obtenir {{ config('dofus.vote') }} ogrines.<br>Tous les 10 votes vous gagnez un nouveau ticket.</p>
+                    <p>Tous les 10 votes, vous gagnerez un nouveau ticket qui vous permettra de jouer à la loterie, et tous les 50 votes vous gagnerez un ticket doré qui vous permettra de jouer à une autre loterie vous donnant accès à des récompenses plus importantes.</p>
                 </div>
             </div>
         </div>
@@ -92,8 +92,7 @@
     $(".ak-block-rewards .ak-select-menu-left option[value={{ $palierId }}]").attr('selected','selected');
 
     progress();
-
-    loader('ak-block-rewards', false);
+    showItem({{ $current }}, {{ $votesCount }});
 
     $(".ak-block-rewards .ak-menu-left a").on("click", function() {
         var self = $(this);
@@ -116,6 +115,9 @@
             loader('ak-block-rewards', false);
 
             progress();
+            
+            var item = $("#load-item");
+            showItem(item.attr("step"), item.attr("votes"));
         });
     });
 
@@ -130,7 +132,7 @@
         $(this).addClass("ak-selected");
         $(".ak-select-time-line option[value="+step+"]").attr('selected','selected');
 
-        loader('ak-block-rewards', false);
+        showItem(step, votes);
     });
 
     $("#vote-link").on("click", function() {
@@ -155,5 +157,37 @@
         var percent = $(".progress-bar").attr("data");
         $(".progress-bar").animate({width: percent +'%'}, 0, "linear");
     }
+
+    function showItem(step, votes) {
+        // Show loader
+        loader('ak-block-rewards', true);
+
+        // Clear previous data
+        $(".ak-name-gift").html("");
+        $(".ak-encyclo-detail-right .ak-panel-content").html("");
+        $(".ak-encyclo-detail-illu img").attr("src", "");
+        $(".ak-step").removeClass("ak-step1 ak-step2 ak-step3 ak-step4 ak-step5");
+
+        // Display new data
+        $(".ak-nb-step span").html(votes);
+        $(".ak-nb-step").addClass("ak-step" + step);
+
+        // Get reward info
+        $.ajax({
+            type: "GET",
+            url: "{{ URL::route('vote.object') }}/" + votes,
+            dataType: "json",
+        })
+        .done(function(res) {
+            // Dislay new reward
+            $(".ak-name-gift").html(res.name);
+            $(".ak-encyclo-detail-right .ak-panel-content").html(res.description);
+            $(".ak-encyclo-detail-illu img").attr("src", res.image);
+
+            // Hide loader
+            loader('ak-block-rewards', false);
+        });
+    }
+
 </script>
 @stop

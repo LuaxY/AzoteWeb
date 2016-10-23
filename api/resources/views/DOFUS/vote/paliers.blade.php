@@ -19,7 +19,7 @@
                 @endforeach
             </select>
         </div>
-        <!--<div class="ak-block-gift">
+        <div class="ak-block-gift">
             <div class="ak-title-gift"> <span class="ak-nb-step"><span></span> votes</span>
                 <div class="ak-text"> <span class="ak-nb-day">Cadeau à obtenir :</span> <span class="ak-name-gift"></span> </div>
             </div>
@@ -40,9 +40,10 @@
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
         <div class="ak-container">
             <div class="ak-social"></div>
         </div>
+        <div id="load-item" step="{{ $current }}" votes="{{ $palierId }}"></div>
     </div>
 </div>
