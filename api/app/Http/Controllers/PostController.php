@@ -79,7 +79,7 @@ class PostController extends Controller
             return Post::findOrFail($id);
         });
 
-        if ($slug == "")
+        if ($slug == "" || $slug != $post->slug)
         {
             return redirect()->route('posts.show', ['id' => $id, 'slug' => $post->slug]);
         }
