@@ -92,6 +92,7 @@ class Character extends Model
 
     public function recoverPrice()
     {
-        return $this->level() * 5;
+        $price = $this->level() * config('dofus.recover_level_multiplicator_price');
+        return $price < config('dofus.recover_minimal_price') ? config('dofus.recover_minimal_price') : $price;
     }
 }
