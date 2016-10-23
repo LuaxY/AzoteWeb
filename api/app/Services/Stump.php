@@ -46,7 +46,7 @@ class Stump
 
                 $transfert->state  = Transfert::OK_API;
                 //$transfert->rawIn  = Psr7\str($res->getRequest());
-                $transfert->rawOut = Psr7\str($res->getBody());
+                //$transfert->rawOut = Psr7\str($res->getBody());
                 $transfert->save();
 
                 $success = true;
@@ -56,7 +56,7 @@ class Stump
                 // Server return 2xx (Bad)
                 $transfert->state  = Transfert::REFUND;
                 //$transfert->rawIn  = Psr7\str($res->getRequest());
-                $transfert->rawOut = Psr7\str($res->getBody());
+                //$transfert->rawOut = Psr7\str($res->getBody());
                 $transfert->save();
 
                 $fallback();
