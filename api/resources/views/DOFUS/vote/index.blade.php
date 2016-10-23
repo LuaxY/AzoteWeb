@@ -28,12 +28,12 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="ak-block-gift-win">
-                        <div class="ak-gift"><img src="{{ URL::asset('imgs/assets/gift.jpg') }}" alt="gift"></div>
-                        <div class="ak-gift-win"><span>Cadeaux gagnés</span> {{ $giftsCount }}</div>
+                        <div class="ak-gift"><img src="{{ URL::asset('imgs/lottery/ticket_gold.png') }}" alt="gift"></div>
+                        <div class="ak-gift-win"><span>Tickets gagnés</span> {{ $giftsCount }}</div>
                     </div>
                     <div class="ak-block-next-gift">
-                        <div class="ak-gift"><img src="{{ URL::asset('imgs/assets/gift.jpg') }}" alt="gift"></div>
-                        <div class="ak-next-gift"><span>Prochain cadeau</span> dans {{ $nextGifts }} votes</div>
+                        <div class="ak-gift"><img src="{{ URL::asset('imgs/lottery/ticket_gold.png') }}" alt="gift"></div>
+                        <div class="ak-next-gift"><span>Prochain ticket</span> dans {{ $nextGifts }} votes</div>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <p>Chaque vote permet d'obtenir {{ config('dofus.vote') }} ogrines.<br>Tous les 10 votes vous gagnez un nouveau cadeau.</p>
+                    <p>Chaque vote permet d'obtenir {{ config('dofus.vote') }} ogrines.<br>Tous les 10 votes vous gagnez un nouveau ticket.</p>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ use App\Exceptions\GenericException;
 
 use App\LotteryTicket;
 use App\ItemTemplate;
+use App\Gift;
 use App\Services\DofusForge;
 use Auth;
 use \Cache;
@@ -55,9 +56,18 @@ class LotteryController extends Controller
 
         if ($object)
         {
+            $gift = new Gift;
+            $gift->user_id     = Auth::user()->id;
+            $gift->item_id     = $object->item()->Id;
+            $gift->description = $ticket->description;
+            $gift->save();
+
             $ticket->item_id = $object->item()->Id;
             $ticket->used    = true;
             $ticket->save();
+
+            Cache::forget('gifts_available_' . Auth::user()->id);
+            Cache::forget('gifts_' . Auth::user()->id);
 
             Cache::forget('tickets_available_' . Auth::user()->id);
             Cache::forget('tickets_' . Auth::user()->id);
