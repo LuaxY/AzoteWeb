@@ -73,12 +73,16 @@ class PostController extends Controller
 
     public function show(Request $request, $id, $slug = "")
     {
-
         $page = $request->has('page') ? $request->input('page') : 1;
 
         $post = Cache::remember('posts_' . $id, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
             return Post::findOrFail($id);
         });
+
+        if ($slug == "")
+        {
+            return redirect()->route('posts.show', ['id' => $id, 'slug' => $post->slug]);
+        }
 
         $comments = Cache::remember('posts_' . $id . '_comments_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
             return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE);
@@ -115,6 +119,11 @@ class PostController extends Controller
         Cache::forget('posts_' . $id . '_comments_'. $page);
 
         return view('posts.templates.comment', compact('comment', 'post'));
+    }
+
+    public function redirect(Request $request, $id, $slug = "")
+    {
+        return redirect()->route('posts.show', ['id' => $id, 'slug' => $slug]);
     }
 
     public function commentDestroy(Request $request, $id, $slug = "", $commentid)

@@ -39,10 +39,16 @@ Route::group(['prefix' => $locale], function() {
         'uses' => 'PostController@show',
         'as'   => 'posts.show'
     ]);
+
+    Route::get(Lang::get('routes.posts.show.old'), [
+        'uses' => 'PostController@redirect'
+    ]);
+
     Route::post(Lang::get('routes.posts.comment.store'), [
         'uses' => 'PostController@commentStore',
         'as'   => 'posts.comment.store'
     ]);
+
     Route::delete(Lang::get('routes.posts.comment.destroy'), [
         'uses' => 'PostController@commentDestroy',
         'as'   => 'posts.comment.destroy'
