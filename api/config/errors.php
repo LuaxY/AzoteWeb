@@ -21,9 +21,21 @@ return [
     ],
 
     'invalid_news_type' => [
-        'status' => 401,
-        'title'  => 'Type de news invalide',
+        'status'  => 404,
+        'title'   => 'Type de news invalide',
         'details' => 'Le type de news n\'éxiste pas.',
+    ],
+
+    'invalid_ticket' => [
+        'status'  => 404,
+        'title'   => 'Le ticket selectionné est invalide',
+        'details' => 'Le ticket selectionné n\'existe pas ou ne vous appartient pas.',
+    ],
+
+    'ticket_no_objects' => [
+        'status'  => 401,
+        'title'   => 'Ticket indisponible',
+        'details' => 'Le ticket selectionné n\'est pas encore disponible.',
     ],
 
 ];

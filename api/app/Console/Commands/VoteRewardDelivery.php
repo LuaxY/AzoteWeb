@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\User;
 use App\VoteReward;
 use App\Gift;
+use App\LotteryTicket;
 
 class VoteRewardDelivery extends Command
 {
@@ -45,30 +46,35 @@ class VoteRewardDelivery extends Command
 
         foreach ($users as $user)
         {
-            $numberOfRewards = (int)($user->votes / 10);
+            $numberOfTickets = (int)($user->votes / 10);
+            $ticketsCounter = 0;
 
-            $rewards = VoteReward::orderBy('votes', 'asc')->take($numberOfRewards)->get();
-            $rewardItemsId = [];
-
-            foreach ($rewards as $reward)
+            for ($vote = 10; $vote <= $user->votes; $vote += 10)
             {
-                $description = "Cadeau " . $reward->votes . " votes";
+                $description = "Cadeau " . $vote . " votes";
 
                 if (Gift::where('user_id', $user->id)->where('description', $description)->first())
                 {
                     continue;
                 }
 
-                $gift = new Gift;
-                $gift->user_id     = $user->id;
-                $gift->item_id     = $reward->itemId;
-                $gift->description = $description;
-                $gift->save();
+                $description = "Ticket " . $vote . " votes";
 
-                $rewardItemsId[] = $reward->itemId;
+                if (LotteryTicket::where('user_id', $user->id)->where('description', $description)->first())
+                {
+                    continue;
+                }
+
+                $ticket = new LotteryTicket;
+                $ticket->type        = $vote % 50 == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
+                $ticket->user_id     = $user->id;
+                $ticket->description = $description;
+                $ticket->save();
+
+                $ticketsCounter++;
             }
 
-            echo "{$user->pseudo}: ".count($rewardItemsId)."/$numberOfRewards gifts [" . implode(', ', $rewardItemsId) . "]\n";
+            echo "{$user->pseudo}: ".$ticketsCounter."/$numberOfTickets tickets\n";
         }
     }
 }

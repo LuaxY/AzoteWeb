@@ -88,6 +88,14 @@ return [
 
     'vote.object' => 'vote/objet/{item?}',
 
+    /** Lottery **/
+
+    'lottery.index' => 'loterie',
+
+    'lottery.draw' => 'loterie/tirage/{id}',
+
+    'lottery.process' => 'loterie/tirage/go/{id}',
+
     /** Ladder **/
 
     'ladder.general' => 'classement/general',

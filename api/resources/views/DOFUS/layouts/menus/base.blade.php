@@ -57,9 +57,9 @@
                         </div>
                         <div class="col-xs-6">
                             <div class="ak-ogrine-reserve-critical ak-gifts-reserve">
-                                <a href="{{ URL::route('vote.index') }}">
-                                    <span class="ak-reserve">{{ Utils::format_price(intval(Auth::user()->votes / 10)) }}</span>
-                                    <span class="ak-icon-small ak-gifts-icon"></span>
+                                <a href="{{ URL::route('lottery.index') }}">
+                                    <span class="ak-reserve">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>
+                                    <span class="ak-icon-small ak-ticket-icon"></span>
                                 </a>
                             </div>
                         </div>

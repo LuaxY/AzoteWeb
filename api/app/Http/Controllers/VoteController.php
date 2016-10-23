@@ -12,6 +12,7 @@ use App\Vote;
 use App\VoteReward;
 use App\ItemTemplate;
 use App\Gift;
+use App\LotteryTicket;
 use App\Services\DofusForge;
 
 class VoteController extends Controller
@@ -115,27 +116,6 @@ class VoteController extends Controller
             $account->save();
         }
 
-        if (Auth::user()->votes % 10 == 0)
-        {
-            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau cadeau !"]);
-            $reward = VoteReward::where('votes', Auth::user()->votes)->first();
-
-            if ($reward)
-            {
-                $gift = new Gift;
-                $gift->user_id     = Auth::user()->id;
-                $gift->item_id     = $reward->itemId;
-                $gift->description = "Cadeau " . $reward->votes . " votes";
-                $gift->save();
-
-                Cache::forget('gifts_available_' . Auth::user()->id);
-                Cache::forget('gifts_' . Auth::user()->id);
-
-                // TODO popup gifts
-                //$request->session()->flash('popup', 'gifts');
-            }
-        }
-
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
         $vote->points  = config('dofus.vote');
@@ -144,19 +124,34 @@ class VoteController extends Controller
         Cache::forget('votes_' . Auth::user()->id);
         Cache::forget('votes_' . Auth::user()->id . '_10');
 
-        $request->session()->flash('popup', 'ogrines');
+        if (Auth::user()->votes % 10 == 0)
+        {
+            $ticket = new LotteryTicket;
+            $ticket->type        = Auth::user()->votes % 50 == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
+            $ticket->user_id     = Auth::user()->id;
+            $ticket->description = "Ticket " . Auth::user()->votes . " votes";
+            $ticket->save();
 
+            Cache::forget('tickets_available_' . Auth::user()->id);
+            Cache::forget('tickets_' . Auth::user()->id);
+
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau ticket !"]);
+            return redirect()->route('lottery.index');
+        }
+
+        $request->session()->flash('popup', 'ogrines');
         return redirect()->route('vote.index');
     }
 
     public function palier($id)
     {
-        if ($id < 1 || $id > 1) // > 5
+        $votesCount = $this->userVotes();
+
+        if ($id < 1 || $id > ceil(($votesCount+1) / 50))
         {
             $id = 1;
         }
 
-        $votesCount = $this->userVotes();
         $progress   = $this->progressBar($id);
         $steps      = $this->stepsList($id);
         $current    = 1;
@@ -212,13 +207,13 @@ class VoteController extends Controller
 
     private function stepsList($palierId)
     {
-        return array(
-            1 => VoteReward::where('votes', 50 * ($palierId - 1) + 10)->first(),
-            2 => VoteReward::where('votes', 50 * ($palierId - 1) + 20)->first(),
-            3 => VoteReward::where('votes', 50 * ($palierId - 1) + 30)->first(),
-            4 => VoteReward::where('votes', 50 * ($palierId - 1) + 40)->first(),
-            5 => VoteReward::where('votes', 50 * ($palierId - 1) + 50)->first(),
-        );
+        return [
+            1 => 50 * ($palierId - 1) + 10,
+            2 => 50 * ($palierId - 1) + 20,
+            3 => 50 * ($palierId - 1) + 30,
+            4 => 50 * ($palierId - 1) + 40,
+            5 => 50 * ($palierId - 1) + 50,
+        ];
     }
 
     private function delay()

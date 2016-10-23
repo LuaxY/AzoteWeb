@@ -59,18 +59,15 @@
         <div class="ak-block-rewards">
             <div class="ak-menu-left ak-ajaxloader">
                 <a data="1">1 <sup>èr</sup> Palier</a>
-                <!--<a data="2">2 <sup>ème</sup> Palier</a>
-                <a data="3">3 <sup>ème</sup> Palier</a>
-                <a data="4">4 <sup>ème</sup> Palier</a>
-                <a data="5">5 <sup>ème</sup> Palier</a>-->
+                @for ($i = 2; $i <= ceil(($votesCount+1) / 50); $i++)
+                    <a data="{{ $i }}">{{ $i }} <sup>ème</sup> Palier</a>
+                @endfor
             </div>
             <div class="ak-select-menu-left ak-ajaxloader">
                 <select onchange="$('.ak-block-rewards .ak-menu-left a[data='+this.value+']').trigger('click');">
-                    <option value="1">Palier 1</option>
-                    <!--<option value="2">Palier 2</option>
-                    <option value="3">Palier 3</option>
-                    <option value="4">Palier 4</option>
-                    <option value="5">Palier 5</option>-->
+                    @for ($i = 1; $i <= ceil(($votesCount+1) / 50); $i++)
+                        <option value="{{ $i }}">Palier {{ $i }}</option>
+                    @endfor
                 </select>
                 <a class="ak-select-link hide"></a>
             </div>
@@ -96,11 +93,7 @@
 
     progress();
 
-    @if ($steps[$current] != null)
-    showItem({{ $steps[$current]->itemId }}, {{ $current }}, {{ $steps[$current]->votes }});
-    @else
     loader('ak-block-rewards', false);
-    @endif
 
     $(".ak-block-rewards .ak-menu-left a").on("click", function() {
         var self = $(this);
@@ -122,10 +115,7 @@
 
             loader('ak-block-rewards', false);
 
-            var item = $("#load-item");
-
             progress();
-            showItem(item.attr("item"), item.attr("step"), item.attr("votes"));
         });
     });
 
@@ -140,7 +130,7 @@
         $(this).addClass("ak-selected");
         $(".ak-select-time-line option[value="+step+"]").attr('selected','selected');
 
-        showItem(item, step, votes);
+        loader('ak-block-rewards', false);
     });
 
     $("#vote-link").on("click", function() {
@@ -164,37 +154,6 @@
     function progress() {
         var percent = $(".progress-bar").attr("data");
         $(".progress-bar").animate({width: percent +'%'}, 0, "linear");
-    }
-
-    function showItem(item, step, votes) {
-        // Show loader
-        loader('ak-block-rewards', true);
-
-        // Clear previous data
-        $(".ak-name-gift").html("");
-        $(".ak-encyclo-detail-right .ak-panel-content").html("");
-        $(".ak-encyclo-detail-illu img").attr("src", "");
-        $(".ak-step").removeClass("ak-step1 ak-step2 ak-step3 ak-step4 ak-step5");
-
-        // Display new data
-        $(".ak-nb-step span").html(votes);
-        $(".ak-nb-step").addClass("ak-step" + step);
-
-        // Get reward info
-        $.ajax({
-            type: "GET",
-            url: "{{ URL::route('vote.object') }}/" + item,
-            dataType: "json",
-        })
-        .done(function(res) {
-            // Dislay new reward
-            $(".ak-name-gift").html(res.name);
-            $(".ak-encyclo-detail-right .ak-panel-content").html(res.description);
-            $(".ak-encyclo-detail-illu img").attr("src", res.image);
-
-            // Hide loader
-            loader('ak-block-rewards', false);
-        });
     }
 </script>
 @stop

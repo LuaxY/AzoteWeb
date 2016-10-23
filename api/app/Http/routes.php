@@ -255,6 +255,26 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'vote.object'
     ]);
 
+    /* ============ LOTTERY ============ */
+
+    Route::get(Lang::get('routes.lottery.index'), [
+        'middleware' => ['auth', 'lottery'],
+        'uses'       => 'LotteryController@index',
+        'as'         => 'lottery.index'
+    ]);
+
+    Route::get(Lang::get('routes.lottery.draw'), [
+        'middleware' => ['auth', 'lottery'],
+        'uses'       => 'LotteryController@draw',
+        'as'         => 'lottery.draw'
+    ]);
+
+    Route::get(Lang::get('routes.lottery.process'), [
+        'middleware' => ['auth', 'lottery'],
+        'uses'       => 'LotteryController@process',
+        'as'         => 'lottery.process'
+    ]);
+
     /* ============ LADDER ============ */
 
     Route::get(Lang::get('routes.ladder.general'), [

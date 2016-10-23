@@ -17868,31 +17868,31 @@ iframe[src="about:blank"] {
 }
 
 .ak-icon-big.ak-ogrine-icon, .ak-icon-big.ak-ogrines-icon, .ak-icon-big.ak-kroz-icon,
-.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon {
+.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-med.ak-ogrine-icon, .ak-icon-med.ak-ogrines-icon, .ak-icon-med.ak-kroz-icon,
-.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon {
+.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon,.ak-icon-med.ak-ticket-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-tiny.ak-ogrine-icon, .ak-icon-tiny.ak-ogrines-icon, .ak-icon-tiny.ak-kroz-icon,
-.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon {
+.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
-.ak-icon-small.ak-ogrine-icon, .ak-icon-small.ak-ogrines-icon,
+.ak-icon-small.ak-ogrine-icon, .ak-icon-small.ak-ogrines-icon, .ak-icon-small.ak-ticket-icon,
 .ak-icon-small.ak-kroz-icon, .ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-big.ak-ogrine-icon, .ak-icon-big.ak-ogrines-icon, .ak-icon-big.ak-kroz-icon,
-.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon {
+.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon {
     background-size: 65px auto
 }
 
@@ -17908,8 +17908,12 @@ iframe[src="about:blank"] {
     background-position: 0 -180px
 }
 
+.ak-icon-big.ak-ticket-icon {
+    background-position: 0 -265px
+}
+
 .ak-icon-med.ak-ogrine-icon, .ak-icon-med.ak-ogrines-icon, .ak-icon-med.ak-kroz-icon,
-.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon {
+.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon, .ak-icon-med.ak-ticket-icon {
     background-size: 46px auto
 }
 
@@ -17925,8 +17929,12 @@ iframe[src="about:blank"] {
     background-position: 0 -131px
 }
 
+.ak-icon-med.ak-ticket-icon {
+    background-position: 0 -200px
+}
+
 .ak-icon-tiny.ak-ogrine-icon, .ak-icon-tiny.ak-ogrines-icon, .ak-icon-tiny.ak-kroz-icon,
-.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon {
+.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon {
     background-size: 34px auto
 }
 
@@ -17942,8 +17950,12 @@ iframe[src="about:blank"] {
     background-position: 0 -93px
 }
 
+.ak-icon-tiny.ak-ticket-icon {
+    background-position: 0 -138px
+}
+
 .ak-icon-small.ak-ogrine-icon, .ak-icon-small.ak-ogrines-icon,
-.ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon {
+.ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon, .ak-icon-small.ak-ticket-icon {
     background-size: 25px auto
 }
 
@@ -17957,6 +17969,10 @@ iframe[src="about:blank"] {
 
 .ak-icon-small.ak-kama-icon {
     background-position: 0 -38px
+}
+
+.ak-icon-small.ak-ticket-icon {
+    background-position: 0 -103px
 }
 
 .ak-icon-small.ak-kroz-icon {

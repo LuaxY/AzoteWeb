@@ -10,6 +10,7 @@ use App\Security;
 use App\ModelCustom;
 use App\ForumAccount;
 use App\Vote;
+use App\LotteryTicket;
 
 class User extends Authenticatable
 {
@@ -179,6 +180,26 @@ class User extends Authenticatable
         }
 
         return $gifts;
+    }
+
+    public function lotteryTickets($onlyAvailable = false)
+    {
+        $tickets = null;
+
+        if ($onlyAvailable)
+        {
+            $tickets = Cache::remember('tickets_available_' . $this->id, 10, function() {
+                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->where('used', false)->get();
+            });
+        }
+        else
+        {
+            $tickets = Cache::remember('tickets_' . $this->id, 10, function() {
+                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->get();
+            });
+        }
+
+        return $tickets;
     }
 
     public function posts()
