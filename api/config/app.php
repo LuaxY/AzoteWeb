@@ -171,6 +171,7 @@ return [
         Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider::class,
         App\Providers\MacroServiceProvider::class,
         EmailChecker\Laravel\EmailCheckerServiceProvider::class,
+        Roumen\Sitemap\SitemapServiceProvider::class,
     ],
 
     /*

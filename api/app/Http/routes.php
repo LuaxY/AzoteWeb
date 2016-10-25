@@ -632,3 +632,33 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
     });
 });
+
+Route::get('sitemap', function() {
+    $sitemap = App::make("sitemap");
+    $sitemap->setCache('laravel.sitemap', 60);
+
+    if (!$sitemap->isCached())
+    {
+        $sitemap->add(URL::route('posts'),          date('c', time()), '1.0', 'daily');
+        $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
+        $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
+        $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
+
+        $posts = \DB::table('posts')->orderBy('published_at', 'desc')->get();
+
+        foreach ($posts as $post)
+        {
+            $images = [];
+
+            $images[] = [
+                'url'     => URL::asset($post->image),
+                'title'   => $post->title,
+                'caption' => preg_replace('/[^A-Za-z0-9\. -]/', '', $post->preview),
+            ];
+
+            $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.5', 'daily', $images);
+        }
+    }
+
+    return $sitemap->render('xml');
+});
