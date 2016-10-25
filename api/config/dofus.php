@@ -23,6 +23,10 @@ return [
 
     'characters_limit' => 5,
 
+    'recover_level_multiplicator_price' => 5,
+
+    'recover_minimal_price' => 150,
+
     'email'        => env('SUPPORT_EMAIL', 'support@azote.us'),
 
     'mailgun_key'  => env('MAILGUN_KEY'),
@@ -100,12 +104,14 @@ return [
         'infos' => [
             'name' => 'Information',
             'title' => 'Toutes les infos',
-            'db' => 'infos'
+            'db' => 'infos',
+            'icon-big' => 'calendar'
         ],
         'patchs' => [
             'name' => 'Patch',
             'title' => 'Tous les patchs',
-            'db' => 'patchs'
+            'db' => 'patchs',
+            'icon-big' => 'patchnote'
         ]
     ]
 

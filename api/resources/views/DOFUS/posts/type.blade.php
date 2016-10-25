@@ -24,7 +24,7 @@
 
 @section('content')
     <div class="ak-title-container">
-        <h1><span class="ak-icon-big ak-news"></span> {{ $typeConfig['title'] }}</h1>
+        <h1><span class="ak-icon-big ak-{{$typeConfig['icon-big']}}"></span> {{ $typeConfig['title'] }}</h1>
     </div>
 <div class="ak-list-paginated">
     <div class="ak-item-list ak-grid-padding">
