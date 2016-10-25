@@ -136,7 +136,7 @@ class VoteController extends Controller
             Cache::forget('tickets_available_' . Auth::user()->id);
             Cache::forget('tickets_' . Auth::user()->id);
 
-            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçus un nouveau ticket !"]);
+            $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçu un nouveau ticket !"]);
             return redirect()->route('lottery.index');
         }
 
