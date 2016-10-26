@@ -639,7 +639,11 @@ Route::get('sitemap', function() {
 
     if (!$sitemap->isCached())
     {
-        $sitemap->add(URL::route('posts'),          date('c', time()), '1.0', 'daily');
+        $sitemap->add(URL::route('home'),           date('c', time()), '1.0', 'daily');
+        $sitemap->add(URL::route('register'),       date('c', time()), '0.9', 'daily');
+        $sitemap->add(URL::route('download'),       date('c', time()), '0.9', 'daily');
+        $sitemap->add(URL::route('login'),          date('c', time()), '0.9', 'daily');
+        $sitemap->add(URL::route('posts'),          date('c', time()), '0.8', 'daily');
         $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
         $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
         $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
@@ -653,10 +657,10 @@ Route::get('sitemap', function() {
             $images[] = [
                 'url'     => URL::asset($post->image),
                 'title'   => $post->title,
-                'caption' => preg_replace('/[^A-Za-z0-9\. -]/', '', $post->preview),
+                'caption' => strip_tags($post->preview),
             ];
 
-            $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.5', 'daily', $images);
+            $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.8', 'daily', $images);
         }
     }
 
