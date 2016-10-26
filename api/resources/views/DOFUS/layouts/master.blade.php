@@ -6,7 +6,7 @@
     <title>{{ config('dofus.title') }} @if (isset($page_name)) - {{ $page_name }} @endif</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <meta name="description" content="{{ config('dofus.title') }} Serveurs Dofus 2.10" />
+    <meta name="description" content="♛ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement ! ♛" />
 	<meta name="keywords" content="azote,sigma,epsilon,dofus,server,serveur,kamas,jetons,orbes,gratuit,dofus gratuit,serveur dofus,dofus serveur,jeu,jouer,serveur privé dofus,dofus serveur privé,mmorpg,jeu en ligne" />
     <link rel="alternate" type="application/rss+xml" title="News RSS" href="{{ URL::to('news.rss') }}" />
     <link rel="shortcut icon" type="image/png" href="{{ URL::asset('imgs/azote_simple.png') }}"/>
