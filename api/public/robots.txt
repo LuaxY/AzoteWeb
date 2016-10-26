@@ -1,2 +1,3 @@
+Sitemap: http://www.azote.us/sitemap
 User-agent: *
 Disallow:
