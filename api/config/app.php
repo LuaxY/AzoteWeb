@@ -172,6 +172,7 @@ return [
         App\Providers\MacroServiceProvider::class,
         EmailChecker\Laravel\EmailCheckerServiceProvider::class,
         Roumen\Sitemap\SitemapServiceProvider::class,
+        Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
     ],
 
     /*
@@ -231,7 +232,8 @@ return [
         'Active'      => HieuLe\Active\Facades\Active::class,
         'Datatables'  => Yajra\Datatables\Facades\Datatables::class,
         'FilemanagerLaravel'=> Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel::class,
-        'EmailChecker'=> EmailChecker\Laravel\EmailCheckerFacade::class
+        'EmailChecker'=> EmailChecker\Laravel\EmailCheckerFacade::class,
+        'Sentry'      => Sentry\SentryLaravel\SentryFacade::class,
     ],
 
 ];

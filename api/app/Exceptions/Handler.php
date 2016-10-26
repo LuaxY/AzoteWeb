@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if ($e instanceof NotFoundHttpException ||
+        /*if ($e instanceof NotFoundHttpException ||
             $e instanceof TokenMismatchException ||
             $e instanceof MethodNotAllowedHttpException ||
             $e instanceof ModelNotFoundException ||
@@ -93,6 +93,23 @@ class Handler extends ExceptionHandler
                 $message->subject('Azote.us - PHP Error Report - ' . Carbon::now());
                 $message->attachData($error, 'stacktrace.html');
             });
+        }*/
+
+        if ($this->shouldReport($e))
+        {
+            $sentry = app('sentry');
+
+            if (!Auth::guest())
+            {
+                $sentry->user_context([
+                    'id'     => Auth::user()->id,
+                    'pseudo' => Auth::user()->pseudo,
+                    'email'  => Auth::user()->email,
+                    'name'   => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                ]);
+            }
+
+            $sentry->captureException($e);
         }
 
         return parent::report($e);
