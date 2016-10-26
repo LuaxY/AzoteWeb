@@ -5,31 +5,62 @@ namespace App\Http\Controllers\Admin;
 use App\Account;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Transaction;
 use App\User;
+use App\World;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
 class AdminController extends Controller
 {
+    const CACHE_EXPIRE_MINUTES = 10;
+
     public function index()
     {
-        $countuser = User::all()->count();
-        $countpost = Post::all()->count();
+        $countuser = Cache::remember('countuser', self::CACHE_EXPIRE_MINUTES, function () {
+            return User::all()->count();
+        });
+        $countpost = Cache::remember('countpost', self::CACHE_EXPIRE_MINUTES, function () {
+            return Post::all()->count();
+        });
 
         foreach (config('dofus.servers') as $server)
         {
-            $countservers[$server] = Account::on($server.'_auth')->get()->count();
+            $countservers[$server] = Cache::remember('countservers', self::CACHE_EXPIRE_MINUTES, function () use($server) {
+                return Account::on($server.'_auth')->get()->count();
+            });
+
+            $world = World::on($server.'_auth')->where('Name', strtoupper($server))->first();
+            if (!$world || !$world->isOnline())
+            {
+               $connectedusers[$server] = null;
+            }
+            else
+            {
+                $connectedusers[$server] = $world->getOnlineCharacters();
+            }
+
         }
+        $todayearnings = Cache::remember('todayearnings', self::CACHE_EXPIRE_MINUTES, function () {
+            return Transaction::GetDayEarnings(Carbon::today()->toDateString(), ',');
+        });
 
-        $count = ['users' => $countuser, 'posts' => $countpost, 'servers' => $countservers];
+        $count = ['users' => $countuser, 'posts' => $countpost, 'servers' => $countservers, 'connectedUsers' => $connectedusers, 'todayEarnings' => $todayearnings];
 
-        $newusers = User::latest('created_at')->take(5)->select('id','pseudo','email','firstname','lastname','active','created_at')->get();
-        $newposts = Post::latest('updated_at')->take(5)->select('id','title','type','author_id','published','updated_at')->get();
+        $newusers = Cache::remember('newusers', self::CACHE_EXPIRE_MINUTES, function () {
+            return  User::latest('created_at')->take(5)->select('id','pseudo','email','firstname','lastname','active','created_at')->get();
+        });
+        $newposts = Cache::remember('newposts', self::CACHE_EXPIRE_MINUTES, function () {
+            return Post::latest('updated_at')->take(5)->select('id','title','type','author_id','published','updated_at')->get();
+        });
 
         return view('admin.index', compact('newusers', 'count', 'newposts'));
     }

@@ -14,8 +14,8 @@
         <div class="content">
             <div class="container">
                 <div class="row">
-                    @foreach(config('dofus.servers') as $server)
-                    <div class="col-lg-3">
+                    @foreach(config('dofus.servers') as $k => $server)
+                    <div class="@if(count(config('dofus.servers')) == 1)col-lg-6 @else col-lg-3 @endif">
                         <div class="card-box">
                             <h4 class="header-title m-t-0 m-b-30">{{ucfirst($server)}} Accounts</h4>
 
@@ -37,7 +37,7 @@
 
                             <div class="widget-chart-1">
                                 <div class="widget-chart-box-1">
-                                   <i class="fa fa-user"></i>
+                                   <i class="fa fa-users"></i>
                                 </div>
 
                                 <div class="widget-detail-1">
@@ -61,6 +61,40 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card-box">
+                            <h4 class="header-title m-t-0 m-b-30">Today Eearnings</h4>
+
+                            <div class="widget-chart-1">
+                                <div class="widget-chart-box-1">
+                                    <i class="fa fa-money"></i>
+                                </div>
+
+                                <div class="widget-detail-1">
+                                    <h2 class="p-t-10 m-b-0">{{ $count['todayEarnings'] }}</h2><p class="text-muted">Euros</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach(config('dofus.servers') as $k => $server)
+                        <div class="@if(count(config('dofus.servers')) == 1)col-lg-8 @else col-lg-4 @endif">
+                            <div class="card-box">
+                                <h4 class="header-title m-t-0 m-b-30">{{ucfirst($server)}} Status</h4>
+
+                                <div class="widget-chart-1">
+                                    <div class="widget-chart-box-1">
+                                        <i class="fa fa-gamepad"></i>
+                                    </div>
+
+                                    <div class="widget-detail-1">
+                                        <h2 class="p-t-10 m-b-0">@if($count['connectedUsers'][$server] != null){{ $count['connectedUsers'][$server] }} @else Server Offline @endif</h2><p class="text-muted">@if($count['connectedUsers'][$server] != null)Online users @endif</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
