@@ -14,6 +14,11 @@
 
 @section('background') ak-background-type-homepage @stop
 
+@section('breadcrumbs')
+{? $page_name = config('dofus.subtitle') ?}
+{!! Breadcrumbs::render('page', 'Actualités') !!}
+@stop
+
 @section('content')
 <div class="ak-list-paginated">
     <div class="ak-item-list ak-grid-padding">
