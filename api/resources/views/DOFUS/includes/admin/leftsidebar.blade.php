@@ -80,6 +80,11 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="{{ route('admin.transactions') }}"
+                       class="waves-effect {{ active_class(if_route('admin.transactions'))}}"><i class="fa fa-money"></i>
+                        <span> Transactions </span> </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.tasks') }}"
                        class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i>
                         <span> Tasks </span> </a>

@@ -14,4 +14,9 @@ class World extends Model
     {
         return $this->Status == 3 ? true : false;
     }
+
+    public function getOnlineCharacters()
+    {
+        return $this->CharsCount;
+    }
 }

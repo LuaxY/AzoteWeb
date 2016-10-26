@@ -630,6 +630,21 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
         });
 
+        // TRANSACTIONS //
+        Route::controller('/transactions/data', 'TransactionDatatablesController', [
+            'anyData'  => 'datatables.transactionsdata'
+        ]);
+
+        Route::get('transactions', [
+            'uses' => 'TransactionController@index',
+            'as'   => 'admin.transactions'
+        ]);
+
+        Route::get('transactions/getdata', [
+            'uses' => 'TransactionController@getData',
+            'as'   => 'admin.transactions.getdata'
+        ]);
+
     });
 });
 
