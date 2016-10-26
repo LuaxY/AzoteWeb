@@ -633,7 +633,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     });
 });
 
-Route::get('sitemap', function() {
+Route::get('sitemap.xml', function() {
     $sitemap = App::make("sitemap");
     $sitemap->setCache('laravel.sitemap', 60);
 
