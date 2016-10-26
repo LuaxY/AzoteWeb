@@ -657,7 +657,7 @@ Route::get('sitemap', function() {
             $images[] = [
                 'url'     => URL::asset($post->image),
                 'title'   => $post->title,
-                'caption' => strip_tags($post->preview),
+                'caption' => html_entity_decode(strip_tags($post->preview)),
             ];
 
             $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.8', 'daily', $images);
