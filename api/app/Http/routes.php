@@ -647,6 +647,7 @@ Route::get('sitemap.xml', function() {
         $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
         $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
         $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
+        $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
 
         $posts = \DB::table('posts')->orderBy('published_at', 'desc')->get();
 
