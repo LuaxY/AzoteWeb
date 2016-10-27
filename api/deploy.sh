@@ -12,7 +12,6 @@ mkdir -p storage/framework/sessions
 chmod -R 777 storage
 
 php artisan clear-compiled 
-php artisan dump-autoload
 php artisan optimize
 
 php artisan up
