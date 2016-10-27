@@ -79,6 +79,11 @@ class PostController extends Controller
             return Post::findOrFail($id);
         });
 
+        if ($post->isDraft() && (Auth::guest() || !Auth::user()->isAdmin()))
+        {
+            abort(404);
+        }
+
         if ($slug == "" || $slug != $post->slug)
         {
             return redirect()->route('posts.show', ['id' => $id, 'slug' => $post->slug]);

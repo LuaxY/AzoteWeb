@@ -664,7 +664,7 @@ Route::get('sitemap.xml', function() {
         $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
         $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
 
-        $posts = \DB::table('posts')->orderBy('published_at', 'desc')->get();
+        $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();
 
         foreach ($posts as $post)
         {
