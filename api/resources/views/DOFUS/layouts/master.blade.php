@@ -7,8 +7,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="description" content="♛ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement ! ♛" />
+    @if (isset($og))
+    {!! $og->renderTags() !!}
+    @else
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{{ URL::asset('imgs/cover.png') }}" />
+    <meta property="og:description" content="♛ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement ! ♛" />
+    <meta property="og:url" content="{{ Request::url() }}" />
+    <meta property="og:site_name" content="{{ config('dofus.title') }} - {{ config('dofus.subtitle') }}" />
+    @endif
     <link rel="alternate" type="application/rss+xml" title="News RSS" href="{{ URL::to('news.rss') }}" />
     <link rel="shortcut icon" type="image/png" href="{{ URL::asset('imgs/azote_simple.png') }}"/>
+    <link rel="canonical" href="{{ Request::url() }}" />
     {!! Html::style('css/common.css') !!}
     {!! Html::style('css/toastr.min.css') !!}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -21,17 +31,17 @@
             background-color: {{ config('dofus.theme.color') }};
         }
     </style>
-	
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	  ga('create', 'UA-82860248-1', 'auto');
-	  ga('send', 'pageview');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-	</script>
+      ga('create', 'UA-82860248-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
 </head>
 
 <body class="@yield('background')">
@@ -238,9 +248,9 @@
                 s0.parentNode.insertBefore(s1,s0);
                 Tawk_API = Tawk_API || {};
                 Tawk_API.visitor = {
-                	name  : '{{ Auth::user()->pseudo }} - {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
-                	email : '{{ Auth::user()->email }}',
-                	hash  : '{{ hash_hmac('sha256', Auth::user()->email, config('dofus.tawk.api') ) }}'
+                    name  : '{{ Auth::user()->pseudo }} - {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}',
+                    email : '{{ Auth::user()->email }}',
+                    hash  : '{{ hash_hmac('sha256', Auth::user()->email, config('dofus.tawk.api') ) }}'
                 };
             })();
         </script>
