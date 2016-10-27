@@ -6,13 +6,13 @@
     <title>{{ config('dofus.title') }} @if (isset($page_name)) - {!! $page_name !!} @endif</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <meta name="description" content="♛ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement ! ♛" />
+    <meta name="description" content="{!! config('dofus.description') !!}" />
     @if (isset($og))
     {!! $og->renderTags() !!}
     @else
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{{ URL::asset('imgs/cover.png') }}" />
-    <meta property="og:description" content="♛ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement ! ♛" />
+    <meta property="og:description" content="{!! config('dofus.description') !!}" />
     <meta property="og:url" content="{{ Request::url() }}" />
     <meta property="og:site_name" content="{{ config('dofus.title') }} - @if (isset($page_name)) - {!! $page_name !!} @else {{ config('dofus.subtitle') }} @endif" />
     @endif

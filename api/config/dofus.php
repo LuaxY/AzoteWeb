@@ -6,6 +6,8 @@ return [
 
     'subtitle'     => env('SUBTITLE', 'Serveur privé'),
 
+    'description'  => "★ Découvrez Azote, le leader des serveurs privés Dofus et profitez d'une expérience de jeu incroyable. Jouez à Dofus gratuitement et sans abonnement !",
+
     'servers'      => [], // filled in FillServers middleware
 
     'details'      => [], // filled in FillServers middleware
