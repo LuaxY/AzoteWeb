@@ -96,7 +96,7 @@ class PostController extends Controller
            ->type('article')
            ->image(URL::asset($post->image))
            ->description(html_entity_decode(strip_tags($post->preview)))
-           ->url()
+           ->url($request->url())
            ->siteName(config('dofus.title') . ' - ' . config('dofus.subtitle'));
 
         $comments = Cache::remember('posts_' . $id . '_comments_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
