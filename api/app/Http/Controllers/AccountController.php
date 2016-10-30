@@ -92,6 +92,8 @@ class AccountController extends Controller
 
         $user->save();
 
+        $request->session()->put('password', $user->password);
+
         $forumAccount = new ForumAccount;
         $forumAccount->name              = $user->pseudo;
         $forumAccount->member_group_id   = config('dofus.forum.user_group');
@@ -142,6 +144,8 @@ class AccountController extends Controller
         }
 
         Auth::login($user);
+
+        $request->session()->put('password', $user->password);
 
         if ($user->active)
         {
@@ -236,6 +240,8 @@ class AccountController extends Controller
         $user->save();
 
         Auth::login($user);
+
+        $request->session()->put('password', $user->password);
 
         request()->session()->flash('notify', ['type' => 'info', 'message' => "Veuillez changer votre mot de passe."]);
 
@@ -357,7 +363,11 @@ class AccountController extends Controller
                 }
             }
 
-            // TODO: send email to user
+            Mail::send('emails.email-changed', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Changement d\'email');
+            });
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);
             return redirect()->route('profile');
@@ -385,6 +395,8 @@ class AccountController extends Controller
             Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
             Auth::user()->save();
 
+            $request->session()->put('password', Auth::user()->password);
+
             $forumAccount = Auth::user()->forum()->first();
 
             if ($forumAccount)
@@ -393,6 +405,12 @@ class AccountController extends Controller
                 $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
                 $forumAccount->save();
             }
+
+            Mail::send('emails.password-changed', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Changement de mot de passe');
+            });
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
             return redirect()->route('profile');

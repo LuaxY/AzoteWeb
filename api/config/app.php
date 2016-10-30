@@ -173,6 +173,7 @@ return [
         EmailChecker\Laravel\EmailCheckerServiceProvider::class,
         Roumen\Sitemap\SitemapServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+        ChrisKonnertz\OpenGraph\OpenGraphServiceProvider::class,
     ],
 
     /*
@@ -234,6 +235,7 @@ return [
         'FilemanagerLaravel'=> Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel::class,
         'EmailChecker'=> EmailChecker\Laravel\EmailCheckerFacade::class,
         'Sentry'      => Sentry\SentryLaravel\SentryFacade::class,
+        'OpenGraph'   => ChrisKonnertz\OpenGraph\OpenGraph::class,
     ],
 
 ];

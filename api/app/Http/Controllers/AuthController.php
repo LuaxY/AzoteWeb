@@ -46,6 +46,8 @@ class AuthController extends Controller
                 Auth::login($user);
             }
 
+            $request->session()->put('password', $user->password);
+
             $forumAccount = ForumAccount::find($user->forum_id);
 
             if ($forumAccount)

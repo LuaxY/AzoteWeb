@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\View;
 use Validator;
 use App\Post;
 use App\Comment;
+use ChrisKonnertz\OpenGraph\OpenGraph;
 
 class PostController extends Controller
 {
@@ -79,10 +80,24 @@ class PostController extends Controller
             return Post::findOrFail($id);
         });
 
+        if ($post->isDraft() && (Auth::guest() || !Auth::user()->isAdmin()))
+        {
+            abort(404);
+        }
+
         if ($slug == "" || $slug != $post->slug)
         {
             return redirect()->route('posts.show', ['id' => $id, 'slug' => $post->slug]);
         }
+
+        $og = new OpenGraph();
+
+        $og->title($post->title)
+           ->type('article')
+           ->image(URL::asset($post->image))
+           ->description(html_entity_decode(strip_tags($post->preview)))
+           ->url($request->url())
+           ->siteName(config('dofus.title') . ' - ' . config('dofus.subtitle'));
 
         $comments = Cache::remember('posts_' . $id . '_comments_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
             return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE);
@@ -93,7 +108,7 @@ class PostController extends Controller
             return response()->json(View::make('posts.templates.comments', compact('post', 'comments'))->render());
         }
 
-        return view('posts.show', compact('post', 'comments'));
+        return view('posts.show', compact('post', 'comments', 'og'));
     }
 
     public function commentStore(Request $request, $id, $slug = "")
