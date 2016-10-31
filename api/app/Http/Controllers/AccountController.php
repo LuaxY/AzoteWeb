@@ -241,8 +241,7 @@ class AccountController extends Controller
 
         Auth::login($user);
 
-        $request->session()->put('password', $user->password);
-
+        request()->session()->put('password', $user->password);
         request()->session()->flash('notify', ['type' => 'info', 'message' => "Veuillez changer votre mot de passe."]);
 
         return view('account/reset');
@@ -363,7 +362,7 @@ class AccountController extends Controller
                 }
             }
 
-            Mail::send('emails.email-changed', ['user' => $user], function ($message) use ($user) {
+            Mail::send('emails.email-changed', ['user' => Auth::user()], function ($message) use ($user) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Changement d\'email');
@@ -406,7 +405,7 @@ class AccountController extends Controller
                 $forumAccount->save();
             }
 
-            Mail::send('emails.password-changed', ['user' => $user], function ($message) use ($user) {
+            Mail::send('emails.password-changed', ['user' => Auth::user()], function ($message) use ($user) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Changement de mot de passe');
