@@ -361,8 +361,10 @@ class AccountController extends Controller
                     $gameAccount->save();
                 }
             }
+            
+            $user = Auth::user();
 
-            Mail::send('emails.email-changed', ['user' => Auth::user()], function ($message) use ($user) {
+            Mail::send('emails.email-changed', ['user' => $user], function ($message) use ($user) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Changement d\'email');
@@ -404,8 +406,10 @@ class AccountController extends Controller
                 $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
                 $forumAccount->save();
             }
+            
+            $user = Auth::user();
 
-            Mail::send('emails.password-changed', ['user' => Auth::user()], function ($message) use ($user) {
+            Mail::send('emails.password-changed', ['user' => $user], function ($message) use ($user) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to($user->email, $user->firstname . ' ' . $user->lastname);
                 $message->subject('Azote.us - Changement de mot de passe');
