@@ -413,9 +413,6 @@ class AccountController extends Controller
         {
             $email = $emailModification->email_new;
 
-            Auth::user()->email = $email;
-            Auth::user()->save();
-
             $forumAccount = Auth::user()->forum()->first();
 
             if ($forumAccount)
@@ -434,6 +431,9 @@ class AccountController extends Controller
                     $gameAccount->save();
                 }
             }
+
+            Auth::user()->email = $email;
+            Auth::user()->save();
 
             request()->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);
             return redirect()->route('profile');
