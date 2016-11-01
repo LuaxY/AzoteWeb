@@ -40,7 +40,7 @@
         <tbody>
             <tr>
                 <td>{{ $emailModification->email_old }}</td>
-                <td>Ancien email</td>
+                <td>Ancienne adresse email</td>
                 @if ($emailModification->token_old == null)
                 <td class="ak-server-access yes">Vérifié</td>
                 @else
@@ -49,7 +49,7 @@
             </tr>
             <tr>
                 <td>{{ $emailModification->email_new }}</td>
-                <td>Nouvel email</td>
+                <td>Nouvelle adresse email</td>
                 @if ($emailModification->token_new == null)
                 <td class="ak-server-access yes">Vérifié</td>
                 @else
