@@ -62,7 +62,7 @@ class User extends Authenticatable
         ],
         'update-email' => [
             'passwordOld' => 'required|old_password:{PASSWORD},{SALT}',
-            'email'       => 'required|email|unique:users,email',
+            'email'       => 'required|email|not_throw_away|unique:users,email',
         ],
         'update-profile' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',

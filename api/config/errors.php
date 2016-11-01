@@ -38,4 +38,10 @@ return [
         'details' => 'Le ticket selectionné n\'est pas encore disponible.',
     ],
 
+    'email_token_invalid' => [
+        'status'  => 401,
+        'title'   => 'Clé de validation d\'email invalide',
+        'details' => 'La clé de validation de la nouvelle adresse email est invalide.',
+    ],
+
 ];

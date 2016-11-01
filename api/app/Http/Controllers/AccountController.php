@@ -10,17 +10,19 @@ use Illuminate\Http\Response;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Exceptions\GenericException;
+
 use App\User;
 use App\Account;
 use App\ForumAccount;
+use App\EmailModification;
 
 use Mail;
 use Validator;
 use Auth;
 use Cookie;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\TransferException;
+use App\Helpers\EmailChecker;
 
 class AccountController extends Controller
 {
@@ -47,33 +49,9 @@ class AccountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $isValidEmil = false;
+        $isEmailValid = EmailChecker::check($request->input('email'));
 
-        try
-        {
-            $client = new Client();
-            $res = $client->request('GET', "https://api.mailgun.net/v3/address/validate", [
-                'auth'    => [ 'api', config('dofus.mailgun_key') ],
-                'query'   => [ 'address' => $request->input('email') ],
-                'timeout' => 10, // seconds
-            ]);
-
-            if ($res->getStatusCode() == 200)
-            {
-                $json = json_decode((string)$res->getBody());
-
-                if (isset($json->is_valid))
-                {
-                    $isValidEmil = $json->is_valid;
-                }
-            }
-        }
-        catch (TransferException $e)
-        {
-            // continue
-        }
-
-        if (!$isValidEmil)
+        if (!$isEmailValid)
         {
             return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
         }
@@ -327,6 +305,8 @@ class AccountController extends Controller
 
     public function change_email(Request $request)
     {
+        $emailModification = EmailModification::where('user_id', 10)->first();
+
         if ($request->all())
         {
             $rules = User::$rules['update-email'];
@@ -340,14 +320,107 @@ class AccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            Auth::user()->email = $request->input('email');
+            $emailModification = EmailModification::where('email_old', Auth::user()->email)->where('email_new', $request->input('email'))->orderBy('id', 'DESC')->first();
+
+            if ($emailModification && ($emailModification->token_old != null || $emailModification->token_new != null))
+            {
+                return view('account.valid-email', ['emailModification' => $emailModification]);
+            }
+
+            $isEmailValid = EmailChecker::check($request->input('email'));
+
+            if (!$isEmailValid)
+            {
+                // TODO check if error is displayed in view
+                return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
+            }
+
+            $emailModification = new EmailModification;
+            $emailModification->user_id   = Auth::user()->id;
+            $emailModification->token_old = str_random(self::TICKET_LENGTH);;
+            $emailModification->token_new = str_random(self::TICKET_LENGTH);;
+            $emailModification->email_old = Auth::user()->email;
+            $emailModification->email_new = $request->input('email');
+            $emailModification->save();
+
+            $user = Auth::user();
+
+            $datas = [];
+            $datas[] = ['email' => $emailModification->email_old, 'token' => $emailModification->token_old, 'type' => 'old'];
+            $datas[] = ['email' => $emailModification->email_new, 'token' => $emailModification->token_new, 'type' => 'new'];
+
+            foreach ($datas as $data)
+            {
+                $email = $data['email'];
+
+                Mail::send('emails.email-changed', ['user' => $user, 'type' => $data['type'], 'token' => $data['token']], function ($message) use ($user, $email) {
+                    $message->from(config('mail.sender'), 'Azote.us');
+                    $message->to($email, $user->firstname . ' ' . $user->lastname);
+                    $message->subject('Azote.us - Changement d\'email');
+                });
+            }
+
+            return view('account.valid-email', ['emailModification' => $emailModification]);
+        }
+
+        return view('account/change-email');
+    }
+
+    public function valid_email($type, $token)
+    {
+        $isEmailValidated = false;
+
+        $token_type = '';
+
+        if ($type == 'old')
+        {
+            $token_type = 'token_old';
+        }
+        elseif ($type == 'new')
+        {
+            $token_type = 'token_new';
+        }
+
+        if ($token_type == '')
+        {
+            throw new GenericException('email_token_invalid');
+        }
+
+        $emailModification = EmailModification::where($token_type, $token)->where('user_id', Auth::user()->id)->first();
+
+        if (!$emailModification)
+        {
+            throw new GenericException('email_token_invalid');
+        }
+
+        if ($type == 'old')
+        {
+            $emailModification->token_old = null;
+        }
+        elseif ($type == 'new')
+        {
+            $emailModification->token_new = null;
+        }
+
+        $emailModification->save();
+
+        if ($emailModification->token_old == null && $emailModification->token_new == null)
+        {
+            $isEmailValidated = true;
+        }
+
+        if ($isEmailValidated)
+        {
+            $email = $emailModification->email_new;
+
+            Auth::user()->email = $email;
             Auth::user()->save();
 
             $forumAccount = Auth::user()->forum()->first();
 
             if ($forumAccount)
             {
-                $forumAccount->email = $request->input('email');
+                $forumAccount->email = $email;
                 $forumAccount->save();
             }
 
@@ -357,24 +430,16 @@ class AccountController extends Controller
             {
                 foreach ($gameAccounts as $gameAccount)
                 {
-                    $gameAccount->Email = $request->input('email');
+                    $gameAccount->Email = $email;
                     $gameAccount->save();
                 }
             }
-            
-            $user = Auth::user();
 
-            Mail::send('emails.email-changed', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Changement d\'email');
-            });
-
-            $request->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);
+            request()->session()->flash('notify', ['type' => 'success', 'message' => "Adresse email mise à jour."]);
             return redirect()->route('profile');
         }
 
-        return view('account/change-email');
+        return view('account.valid-email', ['emailModification' => $emailModification]);
     }
 
     public function change_password(Request $request)
@@ -406,7 +471,7 @@ class AccountController extends Controller
                 $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
                 $forumAccount->save();
             }
-            
+
             $user = Auth::user();
 
             Mail::send('emails.password-changed', ['user' => $user], function ($message) use ($user) {
