@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Auth;
 use Validator;
 use \Cache;
+use Carbon\Carbon;
 
 use App\Vote;
 use App\VoteReward;
@@ -32,7 +33,17 @@ class VoteController extends Controller
         $progress   = $this->progressBar($palierId);
         $steps      = $this->stepsList($palierId);
         $current    = (($votesCount + $nextGifts) / 10) % 5;
-        $delay      = $this->delay();
+
+        $ip = \Illuminate\Support\Facades\Request::ip();
+        $date = Carbon::now()->subHours(3)->toDateTimeString();
+        $vote = Vote::where('ip', $ip)->where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->first();
+
+        if ($vote)
+        {
+            Auth::user()->last_vote = $vote->created_at;
+        }
+
+        $delay = $this->delay();
 
         if ($current <= 0)
         {
@@ -120,6 +131,7 @@ class VoteController extends Controller
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
         $vote->points  = config('dofus.vote');
+        $vote->ip = \Illuminate\Support\Facades\Request::ip();
         $vote->save();
 
         Cache::forget('votes_' . Auth::user()->id);
