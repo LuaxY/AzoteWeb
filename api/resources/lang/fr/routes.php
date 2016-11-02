@@ -50,6 +50,8 @@ return [
 
     'account.certify' => 'compte/certification',
 
+    'account.valid_email' => 'compte/verification-email/{type}/{token}',
+
     /** Game Account **/
 
     'gameaccount.create' => 'compte/jeu/creation',

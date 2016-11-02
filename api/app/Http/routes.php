@@ -131,6 +131,12 @@ Route::group(['prefix' => $locale], function() {
         'as'         => 'account.certify'
     ]);
 
+    Route::get(Lang::get('routes.account.valid_email'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@valid_email',
+        'as'         => 'account.valid-email'
+    ]);
+
     /* ============ GAME ACCOUNT ============ */
 
     Route::get(Lang::get('routes.gameaccount.create'), [
