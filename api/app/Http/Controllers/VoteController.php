@@ -16,12 +16,13 @@ use App\ItemTemplate;
 use App\Gift;
 use App\LotteryTicket;
 use App\Services\DofusForge;
+use App\User;
 
 class VoteController extends Controller
 {
     public function index()
     {
-        if(Auth::guest())
+        if (Auth::guest())
         {
             return view('vote.guest');
         }
@@ -41,6 +42,7 @@ class VoteController extends Controller
         if ($vote)
         {
             Auth::user()->last_vote = $vote->created_at;
+            Auth::user()->save();
         }
 
         $delay = $this->delay();
@@ -128,11 +130,21 @@ class VoteController extends Controller
             $account->save();
         }
 
+        $ip = \Illuminate\Support\Facades\Request::ip();
+
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
         $vote->points  = config('dofus.vote');
-        $vote->ip = \Illuminate\Support\Facades\Request::ip();
+        $vote->ip      = $ip;
         $vote->save();
+
+        $usersWithSameIP = User::where('last_ip_address', $ip)->get();
+
+        foreach ($usersWithSameIP as $user)
+        {
+            $user->last_vote = Auth::user()->last_vote;
+            $user->save();
+        }
 
         Cache::forget('votes_' . Auth::user()->id);
         Cache::forget('votes_' . Auth::user()->id . '_10');
