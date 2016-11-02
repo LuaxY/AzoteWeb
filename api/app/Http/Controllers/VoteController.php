@@ -111,9 +111,11 @@ class VoteController extends Controller
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
 
+        $dateLastVote = date('Y-m-d H:i:s');
+
         Auth::user()->votes    += 1;
         Auth::user()->points   += config('dofus.vote');
-        Auth::user()->last_vote = date('Y-m-d H:i:s');
+        Auth::user()->last_vote = $dateLastVote;
 
         if (Auth::user()->isFirstVote)
         {
@@ -126,7 +128,7 @@ class VoteController extends Controller
 
         foreach ($accounts as $account)
         {
-            $account->LastVote = date('Y-m-d H:i:s');
+            $account->LastVote = $dateLastVote;
             $account->save();
         }
 
@@ -142,8 +144,16 @@ class VoteController extends Controller
 
         foreach ($usersWithSameIP as $user)
         {
-            $user->last_vote = Auth::user()->last_vote;
+            $user->last_vote = $dateLastVote;
             $user->save();
+
+            $accounts = $user->accounts();
+
+            foreach ($accounts as $account)
+            {
+                $account->LastVote = $dateLastVote;
+                $account->save();
+            }
         }
 
         Cache::forget('votes_' . Auth::user()->id);
