@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     @if ($delay->canVote)
-                    <a id="vote-link" href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info" style="margin-top:30px">Voter</a>
+                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
                     @else
                     <p style="margin-top:30px"><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
                     @endif
@@ -88,106 +88,108 @@
 <script>
     var $ = require('jquery');
 
-    $(".ak-block-rewards .ak-menu-left a[data={{ $palierId }}]").addClass("ak-selected");
-    $(".ak-block-rewards .ak-select-menu-left option[value={{ $palierId }}]").attr('selected','selected');
+    $(document).ready(function() {
 
-    progress();
-    showItem({{ $current }}, {{ $votesCount }});
+        $(".ak-block-rewards .ak-menu-left a[data={{ $palierId }}]").addClass("ak-selected");
+        $(".ak-block-rewards .ak-select-menu-left option[value={{ $palierId }}]").attr('selected','selected');
 
-    $(".ak-block-rewards .ak-menu-left a").on("click", function() {
-        var self = $(this);
-        var palierId = self.attr("data");
+        progress();
+        showItem({{ $current }}, {{ $votesCount }});
 
-        loader('ak-block-rewards', true);
+        $(".ak-block-rewards .ak-menu-left a").on("click", function() {
+            var self = $(this);
+            var palierId = self.attr("data");
 
-        $(".ak-block-rewards .ak-menu-left a.ak-selected").removeClass("ak-selected");
+            loader('ak-block-rewards', true);
 
-        $.ajax({
-            type: "GET",
-            url: "{{ URL::route('vote.palier') }}/" + palierId,
-        })
-        .done(function(res) {
-            $("#step-view").html(res);
+            $(".ak-block-rewards .ak-menu-left a.ak-selected").removeClass("ak-selected");
 
-            $(".ak-block-rewards .ak-menu-left a[data="+palierId+"]").addClass("ak-selected");
-            $(".ak-block-rewards .ak-select-menu-left option[value="+palierId+"]").attr('selected','selected');
+            $.ajax({
+                type: "GET",
+                url: "{{ URL::route('vote.palier') }}/" + palierId,
+            })
+            .done(function(res) {
+                $("#step-view").html(res);
 
-            loader('ak-block-rewards', false);
+                $(".ak-block-rewards .ak-menu-left a[data="+palierId+"]").addClass("ak-selected");
+                $(".ak-block-rewards .ak-select-menu-left option[value="+palierId+"]").attr('selected','selected');
 
-            progress();
-            
-            var item = $("#load-item");
-            showItem(item.attr("step"), item.attr("votes"));
+                loader('ak-block-rewards', false);
+
+                progress();
+
+                var item = $("#load-item");
+                showItem(item.attr("step"), item.attr("votes"));
+            });
         });
-    });
 
-    $("#step-view").on("click", ".ak-block-step a", function() {
-        $(".ak-block-step a.ak-selected").removeClass("ak-selected");
+        $("#step-view").on("click", ".ak-block-step a", function() {
+            $(".ak-block-step a.ak-selected").removeClass("ak-selected");
 
-        var parent = $(this).parent(".ak-block-step");
-        var item = parent.attr("item");
-        var step = parent.attr("step");
-        var votes = parent.attr("votes");
+            var parent = $(this).parent(".ak-block-step");
+            var item = parent.attr("item");
+            var step = parent.attr("step");
+            var votes = parent.attr("votes");
 
-        $(this).addClass("ak-selected");
-        $(".ak-select-time-line option[value="+step+"]").attr('selected','selected');
+            $(this).addClass("ak-selected");
+            $(".ak-select-time-line option[value="+step+"]").attr('selected','selected');
 
-        showItem(step, votes);
-    });
+            showItem(step, votes);
+        });
 
-    $("#vote-link").on("click", function() {
-        setTimeout(function() {
-            window.location.href = "{{ URL::route('vote.confirm') }}";
-        }, 1000);
-    });
+        $(".vote-link").on("click", function() {
+            setTimeout(function() {
+                window.location.href = "{{ URL::route('vote.confirm') }}";
+            }, 1000);
+        });
 
-    function loader(seletor, state) {
-        if (state) {
-            $("."+seletor).addClass("mask-relative masked");
-            $("."+seletor+" .loadmask").show();
-            $("."+seletor+" .ak-loading").show();
-        } else {
-            $("."+seletor).removeClass("mask-relative masked");
-            $("."+seletor+" .loadmask").hide();
-            $("."+seletor+" .ak-loading").hide();
+        function loader(seletor, state) {
+            if (state) {
+                $("."+seletor).addClass("mask-relative masked");
+                $("."+seletor+" .loadmask").show();
+                $("."+seletor+" .ak-loading").show();
+            } else {
+                $("."+seletor).removeClass("mask-relative masked");
+                $("."+seletor+" .loadmask").hide();
+                $("."+seletor+" .ak-loading").hide();
+            }
         }
-    }
 
-    function progress() {
-        var percent = $(".progress-bar").attr("data");
-        $(".progress-bar").animate({width: percent +'%'}, 0, "linear");
-    }
+        function progress() {
+            var percent = $(".progress-bar").attr("data");
+            $(".progress-bar").animate({width: percent +'%'}, 0, "linear");
+        }
 
-    function showItem(step, votes) {
-        // Show loader
-        loader('ak-block-rewards', true);
+        function showItem(step, votes) {
+            // Show loader
+            loader('ak-block-rewards', true);
 
-        // Clear previous data
-        $(".ak-name-gift").html("");
-        $(".ak-encyclo-detail-right .ak-panel-content").html("");
-        $(".ak-encyclo-detail-illu img").attr("src", "");
-        $(".ak-step").removeClass("ak-step1 ak-step2 ak-step3 ak-step4 ak-step5");
+            // Clear previous data
+            $(".ak-name-gift").html("");
+            $(".ak-encyclo-detail-right .ak-panel-content").html("");
+            $(".ak-encyclo-detail-illu img").attr("src", "");
+            $(".ak-step").removeClass("ak-step1 ak-step2 ak-step3 ak-step4 ak-step5");
 
-        // Display new data
-        $(".ak-nb-step span").html(votes);
-        $(".ak-nb-step").addClass("ak-step" + step);
+            // Display new data
+            $(".ak-nb-step span").html(votes);
+            $(".ak-nb-step").addClass("ak-step" + step);
 
-        // Get reward info
-        $.ajax({
-            type: "GET",
-            url: "{{ URL::route('vote.object') }}/" + votes,
-            dataType: "json",
-        })
-        .done(function(res) {
-            // Dislay new reward
-            $(".ak-name-gift").html(res.name);
-            $(".ak-encyclo-detail-right .ak-panel-content").html(res.description);
-            $(".ak-encyclo-detail-illu img").attr("src", res.image);
+            // Get reward info
+            $.ajax({
+                type: "GET",
+                url: "{{ URL::route('vote.object') }}/" + votes,
+                dataType: "json",
+            })
+            .done(function(res) {
+                // Dislay new reward
+                $(".ak-name-gift").html(res.name);
+                $(".ak-encyclo-detail-right .ak-panel-content").html(res.description);
+                $(".ak-encyclo-detail-illu img").attr("src", res.image);
 
-            // Hide loader
-            loader('ak-block-rewards', false);
-        });
-    }
-
+                // Hide loader
+                loader('ak-block-rewards', false);
+            });
+        }
+    });
 </script>
 @stop
