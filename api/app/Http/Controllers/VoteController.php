@@ -35,7 +35,7 @@ class VoteController extends Controller
         $steps      = $this->stepsList($palierId);
         $current    = (($votesCount + $nextGifts) / 10) % 5;
 
-        $ip = \Illuminate\Support\Facades\Request::ip();
+        /*$ip = \Illuminate\Support\Facades\Request::ip();
         $date = Carbon::now()->subHours(3)->toDateTimeString();
         $vote = Vote::where('ip', $ip)->where('created_at', '>=', $date)->orderBy('created_at', 'DESC')->first();
 
@@ -43,7 +43,7 @@ class VoteController extends Controller
         {
             Auth::user()->last_vote = $vote->created_at;
             Auth::user()->save();
-        }
+        }*/
 
         $delay = $this->delay();
 
@@ -140,7 +140,7 @@ class VoteController extends Controller
         $vote->ip      = $ip;
         $vote->save();
 
-        $usersWithSameIP = User::where('last_ip_address', $ip)->get();
+        /*$usersWithSameIP = User::where('last_ip_address', $ip)->get();
 
         foreach ($usersWithSameIP as $user)
         {
@@ -154,7 +154,7 @@ class VoteController extends Controller
                 $account->LastVote = $dateLastVote;
                 $account->save();
             }
-        }
+        }*/
 
         Cache::forget('votes_' . Auth::user()->id);
         Cache::forget('votes_' . Auth::user()->id . '_10');
