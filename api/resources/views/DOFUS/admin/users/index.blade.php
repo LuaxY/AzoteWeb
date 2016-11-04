@@ -54,7 +54,7 @@
                     } ).DataTable({
                         "order": [[ 0, "desc" ]],
                         processing: false,
-                        serverSide: false,
+                        serverSide: true,
                         autoWidth: true,
                         responsive: true,
                         ajax: '{!! route('datatables.userdata') !!}',
