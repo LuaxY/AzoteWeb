@@ -50,13 +50,13 @@
                                                             <div class="ak-main">
                                                                 <div class="ak-main-content ">
                                                                     <div class="ak-image">
-                                                                        <a href="{{ URL::route('lottery.draw', [$ticket->id]) }}"><span class="ak-linker"><img src="{{ URL::asset('imgs/lottery/' . $ticket->image()) }}"></span></a>
+                                                                        <a href="{{ URL::route('lottery.draw', [$ticket->id]) }}"><span class="ak-linker"><img src="{{ URL::asset($ticket->lottery()->icon_path) }}"></span></a>
                                                                     </div>
                                                                     <div class="ak-content">
                                                                         <div class="ak-title">
                                                                             <a href="{{ URL::route('lottery.draw', [$ticket->id]) }}"><span class="ak-linker">{{ $ticket->description }}</span></a>
                                                                         </div>
-                                                                        @if ($ticket->type == $ticket::GOLD) <div class="ak-text" style="padding-left: 12px;">Ticket doré</div> @endif
+                                                                        <div class="ak-text" style="padding-left: 12px;">{{ $ticket->lottery()->name }}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -48,7 +48,7 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="ak-image">
-                                                <img id="gift-image" src="{{ URL::asset('imgs/lottery/' . $ticket->box()) }}" class="img-maxresponsive">
+                                                <img id="gift-image" src="{{ URL::asset($ticket->lottery()->image_path) }}" class="img-maxresponsive">
                                             </div>
                                         </div>
                                         <div class="col-sm-10">

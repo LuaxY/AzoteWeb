@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Lottery;
 use App\LotteryItem;
 use App\ItemTemplate;
 
@@ -70,5 +71,10 @@ class LotteryTicket extends Model
         }
 
         return null;
+    }
+
+    public function lottery()
+    {
+        return $this->hasOne(Lottery::class, 'type', 'type')->first();
     }
 }

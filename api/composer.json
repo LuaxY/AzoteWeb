@@ -24,7 +24,8 @@
         "roumen/sitemap": "^2.6",
         "sentry/sentry": "^1.5",
         "sentry/sentry-laravel": "^0.4.1",
-        "chriskonnertz/open-graph": "^1.0"
+        "chriskonnertz/open-graph": "^1.0",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
