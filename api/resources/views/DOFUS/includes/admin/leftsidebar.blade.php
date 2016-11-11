@@ -97,7 +97,7 @@
 
                 <li class="text-muted menu-title">Links</li>
                 <li>
-                    <a href="http://logger.azote.us" target="_blank" class="waves-effect"><i class="fa fa-database"></i>
+                    <a href="http://vodka.azote.us" target="_blank" class="waves-effect"><i class="fa fa-database"></i>
                         <span> Logger </span> </a>
                 </li>
                 <li>

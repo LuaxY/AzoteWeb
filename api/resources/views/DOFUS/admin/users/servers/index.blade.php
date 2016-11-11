@@ -13,7 +13,7 @@
                 <div class="col-sm-12">
                     @include('includes.admin.users.navpills')
                     <div class="card-box">
-                        @if(count($accounts) < 4)
+                        @if(count($accounts) < config('dofus.accounts_limit'))
                         <div class="pull-right">
                                 <button href="javascript:void(0)" class="btn btn-primary btn-lg waves-effect waves-light" data-toggle="modal" data-target="#game-account-add-modal"><i class="fa fa-plus"></i> Create account</button></li>
                         </div>

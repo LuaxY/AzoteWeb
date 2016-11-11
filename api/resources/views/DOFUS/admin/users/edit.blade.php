@@ -194,6 +194,109 @@
                             {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
                             {!! Form::close() !!}
                         </div>
+                        <div class="portlet">
+                            <div class="portlet-heading bg-purple">
+                                <h3 class="portlet-title">
+                                    <a data-toggle="collapse" class="collapsed" aria-expanded="false" href="#portlet-transactions">
+                                        <i class="fa fa-money"></i> Last 10 transactions
+                                    </a>
+                                </h3>
+                                <div class="portlet-widgets">
+                                    <a data-toggle="collapse" class="collapsed" aria-expanded="false" href="#portlet-transactions"><i class="zmdi zmdi-minus"></i></a>
+                                    <a href="#" data-toggle="remove"><i class="zmdi zmdi-close"></i></a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="portlet-transactions" class="panel-collapse collapse">
+                                <div class="portlet-body">
+                                    <div class="pull-right">
+                                        <a class="btn btn-purple waves-effect waves-light" href="{{route('admin.transactions')}}"><i class="fa fa-money"></i> View all transactions</a>
+                                    </div>
+                                    <br>
+                                    @if(count($transactions) == 0)
+                                        <div class="alert alert-info" style="margin-top: 30px;">
+                                            <strong>Info!</strong> User doesn't have any transactions
+                                        </div>
+                                    @else
+                                        <table class="table table-striped" id="transactions-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Points</th>
+                                                <th>Code</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($transactions as $transaction)
+                                                <tr>
+                                                    <td class="ak-center">{{ $transaction->id }}</td>
+                                                    <td>{{ Utils::format_price($transaction->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+                                                    <td>{{ $transaction->code }}</td>
+                                                    <td>{{ \App\Shop\ShopStatus::getState($transaction->state) }}</td>
+                                                    <td>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet">
+                            <div class="portlet-heading bg-primary">
+                                <h3 class="portlet-title">
+                                    <a data-toggle="collapse" class="collapsed" aria-expanded="false" href="#portlet-tickets">
+                                        <i class="fa fa-ticket"></i> Last 10 tickets
+                                    </a>
+                                </h3>
+                                <div class="portlet-widgets">
+                                    <a data-toggle="collapse" class="collapsed" aria-expanded="false" href="#portlet-tickets"><i class="zmdi zmdi-minus"></i></a>
+                                    <a href="#" data-toggle="remove"><i class="zmdi zmdi-close"></i></a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div id="portlet-tickets" class="panel-collapse collapse">
+                                <div class="portlet-body">
+                                    <div class="pull-right">
+                                        <a class="btn btn-primary waves-effect waves-light" href="#"><i class="fa fa-ticket"></i> View all tickets</a>
+                                        <button type="button" data-toggle="modal" data-target="#user-ticket-modal" class="btn btn-default waves-effect waves-light" href="#"><i class="fa fa-plus"></i> Add new ticket</button>
+                                    </div>
+                                    <br>
+                                    @if(count($tickets) == 0)
+                                        <div class="alert alert-info" style="margin-top: 30px;">
+                                            <strong>Info!</strong> User doesn't have any tickets
+                                        </div>
+                                    @else
+                                        <table class="table table-striped" id="tickets-table">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Ticket</th>
+                                                <th>Used</th>
+                                                <th>Item</th>
+                                                <th>Date</th>
+                                                <th>Giver</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($tickets as $ticket)
+                                                <tr>
+                                                    <td class="ak-center">{{ $ticket->id }}</td>
+                                                    <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{$ticket->description}} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+                                                    <td>{!! $ticket->used ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>' !!}</td>
+                                                    <td>{{ $ticket->item() ? $ticket->item()->name() : ''}}</td>
+                                                    <td>{{ $ticket->created_at->format('d/m/Y H:i:s') }}</td>
+                                                    <td>{{ $ticket->giver() }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,7 +342,6 @@
                 </div>
             </div>
         </div>
-
         <div id="user-certify-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -293,6 +395,49 @@
         </div>
     </div>
 </div>
+        <div id="user-ticket-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">{{ $user->pseudo }}: Add ticket</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['route' => ['admin.user.addticket', $user->id], 'id' => 'form-addticket']) !!}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <span class="help-block" style="color:red;">
+                                                <strong>/!\ Attention, le ticket ne pourra plus etre modifié par la suite</strong>
+                                    </span>
+                                <div class="form-group {{ $errors->has('ticket') ? ' has-error' : '' }}">
+                                    <label for="ticket">Ticket:</label>
+                                    {!! Form::select('ticket', $ticketsArray, null,['class' => 'form-control', 'id' => 'ticket']) !!}
+                                    @if ($errors->has('ticket'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('ticket') }}</strong>
+                                            </span>
+                                    @endif
+                                </div>
+                                <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
+                                    <label for="ticket">Description:</label>
+                                    {!! Form::text('description', null,['class' => 'form-control', 'id' => 'description']) !!}
+                                    @if ($errors->has('description'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('description') }}</strong>
+                                            </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info waves-effect waves-light">Add</button>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
         @endsection
 
         @section('bottom')
@@ -631,6 +776,41 @@
                                else
                                {
                                    errorsHtml = 'Unknow error';
+                               }
+                               toastr.error(errorsHtml);
+                           }
+                       });
+                   });
+                   // Add ticket to user
+                   $( "#form-addticket" ).on( "submit", function( event ) {
+                       event.preventDefault();
+                       var $this = $(this);
+                       var datas = $this.serialize();
+
+                       $.ajax({
+                           method: 'POST',
+                           url: $this.attr("action"),
+                           data: datas,
+
+                           success: function (msg) {
+                               $('#user-ticket-modal').modal('hide');
+                               toastr.success('Ticket added!');
+                               setTimeout(function(){ location.reload(); }, 500);
+                           },
+
+                           error: function (jqXhr, json, errorThrown) {
+                               var errors = jqXhr.responseJSON;
+                               var errorsHtml;
+                               if(errors)
+                               {
+                                   errorsHtml= '';
+                                   $.each( errors, function( key, value ) {
+                                       errorsHtml += '<li>' + value[0] + '</li>';
+                                   });
+                               }
+                               else
+                               {
+                                   errorsHtml = 'Unknown error';
                                }
                                toastr.error(errorsHtml);
                            }

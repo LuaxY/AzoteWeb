@@ -125,11 +125,11 @@
                     ajax: '{{ route('datatables.transactionsdata') }}',
                     columns: [
                         {data: 'id', name: 'id'},
-                        {data: 'user_id', name: 'User'},
-                        {data: 'state', name: 'State'},
-                        {data: 'code', name: 'Code'},
-                        {data: 'points', name: 'Points'},
-                        {data: 'created_at', name: 'Date'}
+                        {data: 'user_id', name: 'user_id'},
+                        {data: 'state', name: 'state'},
+                        {data: 'code', name: 'code'},
+                        {data: 'points', name: 'points'},
+                        {data: 'created_at', name: 'created_at'}
                     ],
                     rowId: 'id'
                 });

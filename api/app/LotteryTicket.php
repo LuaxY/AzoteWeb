@@ -77,4 +77,14 @@ class LotteryTicket extends Model
     {
         return $this->hasOne(Lottery::class, 'type', 'type')->first();
     }
+
+    public function giver()
+    {
+       if($this->giver)
+       {
+           $giver = User::find($this->giver);
+           return $giver ? $giver->pseudo : null;
+       }
+       return null;
+    }
 }

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\ForumAccountValidating;
 use App\Http\Controllers\Controller;
+use App\Lottery;
+use App\LotteryTicket;
 use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +20,19 @@ use App\ForumAccount;
 
 class UserController extends Controller
 {
+    private function fetchTicketsType()
+    {
+        $tickets_type = Lottery::all();
+        $ticketsArray = [];
+        if($tickets_type)
+        {
+            foreach ($tickets_type as $ticket_type)
+            {
+                $ticketsArray[$ticket_type['type']] = $ticket_type['name'];
+            }
+        }
+        return $ticketsArray;
+    }
     public function index()
     {
         return view('admin.users.index');
@@ -29,12 +45,13 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user = User::findOrFail($user->id); // For the web account
-        $epsilon_accounts = $user->accounts('epsilon');
-        $sigma_accounts = $user->accounts('sigma');
-
-
-        return view('admin.users.edit', compact('user', 'epsilon_accounts', 'sigma_accounts'));
+        $user = User::findOrFail($user->id);
+        $transactions = $user->transactions(10);
+        $tickets = Cache::remember('tickets_admin_' . $user->id, 10, function() use($user) {
+            return LotteryTicket::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(10)->get();
+        });
+        $ticketsArray = $this->fetchTicketsType();
+        return view('admin.users.edit', compact('user','transactions', 'tickets', 'ticketsArray'));
     }
 
     public function store(Request $request)
@@ -296,5 +313,51 @@ class UserController extends Controller
             return response()->json([], 403);
         }
 
+    }
+
+    public function addTicket(User $user, Request $request)
+    {
+        $validator = Validator::make($request->all(), User::$rules['addticket']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
+        $ticketsArray = $this->fetchTicketsType();
+        if(!array_key_exists($request->ticket, $ticketsArray))
+        {
+            return response()->json(['ticket' => ['0' => 'Ce type de ticket est invalide']], 400);
+        }
+
+        $ticket = new LotteryTicket;
+        $ticket->type        = $request->ticket;
+        $ticket->user_id     = $user->id;
+        $ticket->description = $request->description;
+        $ticket->giver       = Auth::user()->id;
+        $ticket->save();
+
+        Cache::forget('tickets_available_' . $user->id);
+        Cache::forget('tickets_' . $user->id);
+        Cache::forget('tickets_admin_' . $user->id);
+
+        return response()->json([], 200);
+    }
+
+    public function re_send_email(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ($user && !$user->active)
+        {
+            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Confirmation d\'inscription');
+            });
+
+            Toastr::success('E-mail sended', $title = null, $options = []);
+        }
+
+        return redirect()->back();
     }
 }

@@ -516,8 +516,13 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             ])->where('user', '[0-9]+');
 
             Route::post('re-send-email', [
-                'uses'       => 'AccountController@re_send_email',
+                'uses'       => 'UserController@re_send_email',
                 'as'         => 're-send-email-admin'
+            ]);
+
+            Route::post('addticket', [
+                'uses'       => 'UserController@addTicket',
+                'as'         => 'admin.user.addticket'
             ]);
 
             // Game Accounts

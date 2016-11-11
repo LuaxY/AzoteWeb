@@ -57,7 +57,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group {{ $errors->has('Nickname') ? ' has-error' : '' }}">
                                     <label for="Nickname">Nickname:</label>
-                                    {!! Form::text('Nickname', null, ['class' => 'form-control', 'id' => 'Nickname']) !!}
+                                    {!! Form::text('Nickname', null, ['class' => 'form-control', 'id' => 'Nickname', 'disabled', 'readonly']) !!}
                                     @if ($errors->has('Nickname'))
                                         <span class="help-block">
                                                                     <strong>{{ $errors->first('Nickname') }}</strong>

@@ -109,7 +109,6 @@ class GameAccountController extends Controller
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
         $this->validate($request, [
             'Login'                => 'required|min:3|max:32|unique:'.$database.'.accounts,Login,'.$account->Id.'|alpha_dash',
-            'Nickname'             => 'required|min:3|max:32|unique:'.$database.'.accounts,Nickname,'.$account->Id.'|alpha_dash',
             'UserGroupId'          => 'required|numeric',
         ]);
 
@@ -118,7 +117,6 @@ class GameAccountController extends Controller
             return redirect()->back();
         }
         $account->Login = $request->Login;
-        $account->Nickname = $request->Nickname;
         $account->UserGroupId = $request->UserGroupId;
         $account->save();
 

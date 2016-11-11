@@ -72,6 +72,8 @@ class LotteryController extends Controller
             Cache::forget('tickets_available_' . Auth::user()->id);
             Cache::forget('tickets_' . Auth::user()->id);
 
+            Cache::forget('tickets_admin_' . Auth::user()->id);
+
             return json_encode([
                 'image'       => $object->item()->image(),
                 'name'        => $object->item()->name(),

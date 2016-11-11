@@ -91,6 +91,9 @@ class User extends Authenticatable
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
+        'addticket' => [
+            'description'             => 'required|min:5|max:32',
+        ],
     ];
 
     public static function hashPassword($password, $salt)
@@ -189,13 +192,13 @@ class User extends Authenticatable
         if ($onlyAvailable)
         {
             $tickets = Cache::remember('tickets_available_' . $this->id, 10, function() {
-                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->where('used', false)->get();
+                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->where('used', false)->orderBy('created_at', 'desc')->get();
             });
         }
         else
         {
             $tickets = Cache::remember('tickets_' . $this->id, 10, function() {
-                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->get();
+                return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->orderBy('created_at', 'desc')->get();
             });
         }
 
