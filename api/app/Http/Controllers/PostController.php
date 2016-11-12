@@ -147,6 +147,8 @@ class PostController extends Controller
         $this->authorize('destroy', $comment);
         $comment->delete();
         Cache::forget('posts_' . $id . '_comments_1');
+        Cache::forget('posts_' . $id . '_comments_2');
+        Cache::forget('posts_' . $id . '_comments_3');
         return redirect()->back();
     }
 
