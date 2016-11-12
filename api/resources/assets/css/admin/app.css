@@ -57,3 +57,7 @@
     width: 240px;
     display:inline;
 }
+
+.xdsoft_datetimepicker {
+    z-index: 10 !important;
+}
