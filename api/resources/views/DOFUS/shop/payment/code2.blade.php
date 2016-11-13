@@ -7,7 +7,7 @@
 
     <script>
     openPaymentWindow = function(ticket, country, method, palier) {
-        window.open('http://code.dev/code?ticket=' + ticket + '&country=' + country + '&pay_id=' + method + '_' + palier, 'Payment', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=600,height=670,left = 420,top = 150');
+        window.open('http://{{ config('dofus.domain.fake') }}/code?ticket=' + ticket + '&country=' + country + '&pay_id=' + method + '_' + palier, 'Payment', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=600,height=670,left = 420,top = 150');
     };
     </script>
 @stop
