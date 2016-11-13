@@ -77,7 +77,14 @@ class DediPass extends Payment
 
     public function palier($country, $method, $palier)
     {
-        return $this->rates->$country->$method->$palier;
+        if (property_exists($this->rates, $country) &&
+            property_exists($this->rates->$country, $method) &&
+            property_exists($this->rates->$country->$method, $palier))
+        {
+            return $this->rates->$country->$method->$palier;
+        }
+
+        return null;
     }
 
     public function check($palier, $code)

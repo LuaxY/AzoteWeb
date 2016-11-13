@@ -11,7 +11,7 @@ else
     $locale = null;
 }
 
-Route::group(['prefix' => $locale], function() {
+Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')], function() {
 
     Route::any('/', [
         'uses' => 'PostController@index',
@@ -316,17 +316,81 @@ Route::group(['prefix' => $locale], function() {
         'as'   => 'servers'
     ]);
 
+    Route::get('support', function () {
+        return view('support/temp');
+    });
+
+    Route::get('news.rss', [
+        'uses' => 'RssController@news'
+    ]);
+
+    /* ============ SITEMAP ============ */
+
+    Route::get('sitemap.xml', function() {
+        $sitemap = App::make("sitemap");
+        $sitemap->setCache('laravel.sitemap', 60);
+
+        if (!$sitemap->isCached())
+        {
+            $sitemap->add(URL::route('home'),           date('c', time()), '1.0', 'daily');
+            $sitemap->add(URL::route('register'),       date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('download'),       date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('login'),          date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('posts'),          date('c', time()), '0.8', 'daily');
+            $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
+
+            $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();
+
+            foreach ($posts as $post)
+            {
+                $images = [];
+
+                $images[] = [
+                    'url'     => URL::asset($post->image),
+                    'title'   => $post->title,
+                    'caption' => html_entity_decode(strip_tags($post->preview)),
+                ];
+
+                $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.8', 'daily', $images);
+            }
+        }
+
+        return $sitemap->render('xml');
+    });
 });
 
-Route::get('support', function () {
-    return view('support/temp');
-});
+/* ============ FAKE CODE PAYMENT ============ */
 
-Route::get('news.rss', [ 'uses' => 'RssController@news' ]);
+Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
+
+    Route::get('/', function() {
+        return 'Prochainement';
+    });
+
+    Route::get('code', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@fake',
+        'as'         => 'code'
+    ]);
+
+    Route::post('code', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@fake_process',
+        'as'         => 'code'
+    ]);
+
+    Route::get('error', function() {
+        return view('errors.fake');
+    });
+
+});
 
 /* ============ API ============ */
 
-Route::group(['prefix' => 'api'], function()
+Route::group(['prefix' => 'api', 'domain' => Config::get('dofus.domain.main')], function()
 {
     /*Route::group(['prefix' => 'account'], function()
     {
@@ -378,7 +442,7 @@ Route::group(['prefix' => 'api'], function()
 
 /* ============ FORGE ============ */
 
-Route::group(['prefix' => 'forge'], function()
+Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')], function()
 {
     Route::get('image/{request}', 'Api\ForgeController@image')->where('request', '(.*)');
 
@@ -400,7 +464,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::controller('filemanager', 'FilemanagerLaravelController');
 
     /* ============ ADMIN PREFIX ============ */
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'domain' => Config::get('dofus.domain.main')], function() {
 
         Route::any('/', [
             'uses' => 'AdminController@index',
@@ -657,39 +721,4 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]);
 
     });
-});
-
-Route::get('sitemap.xml', function() {
-    $sitemap = App::make("sitemap");
-    $sitemap->setCache('laravel.sitemap', 60);
-
-    if (!$sitemap->isCached())
-    {
-        $sitemap->add(URL::route('home'),           date('c', time()), '1.0', 'daily');
-        $sitemap->add(URL::route('register'),       date('c', time()), '0.9', 'daily');
-        $sitemap->add(URL::route('download'),       date('c', time()), '0.9', 'daily');
-        $sitemap->add(URL::route('login'),          date('c', time()), '0.9', 'daily');
-        $sitemap->add(URL::route('posts'),          date('c', time()), '0.8', 'daily');
-        $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
-        $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
-        $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
-        $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
-
-        $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();
-
-        foreach ($posts as $post)
-        {
-            $images = [];
-
-            $images[] = [
-                'url'     => URL::asset($post->image),
-                'title'   => $post->title,
-                'caption' => html_entity_decode(strip_tags($post->preview)),
-            ];
-
-            $sitemap->add(URL::route('posts.show', [$post->id, $post->slug]), $post->updated_at, '0.8', 'daily', $images);
-        }
-    }
-
-    return $sitemap->render('xml');
 });
