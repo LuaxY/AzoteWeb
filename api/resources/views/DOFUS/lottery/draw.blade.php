@@ -122,7 +122,7 @@
             $("#gift-image").attr("src", json.image);
             $("#gift-name").html(json.name);
             $("#gift-description").html(json.description);
-            $("#title").html("Félicitation !");
+            $("#title").html("Félicitations !");
 
             loader('ak-price-content', false);
         })

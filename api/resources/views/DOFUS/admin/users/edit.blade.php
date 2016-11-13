@@ -285,7 +285,7 @@
                                                 <tr>
                                                     <td class="ak-center">{{ $ticket->id }}</td>
                                                     <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{$ticket->description}} <span class="ak-icon-small ak-ogrines-icon"></span></td>
-                                                    <td>{!! $ticket->used ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>' !!}</td>
+                                                    <td>{!! $ticket->used ? '<span class="label label-success">Yes - '.$ticket->updated_at->format("d/m/Y H:i:s").'</span>' : '<span class="label label-danger">No</span>' !!}</td>
                                                     <td>{{ $ticket->item() ? $ticket->item()->name() : ''}}</td>
                                                     <td>{{ $ticket->created_at->format('d/m/Y H:i:s') }}</td>
                                                     <td>{{ $ticket->giver() }}</td>
