@@ -260,7 +260,7 @@
                             <div id="portlet-tickets" class="panel-collapse collapse">
                                 <div class="portlet-body">
                                     <div class="pull-right">
-                                        <a class="btn btn-primary waves-effect waves-light" href="#"><i class="fa fa-ticket"></i> View all tickets</a>
+                                        <a class="btn btn-primary waves-effect waves-light" href="{{route('admin.lottery.tickets')}}"><i class="fa fa-ticket"></i> View all tickets</a>
                                         <button type="button" data-toggle="modal" data-target="#user-ticket-modal" class="btn btn-default waves-effect waves-light" href="#"><i class="fa fa-plus"></i> Add new ticket</button>
                                     </div>
                                     <br>
@@ -284,7 +284,7 @@
                                             @foreach($tickets as $ticket)
                                                 <tr>
                                                     <td class="ak-center">{{ $ticket->id }}</td>
-                                                    <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{$ticket->description}} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+                                                    <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{$ticket->description}}</td>
                                                     <td>{!! $ticket->used ? '<span class="label label-success">Yes - '.$ticket->updated_at->format("d/m/Y H:i:s").'</span>' : '<span class="label label-danger">No</span>' !!}</td>
                                                     <td>{{ $ticket->item() ? $ticket->item()->name() : ''}}</td>
                                                     <td>{{ $ticket->created_at->format('d/m/Y H:i:s') }}</td>
@@ -432,7 +432,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info waves-effect waves-light">Add</button>
+                        <button type="submit" class="btn btn-info waves-effect waves-light" id="ticket_submit_button">Add</button>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -783,6 +783,7 @@
                    });
                    // Add ticket to user
                    $( "#form-addticket" ).on( "submit", function( event ) {
+                       $('#ticket_submit_button').prop('disabled', true);
                        event.preventDefault();
                        var $this = $(this);
                        var datas = $this.serialize();
@@ -813,6 +814,7 @@
                                    errorsHtml = 'Unknown error';
                                }
                                toastr.error(errorsHtml);
+                               $('#ticket_submit_button').prop('disabled', false);
                            }
                        });
                    });

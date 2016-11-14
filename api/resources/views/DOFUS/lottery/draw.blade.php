@@ -107,6 +107,8 @@
     loader('ak-price-content', false);
 
     $("#draw").on("click", function() {
+        var spanTickets = $("div.ak-gifts-reserve a span.ak-reserve");
+        var tickets = spanTickets.html();
         var self = $(this);
 
         $("#gift-description").html('');
@@ -123,7 +125,7 @@
             $("#gift-name").html(json.name);
             $("#gift-description").html(json.description);
             $("#title").html("Félicitations !");
-
+            spanTickets.html(tickets - 1);
             loader('ak-price-content', false);
         })
         .error(function(data) {

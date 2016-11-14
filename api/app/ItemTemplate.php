@@ -14,6 +14,12 @@ class ItemTemplate extends Model
 
     public $timestamps = false;
 
+    public static $rules = [
+        'getItemById' => [
+            'itemid'               => 'required|numeric|digits_between:1,5',
+        ],
+    ];
+
     public function name()
     {
         return DofusForge::text($this->NameId);

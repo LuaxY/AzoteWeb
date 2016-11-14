@@ -79,39 +79,6 @@
                 </div>
             </div>
         </div>
-        <!--<div class="ak-container ak-panel-stack ak-glue">
-            <div class="ak-container ak-panel">
-                <div class="ak-panel-title">
-                    <span class="ak-panel-title-icon"></span> Liste des tickets en attente
-                </div>
-                <div class="ak-panel-content">
-                    <div class="row ak-container ak-content-list ak-encyclo-item-crafts clearfix ak-displaymode-image-col">
-
-                        @foreach (Auth::user()->lotteryTickets(true) as $ticket)
-                        <div class="ak-column ak-container col-xs-12 col-md-6">
-                            <div class="ak-list-element">
-                                <div class="ak-main">
-                                    <div class="ak-main-content ">
-                                        <div class="ak-image">
-                                            <a href="{{ URL::route('lottery.draw', [$ticket->id]) }}"><span class="ak-linker"><img src="{{ URL::asset('imgs/lottery/' . $ticket->image()) }}"></span></a>
-                                        </div>
-                                        <div class="ak-content">
-                                            <div class="ak-title">
-                                                <a href="{{ URL::route('lottery.draw', [$ticket->id]) }}"><span class="ak-linker">{{ $ticket->description }}</span></a>
-                                            </div>
-                                            @if ($ticket->type == $ticket::GOLD) <div class="ak-text" style="padding-left: 12px;">Ticket doré</div> @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix  visible-xs visible-sm"></div>
-                        @endforeach
-
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
 </div>
 @stop

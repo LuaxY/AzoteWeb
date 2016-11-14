@@ -20,19 +20,6 @@ use App\ForumAccount;
 
 class UserController extends Controller
 {
-    private function fetchTicketsType()
-    {
-        $tickets_type = Lottery::all();
-        $ticketsArray = [];
-        if($tickets_type)
-        {
-            foreach ($tickets_type as $ticket_type)
-            {
-                $ticketsArray[$ticket_type['type']] = $ticket_type['name'];
-            }
-        }
-        return $ticketsArray;
-    }
     public function index()
     {
         return view('admin.users.index');
@@ -50,7 +37,7 @@ class UserController extends Controller
         $tickets = Cache::remember('tickets_admin_' . $user->id, 10, function() use($user) {
             return LotteryTicket::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(10)->get();
         });
-        $ticketsArray = $this->fetchTicketsType();
+        $ticketsArray = Lottery::fetchTicketsType();
         return view('admin.users.edit', compact('user','transactions', 'tickets', 'ticketsArray'));
     }
 
@@ -323,7 +310,7 @@ class UserController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
-        $ticketsArray = $this->fetchTicketsType();
+        $ticketsArray = Lottery::fetchTicketsType();
         if(!array_key_exists($request->ticket, $ticketsArray))
         {
             return response()->json(['ticket' => ['0' => 'Ce type de ticket est invalide']], 400);

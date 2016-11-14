@@ -656,6 +656,37 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'as'   => 'admin.transactions.getdata'
         ]);
 
+        // TICKETS //
+        Route::controller('/lotterytickets/data', 'LotteryTicketDatatablesController', [
+            'anyData'  => 'datatables.lotteryticketsdata'
+        ]);
+
+        Route::get('lottery/tickets', [
+            'uses' => 'LotteryController@tickets',
+            'as'   => 'admin.lottery.tickets'
+        ]);
+
+        Route::get('lottery/{lottery}/items/{itemid}/search', [
+            'uses' => 'LotteryItemController@getItemData',
+            'as'   => 'admin.lottery.item.getdata'
+        ])->where('itemid','[0-9]+');
+
+        Route::resource('lottery/{lottery}/items', 'LotteryItemController', ['only' => [
+            'index', 'store', 'update', 'destroy'], 'names' => [
+            'index'   => 'admin.lottery.items', // GET Index
+            'store'   => 'admin.lottery.item.store', // POST Store (create TASK)
+            'update'  => 'admin.lottery.item.update', // PUT OU PATCH for update the edit
+            'destroy' => 'admin.lottery.item.destroy'
+        ]]);
+
+        Route::resource('lottery', 'LotteryController', ['names' => [
+            'index'   => 'admin.lottery', // GET Index
+            'create'  => 'admin.lottery.create', // GET Create
+            'store'   => 'admin.lottery.stores', // POST Store (create TASK)
+            'edit'    => 'admin.lottery.edit', // GET Edit (view) /task/ID/edit
+            'update'  => 'admin.lottery.update' // PUT OU PATCH for update the edit
+        ]]);
+
     });
 });
 

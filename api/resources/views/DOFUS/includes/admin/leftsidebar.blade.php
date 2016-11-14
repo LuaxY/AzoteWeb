@@ -84,6 +84,17 @@
                        class="waves-effect {{ active_class(if_route('admin.transactions'))}}"><i class="fa fa-money"></i>
                         <span> Transactions </span> </a>
                 </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);"
+                       class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\LotteryController'))}}"><i
+                                class="fa fa-ticket"></i> <span> Lottery </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li class="{{ active_class(if_route('admin.lottery.tickets'))}}"><a href="{{ route('admin.lottery.tickets') }}">Tickets</a>
+                        </li>
+                        <li class="{{ active_class(if_route('admin.lottery'))}}"><a
+                                    href="{{ route('admin.lottery') }}">Types</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{{ route('admin.tasks') }}"
                        class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i>
