@@ -104,18 +104,26 @@ class VoteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $dateLastVote = date('Y-m-d H:i:s');
+        $previousVote = Auth::user()->last_vote;
+
+        // Store current date to avoid cheat (getOuts may be long)
+        Auth::user()->last_vote = $dateLastVote;
+        Auth::user()->save();
+
         $actualOUT = $this->getOuts();
 
         if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
         {
+            // Bad OUT, restore preivous last vote date
+            Auth::user()->last_vote = $previousVote;
+            Auth::user()->save();
+
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
 
-        $dateLastVote = date('Y-m-d H:i:s');
-
         Auth::user()->votes    += 1;
         Auth::user()->points   += config('dofus.vote');
-        Auth::user()->last_vote = $dateLastVote;
 
         if (Auth::user()->isFirstVote)
         {

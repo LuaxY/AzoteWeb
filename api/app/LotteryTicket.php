@@ -10,6 +10,9 @@ use App\ItemTemplate;
 
 class LotteryTicket extends Model
 {
+    const NORMAL = 0;
+    const GOLD   = 1;
+
     public function objects()
     {
         return $this->hasMany(LotteryItem::class, 'type', 'type')->get();
