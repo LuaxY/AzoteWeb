@@ -82,11 +82,21 @@ class PaymentController extends Controller
             $payment = $this->payment->palier($data['country'], $data['method_'], $data['palier']);
             $country = $data['country'];
 
+            $characterCount = 0;
+
+            foreach (Auth::user()->accounts() as $account)
+            {
+                $characterCount += count($account->characters(false, true));
+            }
+
+            $canBuy = $characterCount > 0;
+
             return view('shop.payment.code2', [
                 'payment' => $payment,
                 'country' => $country,
                 'method' => $data['method_'],
                 'palier' => $data['palier'],
+                'canBuy' => $canBuy,
                 'cgv' => 1
             ]);
         }

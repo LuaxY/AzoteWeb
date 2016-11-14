@@ -4,12 +4,6 @@
 @section('header')
     {!! Html::style('css/flags.css') !!}
     {!! Html::style('css/shop.css') !!}
-
-    <script>
-    openPaymentWindow = function(ticket, country, method, palier) {
-        window.open('http://{{ config('dofus.domain.fake') }}/code?ticket=' + ticket + '&country=' + country + '&pay_id=' + method + '_' + palier, 'Payment', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=600,height=670,left = 420,top = 150');
-    };
-    </script>
 @stop
 
 @section('breadcrumbs')
@@ -31,7 +25,11 @@
         </div>
         <div class="ak-panel-content">
             <div class="panel-main text-center">
-                <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                @if ($canBuy)
+                    <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                @else
+                    <center>Vous devez disposer d'au moins un personnage sur votre compte pour acheter des Ogrines.</center>
+                @endif
             </div>
         </div>
     </div>
