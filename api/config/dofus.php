@@ -19,6 +19,11 @@ return [
         'color'      => '#3d301e'
     ],
 
+    'domain' => [
+        'main' => env('MAIN_DOMAIN'),
+        'fake' => env('FAKE_DOMAIN')
+    ],
+
     'default_avatar' => 'imgs/avatar/default.jpg',
 
     'accounts_limit' => 8,
