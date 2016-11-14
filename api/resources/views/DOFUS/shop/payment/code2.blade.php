@@ -31,7 +31,7 @@
         </div>
         <div class="ak-panel-content">
             <div class="panel-main text-center">
-                <a href="#" onClick="openPaymentWindow('{{ Auth::user()->ticket }}', '{{ $country }}', '{{ $method }}', '{{ $palier }}'); return false;"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
             </div>
         </div>
     </div>

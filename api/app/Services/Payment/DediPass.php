@@ -66,6 +66,11 @@ class DediPass extends Payment
                 $newMethod->number = $method->phone;
             }
 
+            if (property_exists($method, 'legal_graphic'))
+            {
+                $newMethod->legal = $method->legal_graphic;
+            }
+
             $this->rates->$countryName->$methodName->$palier = $newMethod;
         }
     }
