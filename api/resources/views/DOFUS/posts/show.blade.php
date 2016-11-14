@@ -2,7 +2,8 @@
 @include('layouts.menus.base')
 
 @section('header')
-    {!! Html::style('css/news.css') !!}
+    {!! Html::style('css/lightbox.min.css') !!}
+    {!! Html::script('js/lightbox.min.js') !!}
     <script>
         var $jQuery = jQuery.noConflict();
     </script>
@@ -35,7 +36,7 @@
                         <p>{!! $post->preview !!}</p>
                     </div>
                     <div class="ak-big-image template_block">
-                        <img alt="" class="img-responsive img-maxresponsive" src="{{ URL::asset($post->image) }}">
+                        <a href="{{ URL::asset($post->image) }}" data-lightbox="image" data-title="{{ $post->title }}"><img alt="" class="img-responsive img-maxresponsive" src="{{ URL::asset($post->image) }}"></a>
                     </div>
                     <p>{!! $post->content !!}</p>
                 </div>

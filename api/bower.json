@@ -9,7 +9,8 @@
     "datetimepicker": "*",
     "dragula": "*",
     "pick-a-color": "*",
-    "bootstrap-touchspin": "*"
+    "bootstrap-touchspin": "*",
+    "lightbox2": "^2.9.0"
   },
   "devDependencies": {
     "dropify": "*",
