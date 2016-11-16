@@ -71,7 +71,7 @@ class User extends Authenticatable
         'certify' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
-            'birthday'  => 'required|date_format:Y-m-d'
+            'birthday'  => 'required|date',
         ],
         'admin-store' => [
             'pseudo'               => 'required|min:3|max:32|alpha_dash|unique:users,pseudo',
