@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin')
-@section('title') Lottery Edit @endsection
-@section('page-title') Lottery: Edit @endsection
+@section('title') Lottery Create @endsection
+@section('page-title') Lottery: Create @endsection
 @section('header')
     {{ Html::style('css/dropify.min.css') }}
 @endsection
@@ -15,8 +15,7 @@
                 </div>
                 <div class="card-box">
                     <h4 class="header-title m-b-30">Lottery</h4>
-                    {{ Form::model($type, ['route' => ['admin.lottery.update', $type->id], 'id' => 'form-updatelottery', 'files' => 'true']) }}
-                    {{ method_field('PATCH') }}
+                    {{ Form::open(['route' => 'admin.lottery.store', 'id' => 'form-storelottery', 'files' => 'true']) }}
 
                     <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">Name:</label>
@@ -52,7 +51,7 @@
                         @endif
                     </div>
 
-                    {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
+                    {!! Form::submit('Create', ['class' => 'btn btn-info']) !!}
                     {{ Form::close() }}
                 </div>
             </div>
@@ -63,11 +62,7 @@
 @section('bottom')
     {!! Html::script('js/admin/dropify.min.js') !!}
     <script>
-        $('.dropify').dropify({
-            defaultFile: '{{ URL::asset($type->icon_path)}}'
-        });
-        $('.dropify2').dropify({
-            defaultFile: '{{ URL::asset($type->image_path)}}'
-        });
+        $('.dropify').dropify();
+        $('.dropify2').dropify();
     </script>
 @endsection

@@ -8,6 +8,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card-box">
+                    <a href="{{ route('admin.lottery.create') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-plus"></i> Create Lottery</a>
                     <h4 class="header-title m-b-30">Lotteries</h4>
                     <table class="table table-striped" id="tickets-table">
                         <thead>
