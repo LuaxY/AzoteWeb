@@ -743,18 +743,19 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 
         Route::resource('lottery/{lottery}/items', 'LotteryItemController', ['only' => [
             'index', 'store', 'update', 'destroy'], 'names' => [
-            'index'   => 'admin.lottery.items', // GET Index
-            'store'   => 'admin.lottery.item.store', // POST Store (create TASK)
-            'update'  => 'admin.lottery.item.update', // PUT OU PATCH for update the edit
+            'index'   => 'admin.lottery.items',
+            'store'   => 'admin.lottery.item.store',
+            'update'  => 'admin.lottery.item.update',
             'destroy' => 'admin.lottery.item.destroy'
         ]]);
 
-        Route::resource('lottery', 'LotteryController', ['names' => [
-            'index'   => 'admin.lottery', // GET Index
-            'create'  => 'admin.lottery.create', // GET Create
-            'store'   => 'admin.lottery.stores', // POST Store (create TASK)
-            'edit'    => 'admin.lottery.edit', // GET Edit (view) /task/ID/edit
-            'update'  => 'admin.lottery.update' // PUT OU PATCH for update the edit
+        Route::resource('lottery', 'LotteryController', ['only' => [
+            'index', 'create', 'store', 'edit', 'update'], 'names' => [
+            'index'   => 'admin.lottery',
+            'create'  => 'admin.lottery.create',
+            'store'   => 'admin.lottery.store',
+            'edit'    => 'admin.lottery.edit',
+            'update'  => 'admin.lottery.update'
         ]]);
 
     });
