@@ -154,4 +154,8 @@ elixir(function(mix) {
     mix.styles('./vendor/bower_components/lightbox2/dist/css/lightbox.min.css', 'public/css/lightbox.min.css');
     mix.scripts('./vendor/bower_components/lightbox2/dist/js/lightbox.min.js', 'public/js/lightbox.min.js');
     mix.copy('./vendor/bower_components/lightbox2/dist/images', 'public/images');
+
+    // FLAG ICON CSS //
+    mix.styles('./vendor/bower_components/flag-icon-css/css/flag-icon.min.css', 'public/css/flag-icon.min.css');
+    mix.copy('./vendor/bower_components/flag-icon-css/flags', 'public/flags');
 });

@@ -32,17 +32,34 @@ class PaymentController extends Controller
 
     public function method($country = 'fr')
     {
-        if (isset($this->payment->rates()->$country))
+        if (!isset($this->payment->rates()->$country))
         {
-            $methods = $this->payment->rates()->$country;
-        }
-        else
-        {
-            $methods = $this->payment->rates()->fr;
             $country = 'fr';
         }
 
+        $methodsCountry = $this->payment->rates()->$country;
+        $methodsGeneric = $this->payment->rates()->all;
+
+        $methods = (object) array_merge((array) $methodsCountry, (array) $methodsGeneric);
+
         return view('shop.payment.method', ['methods' => $methods, 'country' => $country]);
+    }
+
+    public function palier($country = 'fr', $method = null)
+    {
+        if (isset($this->payment->rates()->all->$method))
+        {
+            $country = 'all';
+        }
+        elseif (!isset($this->payment->rates()->$country) || !isset($this->payment->rates()->$country->$method))
+        {
+            $country = 'fr';
+            $method  = 'sms';
+        }
+
+        $paliers = $this->payment->rates()->$country->$method;
+
+        return view('shop.payment.palier', ['paliers' => $paliers, 'country' => $country, 'methodName' => $method]);
     }
 
     public function code(Request $request)

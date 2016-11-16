@@ -3,6 +3,7 @@
 
 @section('header')
     {!! Html::style('css/flags.css') !!}
+    {!! Html::style('css/flag-icon.min.css') !!}
 @stop
 
 @section('breadcrumbs')
@@ -17,20 +18,24 @@
 
 <div class="ak-container ak-panel-stack ak-payments-process-choice">
     <div class="ak-container ak-panel">
-        <div class="ak-intro-connection">
-            <div class="ak-panel-content ak-text-intro">
-                <h3>Astuce:</h3>
-                <p style="text-align: center;">
-                    Les paiements hors SMS et Appels comme <strong>paysafecard, neosurf et carte bancaire</strong> se trouvent dans le <strong>drapeau européen {{Html::image('imgs/shop/europe.png', 'europe')}}</strong>
-            </div>
-        </div>
         <div class="ak-panel-title">
-              <span class="ak-panel-title-icon"></span> Choisissez votre pays
+            <span class="ak-panel-title-icon"></span> Choisissez votre pays
         </div>
         <div class="ak-panel-content">
             <div class="panel-main">
+                <style>
+                .flag-icon {
+                    float: left;
+                }
+
+                a.btn-flag {
+                    width: 148px;
+                    margin: 5px;
+                }
+                </style>
                 @foreach ($rates as $country => $data)
-                <a href="{{ URL::route('shop.payment.method', $country) }}" title="{{ $country }}"><span class="icon-flag flag-{{ $country }}"></span></a>
+                @if ($country != 'all' && $country != 'anre') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="{{ $country }}"><span class="flag-icon flag-icon-{{ $country }}"></span> {{ $country }}</a> @endif
+                @if ($country == 'anre') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="DOM"><span class="flag-icon flag-icon-fr"></span> DOM</a> @endif
                 @endforeach
             </div>
         </div>

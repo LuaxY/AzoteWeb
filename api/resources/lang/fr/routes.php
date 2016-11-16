@@ -76,6 +76,8 @@ return [
 
     'shop.payment.choose-method' => 'boutique/paiement/{country?}/choix-mode-paiement',
 
+    'shop.payment.choose-palier' => 'boutique/paiement/{country?}/{method?}/choix-offre',
+
     'shop.payment.get-code' => 'boutique/paiement/obtention-code',
 
     'shop.payment.process' => 'boutique/paiement/process',
