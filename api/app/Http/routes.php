@@ -223,6 +223,12 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
         'as'         => 'shop.payment.method'
     ]);
 
+    Route::get(Lang::get('routes.shop.payment.choose-palier'), [
+        'middleware' => 'auth',
+        'uses'       => 'PaymentController@palier',
+        'as'         => 'shop.payment.palier'
+    ]);
+
     Route::any(Lang::get('routes.shop.payment.get-code'), [
         'middleware' => 'auth',
         'uses'       => 'PaymentController@code',
