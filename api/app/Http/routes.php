@@ -212,34 +212,38 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
     /* ============ SHOP ============ */
 
     Route::get(Lang::get('routes.shop.payment.choose-country'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@country',
         'as'         => 'shop.payment.country'
     ]);
 
     Route::get(Lang::get('routes.shop.payment.choose-method'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@method',
         'as'         => 'shop.payment.method'
     ]);
 
     Route::get(Lang::get('routes.shop.payment.choose-palier'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@palier',
         'as'         => 'shop.payment.palier'
     ]);
 
     Route::any(Lang::get('routes.shop.payment.get-code'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@code',
         'as'         => 'shop.payment.code'
     ]);
 
     Route::post(Lang::get('routes.shop.payment.process'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@process',
         'as'         => 'shop.payment.process'
     ]);
+
+    Route::get('shop/maintenance', function () {
+        return view('shop.payment.maintenance');
+    });
 
     /* ============ VOTE ============ */
 

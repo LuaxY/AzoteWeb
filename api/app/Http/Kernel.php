@@ -58,5 +58,6 @@ class Kernel extends HttpKernel
         'admin'      => \App\Http\Middleware\Admin::class,
         'lottery'    => \App\Http\Middleware\LotteryMaintenance::class,
         'AuthPayment'=> \App\Http\Middleware\AuthPayment::class,
+        'ShopMaintenance'=> \App\Http\Middleware\ShopMaintenance::class,
     ];
 }
