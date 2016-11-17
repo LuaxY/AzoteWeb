@@ -31,47 +31,50 @@ class DediPass extends Payment
 
         $this->rates = new \stdClass;
 
-        foreach ($json as $method)
+        if ($json)
         {
-            $countryName = strtolower($method->country->iso);
-            $methodName  = strtolower($method->solution);
-            $palier      = $method->rate;
-
-            if (!property_exists($this->rates, $countryName))
+            foreach ($json as $method)
             {
-                $this->rates->$countryName = new \stdClass;
+                $countryName = strtolower($method->country->iso);
+                $methodName  = strtolower($method->solution);
+                $palier      = $method->rate;
+
+                if (!property_exists($this->rates, $countryName))
+                {
+                    $this->rates->$countryName = new \stdClass;
+                }
+
+                if (!property_exists($this->rates->$countryName, $methodName))
+                {
+                    $this->rates->$countryName->$methodName = new \stdClass;
+                }
+
+                $newMethod = new \stdClass;
+
+                $newMethod->devise = $method->user_currency == "EUR" ? "&euro;" : $method->user_currency;
+                $newMethod->text   = $method->mention;
+                $newMethod->cost   = $method->user_price . " " . $newMethod->devise;
+                $newMethod->points = $method->user_earns;
+                $newMethod->link   = $method->link;
+
+                if ($methodName == "sms")
+                {
+                    $newMethod->number  = $method->shortcode;
+                    $newMethod->keyword = $method->keyword;
+                }
+
+                if ($methodName == "audiotel" )
+                {
+                    $newMethod->number = $method->phone;
+                }
+
+                if (property_exists($method, 'legal_graphic'))
+                {
+                    $newMethod->legal = $method->legal_graphic;
+                }
+
+                $this->rates->$countryName->$methodName->$palier = $newMethod;
             }
-
-            if (!property_exists($this->rates->$countryName, $methodName))
-            {
-                $this->rates->$countryName->$methodName = new \stdClass;
-            }
-
-            $newMethod = new \stdClass;
-
-            $newMethod->devise = $method->user_currency == "EUR" ? "&euro;" : $method->user_currency;
-            $newMethod->text   = $method->mention;
-            $newMethod->cost   = $method->user_price . " " . $newMethod->devise;
-            $newMethod->points = $method->user_earns;
-            $newMethod->link   = $method->link;
-
-            if ($methodName == "sms")
-            {
-                $newMethod->number  = $method->shortcode;
-                $newMethod->keyword = $method->keyword;
-            }
-
-            if ($methodName == "audiotel" )
-            {
-                $newMethod->number = $method->phone;
-            }
-
-            if (property_exists($method, 'legal_graphic'))
-            {
-                $newMethod->legal = $method->legal_graphic;
-            }
-
-            $this->rates->$countryName->$methodName->$palier = $newMethod;
         }
     }
 
