@@ -47,6 +47,8 @@ class PaymentController extends Controller
 
     public function palier($country = 'fr', $method = null)
     {
+        $countryBackup = $country;
+
         if (isset($this->payment->rates()->all->$method))
         {
             $country = 'all';
@@ -59,7 +61,7 @@ class PaymentController extends Controller
 
         $paliers = $this->payment->rates()->$country->$method;
 
-        return view('shop.payment.palier', ['paliers' => $paliers, 'country' => $country, 'methodName' => $method]);
+        return view('shop.payment.palier', ['paliers' => $paliers, 'country' => $country, 'countryBackup' => $countryBackup, 'methodName' => $method]);
     }
 
     public function code(Request $request)

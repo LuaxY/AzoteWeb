@@ -16,6 +16,7 @@
     <h1 class="ak-return-link">
         <span class="ak-icon-big ak-shop"></span> Achat d'ogrines
     </h1>
+    <a href="{{ URL::route('shop.payment.method', $countryBackup) }}" class="ak-backlink-button">Retour aux méthodes de paiement</a>
 </div>
 
 <div class="ak-container ak-panel-stack ak-payments-process-choice">
