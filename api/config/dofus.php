@@ -42,6 +42,8 @@ return [
 
     'lottery_maintenance' => env('LOTTERY_MAINTENANCE', true),
 
+    'shop_maintenance' => env('SHOP_MAINTENANCE', true),
+
     'download'     => [
         'mac' => 'http://dl.azote.us/Azote_Setup.dmg',
         'win' => 'http://dl.azote.us/Azote_Setup.exe',
