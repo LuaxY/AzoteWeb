@@ -108,7 +108,7 @@
                                             <li class="lvl2"><a href="{{ URL::route('posts') }}">Actualités</a></li>
                                             <li class="lvl2"><a href="{{ URL::route('servers') }}">Serveurs</a></li>
                                             <li class="lvl2"><a href="{{ URL::route('ladder.general') }}">Classements</a></li>
-                                            <li class="lvl2"><a href="{{ URL::to('/') }}">Événements</a></li>
+                                            <li class="lvl2"><a href="{{ URL::route('lottery.index') }}">Loterie</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -163,7 +163,7 @@
                                     <span class="ak-link-title">Serveur</span>
                                 </div>
                                 <a href="{{ URL::route('servers') }}">Infos serveurs</a>
-                                <a href="{{ URL::to('/') }}">Évènements</a>
+                                <a href="{{ URL::route('lottery.index') }}">Loterie</a>
                                 <a href="{{ URL::route('ladder.general') }}">Classements</a>
                                 <a href="{{ URL::route('vote.index') }}">Cadeaux</a>
                             </div>
