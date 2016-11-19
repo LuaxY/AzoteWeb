@@ -21,7 +21,7 @@ class PaymentController extends Controller
     {
         $used = config('dofus.payment.used');
 
-        if (Auth::user()->isFirstBuy)
+        if (count(Auth::user()->transactions()) <= 0)
         {
             $used = config('dofus.payment.used_first');
         }
@@ -314,11 +314,6 @@ class PaymentController extends Controller
 
                 Cache::forget('transactions_' . Auth::user()->id);
                 Cache::forget('transactions_' . Auth::user()->id . '_10');
-
-                if (Auth::user()->isFirstBuy)
-                {
-                    Auth::user()->isFirstBuy = false;
-                }
 
                 Auth::user()->points += $validation->points;
                 Auth::user()->save();
