@@ -89,14 +89,25 @@ return [
 
     'payment' => [
 
-        'used' => env('PAYMENT', 'dedipass'),
+        'used'       => env('PAYMENT', 'dedipass'),
+
+        'used_first' => env('PAYMENT_FIRST', 'starpass'),
 
         'dedipass' => [
-            'name'       => 'DediPass',
+            'name'       => 'Dedipass',
             'url'        => 'https://api.dedipass.com/v1/pay/rates?key={PUBLIC_KEY}',
             'validation' => 'http://api.dedipass.com/v1/pay/?public_key={PUBLIC_KEY}&private_key={PRIVATE_KEY}&code={CODE}',
             'public'     => env('PAYMENT_PUBLIC', 0),
             'private'    => env('PAYMENT_PRIVATE', 0),
+        ],
+
+        'starpass' => [
+            "name"       => 'Starpass',
+            'url'        => 'https://script.starpass.fr/script.php?idd={IDD}',
+            'validation' => 'http://script.starpass.fr/check_php.php?ident={KEY}&codes={CODE}',
+            'idp'        => env('STARPASS_IDP', 0),
+            'idd'        => env('STARPASS_IDD', 0),
+            'points'     => env('STARPASS_POINTS', 100),
         ],
 
     ],

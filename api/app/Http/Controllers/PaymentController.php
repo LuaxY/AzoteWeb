@@ -10,6 +10,7 @@ use \Cache;
 
 use App\Transaction;
 use App\Services\Payment\DediPass;
+use App\Services\Payment\Starpass;
 use App\Shop\ShopStatus;
 
 class PaymentController extends Controller
@@ -20,7 +21,13 @@ class PaymentController extends Controller
     {
         $used = config('dofus.payment.used');
 
+        if (Auth::user()->isFirstBuy)
+        {
+            $used = config('dofus.payment.used_first');
+        }
+
         if ($used == "dedipass") $this->payment = new DediPass;
+        if ($used == "starpass") $this->payment = new Starpass;
 
         if (!$this->payment) die("No valid payment method found");
     }
@@ -38,7 +45,7 @@ class PaymentController extends Controller
         }
 
         $methodsCountry = $this->payment->rates()->$country;
-        $methodsGeneric = $this->payment->rates()->all;
+        $methodsGeneric = isset($this->payment->rates()->all) ? $this->payment->rates()->all : [];
 
         $methods = (object) array_merge((array) $methodsCountry, (array) $methodsGeneric);
 
@@ -49,7 +56,7 @@ class PaymentController extends Controller
     {
         $countryBackup = $country;
 
-        if (isset($this->payment->rates()->all->$method))
+        if (isset($this->payment->rates()->all) && isset($this->payment->rates()->all->$method))
         {
             $country = 'all';
         }
@@ -89,12 +96,12 @@ class PaymentController extends Controller
 
         if ($validator->fails())
         {
-            return redirect()->route('shop.payment.method', $data['country'])->withErrors($validator);
+            return redirect()->back()->withErrors($validator);
         }
 
         if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null)
         {
-            return redirect()->route('shop.payment.method', $data['country'])->withErrors(['palier' => 'Le palier selectionné est invalide.']);
+            return redirect()->back()->withErrors(['palier' => 'Le palier selectionné est invalide.']);
         }
         else
         {
@@ -278,7 +285,8 @@ class PaymentController extends Controller
 
         $validation = $this->payment->check($data['palier'], $data['code']);
 
-        $transaction->raw = $validation->raw;
+        $transaction->provider = $validation->provider;
+        $transaction->raw      = $validation->raw;
 
         if ($validation->error)
         {
@@ -306,6 +314,11 @@ class PaymentController extends Controller
 
                 Cache::forget('transactions_' . Auth::user()->id);
                 Cache::forget('transactions_' . Auth::user()->id . '_10');
+
+                if (Auth::user()->isFirstBuy)
+                {
+                    Auth::user()->isFirstBuy = false;
+                }
 
                 Auth::user()->points += $validation->points;
                 Auth::user()->save();

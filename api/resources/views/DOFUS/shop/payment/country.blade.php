@@ -34,8 +34,10 @@
                 }
                 </style>
                 @foreach ($rates as $country => $data)
-                @if ($country != 'all' && $country != 'anre') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="{{ $country }}"><span class="flag-icon flag-icon-{{ $country }}"></span> {{ $country }}</a> @endif
+                @if ($country != 'all' && $country != 'anre' && $country != 'uk' && $country != 'fd') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="{{ $country }}"><span class="flag-icon flag-icon-{{ $country }}"></span> {{ $country }}</a> @endif
                 @if ($country == 'anre') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="DOM"><span class="flag-icon flag-icon-fr"></span> DOM</a> @endif
+                @if ($country == 'fd') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="DOM"><span class="flag-icon flag-icon-fr"></span> DOM</a> @endif
+                @if ($country == 'uk') <a class="btn btn-default btn-flag" href="{{ URL::route('shop.payment.method', $country) }}" title="{{ $country }}"><span class="flag-icon flag-icon-gb"></span> {{ $country }}</a> @endif
                 @endforeach
             </div>
         </div>
