@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 use App\User;
+use App\Helpers\CloudFlare;
 
 class AuthPayment
 {
@@ -19,7 +20,7 @@ class AuthPayment
     {
         $user = User::where('ticket', $request->input('ticket'))->first();
 
-        if ($user && $request->ip() == $user->last_ip_address)
+        if ($user && CloudFlare::ip() == $user->last_ip_address)
         {
             Auth::login($user);
         }
