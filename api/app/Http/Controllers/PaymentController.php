@@ -118,7 +118,7 @@ class PaymentController extends Controller
             $canBuy = $characterCount > 0;
 
             Auth::user()->last_ip_address = $request->ip();
-            Auth::user()->ticket          = str_random(32);
+            //Auth::user()->ticket          = str_random(32);
             Auth::user()->save();
 
             return view('shop.payment.code2', [
@@ -320,7 +320,7 @@ class PaymentController extends Controller
                 Cache::forget('transactions_' . Auth::user()->id . '_10');
 
                 Auth::user()->points += $validation->points;
-                Auth::user()->ticket  = str_random(32);
+                //Auth::user()->ticket  = str_random(32);
                 Auth::user()->save();
 
                 return view('shop.payment.success');
