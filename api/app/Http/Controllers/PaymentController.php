@@ -21,7 +21,7 @@ class PaymentController extends Controller
     {
         $used = config('dofus.payment.used');
 
-        if (count(Auth::user()->transactions()) <= 0)
+        if (Auth::user()->isFistBuy())
         {
             $used = config('dofus.payment.used_first');
         }
@@ -116,6 +116,10 @@ class PaymentController extends Controller
             }
 
             $canBuy = $characterCount > 0;
+
+            Auth::user()->last_ip_address = $request->ip();
+            Auth::user()->ticket          = str_random(32);
+            Auth::user()->save();
 
             return view('shop.payment.code2', [
                 'payment' => $payment,

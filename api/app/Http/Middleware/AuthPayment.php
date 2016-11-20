@@ -19,7 +19,7 @@ class AuthPayment
     {
         $user = User::where('ticket', $request->input('ticket'))->first();
 
-        if ($user)
+        if ($user && $request->ip() == $user->last_ip_address)
         {
             Auth::login($user);
         }

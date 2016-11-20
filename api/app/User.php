@@ -11,6 +11,7 @@ use App\ModelCustom;
 use App\ForumAccount;
 use App\Vote;
 use App\LotteryTicket;
+use App\Shop\ShopStatus;
 
 class User extends Authenticatable
 {
@@ -257,5 +258,12 @@ class User extends Authenticatable
     public function isCertified()
     {
         return $this->certified == 1;
+    }
+
+    public function isFistBuy()
+    {
+        $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
+
+        return $transactionsCount < 2;
     }
 }
