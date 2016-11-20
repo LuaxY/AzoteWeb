@@ -93,6 +93,8 @@ return [
 
         'used_first' => env('PAYMENT_FIRST', 'starpass'),
 
+        'minimum_for_real' => env('PAYMENT_MINIMUM', 2),
+
         'dedipass' => [
             'name'       => 'Dedipass',
             'url'        => 'https://api.dedipass.com/v1/pay/rates?key={PUBLIC_KEY}',

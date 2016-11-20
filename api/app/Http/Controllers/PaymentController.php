@@ -320,6 +320,7 @@ class PaymentController extends Controller
                 Cache::forget('transactions_' . Auth::user()->id . '_10');
 
                 Auth::user()->points += $validation->points;
+                Auth::user()->ticket  = str_random(32);
                 Auth::user()->save();
 
                 return view('shop.payment.success');

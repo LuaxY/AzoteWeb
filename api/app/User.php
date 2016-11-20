@@ -264,6 +264,6 @@ class User extends Authenticatable
     {
         $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
 
-        return $transactionsCount < 2;
+        return $transactionsCount < config('dofus.payment.minimum_for_real');
     }
 }
