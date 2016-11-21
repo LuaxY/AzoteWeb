@@ -19,7 +19,7 @@
                 <div class="panel panel-danger" style="margin-top:10px;">
                     <div class="panel-heading">Erreur</div>
                     <div class="panel-body">
-                        @if (isset($message)) {{ $message }} @else Une erreur est survenue @endif
+                        @if (isset($message)) {{ $message }} @else Une erreur est survenue #{{ $code }} @endif
                     </div>
                 </div>
             </div>

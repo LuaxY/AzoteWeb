@@ -392,9 +392,10 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'as'         => 'code'
     ]);
 
-    Route::get('error', function() {
-        return view('errors.fake');
-    });
+    Route::get('error/{code?}', [
+        'uses'       => 'PageController@error_fake',
+        'as'         => 'error.fake'
+    ])->where('code', '[0-9]+');
 
 });
 

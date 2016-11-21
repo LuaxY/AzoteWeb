@@ -118,7 +118,6 @@ class PaymentController extends Controller
             $canBuy = $characterCount > 0;
 
             Auth::user()->last_ip_address = $request->ip();
-            //Auth::user()->ticket          = str_random(32);
             Auth::user()->save();
 
             return view('shop.payment.code2', [
@@ -130,94 +129,6 @@ class PaymentController extends Controller
                 'cgv' => 1
             ]);
         }
-    }
-
-    public function process(Request $request)
-    {
-        /*$data = $request->all();
-
-        $split = explode('_', $data['method']);
-        $data['method_'] = $split[0];
-        $data['palier']  = $split[1];
-
-        $validator = Validator::make($data, [
-            'country' => 'required|min:2|max:3|alpha_num',
-            'method_' => 'required|in:sms,audiotel,mobilecall,paypal,paysafecard,neosurf,carte bancaire,internet plus mobile',
-            'code'    => 'required|min:6|max:8|alpha_num',
-            'cgv'     => 'required'
-        ]);
-
-        if ($validator->fails())
-        {
-            return redirect()->route('shop.payment.code')->withErrors($validator)->withInput($data);
-        }
-
-        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null)
-        {
-            return redirect()->route('shop.payment.code')->withErrors(['palier' => 'Le palier selectionné est invalide.'])->withInput($data);
-        }
-
-        $transaction = new Transaction;
-        $transaction->user_id     = Auth::user()->id;
-        $transaction->state       = ShopStatus::IN_PROGRESS;
-        $transaction->code        = $data['code'];
-        $transaction->points      = 0;
-        $transaction->country     = $data['country'];
-        $transaction->palier_name = $data['method'];
-        $transaction->save();
-
-        $validation = $this->payment->check($data['palier'], $data['code']);
-
-        $transaction->raw = $validation->raw;
-
-        if ($validation->error)
-        {
-            $transaction->state = ShopStatus::PAYMENT_ERROR;
-            $transaction->type  = 'error';
-            $transaction->save();
-
-            Cache::forget('transactions_' . Auth::user()->id);
-            Cache::forget('transactions_' . Auth::user()->id . '_10');
-
-            return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->error])->withInput();
-        }
-        else
-        {
-            if ($validation->success)
-            {
-                $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
-                $transaction->code        = $validation->code;
-                $transaction->points      = $validation->points;
-                $transaction->country     = $validation->country;
-                $transaction->palier_name = $validation->palier_name;
-                $transaction->palier_id   = $validation->palier_id;
-                $transaction->type        = $validation->type;
-                $transaction->save();
-
-                Cache::forget('transactions_' . Auth::user()->id);
-                Cache::forget('transactions_' . Auth::user()->id . '_10');
-
-                Auth::user()->points += $validation->points;
-                Auth::user()->save();
-
-                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous avez reçu {$validation->points} points !"]);
-                $request->session()->flash('popup', 'ogrines');
-
-                return redirect()->route('home');
-            }
-            else
-            {
-                $transaction->state = ShopStatus::PAYMENT_FAIL;
-                $transaction->code  = $validation->code;
-                $transaction->type  = 'fail';
-                $transaction->save();
-
-                Cache::forget('transactions_' . Auth::user()->id);
-                Cache::forget('transactions_' . Auth::user()->id . '_10');
-
-                return redirect()->route('shop.payment.code')->withErrors(['code' => $validation->message])->withInput();
-            }
-        }*/
     }
 
     public function fake(Request $request)
@@ -236,14 +147,14 @@ class PaymentController extends Controller
 
         if ($validator->fails())
         {
-            return view('errors.fake');
+            return redirect()->route('error.fake', [1]);
         }
 
         $payment = $this->payment->palier($data['country'], $data['method'], $data['palier']);
 
         if (!$payment)
         {
-            return view('errors.fake');
+            return redirect()->route('error.fake', [2]);
         }
 
         return view('shop.payment.popup', [
@@ -275,7 +186,7 @@ class PaymentController extends Controller
 
         if ($this->payment->palier($data['country'], $data['method'], $data['palier']) == null)
         {
-            return view('errors.fake');
+            return redirect()->route('error.fake', [3]);
         }
 
         $transaction = new Transaction;
@@ -320,7 +231,6 @@ class PaymentController extends Controller
                 Cache::forget('transactions_' . Auth::user()->id . '_10');
 
                 Auth::user()->points += $validation->points;
-                //Auth::user()->ticket  = str_random(32);
                 Auth::user()->save();
 
                 return view('shop.payment.success');

@@ -26,7 +26,7 @@ class AuthPayment
         }
         else
         {
-            return redirect()->to('error');
+            return redirect()->route('error.fake', [4]);
         }
 
         return $next($request);

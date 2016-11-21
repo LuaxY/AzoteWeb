@@ -17,4 +17,9 @@ class PageController extends Controller
 
         return view('pages.servers', ['servers' => $servers]);
     }
+
+    public function error_fake($code = 0)
+    {
+        return view('errors.fake', ['code' => $code]);
+    }
 }
