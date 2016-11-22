@@ -55,9 +55,9 @@ class CloudFlare
      */
     public static function onTrustedRequest(Closure $callback)
     {
-        if (static::isTrustedRequest()) {
+        //if (static::isTrustedRequest()) {
             return $callback();
-        }
+        //}
     }
 
     /**
