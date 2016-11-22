@@ -20,9 +20,16 @@ class AuthPayment
     {
         $user = User::where('ticket', $request->input('ticket'))->first();
 
-        if ($user && CloudFlare::ip() == $user->last_ip_address)
+        if ($user)
         {
-            Auth::login($user);
+            if (CloudFlare::ip() == $user->last_ip_address)
+            {
+                Auth::login($user);
+            }
+            else
+            {
+                return redirect()->route('error.fake', [5]);
+            }
         }
         else
         {
