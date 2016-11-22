@@ -89,7 +89,7 @@ class PaymentController extends Controller
         $data['palier']  = @$split[1];
 
         $validator = Validator::make($data, [
-            'country' => 'required|min:2|max:3|alpha_num',
+            'country' => 'required|min:2|max:4|alpha_num',
             'method_' => 'required|in:sms,audiotel,mobilecall,paypal,paysafecard,neosurf,carte bancaire,internet plus mobile',
             'cgv'     => 'required'
         ]);
@@ -141,7 +141,7 @@ class PaymentController extends Controller
         $data['palier']  = @$split[1];
 
         $validator = Validator::make($data, [
-            'country' => 'required|min:2|max:3|alpha_num',
+            'country' => 'required|min:2|max:4|alpha_num',
             'method'  => 'required|in:sms,audiotel,mobilecall,paypal,paysafecard,neosurf,carte bancaire,internet plus mobile',
         ]);
 
@@ -174,7 +174,7 @@ class PaymentController extends Controller
         $data['palier'] = $split[1];
 
         $validator = Validator::make($data, [
-            'country' => 'required|min:2|max:3|alpha_num',
+            'country' => 'required|min:2|max:4|alpha_num',
             'method'  => 'required|in:sms,audiotel,mobilecall,paypal,paysafecard,neosurf,carte bancaire,internet plus mobile',
             'code'    => 'required|min:6|max:8|alpha_num',
         ]);
