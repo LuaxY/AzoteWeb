@@ -95,9 +95,6 @@ class Starpass extends Payment
                                 $this->rates->$countryName->$methodName = new \stdClass;
                             }
 
-                            $palier = $methodName . '-' . $points;
-                            $palier = substr(md5($palier), 0, 5);
-
                             $newMethod = new \stdClass;
                             $newMethod->points = $points;
                             $newMethod->idp    = $idp;
@@ -139,6 +136,18 @@ class Starpass extends Payment
                             {
                                 $newMethod->legal->shortcode = '<img src="/images/smsasterix.png" style="width: 16px;vertical-align: 0px;margin-left: 3px;">';
                                 $newMethod->legal->footer    = '<img src="/images/smsplus.png" style="width: 100px;margin-top: 5px;">';
+                            }
+
+                            $palier = substr(md5($newMethod->cost), 0, 5);
+
+                            if (property_exists($this->rates->$countryName->$methodName, $palier))
+                            {
+                                $oldMethod = $this->rates->$countryName->$methodName->$palier;
+
+                                if ($newMethod->points > $oldMethod->points)
+                                {
+                                    continue;
+                                }
                             }
 
                             $this->rates->$countryName->$methodName->$palier = $newMethod;
