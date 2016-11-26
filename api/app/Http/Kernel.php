@@ -25,6 +25,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\AllowProxy::class,
         \App\Http\Middleware\ForceLogout::class,
         \App\Http\Middleware\UserBanned::class,
+        \App\Http\Middleware\CheckUserTicket::class,
     ];
 
     /**
