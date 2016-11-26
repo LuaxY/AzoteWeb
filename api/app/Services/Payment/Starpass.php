@@ -9,88 +9,151 @@ use Auth;
 class Starpass extends Payment
 {
     private $rates;
-    private $points;
 
     const CACHE_EXPIRE_MINUTES = 1440; // 1 day
 
     public function __construct()
     {
-        $json = null;
-
-        if (Cache::has('payment.starpass'))
-        {
-            $json = Cache::get('payment.starpass');
-        }
-        else
-        {
-            $url = config('dofus.payment.starpass.url');
-            $url = str_replace('{IDD}', config('dofus.payment.starpass.idd'), $url);
-            $file = file_get_contents($url);
-
-            preg_match('/oSmsAudiotelDataDoc'.config('dofus.payment.starpass.idd').' = {(.*)};/', $file, $matches);
-
-            $json = json_decode("{".$matches[1]."}");
-
-            Cache::add('payment.starpass', $json, self::CACHE_EXPIRE_MINUTES);
-        }
-
-        $this->points = config('dofus.payment.starpass.points');
         $this->rates  = new \stdClass;
 
-        if ($json)
+        if (!config('dofus.payment.starpass.config'))
         {
-            foreach ($json as $countryName => $country)
+            return;
+        }
+
+        $configs = explode('|', config('dofus.payment.starpass.config'));
+
+        foreach ($configs as $config)
+        {
+            $config = explode(';', $config);
+
+            $idp    = $config[0];
+            $idd    = $config[1];
+            $points = $config[2];
+
+            $json = null;
+
+            if (Cache::has('payment.starpass.'.$idd))
             {
-                $this->rates->$countryName = new \stdClass;
-                $palier = "one";
+                $json = Cache::get('payment.starpass.'.$idd);
+            }
+            else
+            {
+                $url = config('dofus.payment.starpass.url');
+                $url = str_replace('{IDD}', $idd, $url);
+                $file = file_get_contents($url);
 
-                foreach ($country as $methodName => $method)
+                preg_match('/oSmsAudiotelDataDoc'.$idd.' = {(.*)};/', $file, $matchesSmsAudiotel);
+
+                if (isset($matchesSmsAudiotel[1]))
                 {
-                    $this->rates->$countryName->$methodName = new \stdClass;
-
-                    $newMethod = new \stdClass;
-                    $newMethod->devise = $method->sCurrencyToDisplay;
-                    $newMethod->points = $this->points;
-
-                    if ($methodName == "sms")
-                    {
-                        $newMethod->number  = $method->smsPhoneNumber;
-                        $newMethod->keyword = $method->smsKeyword;
-                        $newMethod->cost    = $method->smsCostDetail;
-                        $newMethod->text    = "{$method->smsCostDetail}/SMS + prix d'un SMS<br>1 envoi de SMS par code d'accès";
-                    }
-
-                    if ($methodName == "audiotel" || $methodName == "mobilecall")
-                    {
-                        $newMethod->number = $method->audiotelPhone;
-                        $newMethod->cost   = $method->audiotelFixedCostDetail;
-                        $newMethod->text   = "{$method->fCostPerAction}/appel depuis une ligne fixe + coût d'un appel, {$method->iActionQuantity} appel requis.<br>Coût : ".(intval($method->iActionQuantity) * $method->fTotalCost)." {$method->sCurrencyToDisplay}";
-                    }
-
-                    $newMethod->legal = new \stdClass;
-                    $newMethod->legal->header    = null;
-                    $newMethod->legal->phone     = null;
-                    $newMethod->legal->shortcode = null;
-                    $newMethod->legal->keyword   = null;
-                    $newMethod->legal->footer    = null;
-
-                    if ($countryName == "fr" && $methodName == "sms")
-                    {
-                        $newMethod->legal->shortcode = '<img src="/images/smsasterix.png" style="width: 16px;vertical-align: 0px;margin-left: 3px;">';
-                        $newMethod->legal->footer    = '<img src="/images/smsplus.png" style="width: 100px;margin-top: 5px;">';
-                    }
-
-                    $this->rates->$countryName->$methodName->$palier = $newMethod;
+                    $json['SmsAudiotel'] = json_decode("{".$matchesSmsAudiotel[1]."}");
                 }
+
+                preg_match('/oNoSmsNoAudiotelTariffDataJsonDoc'.$idd.' = {(.*)};/', $file, $matchesOther);
+
+                if (isset($matchesOther[1]))
+                {
+                    $json['Other'] = json_decode("{".$matchesOther[1]."}");
+                }
+
+                Cache::add('payment.starpass.'.$idd, $json, self::CACHE_EXPIRE_MINUTES);
             }
 
-            $sortArray = (array)$this->rates;
+            if ($json)
+            {
+                foreach ($json as $docType)
+                {
+                    foreach ($docType as $countryName => $country)
+                    {
+                        if ($countryName == "xx")
+                        {
+                            continue;
+                        }
 
-            uksort($sortArray, function($a, $b) {
-                return $a == "fr" ? -1 : 1;
-            });
+                        if (!property_exists($this->rates, $countryName))
+                        {
+                            $this->rates->$countryName = new \stdClass;
+                        }
 
-            $this->rates = (object)$sortArray;
+                        foreach ($country as $methodName => $method)
+                        {
+                            if ($methodName == "cb")
+                            {
+                                $methodName = "carte bancaire";
+                            }
+
+                            $allowed = ['carte bancaire', 'sms', 'audiotel', 'mobilecall']; // paypal, wha, dtmp, sofort
+
+                            if (!in_array($methodName, $allowed))
+                            {
+                                continue;
+                            }
+
+                            if (!property_exists($this->rates->$countryName, $methodName))
+                            {
+                                $this->rates->$countryName->$methodName = new \stdClass;
+                            }
+
+                            $palier = $methodName . '-' . $points;
+                            $palier = substr(md5($palier), 0, 5);
+
+                            $newMethod = new \stdClass;
+                            $newMethod->points = $points;
+                            $newMethod->idp    = $idp;
+                            $newMethod->idd    = $idd;
+
+                            if ($methodName == "carte bancaire")
+                            {
+                                $newMethod->cost   = $method->sCodeString;
+                                $newMethod->devise = $method->sCodeCurrency;
+                                $newMethod->text   = "";
+                                $newMethod->link   = route('code_starpass_cb');
+                            }
+
+                            if ($methodName == "sms")
+                            {
+                                $newMethod->devise  = $method->sCurrencyToDisplay;
+                                $newMethod->number  = $method->smsPhoneNumber;
+                                $newMethod->keyword = $method->smsKeyword;
+                                $newMethod->cost    = $method->smsCostDetail;
+                                $newMethod->text    = "{$method->smsCostDetail}/SMS + prix d'un SMS<br>1 envoi de SMS par code d'accès";
+                            }
+
+                            if ($methodName == "audiotel" || $methodName == "mobilecall")
+                            {
+                                $newMethod->devise = $method->sCurrencyToDisplay;
+                                $newMethod->number = $method->audiotelPhone;
+                                $newMethod->cost   = $method->audiotelFixedCostDetail;
+                                $newMethod->text   = "{$method->fCostPerAction}/appel depuis une ligne fixe + coût d'un appel, {$method->iActionQuantity} appel requis.<br>Coût : ".(intval($method->iActionQuantity) * $method->fTotalCost)." {$method->sCurrencyToDisplay}";
+                            }
+
+                            $newMethod->legal = new \stdClass;
+                            $newMethod->legal->header    = null;
+                            $newMethod->legal->phone     = null;
+                            $newMethod->legal->shortcode = null;
+                            $newMethod->legal->keyword   = null;
+                            $newMethod->legal->footer    = null;
+
+                            if ($countryName == "fr" && $methodName == "sms")
+                            {
+                                $newMethod->legal->shortcode = '<img src="/images/smsasterix.png" style="width: 16px;vertical-align: 0px;margin-left: 3px;">';
+                                $newMethod->legal->footer    = '<img src="/images/smsplus.png" style="width: 100px;margin-top: 5px;">';
+                            }
+
+                            $this->rates->$countryName->$methodName->$palier = $newMethod;
+                        }
+                    }
+                }
+
+                $sortArray = (array)$this->rates;
+
+                uksort($sortArray, function($a, $b) {
+                    return $a == "fr" ? -1 : 1;
+                });
+
+                $this->rates = (object)$sortArray;
+            }
         }
     }
 
@@ -111,14 +174,16 @@ class Starpass extends Payment
         return null;
     }
 
-    public function check($palier, $code)
+    public function check($country, $method, $palier, $code)
     {
         $check = new \stdClass;
         $check->code = $code;
         $check->error = false;
 
-        $idp = config('dofus.payment.starpass.idp');
-        $idd = config('dofus.payment.starpass.idd');
+        $palier = $this->palier($country, $method, $palier);
+
+        $idp = $palier->idp;
+        $idd = $palier->idd;
         $validation = config('dofus.payment.starpass.validation');
 
         $validation = str_replace('{KEY}',  $idp.";;".$idd, $validation);
@@ -166,7 +231,7 @@ class Starpass extends Payment
                 return $check;
             }
 
-            $check->points  = $this->points;
+            $check->points  = $palier->points;
             $check->message = "Code validé";
             $check->payout  = "";
         }

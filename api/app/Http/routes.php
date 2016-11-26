@@ -392,6 +392,12 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'as'         => 'code'
     ]);
 
+    Route::get('code/cb', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@fake_starpass_cb',
+        'as'         => 'code_starpass_cb'
+    ]);
+
     Route::get('error/{code?}', [
         'uses'       => 'PageController@error_fake',
         'as'         => 'error.fake'

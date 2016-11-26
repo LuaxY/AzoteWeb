@@ -162,6 +162,14 @@ class PaymentController extends Controller
             'country' => $data['country'],
             'method'  => $data['method'],
             'palier'  => $data['palier'],
+            'ticket'  => $request->input('ticket'),
+        ]);
+    }
+
+    public function fake_starpass_cb(Request $request)
+    {
+        return view('shop.payment.starpass_cb', [
+            'idd' => $request->input('id')
         ]);
     }
 
@@ -198,7 +206,7 @@ class PaymentController extends Controller
         $transaction->palier_name = $data['method'];
         $transaction->save();
 
-        $validation = $this->payment->check($data['palier'], $data['code']);
+        $validation = $this->payment->check($data['country'], $data['method'], $data['palier'], $data['code']);
 
         $transaction->provider = $validation->provider;
         $transaction->raw      = $validation->raw;

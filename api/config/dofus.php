@@ -107,9 +107,7 @@ return [
             "name"       => 'Starpass',
             'url'        => 'https://script.starpass.fr/script.php?idd={IDD}',
             'validation' => 'http://script.starpass.fr/check_php.php?ident={KEY}&codes={CODE}',
-            'idp'        => env('STARPASS_IDP', 0),
-            'idd'        => env('STARPASS_IDD', 0),
-            'points'     => env('STARPASS_POINTS', 100),
+            'config'     => env('STARPASS_CONFIG', null),
         ],
 
     ],

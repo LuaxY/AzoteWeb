@@ -11,18 +11,19 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box">
-                                    <table id="transactions-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                                        <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>User</th>
-                                            <th>State</th>
-                                            <th>Code</th>
-                                            <th>Points</th>
-                                            <th>Date</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
+                        <table id="transactions-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>User</th>
+                                <th>Provider</th>
+                                <th>State</th>
+                                <th>Code</th>
+                                <th>Points</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -126,6 +127,7 @@
                     columns: [
                         {data: 'id', name: 'id'},
                         {data: 'user_id', name: 'user_id'},
+                        {data: 'provider', name: 'provider'},
                         {data: 'state', name: 'state'},
                         {data: 'code', name: 'code'},
                         {data: 'points', name: 'points'},

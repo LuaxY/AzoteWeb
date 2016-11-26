@@ -95,7 +95,7 @@ class DediPass extends Payment
         return null;
     }
 
-    public function check($palier, $code)
+    public function check($country, $method, $palier, $code)
     {
         $check = new \stdClass;
         $check->code = $code;

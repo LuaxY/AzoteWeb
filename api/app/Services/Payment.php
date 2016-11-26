@@ -8,5 +8,5 @@ abstract class Payment
 
     abstract protected function palier($country, $method, $palier);
 
-    abstract protected function check($palier, $code);
+    abstract protected function check($country, $method, $palier, $code);
 }

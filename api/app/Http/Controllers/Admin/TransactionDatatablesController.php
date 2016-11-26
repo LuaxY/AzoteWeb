@@ -23,7 +23,7 @@ class TransactionDatatablesController extends Controller
     public function anyData()
     {
         $transactions = Cache::remember('transactions_admin', 5, function () {
-            return Transaction::select(['id', 'user_id', 'state', 'code', 'points', 'created_at'])->get();
+            return Transaction::select(['id', 'user_id', 'provider', 'state', 'code', 'points', 'created_at'])->get();
         });
 
         return Datatables::of($transactions)

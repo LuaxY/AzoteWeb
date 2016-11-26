@@ -104,6 +104,9 @@
                                 @else
                                     Envoyer <b style="font-size:17px">{{ $payment->keyword }}</b> {!! $payment->legal->keyword !!} au <b style="font-size:17px">{{ $payment->number }}</b> {!! $payment->legal->shortcode !!}
                                 @endif
+                            @elseif ($method == 'carte bancaire' && isset($payment->idd))
+                                Cliquez sur le lien suivant pour obtenir le code :
+                                <a href onClick="openModal('{{ $payment->link }}?ticket={{ $ticket }}&id={{ $payment->idd }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/' . $method . '.png') }}" height="30" /></a>
                             @else
                                 Cliquez sur le lien suivant pour obtenir le code :
                                 <a href onClick="openModal('{{ $payment->link }}&email={{ Auth::user()->email }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/' . $method . '.png') }}" height="30" /></a>
