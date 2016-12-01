@@ -4,7 +4,17 @@
 @section('page')
 @if (@$carousel)
 <div class="ak-container ak-carrousel-bg">
+    @if (config('dofus.theme.animated'))
+    <div class="ak-video-home">
+        <video class="ak-widget-video" autoplay loop="loop" poster="{{ URL::asset('imgs/carousel/'.config('dofus.theme.background').'/preview.png') }}">
+            <source type="video/mp4"  src="{{ URL::asset('imgs/carousel/'.config('dofus.theme.background').'/video.mp4') }}" />
+            <source type="video/webm" src="{{ URL::asset('imgs/carousel/'.config('dofus.theme.background').'/video.webm') }}" />
+            <source type="video/ogv"  src="{{ URL::asset('imgs/carousel/'.config('dofus.theme.background').'/video.ogv') }}" />
+        </video>
+    </div>
+    @else
     <div class="ak-video-home ak-no-video"></div>
+    @endif
     <a href="">
         <div class="img_sm"></div>
     </a>

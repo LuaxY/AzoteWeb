@@ -25,27 +25,26 @@
     @yield('header')
     {!! Html::script('js/admin/toastr.min.js') !!}
     {!! Html::script('js/common.js') !!}
+    @if (config('dofus.theme.animated'))
+    {!! Html::style('imgs/carousel/'.config('dofus.theme.background').'/style.css') !!}
+    @else
     <style type="text/css">
         body {
             background: url('{{ URL::asset('imgs/carousel/common/'.config('dofus.theme.background').'.jpg') }}')  center top no-repeat;
             background-color: {{ config('dofus.theme.color') }};
         }
     </style>
-
+    @endif
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-82860248-1', 'auto');
       ga('send', 'pageview');
-
     </script>
 </head>
-
 <body class="@yield('background')">
-
     <header>
         <div class="ak-idbar">
             <div class="ak-idbar-content">

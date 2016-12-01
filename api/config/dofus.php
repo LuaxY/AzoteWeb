@@ -16,7 +16,8 @@ return [
 
     'theme'        => [ // modified in FillSettings middleware
         'background' => 'kolizeum',
-        'color'      => '#3d301e'
+        'color'      => '#3d301e',
+        'animated'   => false,
     ],
 
     'domain' => [

@@ -28,9 +28,9 @@ class FillSettings
         {
             $motd = [];
 
-            $motd['title']    = $json->motd->title;
-            $motd['subtitle'] = $json->motd->subtitle;
-            $motd['post_id']   = $json->motd->post_id;
+            $motd['title']    = @$json->motd->title;
+            $motd['subtitle'] = @$json->motd->subtitle;
+            $motd['post_id']  = @$json->motd->post_id;
 
             Config::set('dofus.motd',  $motd);
         }
@@ -39,8 +39,9 @@ class FillSettings
         {
             $theme = [];
 
-            $theme['background'] = $json->theme->background;
-            $theme['color']      = $json->theme->color;
+            $theme['background'] = @$json->theme->background;
+            $theme['color']      = @$json->theme->color;
+            $theme['animated']   = @$json->theme->animated;
 
             Config::set('dofus.theme', $theme);
         }

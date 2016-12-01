@@ -92,6 +92,17 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group {{ $errors->has('animated') ? ' has-error' : '' }}">
+                                <label for="color">Animated:</label>
+                                {!! Form::checkbox('animated', 'true', ['checked' => $theme['animated'], 'class' => 'form-control', 'id' => 'color']) !!}
+                                @if ($errors->has('animated'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('animated') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
                     {!! Form::close() !!}

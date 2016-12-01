@@ -57,6 +57,7 @@ class SettingsController extends Controller
 
             $json->theme->background = $request->background;
             $json->theme->color      = $request->color;
+            $json->theme->animated   = $request->animated ? true : false;
 
             Toastr::success('Theme updated', $title = null, $options = []);
         }
