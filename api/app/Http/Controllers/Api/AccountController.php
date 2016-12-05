@@ -3,122 +3,84 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\User;
-use App\Account;
-
-use Validator;
+use App\Http\Controllers\Api\ApiController;
 use Auth;
+use Session;
+use App\ModelCustom;
+use App\Account;
+use App\User;
 
-class AccountController extends Controller
+class AccountController extends ApiController
 {
-    public function register(Request $request)
+    public function auth()
     {
-        $validator = Validator::make($request->all(), User::$rules['register']);
+        $req = $this->input();
 
-        if ($validator->fails())
+        if ($req && property_exists($req, 'method') && $req->method == "AuthenticationByAnkamaToken")
         {
-            return $this->error(401, 'formulaire incorrect', $validator->errors()->all());
-        }
+            $result = new \stdClass;
+            $ticket =      $req->params[0];
+            $serverId =    $req->params[1];
+            $characterId = $req->params[2];
 
-        $salt = str_random(8);
-
-        $user = new User;
-        $user->email     = $request->input('email');
-        $user->password  = $user->hashPassword($request->input('password'), $salt);
-        $user->salt      = $salt;
-        $user->firstname = $request->input('firstName');
-        $user->lastname  = $request->input('lastName');
-        $user->save();
-
-        return $this->success('compte créé');
-    }
-
-    public function login(Request $request)
-    {
-        $user = User::where('email', $request->input('email'))->first();
-
-        if ($user && ($user->password === $user->hashPassword($request->input('password'), $user->salt)))
-        {
-            Auth::login($user);
-            Auth::user()->ticket = str_random(32);
-            Auth::user()->update(['ticket' => Auth::user()->ticket]);
-            return response()->json(['authorizationTicket' => Auth::user()->ticket]);
-        }
-
-        return $this->error(401, 'identifiants invalide');
-    }
-
-    public function profile()
-    {
-        $profile = new \stdClass;
-        $profile->firstname     = Auth::user()->firstname;
-        $profile->lastname      = Auth::user()->lastname;
-        $profile->email         = Auth::user()->email;
-        $profile->lastIPAddress = Auth::user()->last_ip_address;
-        $profile->gameAccounts  = [];
-
-        $accounts = Account::where('Email', Auth::user()->email)->get();
-
-        foreach ($accounts as $account)
-        {
-            $gameAccount = new \stdClass;
-            $gameAccount->id              = $account->Id;
-            $gameAccount->login           = $account->Login;
-            $gameAccount->nickname        = $account->Nickname;
-            $gameAccount->secretAnswer    = $account->SecretAnswer;
-            $gameAccount->newTokens       = $account->NewTokens;
-            $gameAccount->creationDate    = $account->CreationDate;
-            $gameAccount->lastConnection  = $account->LastConnection;
-            $gameAccount->lastConnectedIp = $account->LastConnectionIp;
-            $gameAccount->lastVote        = $account->LastVote;
-
-            $profile->gameAccounts[] = $gameAccount;
-        }
-
-        return response()->json(['profile' => $profile]);
-    }
-
-    public function update(Request $request)
-    {
-        if ($request->input('firstname') && $request->input('lastname'))
-        {
-            $validator = Validator::make($request->all(), User::$rules['update-name']);
-
-            if ($validator->fails())
+            if (Auth::check())
             {
-                return $this->error(401, 'nom/prénom incorrect', $validator->errors()->all());
+                $user = Auth::user();
+            }
+            elseif ($ticket == "ADMIN")
+            {
+                $user = User::where('pseudo', 'Luax')->first();
+                //$user = ModelCustom::hasOneOnOneServer('auth', 'sigma', Account::class, 'Login', 'Luax');
+            }
+            else
+            {
+                $user = User::where('ticket', $ticket)->first();
+                //$user = ModelCustom::hasOneOnOneServer('auth', 'sigma', Account::class, 'Ticket', $ticket);
             }
 
-            Auth::user()->firstname = $request->input('firstname');
-            Auth::user()->lastname = $request->input('lastname');
-            Auth::user()->update([
-                'firstname' => Auth::user()->firstname,
-                'lastname'  => Auth::user()->lastname,
-            ]);
-        }
-
-        if ($request->input('password') && $request->input('passwordConfirmation'))
-        {
-            $validator = Validator::make($request->all(), User::$rules['update-password']);
-
-            if ($validator->fails())
+            if ($user)
             {
-                return $this->error(401, 'mot de passe incorrect', $validator->errors()->all());
+                Auth::login($user);
+                Session::put("ticket",      $ticket);
+                Session::put("serverId",    $serverId);
+                Session::put("characterId", $characterId);
+                $result->nickname = $user->pseudo;
+            }
+            else
+            {
+                //$result->error = "AUTH_FAILED";
+                return $this->softError("AUTH_FAILED");
             }
 
-            Auth::user()->salt     = str_random(8);
-            Auth::user()->password = Auth::user()->hashPassword($request->input('password'), Auth::user()->salt);
-            Auth::user()->update([
-                'password' => Auth::user()->password,
-                'salt'     => Auth::user()->salt,
-            ]);
+            return $this->result($result);
         }
 
-        return $this->success('profile mis à jour');
+        return $this->softError("Method not found");
+    }
+
+    public function info()
+    {
+        if (Auth::guest())
+        {
+            $data = new \stdClass;
+            $data->error = "AUTH_FAILED";
+
+            return $this->result($data);
+        }
+
+        $req = $this->input();
+
+        if (@$req->method == "Money")
+        {
+            $result = new \stdClass;
+            $result->ogrins = Auth::user()->points;
+            $result->krozs = 0;
+
+            return $this->result($result);
+        }
+
+        return $this->softError("Method not found");
     }
 }

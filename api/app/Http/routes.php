@@ -492,6 +492,12 @@ Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')]
     Route::get('text/{id}', 'Api\ForgeController@text')->where('id', '[0-9]+');
 });
 
+/* ============ DOFUS SHOP ============ */
+
+Route::post('api/shop/authentification.json', 'Api\AccountController@auth');
+Route::post('api/shop/account.json', 'Api\AccountController@info');
+Route::post('api/shop/shop.json', 'Api\ShopController@shop');
+
 /* ============ ADMIN PANEL ============ */
 
 Route::group(['middleware' => ['auth', 'admin']], function() {

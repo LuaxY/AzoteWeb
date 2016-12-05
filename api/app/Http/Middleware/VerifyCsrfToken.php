@@ -22,5 +22,6 @@ class VerifyCsrfToken extends BaseVerifier
         'api/support/create',
         'api/support/child/{child}/{params?}',
         'api/support/store',
+        'api/shop/*',
     ];
 }
