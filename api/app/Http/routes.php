@@ -403,6 +403,18 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'as'         => 'error.fake'
     ])->where('code', '[0-9]+');
 
+    Route::get('code/cb_re/{key}', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@fake_recursos_cb',
+        'as'         => 'code_recursos_cb'
+    ]);
+
+    Route::get('code/code_re/{key}', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@check_recursos_code',
+        'as'         => 'check_recursos_code'
+    ]);
+
 });
 
 /* ============ API ============ */

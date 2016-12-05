@@ -27,7 +27,11 @@
         <div class="ak-panel-content">
             <div class="panel-main text-center">
                 @if ($canBuy)
-                    <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                    @if (config('app.env') == 'production')
+                        <a href="https://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                    @else
+                        <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                    @endif
                 @else
                     <center>Vous devez disposer d'au moins un personnage sur votre compte pour acheter des Ogrines.</center>
                 @endif

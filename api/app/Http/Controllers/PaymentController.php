@@ -9,6 +9,7 @@ use Auth;
 use \Cache;
 
 use App\Transaction;
+use App\RecursosTransaction;
 use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Shop\ShopStatus;
@@ -157,13 +158,23 @@ class PaymentController extends Controller
             return redirect()->route('error.fake', [2]);
         }
 
-        return view('shop.payment.popup', [
+        $view = 'shop.payment.popup';
+
+        $data = [
             'payment' => $payment,
             'country' => $data['country'],
             'method'  => $data['method'],
             'palier'  => $data['palier'],
             'ticket'  => $request->input('ticket'),
-        ]);
+        ];
+
+        if (isset($payment->recursos) && $payment->recursos)
+        {
+            $view = 'shop.payment.popup_recursos';
+            $data['key'] = str_random(32);
+        }
+
+        return view($view, $data);
     }
 
     public function fake_starpass_cb(Request $request)
@@ -171,6 +182,98 @@ class PaymentController extends Controller
         return view('shop.payment.starpass_cb', [
             'idd' => $request->input('id')
         ]);
+    }
+
+    public function fake_recursos_cb($key)
+    {
+        $params = [
+            't'     => 'creditcard',
+            'p'     => 3.50,
+            'co'    => 'fr',
+            'c'     => 38260,
+            'w'     => 13977,
+            'email' => Auth::user()->email,
+        ];
+
+        $c = curl_init("https://iframes.recursosmoviles.com/v3/redirect.php?id=$key");
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($params));
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
+        curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+        $page = curl_exec($c);
+        curl_close($c);
+
+        return $page;
+    }
+
+    public function check_recursos_code($key)
+    {
+        $recursos = RecursosTransaction::where('key', $key)->first();
+
+        if (!$recursos)
+        {
+            $c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
+            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
+            curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+            $code = curl_exec($c);
+            curl_close($c);
+
+            $recursos = new RecursosTransaction;
+            $recursos->user_id = Auth::user()->id;
+            $recursos->key     = $key;
+            $recursos->code    = $code;
+            $recursos->points  = 0;
+            $recursos->price   = 3.50;
+            $recursos->save();
+        }
+
+        $params = [
+            't'     => 'creditcard',
+            'p'     => $recursos->price,
+            'co'    => 'fr',
+            'c'     => 38260,
+            'w'     => 13977,
+            'code'  => $recursos->code,
+        ];
+
+        $c = curl_init("https://iframes.recursosmoviles.com/v3/checkcode.php");
+        curl_setopt($c, CURLOPT_POST, true);
+        curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query($params));
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
+        curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+        $result = curl_exec($c);
+        curl_close($c);
+
+        $data = explode(':', $result);
+
+        if ($data[0] == "OK")
+        {
+            $transaction = new Transaction;
+            $transaction->user_id     = Auth::user()->id;
+            $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
+            $transaction->code        = $recursos->code;
+            $transaction->points      = $recursos->points;
+            $transaction->country     = "all";
+            $transaction->palier_name = "??";
+            $transaction->palier_id   = 0;
+            $transaction->type        = "carte bancaire";
+            $transaction->provider    = "Recursos";
+            $transaction->raw         = $result;
+            $transaction->save();
+
+            Cache::forget('transactions_' . Auth::user()->id);
+            Cache::forget('transactions_' . Auth::user()->id . '_10');
+
+            Auth::user()->points += $recursos->points;
+            Auth::user()->save();
+
+            return "true";
+        }
+
+        return "false";
     }
 
     public function fake_process(Request $request)
