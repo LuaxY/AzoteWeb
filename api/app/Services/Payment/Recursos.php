@@ -37,9 +37,10 @@ class Recursos extends Payment
 
                 $newMethod->devise   = "&euro;";
                 $newMethod->points   = $price * $coeff;
+                $newMethod->price    = $price;
                 $newMethod->cost     = $price . " " . $newMethod->devise;
                 $newMethod->text     = "";
-                $newMethod->link     = route('redirect_recursos_cb', [null]);
+                $newMethod->link     = route('redirect_recursos_cb');
                 $newMethod->recursos = true;
 
                 $newMethod->legal = new \stdClass;
@@ -78,11 +79,15 @@ class Recursos extends Payment
 
     }
 
-    public function redirect_cb($key)
+    public function redirect_cb($key = null, $palier = null)
     {
+        if (!$key || !$palier) return redirect()->route('error.fake', [6]);
+
+        $method = $this->palier('fr', 'carte bancaire', $palier);
+
         $params = [
             't'     => 'creditcard',
-            'p'     => 3.50,
+            'p'     => $method->price,
             'co'    => 'fr',
             'c'     => config('dofus.payment.recursos.c'),
             'w'     => config('dofus.payment.recursos.w'),
@@ -98,6 +103,13 @@ class Recursos extends Payment
         $page = curl_exec($c);
         curl_close($c);
 
+        $recursos = new RecursosTransaction;
+        $recursos->user_id = Auth::user()->id;
+        $recursos->key     = $key;
+        $recursos->points  = $method->points;
+        $recursos->price   = $method->price;
+        $recursos->save();
+
         return $page;
     }
 
@@ -107,6 +119,11 @@ class Recursos extends Payment
 
         if (!$recursos)
         {
+            return redirect()->route('error.fake', [7]);
+        }
+
+        if (!$recursos->code)
+        {
             $c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
             curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
@@ -114,12 +131,7 @@ class Recursos extends Payment
             $code = curl_exec($c);
             curl_close($c);
 
-            $recursos = new RecursosTransaction;
-            $recursos->user_id = Auth::user()->id;
-            $recursos->key     = $key;
-            $recursos->code    = $code;
-            $recursos->points  = 0;
-            $recursos->price   = 3.50;
+            $recursos->code = $code;
             $recursos->save();
         }
 
@@ -151,11 +163,13 @@ class Recursos extends Payment
             $transaction->code        = $recursos->code;
             $transaction->points      = $recursos->points;
             $transaction->country     = "all";
-            $transaction->palier_name = "??";
+            $transaction->palier_name = "-";
             $transaction->palier_id   = 0;
             $transaction->type        = "carte bancaire";
             $transaction->provider    = "Recursos";
             $transaction->raw         = $result;
+
+            $recursos->delete();
             $transaction->save();
 
             Cache::forget('transactions_' . Auth::user()->id);

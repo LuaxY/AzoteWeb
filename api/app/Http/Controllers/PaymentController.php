@@ -186,14 +186,14 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function redirect_recursos_cb($key)
+    public function redirect_recursos_cb($key, $palier)
     {
-        return $payment->redirect_cb($key);
+        return $this->payment->redirect_cb($key, $palier);
     }
 
     public function check_recursos_code($key)
     {
-        if ($payment->check_cb($key))
+        if ($this->payment->check_cb($key))
         {
             return "true";
         }

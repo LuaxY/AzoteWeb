@@ -403,7 +403,7 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'as'         => 'error.fake'
     ])->where('code', '[0-9]+');
 
-    Route::get('code/cb_re/{key}', [
+    Route::get('code/cb_re/{key?}/{palier?}', [
         'middleware' => 'AuthPayment',
         'uses'       => 'PaymentController@redirect_recursos_cb',
         'as'         => 'redirect_recursos_cb'
