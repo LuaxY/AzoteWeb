@@ -20,25 +20,40 @@ class Recursos extends Payment
     {
         $this->rates = new \stdClass;
 
-        $countryName = 'fr';
-        $methodName  = 'carte bancaire';
-        $newMethod   = new \stdClass;
+        $prices = explode('|', config('dofus.payment.recursos.prices'));
+        $coeff  = config('dofus.payment.recursos.coeff');
 
-        $newMethod->devise = "&euro;";
-        $newMethod->points = 100;
-        $newMethod->cost   = 3.50 . " " . $newMethod->devise;
-        $newMethod->text   = "";
-        $newMethod->link   = route('redirect_recursos_cb', [null]);
-        $newMethod->recursos = true;
+        if ($prices)
+        {
+            $countryName = 'fr';
+            $methodName  = 'carte bancaire';
 
-        $newMethod->legal = new \stdClass;
-        $newMethod->legal->header    = null;
-        $newMethod->legal->phone     = null;
-        $newMethod->legal->shortcode = null;
-        $newMethod->legal->keyword   = null;
-        $newMethod->legal->footer    = null;
+            $this->rates->$countryName = new \stdClass;
+            $this->rates->$countryName->$methodName = new \stdClass;
 
-        $this->rates->$countryName->$methodName->$palier = $newMethod;
+            foreach ($prices as $price)
+            {
+                $newMethod = new \stdClass;
+
+                $newMethod->devise   = "&euro;";
+                $newMethod->points   = $price * $coeff;
+                $newMethod->cost     = $price . " " . $newMethod->devise;
+                $newMethod->text     = "";
+                $newMethod->link     = route('redirect_recursos_cb', [null]);
+                $newMethod->recursos = true;
+
+                $newMethod->legal = new \stdClass;
+                $newMethod->legal->header    = null;
+                $newMethod->legal->phone     = null;
+                $newMethod->legal->shortcode = null;
+                $newMethod->legal->keyword   = null;
+                $newMethod->legal->footer    = null;
+
+                $palier = substr(md5($newMethod->cost), 0, 5);
+
+                $this->rates->$countryName->$methodName->$palier = $newMethod;
+            }
+        }
     }
 
     public function rates()

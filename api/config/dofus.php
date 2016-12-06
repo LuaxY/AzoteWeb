@@ -115,7 +115,8 @@ return [
             'name'       => 'Recursos',
             'c'          => env('RECURSOS_C', null),
             'w'          => env('RECURSOS_W', null),
-            'PRICES'     => env('RECURSOS_PRICES', null),
+            'prices'     => env('RECURSOS_PRICES', null),
+            'coeff'      => env('RECURSOS_COEFF', null),
         ],
 
     ],
