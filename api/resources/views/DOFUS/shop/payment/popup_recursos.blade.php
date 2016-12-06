@@ -19,7 +19,7 @@
 
     function startCheck() {
         jQuery.ajax({
-            url: "{{ route('check_recursos_code', [$key]) }}?ticket={{ $ticket }}",
+            url: "{{ $check_url }}/{{ $key }}?ticket={{ $ticket }}",
             success: function (result) {
                 if (result == "true") {
                     isValidated = true;
@@ -55,7 +55,7 @@
                             {!! $payment->legal->header !!}
 
                             Cliquez sur le lien suivant pour obtenir le code :
-                            <a href onClick="openModal(event, '{{ route('redirect_recursos_cb') }}/{{ $key }}/{{ $palier }}?ticket={{ $ticket }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/' . $method . '.png') }}" height="30" /></a>
+                            <a href onClick="openModal(event, '{{ $payment->link }}/{{ $key }}/{{ $palier }}?ticket={{ $ticket }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/' . $method . '.png') }}" height="30" /></a>
 
                             <br>
                             {!! $payment->text !!}

@@ -173,7 +173,15 @@ class PaymentController extends Controller
         if (isset($payment->recursos) && $payment->recursos)
         {
             $view = 'shop.payment.popup_recursos';
-            $data['key'] = str_random(32);
+            $url  = route('check_recursos_code', [null]);
+
+            if (config('app.env') == 'production')
+            {
+                $url = str_replace('http:', 'https:', $url);
+            }
+
+            $data['check_url'] = $url;
+            $data['key']       = str_random(32);
         }
 
         return view($view, $data);
