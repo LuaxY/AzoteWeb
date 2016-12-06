@@ -75,29 +75,6 @@ class DediPass extends Payment
 
                 $this->rates->$countryName->$methodName->$palier = $newMethod;
             }
-
-            // Add Recursosmoviles CB
-            {
-                $countryName = 'all';
-                $methodName  = 'carte bancaire';
-                $newMethod   = new \stdClass;
-
-                $newMethod->devise = "&euro;";
-                $newMethod->points = 100;
-                $newMethod->cost   = 3.50 . " " . $newMethod->devise;
-                $newMethod->text   = "";
-                $newMethod->link   = route('code_recursos_cb', [null]);
-                $newMethod->recursos = true;
-
-                $newMethod->legal = new \stdClass;
-                $newMethod->legal->header    = null;
-                $newMethod->legal->phone     = null;
-                $newMethod->legal->shortcode = null;
-                $newMethod->legal->keyword   = null;
-                $newMethod->legal->footer    = null;
-
-                $this->rates->$countryName->$methodName->$palier = $newMethod;
-            }
         }
     }
 

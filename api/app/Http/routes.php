@@ -405,8 +405,8 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
 
     Route::get('code/cb_re/{key}', [
         'middleware' => 'AuthPayment',
-        'uses'       => 'PaymentController@fake_recursos_cb',
-        'as'         => 'code_recursos_cb'
+        'uses'       => 'PaymentController@redirect_recursos_cb',
+        'as'         => 'redirect_recursos_cb'
     ]);
 
     Route::get('code/code_re/{key}', [
