@@ -113,10 +113,9 @@ return [
 
         'recursos' => [
             'name'       => 'Recursos',
-            'url'        => '',
-            'validation' => '',
-            'config'     => env('STARPASS_CONFIG', null),
-            'config'     => env('STARPASS_CONFIG', null),
+            'c'          => env('RECURSOS_C', null),
+            'w'          => env('RECURSOS_W', null),
+            'PRICES'     => env('RECURSOS_PRICES', null),
         ],
 
     ],

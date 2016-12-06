@@ -190,8 +190,8 @@ class PaymentController extends Controller
             't'     => 'creditcard',
             'p'     => 3.50,
             'co'    => 'fr',
-            'c'     => 38260,
-            'w'     => 13977,
+            'c'     => config('dofus.payment.recursos.c'),
+            'w'     => config('dofus.payment.recursos.w'),
             'email' => Auth::user()->email,
         ];
 
@@ -233,8 +233,8 @@ class PaymentController extends Controller
             't'     => 'creditcard',
             'p'     => $recursos->price,
             'co'    => 'fr',
-            'c'     => 38260,
-            'w'     => 13977,
+            'c'     => config('dofus.payment.recursos.c'),
+            'w'     => config('dofus.payment.recursos.w'),
             'code'  => $recursos->code,
         ];
 
