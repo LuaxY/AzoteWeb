@@ -30,7 +30,7 @@ class PaymentController extends Controller
         if ($used == "dedipass") $this->payment = new DediPass;
         if ($used == "starpass") $this->payment = new Starpass;
 
-        if (!$this->payment) die("No valid payment method found");
+        if (!$this->payment) return redirect()->to('shop/maintenance');
     }
 
     public function country()
