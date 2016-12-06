@@ -43,6 +43,11 @@ class Recursos extends Payment
                 $newMethod->link     = route('redirect_recursos_cb');
                 $newMethod->recursos = true;
 
+                if (config('app.env') == 'production')
+                {
+                    $newMethod->link = str_replace('http:', 'https:', $newMethod->link);
+                }
+
                 $newMethod->legal = new \stdClass;
                 $newMethod->legal->header    = null;
                 $newMethod->legal->phone     = null;
@@ -117,9 +122,9 @@ class Recursos extends Payment
     {
         $recursos = RecursosTransaction::where('key', $key)->first();
 
-        if (!$recursos)
+        if (!$recursos || $recursos->isUsed)
         {
-            return redirect()->route('error.fake', [7]);
+            return false;
         }
 
         if (!$recursos->code)
@@ -157,6 +162,9 @@ class Recursos extends Payment
 
         if ($data[0] == "OK")
         {
+            $recursos->isUsed = true;
+            $recursos->save();
+
             $transaction = new Transaction;
             $transaction->user_id     = Auth::user()->id;
             $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
@@ -168,8 +176,6 @@ class Recursos extends Payment
             $transaction->type        = "carte bancaire";
             $transaction->provider    = "Recursos";
             $transaction->raw         = $result;
-
-            $recursos->delete();
             $transaction->save();
 
             Cache::forget('transactions_' . Auth::user()->id);
