@@ -95,6 +95,7 @@ return [
         'used_first' => env('PAYMENT_FIRST', 'starpass'),
 
         'minimum_for_real' => env('PAYMENT_MINIMUM', 2),
+        'level_for_real'   => env('PAYMENT_LEVEL', 50),
 
         'dedipass' => [
             'name'       => 'Dedipass',

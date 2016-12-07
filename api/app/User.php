@@ -262,6 +262,17 @@ class User extends Authenticatable
 
     public function isFistBuy()
     {
+        foreach ($this->accounts() as $account)
+        {
+            foreach ($account->characters(false, true) as $character)
+            {
+                if ($character->level() > config('dofus.payment.level_for_real'))
+                {
+                    return false;
+                }
+            }
+        }
+
         $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
 
         return $transactionsCount < config('dofus.payment.minimum_for_real');
