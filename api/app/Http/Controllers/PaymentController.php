@@ -10,6 +10,7 @@ use \Cache;
 
 use App\Transaction;
 use App\RecursosTransaction;
+use App\BannedIP;
 use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Services\Payment\Recursos;
@@ -19,11 +20,16 @@ class PaymentController extends Controller
 {
     private $payment;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $used = config('dofus.payment.used');
 
-        if (Auth::user()->isFistBuy())
+        /*if (Auth::user()->isFistBuy())
+        {
+            $used = config('dofus.payment.used_first');
+        }*/
+
+        if ($this->isShadowBanned($request->ip()))
         {
             $used = config('dofus.payment.used_first');
         }
@@ -33,6 +39,22 @@ class PaymentController extends Controller
         if ($used == "recursos") $this->payment = new Recursos;
 
         if (!$this->payment) return redirect()->to('shop/maintenance');
+    }
+
+    public function isShadowBanned($ip)
+    {
+        $ip = ip2long($ip);
+        $bannedIPs = BannedIP::all();
+
+        foreach ($bannedIPs as $ranch)
+        {
+            if ($ip >= ip2long($ranch->begin) && $ip <= ip2long($ranch->end))
+            {
+                return true;
+            }
+        }
+
+        return Auth::user()->shadowBan;
     }
 
     public function country()
