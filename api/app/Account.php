@@ -144,8 +144,10 @@ class Account extends Model
 
                 foreach ($worldCharacters as $worldCharacter)
                 {
-                    if($worldCharacter->character()->DeletedDate)
+                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate)
+                    {
                         $characters[] = $worldCharacter->character();
+                    }
                 }
 
                 return $characters;
@@ -158,8 +160,10 @@ class Account extends Model
 
             foreach ($worldCharacters as $worldCharacter)
             {
-                if($worldCharacter->character()->DeletedDate)
+                if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate)
+                {
                     $characters[] = $worldCharacter->character();
+                }
             }
 
             return $characters;

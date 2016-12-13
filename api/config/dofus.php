@@ -25,6 +25,8 @@ return [
         'fake' => env('FAKE_DOMAIN')
     ],
 
+    'ogrines_item_id' => env('OGRINES_ITEM_ID', 20824),
+
     'default_avatar' => 'imgs/avatar/default.jpg',
 
     'accounts_limit' => 8,

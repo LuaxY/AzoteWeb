@@ -17868,31 +17868,31 @@ iframe[src="about:blank"] {
 }
 
 .ak-icon-big.ak-ogrine-icon, .ak-icon-big.ak-ogrines-icon, .ak-icon-big.ak-kroz-icon,
-.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon {
+.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon, .ak-icon-big.ak-votes-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-med.ak-ogrine-icon, .ak-icon-med.ak-ogrines-icon, .ak-icon-med.ak-kroz-icon,
-.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon,.ak-icon-med.ak-ticket-icon {
+.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon, .ak-icon-med.ak-ticket-icon, .ak-icon-med.ak-votes-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-tiny.ak-ogrine-icon, .ak-icon-tiny.ak-ogrines-icon, .ak-icon-tiny.ak-kroz-icon,
-.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon {
+.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon, .ak-icon-tiny.ak-votes-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-small.ak-ogrine-icon, .ak-icon-small.ak-ogrines-icon, .ak-icon-small.ak-ticket-icon,
-.ak-icon-small.ak-kroz-icon, .ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon {
+.ak-icon-small.ak-kroz-icon, .ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon, .ak-icon-small.ak-votes-icon {
     background-image: url("../imgs/assets/sprite_currency.png");
     background-repeat: no-repeat
 }
 
 .ak-icon-big.ak-ogrine-icon, .ak-icon-big.ak-ogrines-icon, .ak-icon-big.ak-kroz-icon,
-.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon {
+.ak-icon-big.ak-gifts-icon, .ak-icon-big.ak-kama-icon, .ak-icon-big.ak-ticket-icon, .ak-icon-big.ak-votes-icon {
     background-size: 65px auto
 }
 
@@ -17912,8 +17912,12 @@ iframe[src="about:blank"] {
     background-position: 0 -265px
 }
 
+.ak-icon-big.ak-votes-icon {
+    background-position: 0 -265px
+}
+
 .ak-icon-med.ak-ogrine-icon, .ak-icon-med.ak-ogrines-icon, .ak-icon-med.ak-kroz-icon,
-.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon, .ak-icon-med.ak-ticket-icon {
+.ak-icon-med.ak-gifts-icon, .ak-icon-med.ak-kama-icon, .ak-icon-med.ak-ticket-icon, .ak-icon-med.ak-votes-icon {
     background-size: 46px auto
 }
 
@@ -17933,8 +17937,12 @@ iframe[src="about:blank"] {
     background-position: 0 -200px
 }
 
+.ak-icon-med.ak-votes-icon {
+    background-position: 0 -200px
+}
+
 .ak-icon-tiny.ak-ogrine-icon, .ak-icon-tiny.ak-ogrines-icon, .ak-icon-tiny.ak-kroz-icon,
-.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon {
+.ak-icon-tiny.ak-gifts-icon, .ak-icon-tiny.ak-kama-icon, .ak-icon-tiny.ak-ticket-icon, .ak-icon-tiny.ak-votes-icon {
     background-size: 34px auto
 }
 
@@ -17954,8 +17962,12 @@ iframe[src="about:blank"] {
     background-position: 0 -138px
 }
 
+.ak-icon-tiny.ak-votes-icon {
+    background-position: 0 -138px
+}
+
 .ak-icon-small.ak-ogrine-icon, .ak-icon-small.ak-ogrines-icon,
-.ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon, .ak-icon-small.ak-ticket-icon {
+.ak-icon-small.ak-gifts-icon, .ak-icon-small.ak-kama-icon, .ak-icon-small.ak-ticket-icon, .ak-icon-small.ak-votes-icon {
     background-size: 25px auto
 }
 
@@ -17973,6 +17985,10 @@ iframe[src="about:blank"] {
 
 .ak-icon-small.ak-ticket-icon {
     background-position: 0 -103px
+}
+
+.ak-icon-small.ak-votes-icon {
+    background-position: 0 -134px
 }
 
 .ak-icon-small.ak-kroz-icon {
@@ -30351,25 +30367,23 @@ body.ak-light-skin .main > .ak-container {
 .ak-reserve-container {
     border-color: #21a3d3
 }
-.ak-reserve-container .col-xs-6 {
-    border-right: 1px solid;
-    border-color: #043645;
-    margin: 3px 0;
-    margin: 0.3rem 0
+.ak-reserve-container .col-xs-4 {
+    border-left: 1px solid #0b83ae;
+    border-right: 1px solid #043645;
+    margin: 1px 0;
+    padding: 0;
 }
-.ak-reserve-container .col-xs-6+.col-xs-6 {
+.ak-reserve-container .row .col-xs-4:first-child {
+    border-left: none;
+}
+.ak-reserve-container .row .col-xs-4:last-child {
     border-right: none;
-    border-left: 1px solid;
-    border-color: #0b83ae;
 }
-.ak-ogrines-reserve, .ak-gifts-reserve {
-    padding: 6px;
+.ak-ogrines-reserve, .ak-gifts-reserve, .ak-votes-reserve {
+    padding: 6px 0;
     text-align: center;
     font-weight: bold;
     color: #7ddcff
-}
-.ak-reserve-container .col-xs-6+.col-xs-6 {
-    border-color: #0b83ae;
 }
 .breadcrumb {
     padding: 8px 15px;

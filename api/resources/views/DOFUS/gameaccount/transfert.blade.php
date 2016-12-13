@@ -19,6 +19,8 @@
                 <div class="panel-main ak-form">
                     {!! Form::open(['route' => ['gameaccount.transfert', $account->server, $account->Id]]) !!}
 
+                    <b style="color:#b10000">Vous devez être connecté en jeu pour recevoir votre parchemin d'Ogrines dans votre coffre de banque.</b>
+
                     <div class="form-group @if ($errors->has('offline')) has-error @endif">
                         @if ($errors->has('offline')) <label class="error control-label">{{ $errors->first('offline') }}</label> @endif
                     </div>

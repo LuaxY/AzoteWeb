@@ -191,7 +191,9 @@ class GameAccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($ogrines) {
+            $itemId = config('dofus.ogrines_item_id');
+
+            $success = Stump::transfert($server, $accountId, $itemId, $ogrines, "/account/$accountId/bank/$itemId/1", function() use($ogrines) {
                 Auth::user()->points -= $ogrines;
                 Auth::user()->save();
             }, function() use($ogrines) {
@@ -215,6 +217,67 @@ class GameAccountController extends Controller
         }
 
         return view('gameaccount.transfert', ['account' => $account]);
+    }
+
+    public function jetons(Request $request, $server, $accountId)
+    {
+        if (!$this->isServerExist($server))
+        {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        if (!$this->isAccountOwnedByMe($server, $accountId))
+        {
+            throw new GenericException('not_account_owner');
+        }
+
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
+        $account->server = $server;
+
+        $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
+
+        if (!$world || !$world->isOnline())
+        {
+            return view('gameaccount.maintenance', ['account' => $account]);
+        }
+
+        if ($request->all())
+        {
+            $jetons = str_replace(' ', '', $request->input('jetons'));
+
+            $validator = Validator::make([ 'jetons' => $jetons ], [ 'jetons' => 'required|integer|min:1|max:' . Auth::user()->jetons ]);
+
+            if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $ogrines = $jetons * config('dofus.vote');
+
+            $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($jetons) {
+                Auth::user()->jetons -= $jetons;
+                Auth::user()->save();
+            }, function() use($jetons) {
+                Auth::user()->jetons += $jetons;
+                Auth::user()->save();
+            });
+
+            Cache::forget('transferts_' . $server . '_' . $accountId);
+            Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
+
+            if ($success)
+            {
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de convertir ". Utils::format_price($jetons, ' ') ." jetons en ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte " . $account->Nickname]);
+            }
+            else
+            {
+                $request->session()->flash('notify', ['type' => 'error', 'message' => "Le transfert a échoué !"]);
+            }
+
+            return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
+        }
+
+        return view('gameaccount.jetons', ['account' => $account]);
     }
 
     public function gifts(Request $request, $server, $accountId)

@@ -38,6 +38,8 @@
                     </div>
                     <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>
                     <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Cadeaux <span class="ak-icon-small ak-gifts-icon"></span></a>
+                    <a href="{{ URL::route('gameaccount.jetons', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Convertir des Jetons <span class="ak-icon-small ak-votes-icon"></span></a>
+                    <br><br>
                     <a href="{{ URL::route('gameaccount.edit', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>
                 </div>

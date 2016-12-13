@@ -24,6 +24,13 @@
                             <br>
 
                             <div class="ak-panel-title">
+                                <span class="ak-panel-title-icon"></span> Comment convertir mes jetons
+                            </div>
+                            <p>Pour convertir vos jetons en orgines, vous devez vous rendre sur votre gestion de compte, à droite du nom de votre compte de jeu, vous aurez un petit bouton ressemblant à ceci: <span class="ak-icon-small ak-votes-icon"></span><p>
+
+                            <br>
+
+                            <div class="ak-panel-title">
                                 <span class="ak-panel-title-icon"></span> Comment transferer mes ogrines
                             </div>
                             <p>Pour transférer vos ogrines, vous devez vous rendre sur votre gestion de compte, à droite du nom de votre compte de jeu, vous aurez un petit bouton ressemblant à ceci: <span class="ak-icon-small ak-ogrines-icon"></span><p>

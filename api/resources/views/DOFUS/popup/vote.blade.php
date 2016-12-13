@@ -19,7 +19,7 @@
                             <div class="ak-panel-title">
                                 <span class="ak-panel-title-icon"></span> Pourquoi voter
                             </div>
-                            <p>Sachez que voter pour {{ config('dofus.title') }} vous rapporte +{{ config('dofus.vote') }} <span class="ak-icon-small ak-ogrines-icon"></span> à chacun de vos votes, et qu'en contrepartie vous nous aider à maintenir notre place sur RPG-Paradize.</p>
+                            <p>Sachez que voter pour {{ config('dofus.title') }} vous rapporte 1 jeton <span class="ak-icon-small ak-votes-icon"></span> ({{ config('dofus.vote') }} <span class="ak-icon-small ak-ogrines-icon"></span>) à chacun de vos votes, et qu'en contrepartie vous nous aider à maintenir notre place sur RPG-Paradize.</p>
 
                             <br>
 

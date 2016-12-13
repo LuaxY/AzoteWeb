@@ -122,8 +122,8 @@ class VoteController extends Controller
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
         }
 
-        Auth::user()->votes    += 1;
-        Auth::user()->points   += config('dofus.vote');
+        Auth::user()->votes  += 1;
+        Auth::user()->jetons += 1;
 
         if (Auth::user()->isFirstVote)
         {
@@ -144,7 +144,7 @@ class VoteController extends Controller
 
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
-        $vote->points  = config('dofus.vote');
+        $vote->points  = 1; // jetons
         $vote->ip      = $ip;
         $vote->save();
 

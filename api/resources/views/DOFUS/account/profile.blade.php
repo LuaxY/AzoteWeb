@@ -16,9 +16,6 @@
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
                 <div class="panel-main profile">
-                    <div class="pull-left">
-                        <img src="{{ URL::asset(Auth::user()->avatar) }}" />
-                    </div>
                     @if(Auth::user()->certified == 0)
                     <!--<div class="pull-right">
                         <h3>Attention, votre compte est vulnérable.</h3>
@@ -33,15 +30,29 @@
                         <!--<button class="btn btn-info btn-lg" href="#">Voir les promotions</button>-->
                     </div>
                     @endif
-                    <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
-                    <b>Identité</b>: {{ Auth::user()->lastname }} {{ Auth::user()->firstname }}<br>
-                    @if(Auth::user()->birthday)
-                        <b>Date de naissance</b>: {{ Auth::user()->birthday->format('j F Y') }}<br>
-                    @endif
-                    <b>Email</b>: {{ Auth::user()->email }}<br>
-                    <b>Ogrines</b>: {{ Utils::format_price(Auth::user()->points) }} <span class="ak-icon-small ak-ogrines-icon"></span><br>
-                    <b>Cadeaux</b>: {{ Utils::format_price(Auth::user()->votes / 10) }} <span class="ak-icon-small ak-gifts-icon"></span><br>
-                    <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}<br><br>
+
+                    <div class="row">
+                        <!--<div class="col-xs-2">
+                            <img src="{{ URL::asset(Auth::user()->avatar) }}" />
+                        </div>-->
+                        <div class="col-xs-5">
+                            <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
+                            <b>Identité</b>: {{ Auth::user()->lastname }} {{ Auth::user()->firstname }}<br>
+                            @if(Auth::user()->birthday)
+                                <b>Date de naissance</b>: {{ Auth::user()->birthday->format('j F Y') }}<br>
+                            @endif
+                            <b>Email</b>: {{ Auth::user()->email }}
+                        </div>
+                        <div class="col-xs-4">
+                            <b>Ogrines</b>: {{ Utils::format_price(Auth::user()->points) }} <span class="ak-icon-small ak-ogrines-icon"></span><br>
+                            <b>Cadeaux</b>: {{ Utils::format_price(Auth::user()->votes / 10) }} <span class="ak-icon-small ak-gifts-icon"></span><br>
+                            <b>Jetons</b>: {{ Utils::format_price(Auth::user()->jetons) }} <span class="ak-icon-small ak-votes-icon"></span><br>
+                            <b>Votes</b>: {{ Utils::format_price(Auth::user()->votes) }}
+                        </div>
+                    </div>
+
+                    <br>
+
                     @if(Auth::user()->certified == 0)
                     <a href="{{ URL::route('account.change_profile') }}" class="btn btn-default btn-sm">Éditer le profil</a>
                     @endif
@@ -78,6 +89,7 @@
                 <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a>
                 <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon"></span></a>
                 <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-gifts-icon"></span></a>
+                <a href="{{ URL::route('gameaccount.jetons', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-votes-icon"></span></a>
             </td>
         </tr>
         @endforeach
@@ -109,7 +121,7 @@
         <tr>
             <td class="ak-center">{{ $transaction->id }}</td>
             <td>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</td>
-            <td>{{ Utils::format_price($transaction->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+            <td><span class="ak-icon-small ak-ogrines-icon"></span> &nbsp; {{ Utils::format_price($transaction->points) }}</td>
             <td>{{ $transaction->code }}</td>
             <td>{{ Utils::transaction_status($transaction->state) }}</td>
         </tr>
@@ -129,13 +141,13 @@
         <tr>
             <th></th>
             <th>Date du vote</th>
-            <th>Ogrines</th>
+            <th>Jetons</th>
         </tr>
         @foreach (Auth::user()->votes(10) as $vote)
         <tr>
             <td></td>
             <td>{{ $vote->created_at->format('d/m/Y H:i:s') }}</td>
-            <td>+{{ Utils::format_price($vote->points) }} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+            <td>+1 <span class="ak-icon-small ak-votes-icon"></span></td>
         </tr>
         @endforeach
     </table>

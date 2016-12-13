@@ -47,7 +47,7 @@
                 <div class="clearfix"></div>
                 <div class="ak-reserve-container">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
                             <div class="ak-ogrine-reserve-critical ak-ogrines-reserve">
                                 <a href="{{ URL::route('shop.payment.country') }}">
                                     <span class="ak-reserve">{{ Utils::format_price(Auth::user()->points) }}</span>
@@ -55,7 +55,15 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-4">
+                            <div class="ak-ogrine-reserve-critical ak-votes-reserve">
+                                <a href="{{ URL::route('profile') }}">
+                                    <span class="ak-reserve">{{ Utils::format_price(Auth::user()->jetons) }}</span>
+                                    <span class="ak-icon-small ak-votes-icon"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
                             <div class="ak-ogrine-reserve-critical ak-gifts-reserve">
                                 <a href="{{ URL::route('lottery.index') }}">
                                     <span class="ak-reserve">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>

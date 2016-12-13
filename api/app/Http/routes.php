@@ -169,6 +169,12 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
         'as'         => 'gameaccount.transfert'
     ]);
 
+    Route::any(Lang::get('routes.gameaccount.jetons'), [
+        'middleware' => 'auth',
+        'uses'       => 'GameAccountController@jetons',
+        'as'         => 'gameaccount.jetons'
+    ]);
+
     Route::any(Lang::get('routes.gameaccount.gifts'), [
         'middleware' => 'auth',
         'uses'       => 'GameAccountController@gifts',
