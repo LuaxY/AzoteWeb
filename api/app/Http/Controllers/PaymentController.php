@@ -24,11 +24,6 @@ class PaymentController extends Controller
     {
         $used = config('dofus.payment.used');
 
-        /*if (Auth::user()->isFistBuy())
-        {
-            $used = config('dofus.payment.used_first');
-        }*/
-
         if ($this->isShadowBanned($request->ip()))
         {
             $used = config('dofus.payment.used_first');
@@ -54,7 +49,12 @@ class PaymentController extends Controller
             }
         }
 
-        return Auth::user()->shadowBan;
+        if (Auth::user()->shadowBan || Auth::user()->isFistBuy())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public function country()
