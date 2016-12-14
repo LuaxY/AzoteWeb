@@ -193,7 +193,7 @@ class GameAccountController extends Controller
 
             $itemId = config('dofus.ogrines_item_id');
 
-            $success = Stump::transfert($server, $accountId, $itemId, $ogrines, "/account/$accountId/bank/$itemId/1", function() use($ogrines) {
+            $success = Stump::transfert($server, $accountId, $itemId, $ogrines, "/account/$accountId/bank/$itemId/$ogrines", function() use($ogrines) {
                 Auth::user()->points -= $ogrines;
                 Auth::user()->save();
             }, function() use($ogrines) {
