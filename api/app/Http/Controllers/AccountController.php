@@ -535,7 +535,7 @@ class AccountController extends Controller
             {
                 return redirect()->back()->withErrors(['birthday' => 'Le format de la date de naissance est invalide (aaaa-mm-jj)'])->withInput();
             }
-            
+
             $date = Carbon::parse($request->birthday);
             $year_max = Carbon::now()->year - config('dofus.certify.min_age');
             $year_min = Carbon::now()->year - config('dofus.certify.max_age');
