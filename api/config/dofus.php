@@ -27,6 +27,8 @@ return [
 
     'ogrines_item_id' => env('OGRINES_ITEM_ID', 20824),
 
+    'default_server_ladder' => env('DEFAULT_SERVER_LADDER', 'sigma'),
+
     'default_avatar' => 'imgs/avatar/default.jpg',
 
     'accounts_limit' => 8,

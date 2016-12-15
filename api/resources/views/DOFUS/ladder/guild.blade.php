@@ -8,7 +8,7 @@
 
 @section('breadcrumbs')
 {? $page_name = 'Guilde' ?}
-{!! Breadcrumbs::render('ladder.page', $page_name) !!}
+{!! Breadcrumbs::render('ladder.page', $page_name, $server) !!}
 @stop
 
 @section('content')
@@ -17,6 +17,7 @@
         <h1><span class="ak-icon-big ak-ladder-alliance"></span></a> Classement {{ $page_name }}</h1>
     </div>
 
+    @include('ladder.servers')
     @include('ladder.menu')
 
     <div class="ak-container ak-banner-header">

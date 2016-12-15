@@ -106,11 +106,11 @@ return [
 
     /** Ladder **/
 
-    'ladder.general' => 'classement/general',
+    'ladder.general' => 'classement/{server}/general',
 
-    'ladder.pvp' => 'classement/pvp',
+    'ladder.pvp' => 'classement/{server}/pvp',
 
-    'ladder.guild' => 'classement/guilde',
+    'ladder.guild' => 'classement/{server}/guilde',
 
     /** Others **/
 

@@ -71,16 +71,16 @@ Breadcrumbs::register('shop.page', function($breadcrumbs, $page)
     $breadcrumbs->push($page);
 });
 
-// Accueil > Boutique
-Breadcrumbs::register('ladder', function($breadcrumbs)
+// Accueil > Classement
+Breadcrumbs::register('ladder', function($breadcrumbs, $server)
 {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push('Classement', route('ladder.general'));
+    $breadcrumbs->push('Classement', route('ladder.general', [$server]));
 });
 
 // Accueil > Classement > [page]
-Breadcrumbs::register('ladder.page', function($breadcrumbs, $page)
+Breadcrumbs::register('ladder.page', function($breadcrumbs, $page, $server)
 {
-    $breadcrumbs->parent('ladder');
+    $breadcrumbs->parent('ladder', $server);
     $breadcrumbs->push($page);
 });

@@ -3,13 +3,13 @@
         <div class="ak-nav-expand-container" style="height: 42px;">
             <ul class="ak-nav-links ak-nav-expand-links">
                 <li @if ($page_name == 'Général') class="on" @endif>
-                    <a href="{{ URL::route('ladder.general') }}">Ladder Général</a>
+                    <a href="{{ URL::route('ladder.general', [$server]) }}">Ladder Général</a>
                 </li>
                 <li @if ($page_name == 'PvP') class="on" @endif>
-                    <a href="{{ URL::route('ladder.pvp') }}">Ladder PvP</a>
+                    <a href="{{ URL::route('ladder.pvp', [$server]) }}">Ladder PvP</a>
                 </li>
                 <li @if ($page_name == 'Guilde') class="on" @endif>
-                    <a href="{{ URL::route('ladder.guild') }}">Ladder Guilde</a>
+                    <a href="{{ URL::route('ladder.guild', [$server]) }}">Ladder Guilde</a>
                 </li>
             </ul>
         </div>
