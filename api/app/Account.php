@@ -48,8 +48,8 @@ class Account extends Model
             'BanReason'             => 'required',
         ],
         'register' => [
-            'login'                => 'required|min:3|max:32|unique:{DB}.accounts,Login|alpha_dash',
-            'nickname'             => 'required|min:3|max:32|unique:{DB}.accounts,Nickname|alpha_dash',
+            'login'                => 'required|min:3|max:32|regex:/(^[A-Za-z0-9-_]+$)+/|unique:{DB}.accounts,Login',
+            'nickname'             => 'required|min:3|max:32|regex:/(^[A-Za-z0-9-_]+$)+/|unique:{DB}.accounts,Nickname',
             'password'             => 'required|min:6',
             'passwordConfirmation' => 'required|same:password',
         ],
