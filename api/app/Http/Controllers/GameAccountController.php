@@ -304,15 +304,15 @@ class GameAccountController extends Controller
 
         if ($request->all())
         {
-            // is gift owned by me and not already delivred ?
-            $gift = Gift::where('id', $request->input('gift_id'))->where('delivred', false)->where('user_id', Auth::user()->id)->first();
+            // is gift owned by me, on correct server and not already delivred ?
+            $gift = Gift::where('id', $request->input('gift_id'))->where('server', $server)->where('delivred', false)->where('user_id', Auth::user()->id)->first();
 
             if (!$gift)
             {
                 return redirect()->back()->withErrors(['gift' => 'Cadeau selectionné invalide.'])->withInput();
             }
 
-            $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1", function() use($gift, $accountId) {
+            $success = Stump::transfert($server, $accountId, $gift->item_id, 1, "/account/$accountId/bank/{$gift->item_id}/1/" . ($gift->max ? "true" : "false"), function() use($gift, $accountId) {
                 $gift->delivred   = true;
                 $gift->account_id = $accountId;
                 $gift->save();

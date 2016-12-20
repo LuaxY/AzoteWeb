@@ -39,7 +39,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-10">
-                                            <div class="ak-name" id="gift-name">{{ $ticket->item()->name() }}</div>
+                                            <div class="ak-name" id="gift-name">{{ $ticket->item()->name() }} @if ($ticket->max) Jet Parfait @endif</div>
                                             <div class="ak-description" id="gift-description">{{ $ticket->item()->description() }}</div>
                                             <br>
                                         </div>
@@ -83,13 +83,13 @@
                 <div class="ak-responsivetable-wrapper" style="overflow: hidden;">
                     <table border="1" class="ak-container ak-table ak-responsivetable ak-set-composition" style="white-space: nowrap; visibility: visible;">
 
-                        @foreach ($ticket->objects() as $object)
+                        @foreach ($ticket->objects($server) as $object)
                         <tr>
                             <td class="ak-set-composition-illu img-first-column">
                                 <img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70">
                             </td>
                             <td class="ak-set-composition-name">
-                                {{ $object->item()->name() }}
+                                {{ $object->item()->name() }} @if ($object->max) Jet Parfait @endif
                             </td>
                             <td class="ak-set-composition-level">Niv {{ $object->item()->Level }}</td>
                         </tr>
@@ -117,7 +117,7 @@
 
         $.ajax({
             type: "GET",
-            url: "{{ URL::route('lottery.process', [$ticket->id]) }}",
+            url: "{{ URL::route('lottery.process', [$server, $ticket->id]) }}",
         })
         .done(function(data) {
             var json = $.parseJSON(data);

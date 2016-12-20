@@ -11,11 +11,12 @@ class LotteryItem extends Model
 {
     public static $rules = [
         'store' => [
-            'item'               => 'required|numeric|digits_between:1,5',
-            'percentage'         => 'required|numeric|between:1,100|integer'
+            'item'       => 'required|numeric|digits_between:1,5',
+            'percentage' => 'required|numeric|between:1,100|integer',
+            'server'     => 'required'
         ],
         'update' => [
-            'percentage'         => 'required|numeric|between:1,100|integer'
+            'percentage' => 'required|numeric|between:1,100|integer'
         ],
     ];
 

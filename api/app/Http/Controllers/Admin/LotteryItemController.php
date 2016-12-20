@@ -65,24 +65,29 @@ class LotteryItemController extends Controller
 
     public function store(Request $request, Lottery $lottery)
     {
-      if(!$this->isLotteryExist($lottery->id))
-      {
-          abort(404);
-      }
+        if(!$this->isLotteryExist($lottery->id))
+        {
+            abort(404);
+        }
+
         $validator = Validator::make($request->all(), LotteryItem::$rules['store']);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             return response()->json($validator->messages(), 422);
         }
-        if(!$this->isItemExist($request->item))
+
+        if (!$this->isItemExist($request->item))
         {
             return response()->json(['item' => ['0' => 'This item doesn\'t exist']], 422);
         }
 
         $item = new LotteryItem;
-        $item->type = $lottery->type;
+        $item->type       = $lottery->type;
         $item->percentage = $request->percentage;
-        $item->item_id = $request->item;
+        $item->item_id    = $request->item;
+        $item->max        = $request->input('max') ? true : false;
+        $item->server     = @config('dofus.servers')[$request->input('server')];
         $item->save();
 
         return response()->json([], 202);
@@ -105,7 +110,7 @@ class LotteryItemController extends Controller
         {
             abort(404);
         }
-        
+
         $validator = Validator::make($request->all(), LotteryItem::$rules['update']);
 
         if ($validator->fails())
@@ -115,7 +120,9 @@ class LotteryItemController extends Controller
 
         $item = LotteryItem::findOrFail($itemid);
         $item->percentage = $request->percentage;
+        $item->max        = $request->input('max') ? true : false;
         $item->save();
+
         return response()->json([$request->percentage], 202);
 
     }

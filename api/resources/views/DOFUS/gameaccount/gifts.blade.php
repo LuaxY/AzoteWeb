@@ -39,12 +39,12 @@
             <th>Cadeau</th>
             <th>Description</th>
         </tr>
-        @foreach (Auth::user()->gifts(true) as $gift)
+        @foreach (Auth::user()->gifts(true, $account->server) as $gift)
         <tr>
             <td class="ak-rank"><input type="radio" name="gift_id" value="{{ $gift->id }}"></td>
             <td>{{ $gift->created_at->format('d/m/Y H:i:s') }}</td>
             <td><img src="{{ $gift->item()->image() }}" width="50" height="50"></td>
-            <td>{{ $gift->item()->name() }}</td>
+            <td>{{ $gift->item()->name() }} @if ($gift->max) Jet Parfait @endif</td>
             <td>{{ $gift->description }}</td>
         </tr>
         @endforeach

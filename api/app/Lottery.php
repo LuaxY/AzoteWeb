@@ -22,8 +22,8 @@ class Lottery extends Model
         return $ticketsArray;
     }
 
-    public function objects()
+    public function objects($server)
     {
-        return $this->hasMany(LotteryItem::class, 'type', 'type')->get();
+        return $this->hasMany(LotteryItem::class, 'type', 'type')->where('server', $server)->get();
     }
 }

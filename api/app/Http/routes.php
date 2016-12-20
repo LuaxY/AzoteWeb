@@ -291,6 +291,12 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
         'as'         => 'lottery.index'
     ]);
 
+    Route::get(Lang::get('routes.lottery.servers'), [
+        'middleware' => ['auth', 'lottery'],
+        'uses'       => 'LotteryController@servers',
+        'as'         => 'lottery.servers'
+    ]);
+
     Route::get(Lang::get('routes.lottery.draw'), [
         'middleware' => ['auth', 'lottery'],
         'uses'       => 'LotteryController@draw',

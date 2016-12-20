@@ -3,6 +3,7 @@
 
 @section('header')
     {!! Html::style('css/codes.css') !!}
+    {!! Html::style('css/set.css') !!}
 @stop
 
 @section('breadcrumbs')
@@ -15,10 +16,9 @@
 <div class="ak-container ak-main-center">
     <div class="ak-title-container">
         <h1 class="ak-return-link">
-            <a href=""><span class="ak-icon-big ak-codes"></span></a> Loterie
+            <span class="ak-icon-big ak-codes"></span> <span id="title">Choissisez un serveur !</span>
         </h1>
     </div>
-
     <div class="ak-container ak-panel-stack ak-glue">
         <div class="ak-container ak-panel ak-main-form-code">
             <div class="ak-panel-content">
@@ -38,25 +38,24 @@
                                         </div>-->
                                         <div class="ak-container ak-panel">
                                             <div class="ak-panel-title">
-                                                <span class="ak-panel-title-icon"></span> Liste des tickets en attente
+                                                <span class="ak-panel-title-icon"></span> Liste des serveurs disponible
                                             </div>
                                             <div class="ak-panel-content">
                                                 <div class="row ak-container ak-content-list ak-encyclo-item-crafts clearfix ak-displaymode-image-col">
 
-                                                    @if (count(Auth::user()->lotteryTickets(true)) > 0)
-                                                    @foreach (Auth::user()->lotteryTickets(true) as $ticket)
+                                                    @foreach (config('dofus.details') as $server)
                                                     <div class="ak-column ak-container col-xs-12 col-md-6">
                                                         <div class="ak-list-element">
                                                             <div class="ak-main">
-                                                                <div class="ak-main-content ">
+                                                                <div class="ak-main-content">
                                                                     <div class="ak-image">
-                                                                        <a href="{{ URL::route('lottery.servers', [$ticket->id]) }}"><span class="ak-linker"><img src="{{ URL::asset($ticket->lottery()->icon_path) }}"></span></a>
+                                                                        <a href="{{ URL::route('lottery.draw', [$server->name, $ticketId]) }}"><span class="ak-linker"><img src="{{ URL::asset('imgs/admin/' . $server->name . '.png') }}" style="background-color: #d4f3ff;"></span></a>
                                                                     </div>
                                                                     <div class="ak-content">
                                                                         <div class="ak-title">
-                                                                            <a href="{{ URL::route('lottery.servers', [$ticket->id]) }}"><span class="ak-linker">{{ $ticket->description }}</span></a>
+                                                                            <a href="{{ URL::route('lottery.draw', [$server->name, $ticketId]) }}"><span class="ak-linker">{{ ucfirst($server->name) }}</span></a>
                                                                         </div>
-                                                                        <div class="ak-text" style="padding-left: 12px;">{{ $ticket->lottery()->name }}</div>
+                                                                        <div class="ak-text" style="padding-left: 12px;">{{ $server->desc }} {{ $server->version }}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -64,9 +63,6 @@
                                                     </div>
                                                     <div class="clearfix  visible-xs visible-sm"></div>
                                                     @endforeach
-                                                    @else
-                                                    <div class="ak-panel-content">Aucun ticket disponible.</div>
-                                                    @endif
 
                                                 </div>
                                             </div>

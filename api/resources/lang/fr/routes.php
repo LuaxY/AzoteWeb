@@ -100,9 +100,11 @@ return [
 
     'lottery.index' => 'loterie',
 
-    'lottery.draw' => 'loterie/tirage/{id}',
+    'lottery.servers' => 'loterie/serveurs/{id}',
 
-    'lottery.process' => 'loterie/tirage/go/{id}',
+    'lottery.draw' => 'loterie/tirage/{server}/{id}',
+
+    'lottery.process' => 'loterie/tirage/go/{server}/{id}',
 
     /** Ladder **/
 

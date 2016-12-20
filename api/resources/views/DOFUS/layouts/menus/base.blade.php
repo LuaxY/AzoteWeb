@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-xs-4">
                             <div class="ak-ogrine-reserve-critical ak-votes-reserve">
-                                <a href="{{ URL::route('profile') }}">
+                                <a href="{{ URL::route('vote.index') }}">
                                     <span class="ak-reserve">{{ Utils::format_price(Auth::user()->jetons) }}</span>
                                     <span class="ak-icon-small ak-votes-icon"></span>
                                 </a>

@@ -34,37 +34,41 @@
                     <div class="m-b-30">
                         <button type="button" data-toggle="modal" data-target="#add-item-modal" class="btn btn-primary waves-effect waves-light btn-lg m-b-5" href="#"><i class="fa fa-plus"></i> Add item</button>
                     </div>
-                    @if(count($type->objects()) > 0)
-                    <table class="table table-striped" id="tickets-table">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Icon</th>
-                            <th>Name</th>
-                            <th>Percentage</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($type->objects() as $object)
-                            <tr id="{{$object->id}}">
-                                <td>{{$object->item_id}}</td>
-                                <td class="image"><img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70"></td>
-                                <td class="name">{{$object->item()->name()}}</td>
-                                <td class="percentage">{{$object->percentage}}</td>
-                                <td>
-                                    <a href="javascript:void(0)" data-id="{{$object->id}}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
-                                    <a href="javascript:void(0)" data-id="{{ $object->id }}" class="delete btn btn-xs btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
-                                </td>
+                    @foreach (config('dofus.servers') as $server)
+                        <h2>{{ ucfirst($server) }}</h2>
+                        @if (count($type->objects($server)) > 0)
+                        <table class="table table-striped" id="tickets-table">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Icon</th>
+                                <th>Name</th>
+                                <th>Percentage</th>
+                                <th>Actions</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    @else
-                        <div class="alert alert-info">
-                            This lottery doesn't have any objects.
-                        </div>
-                    @endif
+                            </thead>
+                            <tbody>
+                            @foreach($type->objects($server) as $object)
+                                <tr id="{{ $object->id }}">
+                                    <td>{{ $object->item_id }}</td>
+                                    <td class="image"><img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70"></td>
+                                    <td class="name">{{ $object->item()->name() }} @if ($object->max) Jet Parfait @endif</td>
+                                    <td class="percentage">{{ $object->percentage }}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" data-id="{{ $object->id }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:void(0)" data-id="{{ $object->id }}" class="delete btn btn-xs btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                            <div class="alert alert-info">
+                                This lottery doesn't have any objects.
+                            </div>
+                        @endif
+                        <hr>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -86,7 +90,7 @@
                                     {!! Form::text('item', null,['class' => 'form-control', 'id' => 'item']) !!}
                                     @if ($errors->has('item'))
                                         <span class="help-block">
-                                                <strong>{{ $errors->first('item') }}</strong>
+                                            <strong>{{ $errors->first('item') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -99,8 +103,26 @@
                                     {!! Form::text('percentage', null,['class' => 'form-control', 'id' => 'percentage']) !!}
                                     @if ($errors->has('percentage'))
                                         <span class="help-block">
-                                                <strong>{{ $errors->first('percentage') }}</strong>
-                                            </span>
+                                            <strong>{{ $errors->first('percentage') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group {{ $errors->has('server') ? ' has-error' : '' }}">
+                                    <label for="server">Server:</label>
+                                    {!! Form::select('server', config('dofus.servers'), null, ['class' => 'form-control', 'id' => 'server']) !!}
+                                    @if ($errors->has('server'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('server') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
+                                    <label for="max">Perfect:</label>
+                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max']) !!}
+                                    @if ($errors->has('max'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('max') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                             </div>
@@ -135,6 +157,15 @@
                                         <span class="help-block">
                                                 <strong>{{ $errors->first('percentage') }}</strong>
                                             </span>
+                                    @endif
+                                </div>
+                                <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
+                                    <label for="max">Perfect:</label>
+                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max']) !!}
+                                    @if ($errors->has('max'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('max') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                             </div>
@@ -337,6 +368,7 @@
                         toastr.success('Item Edited!');
                         $('#tickets-table tbody tr#'+id+' td.percentage').html(msg);
                         $('#item_edit_submit_button').prop('disabled', false);
+                        setTimeout(function(){ location.reload(); }, 500);
                     },
 
                     error: function (jqXhr, json, errorThrown) {

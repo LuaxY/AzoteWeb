@@ -166,14 +166,14 @@ class User extends Authenticatable
         return $votes;
     }
 
-    public function gifts($onlyAvailable = false)
+    public function gifts($onlyAvailable = false, $server = "")
     {
         $gifts = null;
 
         if ($onlyAvailable)
         {
-            $gifts = Cache::remember('gifts_available_' . $this->id, 10, function() {
-                return $this->hasMany(Gift::class)->where('delivred', false)->get();
+            $gifts = Cache::remember('gifts_available_' . $server . '_' . $this->id, 10, function() use($server) {
+                return $this->hasMany(Gift::class)->where('server', $server)->where('delivred', false)->get();
             });
         }
         else

@@ -13,14 +13,14 @@ class LotteryTicket extends Model
     const NORMAL = 0;
     const GOLD   = 1;
 
-    public function objects()
+    public function objects($server)
     {
-        return $this->hasMany(LotteryItem::class, 'type', 'type')->get();
+        return $this->hasMany(LotteryItem::class, 'type', 'type')->where('server', $server)->get();
     }
 
-    public function draw()
+    public function draw($server)
     {
-        $objects = $this->objects();
+        $objects = $this->objects($server);
         $max = 0;
 
         foreach ($objects as $object)
