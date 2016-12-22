@@ -89,9 +89,9 @@
                                 <img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70">
                             </td>
                             <td class="ak-set-composition-name">
-                                {{ $object->item()->name() }} @if ($object->max) Jet Parfait @endif
+                                {{ $object->item()->name() }}
                             </td>
-                            <td class="ak-set-composition-level">Niv {{ $object->item()->Level }}</td>
+                            <td class="ak-set-composition-level">@if ($object->max)Jet Parfait -@endif Niv {{ $object->item()->Level }}</td>
                         </tr>
                         @endforeach
 

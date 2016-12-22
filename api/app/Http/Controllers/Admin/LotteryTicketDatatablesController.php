@@ -48,7 +48,8 @@ class LotteryTicketDatatablesController extends Controller
                 return $ticket->used ? '<span class="label label-success">Yes - '.$ticket->updated_at->format("d/m/Y H:i:s").'</span>' : '<span class="label label-danger">No</span>';
             })
             ->editColumn('item_id', function ($ticket){
-                return $ticket->item() ? $ticket->item()->name() : '';
+                $jp = $ticket->max ? ' (JP)' : '';
+                return $ticket->item() ? ''.$ticket->item()->name().''.$jp.'' : '';
             })
             ->editColumn('giver', function ($ticket){
                 return $ticket->giver();
