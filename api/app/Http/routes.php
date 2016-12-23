@@ -771,7 +771,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'as'   => 'admin.lottery.tickets'
         ]);
 
-        Route::get('lottery/{lottery}/items/{itemid}/search', [
+        Route::get('lottery/{lottery}/items/{serverId}/{itemid}/search', [
             'uses' => 'LotteryItemController@getItemData',
             'as'   => 'admin.lottery.item.getdata'
         ])->where('itemid','[0-9]+');

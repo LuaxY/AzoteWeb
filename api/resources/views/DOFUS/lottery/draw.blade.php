@@ -35,12 +35,12 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="ak-image">
-                                                <img id="gift-image" src="{{ URL::asset($ticket->item()->image()) }}" class="img-maxresponsive">
+                                                <img id="gift-image" src="{{ URL::asset($ticket->item($server)->image()) }}" class="img-maxresponsive">
                                             </div>
                                         </div>
                                         <div class="col-sm-10">
-                                            <div class="ak-name" id="gift-name">{{ $ticket->item()->name() }} @if ($ticket->max) Jet Parfait @endif</div>
-                                            <div class="ak-description" id="gift-description">{{ $ticket->item()->description() }}</div>
+                                            <div class="ak-name" id="gift-name">{{ $ticket->item($server)->name() }} @if ($ticket->max) Jet Parfait @endif</div>
+                                            <div class="ak-description" id="gift-description">{{ $ticket->item($server)->description() }}</div>
                                             <br>
                                         </div>
                                     </div>
@@ -86,12 +86,12 @@
                         @foreach ($ticket->objects($server) as $object)
                         <tr>
                             <td class="ak-set-composition-illu img-first-column">
-                                <img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70">
+                                <img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name() }}" width="70">
                             </td>
                             <td class="ak-set-composition-name">
-                                {{ $object->item()->name() }} @if ($object->max) Jet Parfait @endif
+                                {{ $object->item($server)->name() }} @if ($object->max) Jet Parfait @endif
                             </td>
-                            <td class="ak-set-composition-level">Niv {{ $object->item()->Level }}</td>
+                            <td class="ak-set-composition-level">Niv {{ $object->item($server)->Level }}</td>
                         </tr>
                         @endforeach
 

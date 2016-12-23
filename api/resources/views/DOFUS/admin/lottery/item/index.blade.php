@@ -51,8 +51,8 @@
                             @foreach($type->objects($server) as $object)
                                 <tr id="{{ $object->id }}">
                                     <td>{{ $object->item_id }}</td>
-                                    <td class="image"><img src="{{ $object->item()->image() }}" alt="{{ $object->item()->name() }}" width="70"></td>
-                                    <td class="name">{{ $object->item()->name() }} @if ($object->max) Jet Parfait @endif</td>
+                                    <td class="image"><img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name() }}" width="70"></td>
+                                    <td class="name">{{ $object->item($server)->name() }} @if ($object->max) Jet Parfait @endif</td>
                                     <td class="percentage">{{ $object->percentage }}</td>
                                     <td>
                                         <a href="javascript:void(0)" data-id="{{ $object->id }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
@@ -85,6 +85,15 @@
                         {!! Form::open(['route' => ['admin.lottery.item.store', $type->id], 'id' => 'form-additem']) !!}
                         <div class="row">
                             <div class="col-sm-12">
+                                <div class="form-group {{ $errors->has('server') ? ' has-error' : '' }}">
+                                    <label for="server">Server:</label>
+                                    {!! Form::select('server', config('dofus.servers'), null, ['class' => 'form-control', 'id' => 'server']) !!}
+                                    @if ($errors->has('server'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('server') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                                 <div class="form-group {{ $errors->has('item') ? ' has-error' : '' }}">
                                     <label for="item">Item Id:</label>
                                     {!! Form::text('item', null,['class' => 'form-control', 'id' => 'item']) !!}
@@ -104,15 +113,6 @@
                                     @if ($errors->has('percentage'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('percentage') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="form-group {{ $errors->has('server') ? ' has-error' : '' }}">
-                                    <label for="server">Server:</label>
-                                    {!! Form::select('server', config('dofus.servers'), null, ['class' => 'form-control', 'id' => 'server']) !!}
-                                    @if ($errors->has('server'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('server') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -186,6 +186,8 @@
     <script>
         $(document).ready(function () {
             var token = '{{ Session::token() }}';
+            var typingTimer;
+            var doneTypingInterval = 1000;
             // Touchspin initialize
             $("input[name='percentage']").TouchSpin({
                 min: 1,
@@ -199,15 +201,26 @@
                 postfix: 'Percent'
             });
 
-            $('#item').keyup(function () {
-                $this = $(this);
+            $('#item').keyup(function() {
+                var self = $(this);
+                clearTimeout(typingTimer);
+                if ($('#item').val()) {
+                    typingTimer = setTimeout(function() {
+                        loadItem(self);
+                    }, doneTypingInterval);
+                }
+            });
+
+            loadItem = function(itemInput) {
+                $this = itemInput;
                 var validItemId = new RegExp('^[0-9]+$');
                 var item_id = $this.val();
                 var item_infos = $('#item_infos');
                 if(validItemId.test(item_id))
                 {
+                    var server = $('#server').val();
                     var route_base = '{{ route('admin.lottery.items', $type->id) }}';
-                    var route = ''+route_base+'/'+item_id+'/search';
+                    var route = ''+route_base+'/'+server+'/'+item_id+'/search';
                     $.ajax({
                         url: route,
                         method: "GET",
@@ -252,7 +265,7 @@
                     var app = '<span class="help-block" style="color:red;"><strong><li>L\'Id est invalide</li></strong></span>';
                     item_infos.removeClass('hidden').html(app);
                 }
-            });
+            }
 
             // Add ticket to user
             $( "#form-additem" ).on( "submit", function( event ) {

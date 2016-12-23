@@ -63,13 +63,13 @@ class LotteryController extends Controller
         {
             $gift = new Gift;
             $gift->user_id     = Auth::user()->id;
-            $gift->item_id     = $object->item()->Id;
+            $gift->item_id     = $object->item($server)->Id;
             $gift->description = $ticket->description;
             $gift->max         = $object->max;
             $gift->server      = $server;
             $gift->save();
 
-            $ticket->item_id = $object->item()->Id;
+            $ticket->item_id = $object->item($server)->Id;
             $ticket->max     = $object->max;
             $ticket->server  = $server;
             $ticket->used    = true;
@@ -84,9 +84,9 @@ class LotteryController extends Controller
             Cache::forget('tickets_admin_' . Auth::user()->id);
 
             return json_encode([
-                'image'       => $object->item()->image(),
-                'name'        => $object->item()->name() . ($object->max ? ' Jet Parfait' : ''),
-                'description' => $object->item()->description(),
+                'image'       => $object->item($server)->image(),
+                'name'        => $object->item($server)->name() . ($object->max ? ' Jet Parfait' : ''),
+                'description' => $object->item($server)->description(),
             ]);
         }
 

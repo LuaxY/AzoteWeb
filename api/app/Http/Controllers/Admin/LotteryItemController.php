@@ -43,7 +43,7 @@ class LotteryItemController extends Controller
         return view('admin.lottery.item.index', compact('type'));
     }
 
-    public function getItemData(Request $request, Lottery $lottery, $itemid)
+    public function getItemData(Request $request, Lottery $lottery, $server, $itemid)
     {
         $validation = ['itemid' => $itemid];
         $validator = Validator::make($validation, ItemTemplate::$rules['getItemById']);
@@ -56,7 +56,8 @@ class LotteryItemController extends Controller
         {
             return response()->json(['itemid' => ['0' => 'Item not found']], 422);
         }
-        $item = ItemTemplate::where('Id', $itemid)->first();
+        
+        $item = ItemTemplate::on(config('dofus.servers')[$server].'_world')->where('Id', $itemid)->first();
         $item_image = $item->image();
         $item_name = $item->name();
         $item_array = ['image' => $item_image, 'name' => $item_name];

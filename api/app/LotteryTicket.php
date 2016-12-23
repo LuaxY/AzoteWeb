@@ -42,12 +42,19 @@ class LotteryTicket extends Model
             }
         }
     }
-
-    public function item()
+    
+    public function item($server = null)
     {
         if ($this->item_id)
         {
-            return $this->hasOne(ItemTemplate::class, 'Id', 'item_id')->first();
+            if ($server)
+            {
+                return ItemTemplate::on($server . '_world')->where('id', $this->item_id)->first();
+            }
+            else
+            {
+                return $this->hasOne(ItemTemplate::class, 'Id', 'item_id')->first();
+            }
         }
 
         return null;
