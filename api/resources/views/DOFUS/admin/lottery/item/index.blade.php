@@ -89,7 +89,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group {{ $errors->has('server') ? ' has-error' : '' }}">
                                     <label for="server">Server:</label>
-                                    {!! Form::select('server', config('dofus.servers'), null, ['class' => 'form-control', 'id' => 'server']) !!}
+                                    {!! Form::select('server', $servers, null, ['class' => 'form-control', 'id' => 'server']) !!}
                                     @if ($errors->has('server'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('server') }}</strong>

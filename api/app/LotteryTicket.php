@@ -12,6 +12,7 @@ class LotteryTicket extends Model
 {
     const NORMAL = 0;
     const GOLD   = 1;
+    const NOWEL  = 3;
 
     public function objects($server)
     {
@@ -42,7 +43,7 @@ class LotteryTicket extends Model
             }
         }
     }
-    
+
     public function item($server = null)
     {
         if ($this->item_id)

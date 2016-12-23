@@ -11,19 +11,19 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box">
-                                    <table id="tickets-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                                        <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Ticket</th>
-                                            <th>User</th>
-                                            <th>Used</th>
-                                            <th>Item</th>
-                                            <th>Date</th>
-                                            <th>Giver</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
+                        <table id="tickets-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Ticket</th>
+                                <th>User</th>
+                                <th>Used</th>
+                                <th>Item</th>
+                                <th>Date</th>
+                                <th>Giver</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
             var oTable;
                 oTable = $('#tickets-table').DataTable({
                     "order": [[ 0, "desc" ]],
-                    processing: true,
+                    processing: false,
                     serverSide: true,
                     autoWidth: true,
                     responsive: true,
