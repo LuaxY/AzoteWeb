@@ -43,6 +43,7 @@
                                 <th>Id</th>
                                 <th>Icon</th>
                                 <th>Name</th>
+                                <th>Perfect</th>
                                 <th>Percentage</th>
                                 <th>Actions</th>
                             </tr>
@@ -52,7 +53,8 @@
                                 <tr id="{{ $object->id }}">
                                     <td>{{ $object->item_id }}</td>
                                     <td class="image"><img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name() }}" width="70"></td>
-                                    <td class="name">{{ $object->item($server)->name() }} @if ($object->max) Jet Parfait @endif</td>
+                                    <td class="name">{{ $object->item($server)->name() }}</td>
+                                    <td class="perfect" data-value="{{$object->max}}">@if ($object->max) <span class="label label-success">Yes</span> @else <span class="label label-danger">No</span> @endif</td>
                                     <td class="percentage">{{ $object->percentage }}</td>
                                     <td>
                                         <a href="javascript:void(0)" data-id="{{ $object->id }}" class="edit btn btn-xs btn-default" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil"></i></a>
@@ -118,7 +120,7 @@
                                 </div>
                                 <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
                                     <label for="max">Perfect:</label>
-                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max']) !!}
+                                    {!! Form::checkbox('max', '1', null, ['class' => '', 'id' => 'max']) !!}
                                     @if ($errors->has('max'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('max') }}</strong>
@@ -161,7 +163,7 @@
                                 </div>
                                 <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
                                     <label for="max">Perfect:</label>
-                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max']) !!}
+                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max_edit']) !!}
                                     @if ($errors->has('max'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('max') }}</strong>
@@ -354,12 +356,14 @@
             $('#tickets-table tbody').on('click', 'tr .edit', function () {
                 $('#edit-item-modal').modal();
                 var id = $(this).data('id');
-                var percentage = $('#tickets-table tbody tr#'+id+' td.percentage').html();
-                var image = $('#tickets-table tbody tr#'+id+' td.image').html();
-                var name = $('#tickets-table tbody tr#'+id+' td.name').html();
+                var percentage = $('tr#'+id+' td.percentage').html();
+                var image = $('tr#'+id+' td.image').html();
+                var name = $('tr#'+id+' td.name').html();
+                var max = $('tr#'+id+' td.perfect').data('value');
                 $('#edit-item-modal .modal-title').html(''+name+': Edit item');
                 $('#edit-item-modal #item_edit_infos').html(image);
                 $('#edit-item-modal input#percentage_edit').val(percentage);
+                document.getElementById("max_edit").checked = max;
                 $('#edit-item-modal').data('id', id);
             });
 
@@ -379,7 +383,6 @@
                     success: function (msg) {
                         $('#edit-item-modal').modal('hide');
                         toastr.success('Item Edited!');
-                        $('#tickets-table tbody tr#'+id+' td.percentage').html(msg);
                         $('#item_edit_submit_button').prop('disabled', false);
                         setTimeout(function(){ location.reload(); }, 500);
                     },

@@ -40,7 +40,13 @@ class LotteryItemController extends Controller
     public function index(Lottery $lottery)
     {
         $type = Lottery::findOrFail($lottery->id);
-        return view('admin.lottery.item.index', compact('type'));
+        $serversArray = config('dofus.servers');
+        $servers = array();
+        foreach ($serversArray as $k => $server)
+        {
+            $servers[$k] = ucfirst($server);
+        }
+        return view('admin.lottery.item.index', compact('type', 'servers'));
     }
 
     public function getItemData(Request $request, Lottery $lottery, $server, $itemid)
