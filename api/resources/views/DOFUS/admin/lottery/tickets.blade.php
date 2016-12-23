@@ -40,7 +40,7 @@
             var oTable;
                 oTable = $('#tickets-table').DataTable({
                     "order": [[ 0, "desc" ]],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     autoWidth: true,
                     responsive: true,

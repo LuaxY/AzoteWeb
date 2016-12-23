@@ -22,9 +22,7 @@ class LotteryTicketDatatablesController extends Controller
      */
     public function anyData()
     {
-        $tickets = Cache::remember('lottery_tickets_admin', 5, function () {
-            return LotteryTicket::all();
-        });
+        $tickets = LotteryTicket::all();
 
         return Datatables::of($tickets)
             ->editColumn('user_id', function($ticket){
