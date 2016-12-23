@@ -27,13 +27,14 @@ class VoteController extends Controller
             return view('vote.guest');
         }
 
-        $palierId   = $this->palierId();
-        $votesCount = $this->userVotes();
-        $giftsCount = $this->giftsCount();
-        $nextGifts  = $this->nextGift();
-        $progress   = $this->progressBar($palierId);
-        $steps      = $this->stepsList($palierId);
-        $current    = (($votesCount + $nextGifts) / 10) % 5;
+        $palierId       = $this->palierId();
+        $votesCount     = $this->userVotes();
+        $giftsCount     = $this->giftsCount();
+        $nextGifts      = $this->nextGift();
+        $progress       = $this->progressBar($palierId);
+        $steps          = $this->stepsList($palierId);
+        $votesForTicket = $this->votesForTicket();
+        $current        = (($votesCount + $nextGifts) / $this->votesForTicket()) % 5;
 
         /*$ip = \Illuminate\Support\Facades\Request::ip();
         $date = Carbon::now()->subHours(3)->toDateTimeString();
@@ -53,14 +54,15 @@ class VoteController extends Controller
         }
 
         $data = [
-            'palierId'   => $palierId,
-            'votesCount' => $votesCount,
-            'giftsCount' => $giftsCount,
-            'nextGifts'  => $nextGifts,
-            'progress'   => $progress,
-            'steps'	     => $steps,
-            'current'    => $current,
-            'delay'      => $delay,
+            'palierId'       => $palierId,
+            'votesCount'     => $votesCount,
+            'giftsCount'     => $giftsCount,
+            'nextGifts'      => $nextGifts,
+            'progress'       => $progress,
+            'steps'	         => $steps,
+            'votesForTicket' => $votesForTicket,
+            'current'        => $current,
+            'delay'          => $delay,
         ];
 
         if (Auth::user()->isFirstVote)
@@ -93,8 +95,8 @@ class VoteController extends Controller
         }
 
         $rules = [
-            'out'                  => 'required|integer',
-            'g-recaptcha-response' => 'required|recaptcha'
+            //'out'                  => 'required|integer',
+            //'g-recaptcha-response' => 'required|recaptcha'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -113,14 +115,14 @@ class VoteController extends Controller
 
         $actualOUT = $this->getOuts();
 
-        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
+        /*if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
         {
             // Bad OUT, restore preivous last vote date
             Auth::user()->last_vote = $previousVote;
             Auth::user()->save();
 
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
-        }
+        }*/
 
         Auth::user()->votes  += 1;
         Auth::user()->jetons += 1;
@@ -167,13 +169,27 @@ class VoteController extends Controller
         Cache::forget('votes_' . Auth::user()->id);
         Cache::forget('votes_' . Auth::user()->id . '_10');
 
-        if (Auth::user()->votes % 10 == 0)
+        if (Auth::user()->votes % $this->votesForTicket() == 0)
         {
             $ticket = new LotteryTicket;
-            $ticket->type        = Auth::user()->votes % 50 == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
+            $ticket->type        = Auth::user()->votes % ($this->votesForTicket() * 5) == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
             $ticket->user_id     = Auth::user()->id;
             $ticket->description = "Ticket " . Auth::user()->votes . " votes";
             $ticket->save();
+
+            // If Nowel 2016
+            $now   = Carbon::now();
+            $begin = Carbon::create(2016, 12, 21);
+            $end   = Carbon::create(2017, 01, 01);
+
+            if ($now->gte($begin) && $now->lt($end))
+            {
+                $ticket = new LotteryTicket;
+                $ticket->type        = LotteryTicket::NOWEL;
+                $ticket->user_id     = Auth::user()->id;
+                $ticket->description = "Ticket de Nowel";
+                $ticket->save();
+            }
 
             Cache::forget('tickets_available_' . Auth::user()->id);
             Cache::forget('tickets_' . Auth::user()->id);
@@ -186,11 +202,16 @@ class VoteController extends Controller
         return redirect()->route('vote.index');
     }
 
+    public function votesForTicket()
+    {
+        return config('dofus.votes_for_ticket');
+    }
+
     public function palier($id)
     {
         $votesCount = $this->userVotes();
 
-        if ($id < 1 || $id > ceil(($votesCount+1) / 50))
+        if ($id < 1 || $id > ceil(($votesCount+1) / ($this->votesForTicket() * 5)))
         {
             $id = 1;
         }
@@ -200,10 +221,11 @@ class VoteController extends Controller
         $current    = 1;
 
         $data = array(
-            'palierId' => $id,
-            'progress' => $progress,
-            'steps'	   => $steps,
-            'current'  => $current,
+            'palierId'       => $id,
+            'votesForTicket' => $this->votesForTicket(),
+            'progress'       => $progress,
+            'steps'	         => $steps,
+            'current'        => $current,
         );
 
         return view('vote.paliers', $data);
@@ -213,7 +235,7 @@ class VoteController extends Controller
     {
         $json = [];
 
-        if ($item % 50 == 0)
+        if ($item % ($this->votesForTicket() * 5) == 0)
         {
             $json = [
                 'name'        => 'Ticket de loterie doré',
@@ -240,33 +262,33 @@ class VoteController extends Controller
 
     private function palierId()
     {
-        return intval($this->userVotes() / 50) + 1;
+        return intval($this->userVotes() / ($this->votesForTicket() * 5)) + 1;
     }
 
     private function giftsCount()
     {
-        return intval($this->userVotes() / 10);
+        return intval($this->userVotes() / $this->votesForTicket());
     }
 
     private function nextGift()
     {
-        return 10 - ($this->userVotes() % 10);
+        return $this->votesForTicket() - ($this->userVotes() % $this->votesForTicket());
     }
 
     private function progressBar($palierId)
     {
-        $progress = ($this->userVotes() - (($palierId - 1) * 50)) * 100 / 50;
+        $progress = ($this->userVotes() - (($palierId - 1) * ($this->votesForTicket() * 5))) * 100 / ($this->votesForTicket() * 5);
         return $progress > 100 ? 100 : $progress;
     }
 
     private function stepsList($palierId)
     {
         return [
-            1 => 50 * ($palierId - 1) + 10,
-            2 => 50 * ($palierId - 1) + 20,
-            3 => 50 * ($palierId - 1) + 30,
-            4 => 50 * ($palierId - 1) + 40,
-            5 => 50 * ($palierId - 1) + 50,
+            1 => ($this->votesForTicket() * 5) * ($palierId - 1) + ($this->votesForTicket() * 1),
+            2 => ($this->votesForTicket() * 5) * ($palierId - 1) + ($this->votesForTicket() * 2),
+            3 => ($this->votesForTicket() * 5) * ($palierId - 1) + ($this->votesForTicket() * 3),
+            4 => ($this->votesForTicket() * 5) * ($palierId - 1) + ($this->votesForTicket() * 4),
+            5 => ($this->votesForTicket() * 5) * ($palierId - 1) + ($this->votesForTicket() * 5),
         ];
     }
 

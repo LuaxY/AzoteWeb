@@ -83,7 +83,9 @@ return [
         'discord'  => env('SOCIAL_DISCORD'),
     ],
 
-    'vote'         => env('POINTS_BY_VOTES', 10),
+    'points_by_vote'   => env('POINTS_BY_VOTES', 10),
+
+    'votes_for_ticket' => env('VOTES_FOR_TICKET', 10),
 
     'rpg-paradize' => [
         'id'       => env('RPG_PARADIZE', 0),

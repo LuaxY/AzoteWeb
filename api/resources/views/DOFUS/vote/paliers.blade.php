@@ -44,6 +44,6 @@
         <div class="ak-container">
             <div class="ak-social"></div>
         </div>
-        <div id="load-item" step="{{ $current }}" votes="{{ $palierId }}"></div>
+        <div id="load-item" step="{{ $current }}" votes="{{ ($votesForTicket * 5) * ($palierId - 1) + ($votesForTicket * 1) }}"></div>
     </div>
 </div>

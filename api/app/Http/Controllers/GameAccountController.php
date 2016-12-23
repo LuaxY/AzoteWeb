@@ -252,7 +252,7 @@ class GameAccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $ogrines = $jetons * config('dofus.vote');
+            $ogrines = $jetons * config('dofus.points_by_vote');
 
             $success = Stump::transfert($server, $accountId, "Ogrines", $ogrines, "/account/$accountId/addtokens/$ogrines", function() use($jetons) {
                 Auth::user()->jetons -= $jetons;

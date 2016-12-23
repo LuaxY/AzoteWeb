@@ -50,7 +50,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <p>Tous les 10 votes, vous gagnerez un nouveau ticket qui vous permettra de jouer à la loterie, et tous les 50 votes vous gagnerez un ticket doré qui vous permettra de jouer à une autre loterie vous donnant accès à des récompenses plus importantes.</p>
+                    <p>Tous les {{ $votesForTicket }} votes, vous gagnerez un nouveau ticket qui vous permettra de jouer à la loterie, et tous les {{ $votesForTicket * 5 }} votes vous gagnerez un ticket doré qui vous permettra de jouer à une autre loterie vous donnant accès à des récompenses plus importantes.</p>
                 </div>
             </div>
         </div>
@@ -59,13 +59,13 @@
         <div class="ak-block-rewards">
             <div class="ak-menu-left ak-ajaxloader">
                 <a data="1">1 <sup>èr</sup> Palier</a>
-                @for ($i = 2; $i <= ceil(($votesCount+1) / 50); $i++)
+                @for ($i = 2; $i <= ceil(($votesCount+1) / ($votesForTicket * 5)); $i++)
                     <a data="{{ $i }}">{{ $i }} <sup>ème</sup> Palier</a>
                 @endfor
             </div>
             <div class="ak-select-menu-left ak-ajaxloader">
                 <select onchange="$('.ak-block-rewards .ak-menu-left a[data='+this.value+']').trigger('click');">
-                    @for ($i = 1; $i <= ceil(($votesCount+1) / 50); $i++)
+                    @for ($i = 1; $i <= ceil(($votesCount+1) / ($votesForTicket * 5)); $i++)
                         <option value="{{ $i }}">Palier {{ $i }}</option>
                     @endfor
                 </select>
@@ -94,7 +94,7 @@
         $(".ak-block-rewards .ak-select-menu-left option[value={{ $palierId }}]").attr('selected','selected');
 
         progress();
-        showItem({{ $current }}, {{ $votesCount }});
+        showItem({{ $current }}, {{ ($votesForTicket * 5) * ($palierId - 1) + ($votesForTicket * 1) }});
 
         $(".ak-block-rewards .ak-menu-left a").on("click", function() {
             var self = $(this);

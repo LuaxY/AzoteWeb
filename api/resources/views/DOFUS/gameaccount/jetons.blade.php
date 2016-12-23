@@ -19,7 +19,7 @@
                 <div class="panel-main ak-form">
                     {!! Form::open(['route' => ['gameaccount.jetons', $account->server, $account->Id]]) !!}
 
-                    1 Jeton <span class="ak-icon-small ak-votes-icon"></span> = {{ config('dofus.vote') }} Ogrines <span class="ak-icon-small ak-ogrines-icon"></span>
+                    1 Jeton <span class="ak-icon-small ak-votes-icon"></span> = {{ config('dofus.points_by_vote') }} Ogrines <span class="ak-icon-small ak-ogrines-icon"></span>
 
                     <div class="form-group @if ($errors->has('offline')) has-error @endif">
                         @if ($errors->has('offline')) <label class="error control-label">{{ $errors->first('offline') }}</label> @endif
