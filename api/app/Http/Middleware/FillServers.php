@@ -29,6 +29,7 @@ class FillServers
             $data->ip      = $server->ip;
             $data->port    = $server->port;
             $data->desc    = $server->desc;
+            $data->ogrine  = $server->ogrine;
 
             $servers[] = $server->name;
             $details[$server->name] = $data;
