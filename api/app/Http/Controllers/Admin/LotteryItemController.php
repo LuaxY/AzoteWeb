@@ -62,10 +62,12 @@ class LotteryItemController extends Controller
         {
             return response()->json(['itemid' => ['0' => 'Item not found']], 422);
         }
-        
-        $item = ItemTemplate::on(config('dofus.servers')[$server].'_world')->where('Id', $itemid)->first();
+
+        $server = config('dofus.servers')[$server];
+
+        $item = ItemTemplate::on($server . '_world')->where('Id', $itemid)->first();
         $item_image = $item->image();
-        $item_name = $item->name();
+        $item_name  = $item->name($server);
         $item_array = ['image' => $item_image, 'name' => $item_name];
         return response()->json(json_encode($item_array), 202);
     }

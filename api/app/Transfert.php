@@ -14,6 +14,6 @@ class Transfert extends Model
 
     public function item()
     {
-        return $this->hasOne(ItemTemplate::class, 'id', 'type')->first();
+        return ItemTemplate::on($this->server . '_world')->where('id', $this->type)->first();
     }
 }

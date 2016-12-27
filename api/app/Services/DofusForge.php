@@ -72,7 +72,7 @@ class DofusForge
         }
     }
 
-    static public function text($id)
+    static public function text($id, $server = null)
     {
         /*$redis = Redis::connection();
 
@@ -84,23 +84,25 @@ class DofusForge
         }
         else
         {*/
-            $lang = Lang::select('French')->where('Id', $id)->first();
-            $text = null;
+            $lang = null;
 
-            if ($lang)
+            if ($server)
             {
-                $text = $lang->French;
-            }
-
-            if (!$text)
-            {
-                return "Text not found.";
+                $lang = Lang::on($server . '_world')->select('French')->where('Id', $id)->first();
             }
             else
             {
-                //$redis->set("dofus:text:$id", $text);
-                return $text;
+                $lang = Lang::select('French')->where('Id', $id)->first();
             }
+
+            $text = "Text not found.";
+
+            if ($lang && $lang->French)
+            {
+                $text = $lang->French;
+            }
+            
+            return $text;
         //}
     }
 }

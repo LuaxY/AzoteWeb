@@ -47,7 +47,7 @@ class LotteryTicketDatatablesController extends Controller
             })
             ->editColumn('item_id', function ($ticket){
                 $jp = $ticket->max ? ' (JP)' : '';
-                return $ticket->item() ? ''.$ticket->item()->name().''.$jp.'' : '';
+                return $ticket->item() ? ''.$ticket->item()->name($ticket->server).''.$jp.'' : '';
             })
             ->editColumn('giver', function ($ticket){
                 return $ticket->giver();

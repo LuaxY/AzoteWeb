@@ -20,14 +20,14 @@ class ItemTemplate extends Model
         ],
     ];
 
-    public function name()
+    public function name($server = null)
     {
-        return DofusForge::text($this->NameId);
+        return DofusForge::text($this->NameId, $server);
     }
 
-    public function description()
+    public function description($server = null)
     {
-        return DofusForge::text($this->DescriptionId);
+        return DofusForge::text($this->DescriptionId, $server);
     }
 
     public function image()

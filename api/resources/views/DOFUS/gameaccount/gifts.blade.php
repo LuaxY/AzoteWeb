@@ -44,7 +44,7 @@
             <td class="ak-rank"><input type="radio" name="gift_id" value="{{ $gift->id }}"></td>
             <td>{{ $gift->created_at->format('d/m/Y H:i:s') }}</td>
             <td><img src="{{ $gift->item()->image() }}" width="50" height="50"></td>
-            <td>{{ $gift->item()->name() }} @if ($gift->max) Jet Parfait @endif</td>
+            <td>{{ $gift->item()->name($gift->server) }} @if ($gift->max) Jet Parfait @endif</td>
             <td>{{ $gift->description }}</td>
         </tr>
         @endforeach

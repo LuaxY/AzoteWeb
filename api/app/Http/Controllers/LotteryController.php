@@ -85,8 +85,8 @@ class LotteryController extends Controller
 
             return json_encode([
                 'image'       => $object->item($server)->image(),
-                'name'        => $object->item($server)->name() . ($object->max ? ' Jet Parfait' : ''),
-                'description' => $object->item($server)->description(),
+                'name'        => $object->item($server)->name($server) . ($object->max ? ' Jet Parfait' : ''),
+                'description' => $object->item($server)->description($server),
             ]);
         }
 

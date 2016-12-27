@@ -8,6 +8,6 @@ class Gift extends Model
 {
     public function item()
     {
-        return $this->hasOne(ItemTemplate::class, 'Id', 'item_id')->first();
+        return ItemTemplate::on($this->server . '_world')->where('id', $this->item_id)->first();
     }
 }

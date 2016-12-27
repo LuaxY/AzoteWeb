@@ -39,8 +39,8 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-10">
-                                            <div class="ak-name" id="gift-name">{{ $ticket->item($server)->name() }} @if ($ticket->max) Jet Parfait @endif</div>
-                                            <div class="ak-description" id="gift-description">{{ $ticket->item($server)->description() }}</div>
+                                            <div class="ak-name" id="gift-name">{{ $ticket->item($server)->name($server) }} @if ($ticket->max) Jet Parfait @endif</div>
+                                            <div class="ak-description" id="gift-description">{{ $ticket->item($server)->description($server) }}</div>
                                             <br>
                                         </div>
                                     </div>
@@ -86,10 +86,10 @@
                         @foreach ($ticket->objects($server) as $object)
                         <tr>
                             <td class="ak-set-composition-illu img-first-column">
-                                <img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name() }}" width="70">
+                                <img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name($server) }}" width="70">
                             </td>
                             <td class="ak-set-composition-name">
-                                {{ $object->item($server)->name() }}
+                                {{ $object->item($server)->name($server) }}
                             </td>
                             <td class="ak-set-composition-level">@if ($object->max)Jet Parfait -@endif Niv {{ $object->item($server)->Level }}</td>
                         </tr>

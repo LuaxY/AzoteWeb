@@ -284,9 +284,9 @@
                                             @foreach($tickets as $ticket)
                                                 <tr>
                                                     <td class="ak-center">{{ $ticket->id }}</td>
-                                                    <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{$ticket->description}}</td>
+                                                    <td><img width="25" src="{{ URL::asset($ticket->lottery()->icon_path) }}">{{ $ticket->description }}</td>
                                                     <td>{!! $ticket->used ? '<span class="label label-success">Yes - '.$ticket->updated_at->format("d/m/Y H:i:s").'</span>' : '<span class="label label-danger">No</span>' !!}</td>
-                                                    <td>{{ $ticket->item() ? $ticket->item()->name() : ''}}</td>
+                                                    <td>{{ $ticket->item() ? $ticket->item()->name($ticket->server) : ''}}</td>
                                                     <td>{{ $ticket->created_at->format('d/m/Y H:i:s') }}</td>
                                                     <td>{{ $ticket->giver() }}</td>
                                                 </tr>
