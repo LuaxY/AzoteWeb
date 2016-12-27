@@ -52,8 +52,8 @@
                             @foreach($type->objects($server) as $object)
                                 <tr id="{{ $object->id }}">
                                     <td>{{ $object->item_id }}</td>
-                                    <td class="image"><img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name() }}" width="70"></td>
-                                    <td class="name">{{ $object->item($server)->name() }}</td>
+                                    <td class="image"><img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name($server) }}" width="70"></td>
+                                    <td class="name">{{ $object->item($server)->name($server) }}</td>
                                     <td class="perfect" data-value="{{$object->max}}">@if ($object->max) <span class="label label-success">Yes</span> @else <span class="label label-danger">No</span> @endif</td>
                                     <td class="percentage">{{ $object->percentage }}</td>
                                     <td>
