@@ -27,9 +27,9 @@ class LotteryItemController extends Controller
         return false;
     }
 
-    private function isItemExist($itemid)
+    private function isItemExist($itemid, $server = 0)
     {
-        $item = ItemTemplate::where('Id', $itemid)->first();
+        $item = ItemTemplate::on(config('dofus.servers')[$server].'_world')->where('Id', $itemid)->first();
         if($item)
         {
             return true;
@@ -58,7 +58,7 @@ class LotteryItemController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
-        if(!$this->isItemExist($itemid))
+        if(!$this->isItemExist($itemid, $server))
         {
             return response()->json(['itemid' => ['0' => 'Item not found']], 422);
         }
@@ -84,7 +84,7 @@ class LotteryItemController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
-        if (!$this->isItemExist($request->item))
+        if (!$this->isItemExist($request->item, $request->input('server')))
         {
             return response()->json(['item' => ['0' => 'This item doesn\'t exist']], 422);
         }
