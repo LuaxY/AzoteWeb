@@ -34,7 +34,7 @@ class AdminController extends Controller
 
         foreach (config('dofus.servers') as $server)
         {
-            $countservers[$server] = Cache::remember('countservers', self::CACHE_EXPIRE_MINUTES, function () use($server) {
+            $countservers[$server] = Cache::remember('countservers_'.$server, self::CACHE_EXPIRE_MINUTES, function () use($server) {
                 return Account::on($server.'_auth')->get()->count();
             });
 
@@ -52,7 +52,6 @@ class AdminController extends Controller
         $todayearnings = Cache::remember('todayearnings', self::CACHE_EXPIRE_MINUTES, function () {
             return Transaction::GetDayEarnings(Carbon::today()->toDateString(), ',');
         });
-
         $count = ['users' => $countuser, 'posts' => $countpost, 'servers' => $countservers, 'connectedUsers' => $connectedusers, 'todayEarnings' => $todayearnings];
 
         $newusers = Cache::remember('newusers', self::CACHE_EXPIRE_MINUTES, function () {
