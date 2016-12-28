@@ -40,6 +40,7 @@
             <th>Description</th>
         </tr>
         @foreach (Auth::user()->gifts(true, $account->server) as $gift)
+        @if ($gift->item())
         <tr>
             <td class="ak-rank"><input type="radio" name="gift_id" value="{{ $gift->id }}"></td>
             <td>{{ $gift->created_at->format('d/m/Y H:i:s') }}</td>
@@ -47,6 +48,7 @@
             <td>{{ $gift->item()->name($gift->server) }} @if ($gift->max) Jet Parfait @endif</td>
             <td>{{ $gift->description }}</td>
         </tr>
+        @endif
         @endforeach
     </table>
 
