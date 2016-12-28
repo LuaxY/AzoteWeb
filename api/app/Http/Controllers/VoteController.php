@@ -207,7 +207,7 @@ class VoteController extends Controller
         return config('dofus.votes_for_ticket');
     }
 
-    public function palier($id)
+    public function palier($id = 1)
     {
         $votesCount = $this->userVotes();
 
