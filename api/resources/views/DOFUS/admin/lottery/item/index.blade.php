@@ -50,6 +50,7 @@
                             </thead>
                             <tbody>
                             @foreach($type->objects($server) as $object)
+                            @if ($object->item($server))
                                 <tr id="{{ $object->id }}">
                                     <td>{{ $object->item_id }}</td>
                                     <td class="image"><img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name($server) }}" width="70"></td>
@@ -61,6 +62,7 @@
                                         <a href="javascript:void(0)" data-id="{{ $object->id }}" class="delete btn btn-xs btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
+                            @endif
                             @endforeach
                             </tbody>
                         </table>
