@@ -31,7 +31,7 @@
                         <div class="ak-container ak-panel ak-gift-price ak-nocontentpadding ak-code-price">
                             <div class="ak-panel-content">
                                 <div class="ak-price-content">
-                                    @if ($ticket->used)
+                                    @if ($ticket->used && $ticket->item($server))
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <div class="ak-image">
@@ -84,6 +84,7 @@
                     <table border="1" class="ak-container ak-table ak-responsivetable ak-set-composition" style="white-space: nowrap; visibility: visible;">
 
                         @foreach ($ticket->objects($server) as $object)
+                        @if ($object->item($server))
                         <tr>
                             <td class="ak-set-composition-illu img-first-column">
                                 <img src="{{ $object->item($server)->image() }}" alt="{{ $object->item($server)->name($server) }}" width="70">
@@ -93,6 +94,7 @@
                             </td>
                             <td class="ak-set-composition-level">@if ($object->max)Jet Parfait -@endif Niv {{ $object->item($server)->Level }}</td>
                         </tr>
+                        @endif
                         @endforeach
 
                     </table>
