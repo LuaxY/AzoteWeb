@@ -231,7 +231,7 @@ class VoteController extends Controller
         return view('vote.paliers', $data);
     }
 
-    public function object($item)
+    public function object($item = 1)
     {
         $json = [];
 
