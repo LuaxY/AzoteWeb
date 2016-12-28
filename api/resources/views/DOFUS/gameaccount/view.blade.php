@@ -123,8 +123,10 @@
             <td>{{ $transfert->created_at->format('d/m/Y H:i:s') }}</td>
             @if ($transfert->type == 'Ogrines' || $transfert->type == '')
             <td>{{ Utils::format_price($transfert->amount, ' ') }} Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></td>
-            @else
+            @elseif ($transfert->item())
             <td>{{ Utils::format_price($transfert->amount, ' ') }} {{ $transfert->item()->name($transfert->server) }} <img src="{{ $transfert->item()->image() }}" width="25" height="25"></td>
+            @else
+            <td>{{ Utils::format_price($transfert->amount, ' ') }} {{ $transfert->type }}
             @endif
             <td>{{ Utils::transfert_status($transfert->state) }}</td>
         </tr>
