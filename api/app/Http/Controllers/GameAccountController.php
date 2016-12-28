@@ -325,7 +325,7 @@ class GameAccountController extends Controller
             Cache::forget('transferts_' . $server . '_' . $accountId);
             Cache::forget('transferts_' . $server . '_' . $accountId . '_10');
 
-            Cache::forget('gifts_available_' . Auth::user()->id);
+            Cache::forget('gifts_available_' . $server . '_' . Auth::user()->id);
             Cache::forget('gifts_' . Auth::user()->id);
 
             if ($success)
