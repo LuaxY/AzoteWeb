@@ -45,11 +45,13 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
     ]);
 
     Route::post(Lang::get('routes.posts.comment.store'), [
+        'middleware' => 'auth',
         'uses' => 'PostController@commentStore',
         'as'   => 'posts.comment.store'
     ]);
 
     Route::delete(Lang::get('routes.posts.comment.destroy'), [
+        'middleware' => 'auth',
         'uses' => 'PostController@commentDestroy',
         'as'   => 'posts.comment.destroy'
     ]);
