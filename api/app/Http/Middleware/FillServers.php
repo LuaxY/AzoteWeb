@@ -16,7 +16,7 @@ class FillServers
      */
     public function handle($request, Closure $next)
     {
-        $json = json_decode(file_get_contents("../servers.json"));
+        $json = json_decode(file_get_contents(base_path() . "/servers.json"));
 
         $servers = [];
         $details = [];

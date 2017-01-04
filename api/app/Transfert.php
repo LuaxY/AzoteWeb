@@ -16,4 +16,9 @@ class Transfert extends Model
     {
         return ItemTemplate::on($this->server . '_world')->where('id', $this->type)->first();
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id')->first();
+    }
 }
