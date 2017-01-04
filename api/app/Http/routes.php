@@ -361,9 +361,12 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
             $sitemap->add(URL::route('download'),       date('c', time()), '0.9', 'daily');
             $sitemap->add(URL::route('login'),          date('c', time()), '0.9', 'daily');
             $sitemap->add(URL::route('posts'),          date('c', time()), '0.8', 'daily');
-            $sitemap->add(URL::route('ladder.general'), date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.pvp'),     date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.guild'),   date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.general', ['sigma']),   date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.pvp',     ['sigma']),   date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.guild',   ['sigma']),   date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.general', ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.pvp',     ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.guild',   ['epsilon']), date('c', time()), '0.5', 'daily');
             $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
 
             $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();
