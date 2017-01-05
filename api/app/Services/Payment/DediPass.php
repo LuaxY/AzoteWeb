@@ -159,7 +159,7 @@ class DediPass extends Payment
         }
         else
         {
-            $check->message = isset($result->message) ? $result->message : "!!! NO MESSAGE RETURN !!!";
+            $check->message = isset($result->message) ? $result->message : "Aucune réponse du serveur de validation";
             $check->success = false;
         }
 
