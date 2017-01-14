@@ -50,7 +50,7 @@
                     <td class="ak-center"><div class="ak-emblem" style="background:url({{ URL::asset($guild->emblem()) }}) center center;width:48px;height:48px"></div></td>
                     <td class="ak-name">{{ $guild->Name }}</td>
                     <td class="ak-center">{{ $guild->level() }}</td>
-                    <td class="ak-xp-total">{{ count($guild->members('sigma')) }}</td>
+                    <td class="ak-xp-total">{{ count($guild->members($server)) }}</td>
                 </tr>
                 @endforeach
             </tbody>
