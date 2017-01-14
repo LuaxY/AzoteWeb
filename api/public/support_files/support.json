@@ -1,15 +1,15 @@
 {
     "fields": [{
-        "type": "radio",
-        "name": "Support",
+        "type": "select",
+        "name": "Ma demande concerne",
         "data": [{
-            "value": "Site web",
+            "value": "Mon compte web",
             "child": "web"
         }, {
-            "value": "En jeu",
+            "value": "Un problème en jeu",
             "child": "game"
         }, {
-            "value": "Autre",
+            "value": "Un autre problème",
             "child": "other"
         }]
     }]

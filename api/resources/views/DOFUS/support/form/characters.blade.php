@@ -1,4 +1,4 @@
-{{ $name }}:<br>
+{{ $name }} :<br>
 
 @foreach ($characters as $character)
 <label for="{{ $character->Id }}">
