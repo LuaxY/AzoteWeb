@@ -112,7 +112,19 @@ class DediPass extends Payment
 
         $check->provider = config('dofus.payment.dedipass.name');
 
-        $json   = @file_get_contents($validation);
+        //$json   = @file_get_contents($validation);
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $validation);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36');
+
+        $json = curl_exec($curl);
+
+        curl_close($curl);
+
         $result = json_decode($json);
 
         $check->raw = $json;
