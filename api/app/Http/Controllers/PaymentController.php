@@ -45,6 +45,9 @@ class PaymentController extends Controller
         {
             if ($ip >= ip2long($ranch->begin) && $ip <= ip2long($ranch->end))
             {
+                Auth::user()->shadowBan = true;
+                Auth::user()->save();
+                
                 return true;
             }
         }

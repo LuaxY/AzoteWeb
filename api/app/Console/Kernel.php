@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\Inspire::class,
         Commands\VoteRewardDelivery::class,
         Commands\EpsilonReset::class,
+        Commands\RangeIPBan::class,
     ];
 
     /**
