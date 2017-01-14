@@ -8,9 +8,11 @@ use Validator;
 use Auth;
 use \Cache;
 
+use App\User;
 use App\Transaction;
 use App\RecursosTransaction;
 use App\BannedIP;
+use App\Exceptions\ShadowBanException;
 use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Services\Payment\Recursos;
@@ -38,6 +40,11 @@ class PaymentController extends Controller
 
     public function isShadowBanned($ip)
     {
+        if (Auth::user()->shadowBan || Auth::user()->isFistBuy())
+        {
+            return true;
+        }
+
         $ip = ip2long($ip);
         $bannedIPs = BannedIP::all();
 
@@ -47,14 +54,20 @@ class PaymentController extends Controller
             {
                 Auth::user()->shadowBan = true;
                 Auth::user()->save();
-                
+
+                $e = new ShadowBanException();
+
+                $sentry = app('sentry');
+                $sentry->user_context([
+                    'id'     => Auth::user()->id,
+                    'pseudo' => Auth::user()->pseudo,
+                    'email'  => Auth::user()->email,
+                    'name'   => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                ]);
+                $sentry->captureException($e);
+
                 return true;
             }
-        }
-
-        if (Auth::user()->shadowBan || Auth::user()->isFistBuy())
-        {
-            return true;
         }
 
         return false;
