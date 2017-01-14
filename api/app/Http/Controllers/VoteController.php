@@ -95,8 +95,8 @@ class VoteController extends Controller
         }
 
         $rules = [
-            //'out'                  => 'required|integer',
-            //'g-recaptcha-response' => 'required|recaptcha'
+            'out'                  => 'required|integer',
+            'g-recaptcha-response' => 'required|recaptcha'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -115,14 +115,14 @@ class VoteController extends Controller
 
         $actualOUT = $this->getOuts();
 
-        /*if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
+        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
         {
             // Bad OUT, restore preivous last vote date
             Auth::user()->last_vote = $previousVote;
             Auth::user()->save();
 
             return redirect()->back()->withErrors(['out' => 'Valeur OUT incorrect'])->withInput();
-        }*/
+        }
 
         Auth::user()->votes  += 1;
         Auth::user()->jetons += 1;
