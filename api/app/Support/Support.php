@@ -14,8 +14,7 @@ class Support
 {
     public static function generateForm($child, $params = false)
     {
-        // TODO: protect this code !!!
-        $json = json_decode(file_get_contents("support_files/$child.json"));
+        $json = json_decode(file_get_contents(public_path() . "/support_files/$child.json"));
         $html = "";
 
         foreach ($json->fields as $field)

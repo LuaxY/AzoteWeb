@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Character;
 use App\Lang;
 use Redis;
 
@@ -61,14 +62,14 @@ class DofusForge
         }
     }
 
-    static public function player($id, $mode, $orientation, $sizeX, $sizeY)
+    static public function player($id, $server, $mode, $orientation, $sizeX, $sizeY)
     {
-        $character = Character::where('Id', $id)->first();
+        $character = Character::on($server . '_world')->where('Id', $id)->first();
 
         if ($character)
         {
             $look = bin2hex($character->EntityLookString);
-            return self::image("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}.png");
+            return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}.png");
         }
     }
 
@@ -101,7 +102,7 @@ class DofusForge
             {
                 $text = $lang->French;
             }
-            
+
             return $text;
         //}
     }

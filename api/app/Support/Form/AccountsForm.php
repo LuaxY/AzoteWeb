@@ -13,7 +13,8 @@ class AccountsForm implements IForm
         $html .= "<option value=\"r|null\"></option>\n";
 
         $child = (isset($data->child) ? $data->child : false);
-        $accounts = Account::where('Email', Auth::user()->email)->get();
+        //$accounts = Account::where('Email', Auth::user()->email)->get();
+        $accounts = Auth::user()->accounts('sigma');
 
         foreach ($accounts as $account)
         {

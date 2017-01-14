@@ -478,7 +478,7 @@ Route::group(['prefix' => 'api', 'domain' => Config::get('dofus.domain.main')], 
         Route::get('create', 'SupportController@create');
 
         Route::get('child/{child}/{params?}', [
-            'middleware' => 'auth.api',
+            'middleware' => 'auth',
             'uses'       => 'SupportController@child',
         ]);
 
