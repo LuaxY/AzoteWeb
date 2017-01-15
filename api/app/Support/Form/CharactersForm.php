@@ -16,7 +16,7 @@ class CharactersForm implements IForm
         {
             $characters = $account->characters(false, true);
 
-            return view('support.form.characters', compact('name', 'characters'));
+            return view('support.form.characters', compact('name', 'child', 'characters'));
         }
 
         return "Compte introuvable";

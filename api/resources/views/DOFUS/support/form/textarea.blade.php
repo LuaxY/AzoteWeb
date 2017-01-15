@@ -1,5 +1,5 @@
 {{ $name }} :<br>
 
-<textarea name="{{ $name }}" rows="6" cols="60"></textarea>
+<textarea name="text|{{ $name }}" rows="6" cols="60"></textarea>
 
 <br>

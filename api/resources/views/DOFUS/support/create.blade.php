@@ -65,14 +65,14 @@ $('#support').on('change', 'select, input[type=radio]', function() {
     id = parseInt($(this).parent().attr('part'));
     tag = data[0];
 
-    if (tag == 'c') // child
+    if (tag == 'child')
     {
-        child = (data[1] != null ? data[1] : '');
-        params = (data[2] != null ? data[2] : '');
+        child  = (data[2] != null ? data[2] : '');
+        params = (data[1] != null ? data[1] : '');
 
         get_child(id + 1, child, params);
     }
-    else if (tag == 'r') // reset
+    else if (tag == 'reset')
     {
         remove_parts(id + 1);
     }

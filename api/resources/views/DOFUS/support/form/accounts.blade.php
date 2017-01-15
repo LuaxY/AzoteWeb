@@ -1,9 +1,13 @@
 {{ $name }} :<br>
 
-<select name="{{ $name }}">
-    <option value="r|null"></option>
+<select name="special|account">
+    <option value="reset|null"></option>
     @foreach ($accounts as $account)
-        <option value="c|{{ $child }}|{{ $account->Id }}">{{ $account->Nickname }}</option>
+        @if ($child)
+            <option value="child|{{ $account->Id }}|{{ $child }}">{{ $account->Nickname }}</option>
+        @else
+            <option value="final|{{ $account->Id }}">{{ $account->Nickname }}</option>
+        @endif
     @endforeach
 </select>
 

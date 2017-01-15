@@ -1,12 +1,12 @@
 {
     "fields": [{
-        "type": "radio",
+        "type": "select",
         "name": "Signaler",
         "data": [{
-            "value": "Problème technique",
+            "value": "Un problème technique",
             "child": "game_tech_issue"
         }, {
-            "value": "Bug",
+            "value": "Un bug",
             "child": "game_bug"
         }]
     }]
