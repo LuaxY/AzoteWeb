@@ -38,22 +38,27 @@
 
 var nb_part = 0;
 
-function get_child(id, name, params) {
-    remove_parts(id);
-
-    query = {};
+function get_params() {
+    params = {};
 
     $('#support select.special, #support input.special').each(function() {
-        queryValue = $(this).val().split('|')[1];
-        queryName  = $(this).attr('name').split('|')[1];
-        query[queryName] = queryValue;
-        console.log(query);
+        paramValue = $(this).val().split('|')[1];
+        paramName  = $(this).attr('name').split('|')[1];
+        params[paramName] = paramValue;
+
     });
 
-    var url = '/api/support/child/' + name;
-    if (params != null && params != '') url +=  '/' + params;
+    return params;
+}
 
-    $.post(url, query, function(data) {
+function get_child(id, name, query) {
+    remove_parts(id);
+    params = get_params();
+
+    var url = '/api/support/child/' + name;
+    if (query != null && query != '') url +=  '/' + query;
+
+    $.post(url, params, function(data) {
         $('#support').append('<div class="part" part="' + id + '">' + data + '</div>');
         nb_part = id + "";
     });
@@ -76,16 +81,27 @@ $('#support').on('change', 'select, input[type=radio]', function() {
 
     if (tag == 'child')
     {
-        child  = (data[2] != null ? data[2] : '');
-        params = (data[1] != null ? data[1] : '');
+        child = (data[2] != null ? data[2] : '');
+        query = (data[1] != null ? data[1] : '');
 
-        get_child(id + 1, child, params);
+        get_child(id + 1, child, query);
     }
     else if (tag == 'reset')
     {
         remove_parts(id + 1);
     }
 });
+
+// On submit ticket
+/*$('#support').on('click', 'input[type=submit]', function() {
+    params = get_params();
+
+    $.post('/api/support/store', params, function(data) {
+        $('#support').html(data);
+    });
+
+    return false;
+});*/
 
 get_child(1, 'support');
 

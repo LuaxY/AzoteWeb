@@ -8,8 +8,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Support\Support;
+use App\ModelCustom;
 use App\Account;
 use App\Character;
+use Auth;
 
 class SupportController extends Controller
 {
@@ -29,9 +31,19 @@ class SupportController extends Controller
         $inputs = $request->all();
         $html = "";
 
+        $server = 'sigma';
+        $accountId = 0;
+        $characterId = 0;
+
         foreach ($inputs as $key => $value)
         {
             $keyData = explode('|', $key);
+
+            if (count($keyData) < 2)
+            {
+                continue;
+            }
+
             $keyType =  $keyData[0];
             $keyText =  $keyData[1];
 
@@ -39,15 +51,19 @@ class SupportController extends Controller
             $valueType = $valueData[0];
             $valueText = $valueData[1];
 
+            if (count($valueData) < 2)
+            {
+                continue;
+            }
+
             if ($keyType == 'special')
             {
                 if ($keyText == 'account')
                 {
                     // TODO convert to view
-                    // TODO is $accountId owned by me ?
 
                     $accountId = (int)$valueText;
-                    $account = Account::on('sigma_world')->find($accountId);
+                    $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
                     if ($account)
                     {
@@ -62,10 +78,15 @@ class SupportController extends Controller
                 if ($keyText == 'character')
                 {
                     // TODO convert to view
-                    // TODO is $characterId owned by me ?
 
                     $characterId = (int)$valueText;
-                    $character = Character::on('sigma_world')->find($characterId);
+                    $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
+
+                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
+                    {
+                        $html .= "<b>Personnage</b> : Not found<br>\n";
+                        continue;
+                    }
 
                     if ($character)
                     {
@@ -82,9 +103,9 @@ class SupportController extends Controller
                     // TODO convert to view
                     // TODO if $server exist
 
-                    $server = ucfirst($valueText);
+                    $server = $valueText;
 
-                    $html .= "<b>Serveur</b> : $server<br>\n";
+                    $html .= "<b>Serveur</b> : ".ucfirst($server)."<br>\n";
                 }
 
                 continue;
@@ -102,5 +123,29 @@ class SupportController extends Controller
         echo $html;
 
         dd($request->all());
+    }
+
+    private function isCharacterOwnedByMe($server, $accountId, $characterId)
+    {
+        $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+
+        if ($account)
+        {
+            $account->server = $server;
+            $characters = $account->characters(1);
+
+            if ($characters)
+            {
+                foreach ($characters as $character)
+                {
+                    if ($character && $characterId == $character->Id)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
     }
 }
