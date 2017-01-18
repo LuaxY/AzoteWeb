@@ -19,9 +19,9 @@ class SupportController extends Controller
         return view('support/create', ['html' => $html]);
     }
 
-    public function child($child, $params = false)
+    public function child(Request $request, $child, $params = false)
     {
-        return Support::generateForm($child, $params);
+        return Support::generateForm($child, $params, $request->all());
     }
 
     public function store(Request $request)
@@ -69,12 +69,22 @@ class SupportController extends Controller
 
                     if ($character)
                     {
-                        $html .= "<b>Compte</b> : {$character->Name}<br>\n";
+                        $html .= "<b>Personnage</b> : {$character->Name}<br>\n";
                     }
                     else
                     {
-                        $html .= "<b>Compte</b> : Not found<br>\n";
+                        $html .= "<b>Personnage</b> : Not found<br>\n";
                     }
+                }
+
+                if ($keyText == 'server')
+                {
+                    // TODO convert to view
+                    // TODO if $server exist
+
+                    $server = ucfirst($valueText);
+
+                    $html .= "<b>Serveur</b> : $server<br>\n";
                 }
 
                 continue;
@@ -90,7 +100,7 @@ class SupportController extends Controller
         }
 
         echo $html;
-        
+
         dd($request->all());
     }
 }

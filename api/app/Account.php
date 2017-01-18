@@ -25,22 +25,22 @@ class Account extends Model
     protected $hidden = array('PasswordHash');
 
     protected $fillable = array(
-		'Login',
-		'PasswordHash',
-		'Nickname',
-		'UserGroupId',
-		'Ticket',
-		'SecretQuestion',
-		'SecretAnswer',
-		'Lang',
-		'Email',
-		'CreationDate',
-		'SubscriptionEnd',
-		'LastVote',
-		'VoteCount',
+        'Login',
+        'PasswordHash',
+        'Nickname',
+        'UserGroupId',
+        'Ticket',
+        'SecretQuestion',
+        'SecretAnswer',
+        'Lang',
+        'Email',
+        'CreationDate',
+        'SubscriptionEnd',
+        'LastVote',
+        'VoteCount',
         'IsJailed',
         'IsBanned',
-	);
+    );
 
     public static $rules = [
         'sanction' => [

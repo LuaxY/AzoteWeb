@@ -8,11 +8,12 @@ use App\Support\Form\SelectForm;
 use App\Support\Form\TextareaForm;
 use App\Support\Form\AccountsForm;
 use App\Support\Form\CharactersForm;
+use App\Support\Form\ServersForm;
 use App\Support\Form\SubmitForm;
 
 class Support
 {
-    public static function generateForm($child, $params = false)
+    public static function generateForm($child, $params = false, $post = [])
     {
         $json = json_decode(file_get_contents(public_path() . "/support_files/$child.json"));
         $html = "";
@@ -46,6 +47,9 @@ class Support
                 case 'characters':
                     $form = new CharactersForm;
                     break;
+                case 'servers':
+                    $form = new ServersForm;
+                    break;
                 case 'submit':
                     $form = new SubmitForm;
                     break;
@@ -53,7 +57,7 @@ class Support
 
             if ($form)
             {
-                $html .= $form->render($name, $data, $params);
+                $html .= $form->render($name, $data, $post);
             }
         }
 

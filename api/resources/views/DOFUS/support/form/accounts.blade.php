@@ -1,6 +1,6 @@
 {{ $name }} :<br>
 
-<select name="special|account">
+<select class="special" name="special|account">
     <option value="reset|null"></option>
     @foreach ($accounts as $account)
         @if ($child)

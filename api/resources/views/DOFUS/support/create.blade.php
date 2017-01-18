@@ -41,10 +41,19 @@ var nb_part = 0;
 function get_child(id, name, params) {
     remove_parts(id);
 
+    query = {};
+
+    $('#support select.special, #support input.special').each(function() {
+        queryValue = $(this).val().split('|')[1];
+        queryName  = $(this).attr('name').split('|')[1];
+        query[queryName] = queryValue;
+        console.log(query);
+    });
+
     var url = '/api/support/child/' + name;
     if (params != null && params != '') url +=  '/' + params;
 
-    $.get(url, function(data) {
+    $.post(url, query, function(data) {
         $('#support').append('<div class="part" part="' + id + '">' + data + '</div>');
         nb_part = id + "";
     });
