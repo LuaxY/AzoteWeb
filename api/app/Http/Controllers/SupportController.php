@@ -18,7 +18,7 @@ class SupportController extends Controller
     public function create()
     {
         $html = Support::generateForm('support');
-        return view('support/create', ['html' => $html]);
+        return view('support/new', ['html' => $html]);
     }
 
     public function child(Request $request, $child, $params = false)
@@ -47,14 +47,21 @@ class SupportController extends Controller
             $keyType =  $keyData[0];
             $keyText =  $keyData[1];
 
+            if ($keyText == 'message')
+            {
+                $html .= "<b>Message</b> : $value<br>\n";
+                continue;
+            }
+
             $valueData = explode('|', $value);
-            $valueType = $valueData[0];
-            $valueText = $valueData[1];
 
             if (count($valueData) < 2)
             {
                 continue;
             }
+
+            $valueType = $valueData[0];
+            $valueText = $valueData[1];
 
             if ($keyType == 'special')
             {
@@ -84,7 +91,7 @@ class SupportController extends Controller
 
                     if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
                     {
-                        $html .= "<b>Personnage</b> : Not found<br>\n";
+                        $html .= "<b>Personnage</b> : Non trouvé<br>\n";
                         continue;
                     }
 
@@ -94,7 +101,7 @@ class SupportController extends Controller
                     }
                     else
                     {
-                        $html .= "<b>Personnage</b> : Not found<br>\n";
+                        $html .= "<b>Personnage</b> : Non trouvé<br>\n";
                     }
                 }
 

@@ -15,8 +15,16 @@ class Support
 {
     public static function generateForm($child, $params = false, $post = [])
     {
-        $json = json_decode(file_get_contents(public_path() . "/support_files/$child.json"));
+        $filePath = public_path() . "/support_files/$child.json";
+
+        if (!file_exists($filePath))
+        {
+            // TODO convert to view
+            return "Choix invalide.";
+        }
+
         $html = "";
+        $json = json_decode(file_get_contents($filePath));
 
         foreach ($json->fields as $field)
         {

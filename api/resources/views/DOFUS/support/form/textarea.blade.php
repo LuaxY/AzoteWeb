@@ -1,5 +1,4 @@
-{{ $name }} :<br>
-
-<textarea name="text|{{ $name }}" rows="6" cols="60"></textarea>
-
-<br>
+<div class="form-group ">
+    <label class="control-label">{{ $name }}</label>
+    <textarea name="special|message" class="form-control" rows="10"></textarea>
+</div>
