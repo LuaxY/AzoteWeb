@@ -20,7 +20,7 @@ use App\User;
 
 class VoteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::guest())
         {
@@ -45,6 +45,8 @@ class VoteController extends Controller
             Auth::user()->last_vote = $vote->created_at;
             Auth::user()->save();
         }*/
+
+        $this->checkVoteLimitByIP($request->ip());
 
         $delay = $this->delay();
 
@@ -87,6 +89,8 @@ class VoteController extends Controller
 
     public function process(Request $request)
     {
+        $this->checkVoteLimitByIP($request->ip());
+
         $delay = $this->delay();
 
         if (!$delay->canVote)
@@ -148,6 +152,8 @@ class VoteController extends Controller
         $vote->user_id = Auth::user()->id;
         $vote->points  = 1; // jetons
         $vote->ip      = $ip;
+        $vote->begin   = Carbon::now();
+        $vote->end     = Carbon::now()->addHours(3);
         $vote->save();
 
         /*$usersWithSameIP = User::where('last_ip_address', $ip)->get();
@@ -347,5 +353,34 @@ class VoteController extends Controller
         });
 
         return $outs;
+    }
+
+    private function checkVoteLimitByIP($ip)
+    {
+        $now = Carbon::now()->toDateTimeString();
+        $max = Carbon::now()->subHours(3)->toDateTimeString();
+
+        $votes = Vote::where('ip', $ip)->where(function ($query) use ($now, $max) {
+            return $query->where('end', '>', $now)->where('begin', '>', $max);
+        })->orderBy('id', 'DESC')->get();
+
+        // Allow 3 votes by IP
+        if (count($votes) >= 3)
+        {
+            $oldestVoteDate = Carbon::now();
+
+            foreach ($votes as $vote)
+            {
+                $currentDate = Carbon::parse($vote->begin);
+
+                if ($currentDate->lt($oldestVoteDate))
+                {
+                    $oldestVoteDate = $currentDate;
+                }
+            }
+
+            Auth::user()->last_vote = $oldestVoteDate->toDateTimeString();
+            //Auth::user()->save();
+        }
     }
 }
