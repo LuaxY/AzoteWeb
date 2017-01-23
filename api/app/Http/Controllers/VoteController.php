@@ -146,17 +146,15 @@ class VoteController extends Controller
             $account->save();
         }
 
-        $ip = \Illuminate\Support\Facades\Request::ip();
-
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
         $vote->points  = 1; // jetons
-        $vote->ip      = $ip;
+        $vote->ip      = $request->ip();
         $vote->begin   = Carbon::now();
         $vote->end     = Carbon::now()->addHours(3);
         $vote->save();
 
-        /*$usersWithSameIP = User::where('last_ip_address', $ip)->get();
+        /*$usersWithSameIP = User::where('last_ip_address', $request->ip())->get();
 
         foreach ($usersWithSameIP as $user)
         {
