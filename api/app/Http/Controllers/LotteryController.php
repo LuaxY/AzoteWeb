@@ -61,6 +61,11 @@ class LotteryController extends Controller
 
         if ($object)
         {
+            if (!$object->item($server))
+            {
+                throw new GenericException('ticket_no_objects');
+            }
+
             $gift = new Gift;
             $gift->user_id     = Auth::user()->id;
             $gift->item_id     = $object->item($server)->Id;

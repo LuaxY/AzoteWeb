@@ -10,6 +10,7 @@ use \DB;
 
 use App\Character;
 use App\Guild;
+use App\Exceptions\GenericException;
 
 class LadderController extends Controller
 {

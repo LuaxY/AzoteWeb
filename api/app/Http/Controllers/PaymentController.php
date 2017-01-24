@@ -107,7 +107,12 @@ class PaymentController extends Controller
             $method  = 'sms';
         }
 
-        $paliers = $this->payment->rates()->$country->$method;
+        $paliers = [];
+
+        if (isset($this->payment->rates()->$country) && isset($this->payment->rates()->$country->$method))
+        {
+            $paliers = $this->payment->rates()->$country->$method;
+        }
 
         return view('shop.payment.palier', ['paliers' => $paliers, 'country' => $country, 'countryBackup' => $countryBackup, 'methodName' => $method]);
     }

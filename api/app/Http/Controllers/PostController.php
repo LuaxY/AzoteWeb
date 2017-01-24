@@ -76,6 +76,11 @@ class PostController extends Controller
     {
         $page = $request->has('page') ? $request->input('page') : 1;
 
+        if (!is_numeric($page))
+        {
+            abort(404);
+        }
+
         $post = Cache::remember('posts_' . $id, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
             return Post::findOrFail($id);
         });
