@@ -26,16 +26,16 @@ class AdminController extends Controller
     public function index()
     {
         $countuser = Cache::remember('countuser', self::CACHE_EXPIRE_MINUTES, function () {
-            return User::all()->count();
+            return User::count();
         });
         $countpost = Cache::remember('countpost', self::CACHE_EXPIRE_MINUTES, function () {
-            return Post::all()->count();
+            return Post::count();
         });
 
         foreach (config('dofus.servers') as $server)
         {
             $countservers[$server] = Cache::remember('countservers_'.$server, self::CACHE_EXPIRE_MINUTES, function () use($server) {
-                return Account::on($server.'_auth')->get()->count();
+                return Account::on($server.'_auth')->count();
             });
 
             $world = World::on($server.'_auth')->where('Name', strtoupper($server))->first();
