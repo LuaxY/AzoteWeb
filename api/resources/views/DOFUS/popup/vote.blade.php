@@ -26,7 +26,7 @@
                             <div class="ak-panel-title">
                                 <span class="ak-panel-title-icon"></span> Comment voter
                             </div>
-                            <p>Pour voter, vous devez d'abord cliquer sur le bouton de vote <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-ingo btn-xs vote-link" style="background-color:#f29c06">Voter</a> et ensuite sur RPG-Paradize, remplissez le captcha demandé. Une fois que vous avez rempli le captcha et que le site RPG-Paradize vous a redirigé sur l'accueil, cherchez le serveur {{ config('dofus.title') }} dans le classement et récupérez sa valeur OUT<p>
+                            <p>Pour voter, vous devez d'abord cliquer sur le bouton de vote <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.details")['sigma']->rpg) }}" target="_blank" class="btn btn-ingo btn-xs vote-link" style="background-color:#f29c06">Voter</a> et ensuite sur RPG-Paradize, remplissez le captcha demandé. Une fois que vous avez rempli le captcha et que le site RPG-Paradize vous a redirigé sur l'accueil, cherchez le serveur {{ config('dofus.title') }} dans le classement et récupérez sa valeur OUT<p>
                             <p><img src="{{ URL::asset('imgs/help/out.jpg') }}" alt="Valeur OUT" width="300px"></p>
 
                             <br>
