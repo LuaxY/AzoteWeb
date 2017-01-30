@@ -244,7 +244,7 @@ class PaymentController extends Controller
 
     public function check_recursos_code($key)
     {
-        if ($this->payment->check_cb($key))
+        if ($this->payment instanceof Recursos && $this->payment->check_cb($key))
         {
             return "true";
         }
