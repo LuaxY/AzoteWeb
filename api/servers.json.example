@@ -11,7 +11,8 @@
             "db_user":  "root",
             "db_pass":  "",
             "db_auth":  "azote_sigma_auth",
-            "db_world": "azote_sigma_world"
+            "db_world": "azote_sigma_world",
+            "rpg":      107257
         },
         {
             "name":     "epsilon",
@@ -24,7 +25,8 @@
             "db_user":  "root",
             "db_pass":  "",
             "db_auth":  "azote_epsilon_auth",
-            "db_world": "azote_epsilon_world"
+            "db_world": "azote_epsilon_world",
+            "rpg":      107257
         }
     ]
 }

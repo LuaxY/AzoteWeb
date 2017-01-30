@@ -30,6 +30,7 @@ class FillServers
             $data->port    = $server->port;
             $data->desc    = $server->desc;
             $data->ogrine  = $server->ogrine;
+            $data->rpg     = $server->rpg;
 
             $servers[] = $server->name;
             $details[$server->name] = $data;

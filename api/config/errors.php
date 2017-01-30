@@ -5,7 +5,7 @@ return [
     'invalid_server' => [
         'status'  => 404,
         'title'   => 'Le serveur sélectionné est invalide',
-        'details' => 'Le serveur "%s" ne fait pas partie des serveurs disponible.',
+        'details' => 'Le serveur sélectionné ne fait pas partie des serveurs disponible.',
     ],
 
     'not_account_owner' => [

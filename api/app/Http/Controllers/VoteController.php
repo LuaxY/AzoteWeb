@@ -20,7 +20,7 @@ use App\User;
 
 class VoteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::guest())
         {
@@ -46,12 +46,19 @@ class VoteController extends Controller
             Auth::user()->save();
         }*/
 
+        $this->checkVoteLimitByIP($request->ip());
+
         $delay = $this->delay();
 
         if ($current <= 0)
         {
             $current = 5;
         }
+
+        // 50/50 votes for each servers
+        $rpgIndex = (int)file_get_contents(base_path() . "/vote");
+        $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
+        file_put_contents(base_path() . "/vote", !$rpgIndex);
 
         $data = [
             'palierId'       => $palierId,
@@ -63,6 +70,7 @@ class VoteController extends Controller
             'votesForTicket' => $votesForTicket,
             'current'        => $current,
             'delay'          => $delay,
+            'rpgId'          => $rpgId,
         ];
 
         if (Auth::user()->isFirstVote)
@@ -87,6 +95,8 @@ class VoteController extends Controller
 
     public function process(Request $request)
     {
+        $this->checkVoteLimitByIP($request->ip());
+
         $delay = $this->delay();
 
         if (!$delay->canVote)
@@ -113,9 +123,20 @@ class VoteController extends Controller
         Auth::user()->last_vote = $dateLastVote;
         Auth::user()->save();
 
-        $actualOUT = $this->getOuts();
+        $servers = config('dofus.details');
+        $outVerified = false;
 
-        if (abs($actualOUT - $request->input('out')) > 5 && $actualOUT != 0)
+        foreach ($servers as $server)
+        {
+            $actualOUT = $this->getOuts($server->rpg);
+
+            if (abs($actualOUT - $request->input('out')) <= 5)
+            {
+                $outVerified = true;
+            }
+        }
+
+        if (!$outVerified)
         {
             // Bad OUT, restore preivous last vote date
             Auth::user()->last_vote = $previousVote;
@@ -142,15 +163,15 @@ class VoteController extends Controller
             $account->save();
         }
 
-        $ip = \Illuminate\Support\Facades\Request::ip();
-
         $vote = new Vote;
         $vote->user_id = Auth::user()->id;
         $vote->points  = 1; // jetons
-        $vote->ip      = $ip;
+        $vote->ip      = $request->ip();
+        $vote->begin   = Carbon::now();
+        $vote->end     = Carbon::now()->addHours(3);
         $vote->save();
 
-        /*$usersWithSameIP = User::where('last_ip_address', $ip)->get();
+        /*$usersWithSameIP = User::where('last_ip_address', $request->ip())->get();
 
         foreach ($usersWithSameIP as $user)
         {
@@ -307,9 +328,9 @@ class VoteController extends Controller
         return $obj;
     }
 
-    private function getOuts()
+    private function getOuts($rpgId)
     {
-        $outs = Cache::remember('rpg_outs', 1, function () {
+        $outs = Cache::remember('rpg_outs_' . $rpgId, 1, function () use($rpgId) {
             $curl = curl_init();
 
             $header[0] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,";
@@ -320,7 +341,7 @@ class VoteController extends Controller
             $header[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
             $header[] = "Accept-Language: fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3";
 
-            curl_setopt($curl, CURLOPT_URL, 'http://www.rpg-paradize.com/site--' . config('dofus.rpg-paradize.id'));
+            curl_setopt($curl, CURLOPT_URL, 'http://www.rpg-paradize.com/site--' . $rpgId);
             curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:32.0) Gecko/20100101 Firefox/32.0");
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
             curl_setopt($curl, CURLOPT_REFERER, 'http://www.rpg-paradize.com');
@@ -347,5 +368,34 @@ class VoteController extends Controller
         });
 
         return $outs;
+    }
+
+    private function checkVoteLimitByIP($ip)
+    {
+        $now = Carbon::now()->toDateTimeString();
+        $max = Carbon::now()->subHours(3)->toDateTimeString();
+
+        $votes = Vote::where('ip', $ip)->where(function ($query) use ($now, $max) {
+            return $query->where('end', '>', $now)->where('begin', '>', $max);
+        })->orderBy('id', 'DESC')->get();
+
+        // Allow 3 votes by IP
+        if (count($votes) >= 3)
+        {
+            $oldestVoteDate = Carbon::now();
+
+            foreach ($votes as $vote)
+            {
+                $currentDate = Carbon::parse($vote->begin);
+
+                if ($currentDate->lt($oldestVoteDate))
+                {
+                    $oldestVoteDate = $currentDate;
+                }
+            }
+
+            Auth::user()->last_vote = $oldestVoteDate->toDateTimeString();
+            //Auth::user()->save();
+        }
     }
 }

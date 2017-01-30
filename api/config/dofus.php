@@ -86,7 +86,6 @@ return [
     'votes_for_ticket' => env('VOTES_FOR_TICKET', 10),
 
     'rpg-paradize' => [
-        'id'       => env('RPG_PARADIZE', 0),
         'delay'    => 10810, // 3h + 5s
     ],
 

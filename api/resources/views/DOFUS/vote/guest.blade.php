@@ -21,7 +21,7 @@
         <div class="ak-panel-content panel-main">
             <div class="row">
                 <div class="col-sm-6">
-                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
+                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.details")['sigma']->rpg) }}" target="_blank" class="btn btn-blok btn-lg btn-info">Voter</a>
                 </div>
                 <div class="col-sm-6">
                     <p>Vous n'êtes pas identifié, votre vote ne rapporteras aucun points. <a href="{{ URL::route('login') }}">S'identifier</a></p>

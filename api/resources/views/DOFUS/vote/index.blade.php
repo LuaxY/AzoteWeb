@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     @if ($delay->canVote)
-                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . config("dofus.rpg-paradize.id")) }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
+                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . $rpgId) }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
                     @else
                     <p style="margin-top:30px"><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
                     @endif
