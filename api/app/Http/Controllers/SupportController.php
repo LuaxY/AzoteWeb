@@ -47,9 +47,21 @@ class SupportController extends Controller
             $keyType =  $keyData[0];
             $keyText =  $keyData[1];
 
-            if ($keyText == 'message')
+            $keyTextFormated = str_replace('_', ' ', $keyText);
+            $html .= "<b>$keyTextFormated</b> : ";
+
+            if ($keyType == 'message')
             {
-                $html .= "<b>Message</b> : $value<br>\n";
+                $html .= "$value<br>\n";
+                continue;
+            }
+
+            if ($keyType == 'file')
+            {
+                // TODO protect this with validator
+                $imageName = time() . '.' . $value->getClientOriginalExtension();
+                $value->move(public_path() . "/imgs/uploads", $imageName);
+                $html .= "<br><img src='/imgs/uploads/$imageName' height='200'><br>\n";
                 continue;
             }
 
@@ -63,68 +75,61 @@ class SupportController extends Controller
             $valueType = $valueData[0];
             $valueText = $valueData[1];
 
-            if ($keyType == 'special')
+            if ($keyType == 'account')
             {
-                if ($keyText == 'account')
+                // TODO convert to view
+
+                $accountId = (int)$valueText;
+                $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+
+                if ($account)
                 {
-                    // TODO convert to view
-
-                    $accountId = (int)$valueText;
-                    $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-
-                    if ($account)
-                    {
-                        $html .= "<b>Compte</b> : {$account->Nickname}<br>\n";
-                    }
-                    else
-                    {
-                        $html .= "<b>Compte</b> : Not found<br>\n";
-                    }
+                    $html .= $account->Nickname;
                 }
-
-                if ($keyText == 'character')
+                else
                 {
-                    // TODO convert to view
-
-                    $characterId = (int)$valueText;
-                    $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
-
-                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
-                    {
-                        $html .= "<b>Personnage</b> : Non trouvé<br>\n";
-                        continue;
-                    }
-
-                    if ($character)
-                    {
-                        $html .= "<b>Personnage</b> : {$character->Name}<br>\n";
-                    }
-                    else
-                    {
-                        $html .= "<b>Personnage</b> : Non trouvé<br>\n";
-                    }
+                    $html .= "Not trouvé";
                 }
+            }
 
-                if ($keyText == 'server')
+            if ($keyType == 'character')
+            {
+                // TODO convert to view
+
+                $characterId = (int)$valueText;
+                $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
+
+                if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
                 {
-                    // TODO convert to view
-                    // TODO if $server exist
-
-                    $server = $valueText;
-
-                    $html .= "<b>Serveur</b> : ".ucfirst($server)."<br>\n";
+                    $html .= "Non trouvé (#1)";
+                    //continue;
                 }
+                elseif ($character)
+                {
+                    $html .= $character->Name;
+                }
+                else
+                {
+                    $html .= "Non trouvé (#2)";
+                }
+            }
 
-                continue;
+            if ($keyType == 'server')
+            {
+                // TODO convert to view
+                // TODO if $server exist
+
+                $server = $valueText;
+
+                $html .= ucfirst($server);
             }
 
             if ($keyType == 'text')
             {
-                $keyTextFormated = str_replace('_', ' ', $keyText);
-                $html .= "<b>$keyTextFormated</b> : ";
+                $html .= $valueText;
             }
 
-            $html .= "$valueText<br>\n";
+            $html .= "<br>\n";
         }
 
         echo $html;

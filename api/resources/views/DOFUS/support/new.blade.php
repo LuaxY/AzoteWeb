@@ -16,7 +16,7 @@
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
                 <div class="panel-main">
-                    <form class="ak-form" id="support" action="/api/support/store" method="post">
+                    <form class="ak-form" id="support" action="/api/support/store" method="post" enctype="multipart/form-data">
                     </form>
                 </div>
             </div>
@@ -59,7 +59,7 @@ function get_params() {
 
     $('#support select.special, #support input.special').each(function() {
         paramValue = $(this).val().split('|')[1];
-        paramName  = $(this).attr('name').split('|')[1];
+        paramName  = $(this).attr('name').split('|')[0];
         params[paramName] = paramValue;
 
     });

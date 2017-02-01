@@ -1,6 +1,6 @@
 <div class="form-group ">
     <label class="control-label">{{ $name }}</label>
-    <select id="server" class="special form-control" name="special|server">
+    <select id="server" class="special form-control" name="server|{{ $name }}">
         <option value="reset|null"></option>
         @foreach ($servers as $server)
             @if (isset($child))

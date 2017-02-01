@@ -10,7 +10,7 @@
             "child": "server"
         }, {
             "value": "Un autre problème",
-            "child": "other"
+            "child": "final"
         }]
     }]
 }

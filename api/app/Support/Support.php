@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Support\Form\TextForm;
+use App\Support\Form\FileForm;
 use App\Support\Form\RadioForm;
 use App\Support\Form\SelectForm;
 use App\Support\Form\TextareaForm;
@@ -39,6 +40,9 @@ class Support
                 case 'text':
                 case 'integer':
                     $form = new TextForm;
+                    break;
+                case 'file':
+                    $form = new FileForm;
                     break;
                 case 'radio':
                     $form = new RadioForm;

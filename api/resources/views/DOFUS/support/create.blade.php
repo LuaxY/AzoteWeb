@@ -43,7 +43,7 @@ function get_params() {
 
     $('#support select.special, #support input.special').each(function() {
         paramValue = $(this).val().split('|')[1];
-        paramName  = $(this).attr('name').split('|')[1];
+        paramName  = $(this).attr('name').split('|')[0];
         params[paramName] = paramValue;
 
     });

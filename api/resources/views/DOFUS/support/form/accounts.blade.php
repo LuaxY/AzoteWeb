@@ -1,6 +1,6 @@
 <div class="form-group ">
     <label class="control-label">{{ $name }}</label>
-    <select class="special form-control" name="special|account">
+    <select class="special form-control" name="account|{{ $name }}">
         <option value="reset|null"></option>
         @foreach ($accounts as $account)
             @if ($child)
