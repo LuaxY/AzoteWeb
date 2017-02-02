@@ -9,19 +9,16 @@ class AccountsForm implements IForm
 {
     public static function render($name, $data, $params)
     {
-        $html  = "$name: <select name=\"$name\">\n";
-        $html .= "<option value=\"r|null\"></option>\n";
+        $child  = isset($data->child) ? $data->child : false;
+        $server = isset($params['server']) ? $params['server'] : 'sigma';
 
-        $child = (isset($data->child) ? $data->child : false);
-        $accounts = Account::where('Email', Auth::user()->email)->get();
+        $accounts = Auth::user()->accounts($server);
 
-        foreach ($accounts as $account)
+        if (count($accounts) > 0)
         {
-            $html .= "<option value=\"c|$child|$account->Id\">$account->Nickname</option>\n";
+            return view('support.form.accounts', compact('name', 'child', 'accounts'));
         }
 
-        $html .= "</select><br>\n";
-
-        return $html;
+        return "Aucun comptes<br>";
     }
 }

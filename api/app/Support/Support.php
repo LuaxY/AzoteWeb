@@ -3,20 +3,29 @@
 namespace App\Support;
 
 use App\Support\Form\TextForm;
+use App\Support\Form\FileForm;
 use App\Support\Form\RadioForm;
 use App\Support\Form\SelectForm;
 use App\Support\Form\TextareaForm;
 use App\Support\Form\AccountsForm;
 use App\Support\Form\CharactersForm;
+use App\Support\Form\ServersForm;
 use App\Support\Form\SubmitForm;
 
 class Support
 {
-    public static function generateForm($child, $params = false)
+    public static function generateForm($child, $params = false, $post = [])
     {
-        // TODO: protect this code !!!
-        $json = json_decode(file_get_contents("support_files/$child.json"));
+        $filePath = public_path() . "/support_files/$child.json";
+
+        if (!file_exists($filePath))
+        {
+            // TODO convert to view
+            return "Choix invalide.";
+        }
+
         $html = "";
+        $json = json_decode(file_get_contents($filePath));
 
         foreach ($json->fields as $field)
         {
@@ -31,6 +40,9 @@ class Support
                 case 'text':
                 case 'integer':
                     $form = new TextForm;
+                    break;
+                case 'file':
+                    $form = new FileForm;
                     break;
                 case 'radio':
                     $form = new RadioForm;
@@ -47,6 +59,9 @@ class Support
                 case 'characters':
                     $form = new CharactersForm;
                     break;
+                case 'servers':
+                    $form = new ServersForm;
+                    break;
                 case 'submit':
                     $form = new SubmitForm;
                     break;
@@ -54,7 +69,7 @@ class Support
 
             if ($form)
             {
-                $html .= $form->render($name, $data, $params);
+                $html .= $form->render($name, $data, $post);
             }
         }
 

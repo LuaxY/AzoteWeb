@@ -6,6 +6,6 @@ class SubmitForm implements IForm
 {
     public static function render($name, $data, $params)
     {
-        return "<input type=\"submit\" value=\"$name\"><br>\n";
+        return view('support.form.submit', compact('name'));
     }
 }

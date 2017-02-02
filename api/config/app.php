@@ -221,6 +221,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
 
+        'DofusForge' => App\Services\DofusForge::class,
+
         'Recaptcha'   => Greggilbert\Recaptcha\Facades\Recaptcha::class,
         'Form'        => Collective\Html\FormFacade::class,
         'Html'        => Collective\Html\HtmlFacade::class,

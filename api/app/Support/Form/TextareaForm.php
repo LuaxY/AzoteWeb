@@ -6,6 +6,6 @@ class TextareaForm implements IForm
 {
     public static function render($name, $data, $params)
     {
-        return "$name:<br>\n<textarea name=\"$name\"  rows=\"6\" cols=\"60\"></textarea><br>\n";
+        return view('support.form.textarea', compact('name'));
     }
 }

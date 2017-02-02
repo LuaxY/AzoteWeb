@@ -1,0 +1,15 @@
+{
+    "fields": [{
+        "type": "textarea",
+        "name": "Message"
+    }, {
+        "type": "file",
+        "name": "Screenshots",
+        "data": {
+            "accept": "image/*"
+        }
+    }, {
+        "type": "submit",
+        "name": "Envoyer"
+    }]
+}

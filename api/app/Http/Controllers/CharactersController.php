@@ -19,17 +19,22 @@ class CharactersController extends Controller
     private function isCharacterOwnedByMe($server, $accountId, $characterId)
     {
         $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+
         if ($account)
         {
             $account->server = $server;
             $characters = $account->characters(1);
+
             if ($characters)
             {
                 foreach ($characters as $character)
                 {
-                    if ($characterId == $character->Id)
+                    if ($character && $characterId == $character->Id)
+                    {
                         return true;
+                    }
                 }
+
                 return false;
             }
         }

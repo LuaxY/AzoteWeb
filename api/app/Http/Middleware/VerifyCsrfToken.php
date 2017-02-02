@@ -20,7 +20,7 @@ class VerifyCsrfToken extends BaseVerifier
         'api/account/game/update',
         'api/account/game/characters/{accountId}',
         'api/support/create',
-        'api/support/child/{child}/{params?}',
+        'api/support/child/*',
         'api/support/store',
     ];
 }
