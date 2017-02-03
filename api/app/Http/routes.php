@@ -285,6 +285,16 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
         'as'         => 'vote.object'
     ]);
 
+    Route::get(Lang::get('routes.vote.go'), [
+        'uses'       => 'VoteController@go',
+        'as'         => 'vote.go'
+    ]);
+
+    Route::get(Lang::get('routes.vote.callback'), [
+        'uses'       => 'VoteController@callback',
+        'as'         => 'vote.callback'
+    ]);
+
     /* ============ LOTTERY ============ */
 
     Route::get(Lang::get('routes.lottery.index'), [
