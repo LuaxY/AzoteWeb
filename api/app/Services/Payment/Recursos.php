@@ -165,22 +165,23 @@ class Recursos extends Payment
 
         $data = explode(':', $result);
 
+        $transaction = new Transaction;
+        $transaction->user_id     = Auth::user()->id;
+        $transaction->code        = $recursos->code;
+        $transaction->points      = $recursos->points;
+        $transaction->country     = "all";
+        $transaction->palier_name = "-";
+        $transaction->palier_id   = 0;
+        $transaction->type        = "carte bancaire";
+        $transaction->provider    = "Recursos";
+        $transaction->raw         = $result;
+
         if ($data[0] == "OK")
         {
             $recursos->isUsed = true;
             $recursos->save();
 
-            $transaction = new Transaction;
-            $transaction->user_id     = Auth::user()->id;
-            $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
-            $transaction->code        = $recursos->code;
-            $transaction->points      = $recursos->points;
-            $transaction->country     = "all";
-            $transaction->palier_name = "-";
-            $transaction->palier_id   = 0;
-            $transaction->type        = "carte bancaire";
-            $transaction->provider    = "Recursos";
-            $transaction->raw         = $result;
+            $transaction->state = ShopStatus::PAYMENT_SUCCESS;
             $transaction->save();
 
             Cache::forget('transactions_' . Auth::user()->id);
@@ -191,6 +192,9 @@ class Recursos extends Payment
 
             return true;
         }
+
+        $transaction->state = ShopStatus::PAYMENT_FAIL;
+        $transaction->save();
 
         return false;
     }
