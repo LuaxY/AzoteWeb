@@ -57,9 +57,9 @@ class VoteController extends Controller
         }
 
         // 50/50 votes for each servers
-        /*$rpgIndex = (int)file_get_contents(base_path() . "/vote");
+        $rpgIndex = (int)file_get_contents(base_path() . "/vote");
         $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
-        file_put_contents(base_path() . "/vote", !$rpgIndex);*/
+        file_put_contents(base_path() . "/vote", !$rpgIndex);
 
         $data = [
             'palierId'       => $palierId,
@@ -71,7 +71,7 @@ class VoteController extends Controller
             'votesForTicket' => $votesForTicket,
             'current'        => $current,
             'delay'          => $delay,
-            //'rpgId'          => $rpgId,
+            'rpgId'          => $rpgId,
         ];
 
         if (Auth::user()->isFirstVote)
@@ -96,8 +96,6 @@ class VoteController extends Controller
 
     public function process(Request $request)
     {
-        return;
-
         $this->checkVoteLimitByIP($request->ip());
 
         $delay = $this->delay();
