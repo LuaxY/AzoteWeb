@@ -42,8 +42,14 @@ class LadderController extends Controller
                 ->select('ch.*')
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
-                ->where('acc.UserGroupId', 1)
-                ->orderBy('ch.Experience', 'DESC')
+                ->where('acc.UserGroupId', 1);
+
+            if ($server == 'epsilon')
+            {
+                $result = $result->orderBy('ch.PrestigeRank', 'DESC');
+            }
+
+            $result = $result->orderBy('ch.Experience', 'DESC')
                 ->take(100)
                 ->get();
 
