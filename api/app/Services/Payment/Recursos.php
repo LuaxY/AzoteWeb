@@ -140,7 +140,7 @@ class Recursos extends Payment
             $recursos->save();
         }
 
-        return $this->check_code($recursos, $code);
+        return $this->check_code($recursos, $recursos->code);
     }
 
     public function check_code($recursos, $code)
