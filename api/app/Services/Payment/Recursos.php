@@ -140,13 +140,18 @@ class Recursos extends Payment
             $recursos->save();
         }
 
+        return $this->check_code($recursos, $code);
+    }
+
+    public function check_code($recursos, $code)
+    {
         $params = [
             't'     => 'creditcard',
             'p'     => $recursos->price,
             'co'    => 'fr',
             'c'     => config('dofus.payment.recursos.c'),
             'w'     => config('dofus.payment.recursos.w'),
-            'code'  => $recursos->code,
+            'code'  => $code,
         ];
 
         $c = curl_init("https://iframes.recursosmoviles.com/v3/checkcode.php");

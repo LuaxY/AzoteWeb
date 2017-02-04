@@ -442,6 +442,18 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'as'         => 'check_recursos_code'
     ]);
 
+    Route::get('code/code_re_fallback', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@code_re_fallback',
+        'as'         => 'code_re_fallback'
+    ]);
+
+    Route::any('code/code_re_fallback_process', [
+        'middleware' => 'AuthPayment',
+        'uses'       => 'PaymentController@code_re_fallback_process',
+        'as'         => 'code_re_fallback_process'
+    ]);
+
 });
 
 /* ============ API ============ */
