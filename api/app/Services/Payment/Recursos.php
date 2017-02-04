@@ -167,7 +167,7 @@ class Recursos extends Payment
 
         $transaction = new Transaction;
         $transaction->user_id     = Auth::user()->id;
-        $transaction->code        = $recursos->code;
+        $transaction->code        = $code;
         $transaction->points      = $recursos->points;
         $transaction->country     = "all";
         $transaction->palier_name = "-";
