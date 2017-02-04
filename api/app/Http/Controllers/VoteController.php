@@ -56,10 +56,15 @@ class VoteController extends Controller
             $current = 5;
         }
 
-        // 50/50 votes for each servers
-        $rpgIndex = (int)file_get_contents(base_path() . "/vote");
-        $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
-        file_put_contents(base_path() . "/vote", !$rpgIndex);
+        $rpgId = 0;
+
+        if (!config('dofus.rpg-paradize.use_callback'))
+        {
+            // 50/50 votes for each servers
+            $rpgIndex = (int)file_get_contents(base_path() . "/vote");
+            $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
+            file_put_contents(base_path() . "/vote", !$rpgIndex);
+        }
 
         $data = [
             'palierId'       => $palierId,
@@ -96,6 +101,11 @@ class VoteController extends Controller
 
     public function process(Request $request)
     {
+        if (config('dofus.rpg-paradize.use_callback'))
+        {
+            return;
+        }
+
         $this->checkVoteLimitByIP($request->ip());
 
         $delay = $this->delay();
@@ -424,7 +434,7 @@ class VoteController extends Controller
             return "FAIL 1";
         }
 
-        if ($request->ip() != "213.186.33.107")
+        if (config('dofus.rpg-paradize.check_ip') && $request->ip() != config('dofus.rpg-paradize.ip'))
         {
             return "FAIL 5";
         }

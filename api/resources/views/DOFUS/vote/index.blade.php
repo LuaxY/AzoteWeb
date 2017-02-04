@@ -44,10 +44,13 @@
             <div class="row">
                 <div class="col-sm-6">
                     @if ($delay->canVote)
-                    <!--<a href="{{ URL::route('vote.go') }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>-->
-                    <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . $rpgId) }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
+                        @if (config('dofus.rpg-paradize.use_callback'))
+                            <a href="{{ URL::route('vote.go') }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
+                        @else
+                            <a href="{{ URL::to('http://www.rpg-paradize.com/?page=vote&vote=' . $rpgId) }}" target="_blank" class="btn btn-blok btn-lg btn-info vote-link" style="margin-top:30px">Voter</a>
+                        @endif
                     @else
-                    <p style="margin-top:30px"><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
+                        <p style="margin-top:30px"><b>Vous devez attendre {{ $delay->hours }}h {{ $delay->minutes }}m {{ $delay->seconds }}s avant de pouvoir re-voter.</b></p>
                     @endif
                 </div>
                 <div class="col-sm-6">
@@ -140,8 +143,11 @@
 
         $(".vote-link").on("click", function() {
             setTimeout(function() {
-                window.location.href = "{{ URL::route('vote.confirm') }}";
-                //window.location.href = "{{ URL::route('vote.index') }}";
+                @if (config('dofus.rpg-paradize.use_callback'))
+                    window.location.href = "{{ URL::route('vote.index') }}";
+                @else
+                    window.location.href = "{{ URL::route('vote.confirm') }}";
+                @endif
             }, 5000);
         });
 
