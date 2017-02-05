@@ -1,14 +1,14 @@
 {
     "fields": [{
         "type": "textarea",
+        "hint": "Soyez le plus précis possible dans l'explication du problème.",
         "name": "Message"
     }, {
         "type": "file",
-        "name": "Screenshots",
-        "data": {
-            "type": "image",
-            "accept": "image/*"
-        }
+        "name": "Screenshot",
+        "hint": "Vous pouvez envoyer une capture d'écran du problème si nécessaire.",
+        "input": "image",
+        "accept": "image/*"
     }, {
         "type": "submit",
         "name": "Envoyer"

@@ -96,8 +96,7 @@ class SupportController extends Controller
 
         echo $this->generateHtmlReport($report);
 
-        dd($report);
-        dd($request->all());
+        dd($report, json_encode($report));
     }
 
     private function generateHtmlReport($report)
@@ -157,7 +156,6 @@ class SupportController extends Controller
                     }
                     break;
                 default:
-                    $html .= "INVALID";
                     break;
             }
 

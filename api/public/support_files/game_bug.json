@@ -2,8 +2,7 @@
     "fields": [{
         "type": "accounts",
         "name": "Compte de jeu",
-        "data": {
-            "child": "game_bug_account"
-        }
+        "hint": "Selectionnez le compte impacté.",
+        "child": "game_bug_account"
     }]
 }

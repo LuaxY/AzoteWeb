@@ -1,5 +1,6 @@
 <div class="form-group ">
     <label class="control-label">{{ $name }}</label>
+    <span class="hint">{{ @$field->hint }}</span>
     @if (isset($choice->child))
         <input type="radio" class="form-control" name="text|{{ $name }}" value="child|{{ $choice->value }}|{{ $choice->child }}"> {{ $choice->value }}<br>
     @else

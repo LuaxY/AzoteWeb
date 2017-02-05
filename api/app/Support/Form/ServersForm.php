@@ -4,11 +4,16 @@ namespace App\Support\Form;
 
 class ServersForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
-        $child = (isset($data->child) ? $data->child : false);
         $servers = config('dofus.details');
 
-        return view('support.form.servers', compact('name', 'servers', 'child'));
+        return view('support.form.servers', [
+            'name'    => $name,
+            'data'    => $data,
+            'child'   => isset($field->child) ? $field->child : false,
+            'servers' => $servers,
+            'field'   => $field,
+        ]);
     }
 }

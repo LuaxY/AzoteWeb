@@ -69,7 +69,7 @@ class Support
 
             if ($form)
             {
-                $html .= $form->render($name, $data, $post);
+                $html .= $form->render($name, $field, $data, $post);
             }
         }
 
