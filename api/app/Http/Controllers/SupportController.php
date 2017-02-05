@@ -46,7 +46,7 @@ class SupportController extends Controller
             $keyTextFormated = str_replace('_', ' ', $keyText);
             $newKey = $keyType . '|' . $keyTextFormated;
 
-            if ($keyType == 'message')
+            if ($keyType == 'message' || $keyType == 'text')
             {
                 $report[$newKey] = $value;
                 continue;
@@ -88,7 +88,7 @@ class SupportController extends Controller
                 $report[$newKey] = $server;
             }
 
-            if ($keyType == 'text')
+            if ($keyType == 'select')
             {
                 $report[$newKey] = $valueText;
             }
@@ -96,7 +96,7 @@ class SupportController extends Controller
 
         echo $this->generateHtmlReport($report);
 
-        dd($report, json_encode($report));
+        dd($report, json_encode($report), $request->all());
     }
 
     private function generateHtmlReport($report)
@@ -116,6 +116,7 @@ class SupportController extends Controller
             {
                 case 'text':
                 case 'message':
+                case 'select':
                     $html .= $value;
                     break;
                 case 'image':

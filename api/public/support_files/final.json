@@ -1,7 +1,10 @@
 {
     "fields": [{
+        "type": "text",
+        "name": "Sujet"
+    }, {
         "type": "textarea",
-        "hint": "Soyez le plus précis possible dans l'explication du problème.",
+        "hint": "Veuillez nous exposer votre demande le plus clairement possible",
         "name": "Message"
     }, {
         "type": "file",
