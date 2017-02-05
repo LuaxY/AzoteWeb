@@ -29,11 +29,7 @@ class SupportController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->all();
-        $html = "";
-
-        $server = 'sigma';
-        $accountId = 0;
-        $characterId = 0;
+        $report = [];
 
         foreach ($inputs as $key => $value)
         {
@@ -48,20 +44,20 @@ class SupportController extends Controller
             $keyText =  $keyData[1];
 
             $keyTextFormated = str_replace('_', ' ', $keyText);
-            $html .= "<b>$keyTextFormated</b> : ";
+            $newKey = $keyType . '|' . $keyTextFormated;
 
             if ($keyType == 'message')
             {
-                $html .= "$value<br>\n";
+                $report[$newKey] = $value;
                 continue;
             }
 
-            if ($keyType == 'file')
+            if ($keyType == 'image')
             {
                 // TODO protect this with validator
                 $imageName = time() . '.' . $value->getClientOriginalExtension();
                 $value->move(public_path() . "/imgs/uploads", $imageName);
-                $html .= "<br><img src='/imgs/uploads/$imageName' height='200'><br>\n";
+                $report[$newKey] = $imageName;
                 continue;
             }
 
@@ -77,64 +73,98 @@ class SupportController extends Controller
 
             if ($keyType == 'account')
             {
-                // TODO convert to view
-
-                $accountId = (int)$valueText;
-                $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-
-                if ($account)
-                {
-                    $html .= $account->Nickname;
-                }
-                else
-                {
-                    $html .= "Not trouvé";
-                }
+                $report[$newKey] = (int)$valueText;
             }
 
             if ($keyType == 'character')
             {
-                // TODO convert to view
-
-                $characterId = (int)$valueText;
-                $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
-
-                if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
-                {
-                    $html .= "Non trouvé (#1)";
-                    //continue;
-                }
-                elseif ($character)
-                {
-                    $html .= $character->Name;
-                }
-                else
-                {
-                    $html .= "Non trouvé (#2)";
-                }
+                $report[$newKey] = (int)$valueText;
             }
 
             if ($keyType == 'server')
             {
-                // TODO convert to view
                 // TODO if $server exist
-
                 $server = $valueText;
-
-                $html .= ucfirst($server);
+                $report[$newKey] = $server;
             }
 
             if ($keyType == 'text')
             {
-                $html .= $valueText;
+                $report[$newKey] = $valueText;
+            }
+        }
+
+        echo $this->generateHtmlReport($report);
+
+        dd($report);
+        dd($request->all());
+    }
+
+    private function generateHtmlReport($report)
+    {
+        $html = "";
+        $server = 'sigma';
+        $accountId = 0;
+        $characterId = 0;
+
+        foreach ($report as $key => $value)
+        {
+            list($type, $key) = explode('|', $key);
+
+            $html .= "<b>$key</b> : ";
+
+            switch ($type)
+            {
+                case 'text':
+                case 'message':
+                    $html .= $value;
+                    break;
+                case 'image':
+                    $html .= "<br><img src='/imgs/uploads/$value' height='200'>";
+                    break;
+                case 'server':
+                    $server = $value;
+                    $html .= ucfirst($server);
+                    break;
+                case 'account':
+                    $accountId = $value;
+                    $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+
+                    if ($account)
+                    {
+                        $html .= $account->Nickname;
+                    }
+                    else
+                    {
+                        $html .= "Not trouvé";
+                    }
+                    break;
+                case 'character':
+                    $characterId = $value;
+                    $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
+
+                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
+                    {
+                        $html .= "Non trouvé (#1)";
+                    }
+                    elseif ($character)
+                    {
+                        $html .= $character->Name;
+                    }
+                    else
+                    {
+                        $html .= "Non trouvé (#2)";
+                    }
+                    break;
+                default:
+                    $html .= "INVALID";
+                    break;
             }
 
             $html .= "<br>\n";
         }
 
-        echo $html;
-
-        dd($request->all());
+        return $html;
     }
 
     private function isCharacterOwnedByMe($server, $accountId, $characterId)

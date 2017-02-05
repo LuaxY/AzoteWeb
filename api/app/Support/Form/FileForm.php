@@ -8,6 +8,7 @@ class FileForm implements IForm
     {
         return view('support.form.file', [
             'name'   => $name,
+            'type'   => @$data->type,
             'accept' => @$data->accept,
         ]);
     }
