@@ -96,6 +96,10 @@ return [
 
     'vote.object' => 'vote/objet/{item?}',
 
+    'vote.go' => 'vote/go',
+
+    'vote.callback' => 'vote/callback/{token?}',
+
     /** Lottery **/
 
     'lottery.index' => 'loterie',

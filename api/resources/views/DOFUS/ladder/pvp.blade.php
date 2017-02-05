@@ -32,6 +32,7 @@
                     <th>Nom</th>
                     <th>Classe</th>
                     <th class="ak-center">Niveau</th>
+                    @if ($server == 'epsilon') <th class="ak-center">Prestige</th> @endif
                     <th>Alignement</th>
                     <th class="ak-xp-total">Honneur</th>
                 </tr>
@@ -51,7 +52,8 @@
                         {{ $character->Name }}
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
-                    <td class="ak-center">{{ $character->level() }}</td>
+                    <td class="ak-center">{{ $character->level($server) }}</td>
+                    @if ($server == 'epsilon') <td class="ak-center">{{ $character->PrestigeRank }}</td> @endif
                     <td>{!! $character->alignement() !!}</td>
                     <td class="ak-xp-total">{{ Utils::format_price($character->Honor, ' ') }}</td>
                 </tr>

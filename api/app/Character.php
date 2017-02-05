@@ -19,10 +19,25 @@ class Character extends Model
 
     public $server;
 
-    public function level()
+    public function level($server = 'sigma')
     {
-        $exp = Cache::remember('exp_'.$this->Experience, 1000, function() {
-            return Experience::where('CharacterExp', '<=', $this->Experience)->orderBy('Level', 'desc')->first();
+        // Prestige
+        $tempExp = $this->Experience;
+
+        if ($server == 'epsilon')
+        {
+            $maxExp = Cache::remember('exp_' . $server . '_max', 1000, function() use($server) {
+                return Experience::on($server . '_world')->orderBy('CharacterExp', 'desc')->first();
+            });
+
+            if ($maxExp)
+            {
+                $tempExp = $this->Experience - ($this->PrestigeRank * $maxExp->CharacterExp);
+            }
+        }
+
+        $exp = Cache::remember('exp_' . $server . '_' . $tempExp, 1000, function() use($server, $tempExp) {
+            return Experience::on($server . '_world')->where('CharacterExp', '<=', $tempExp)->orderBy('Level', 'desc')->first();
         });
 
         if ($exp)

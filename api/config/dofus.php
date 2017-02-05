@@ -86,7 +86,10 @@ return [
     'votes_for_ticket' => env('VOTES_FOR_TICKET', 10),
 
     'rpg-paradize' => [
-        'delay'    => 10810, // 3h + 5s
+        'delay'        => 10810, // 3h + 5s
+        'ip'           => env('RPG_IP', "0.0.0.0"),
+        'check_ip'     => env('RPG_CHECK_IP', true),
+        'use_callback' => env('RPG_USE_CALLBACK', false),
     ],
 
     'promos' => [],

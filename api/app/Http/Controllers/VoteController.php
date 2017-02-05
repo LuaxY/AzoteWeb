@@ -17,6 +17,7 @@ use App\Gift;
 use App\LotteryTicket;
 use App\Services\DofusForge;
 use App\User;
+use App\VoteRequest;
 
 class VoteController extends Controller
 {
@@ -55,10 +56,15 @@ class VoteController extends Controller
             $current = 5;
         }
 
-        // 50/50 votes for each servers
-        $rpgIndex = (int)file_get_contents(base_path() . "/vote");
-        $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
-        file_put_contents(base_path() . "/vote", !$rpgIndex);
+        $rpgId = 0;
+
+        if (!config('dofus.rpg-paradize.use_callback'))
+        {
+            // 50/50 votes for each servers
+            $rpgIndex = (int)file_get_contents(base_path() . "/vote");
+            $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
+            file_put_contents(base_path() . "/vote", !$rpgIndex);
+        }
 
         $data = [
             'palierId'       => $palierId,
@@ -95,6 +101,11 @@ class VoteController extends Controller
 
     public function process(Request $request)
     {
+        if (config('dofus.rpg-paradize.use_callback'))
+        {
+            return;
+        }
+
         $this->checkVoteLimitByIP($request->ip());
 
         $delay = $this->delay();
@@ -397,5 +408,108 @@ class VoteController extends Controller
             Auth::user()->last_vote = $oldestVoteDate->toDateTimeString();
             //Auth::user()->save();
         }
+    }
+
+    public function go()
+    {
+        $voteRequest = new VoteRequest;
+        $voteRequest->user_id = Auth::user()->id;
+        $voteRequest->token   = str_random(8);
+        $voteRequest->save();
+
+        // 50/50 votes for each servers
+        $rpgIndex = (int)file_get_contents(base_path() . "/vote");
+        $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
+        file_put_contents(base_path() . "/vote", !$rpgIndex);
+
+        $url = 'http://www.rpg-paradize.com/?page=vote&vote=' . $rpgId . '&callback=' . URL::route('vote.callback', [$voteRequest->token]);
+
+        return redirect($url);
+    }
+
+    public function callback(Request $request, $token = null)
+    {
+        if (!$token)
+        {
+            return "FAIL 1";
+        }
+
+        if (config('dofus.rpg-paradize.check_ip') && $request->ip() != config('dofus.rpg-paradize.ip'))
+        {
+            return "FAIL 5";
+        }
+
+        $voteRequest = VoteRequest::where('token', $token)->first();
+
+        if (!$voteRequest)
+        {
+            return "FAIL 2";
+        }
+
+        $user = $voteRequest->user();
+
+        if (!$user)
+        {
+            $voteRequest->delete();
+            return "FAIL 3";
+        }
+
+        $now      = strtotime(date('Y-m-d H:i:s'));
+        $duration = $now - strtotime($user->last_vote);
+        $canVote  = $duration < config('dofus.rpg-paradize.delay') ? false : true;
+
+        if (!$canVote)
+        {
+            $voteRequest->delete();
+            return "FAIL 4";
+        }
+
+        $dateLastVote = date('Y-m-d H:i:s');
+
+        $user->last_vote = $dateLastVote;
+        $user->votes  += 1;
+        $user->jetons += 1;
+
+        if ($user->isFirstVote)
+        {
+            $user->isFirstVote = false;
+        }
+
+        $user->save();
+
+        $accounts = $user->accounts();
+
+        foreach ($accounts as $account)
+        {
+            $account->LastVote = $dateLastVote;
+            $account->save();
+        }
+
+        $vote = new Vote;
+        $vote->user_id = $user->id;
+        $vote->points  = 1; // jetons
+        $vote->ip      = $user->last_ip_address;
+        $vote->begin   = Carbon::now();
+        $vote->end     = Carbon::now()->addHours(3);
+        $vote->save();
+
+        Cache::forget('votes_' . $user->id);
+        Cache::forget('votes_' . $user->id . '_10');
+
+        if ($user->votes % $this->votesForTicket() == 0)
+        {
+            $ticket = new LotteryTicket;
+            $ticket->type        = $user->votes % ($this->votesForTicket() * 5) == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
+            $ticket->user_id     = $user->id;
+            $ticket->description = "Ticket " . $user->votes . " votes";
+            $ticket->save();
+
+            Cache::forget('tickets_available_' . $user->id);
+            Cache::forget('tickets_' . $user->id);
+        }
+
+        $voteRequest->delete();
+
+        return "OK";
     }
 }
