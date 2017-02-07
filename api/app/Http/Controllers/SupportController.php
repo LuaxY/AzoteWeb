@@ -11,6 +11,8 @@ use App\Support\Support;
 use App\ModelCustom;
 use App\Account;
 use App\Character;
+use App\SupportRequest;
+use App\SupportTicket;
 use Auth;
 
 class SupportController extends Controller
@@ -54,10 +56,17 @@ class SupportController extends Controller
 
             if ($keyType == 'image')
             {
-                // TODO protect this with validator
+                if (!in_array($value->getClientOriginalExtension(), ['png', 'jpg', 'jpeg'])) continue;
                 $imageName = time() . '.' . $value->getClientOriginalExtension();
-                $value->move(public_path() . "/imgs/uploads", $imageName);
+                $value->move(public_path() . "/uploads/support", $imageName);
                 $report[$newKey] = $imageName;
+                continue;
+            }
+
+            if ($keyType == 'document')
+            {
+                $docName = $value->getClientOriginalName();
+                $value->move(public_path() . "/uploads/support", $docName);
                 continue;
             }
 
@@ -83,7 +92,6 @@ class SupportController extends Controller
 
             if ($keyType == 'server')
             {
-                // TODO if $server exist
                 $server = $valueText;
                 $report[$newKey] = $server;
             }
@@ -96,13 +104,27 @@ class SupportController extends Controller
 
         echo $this->generateHtmlReport($report);
 
+        $supportRequest = new SupportRequest;
+        $supportRequest->user_id  = Auth::user()->id;
+        $supportRequest->state    = SupportRequest::OPEN;
+        $supportRequest->category = isset($report['select|Ma demande concerne']) ? $report['select|Ma demande concerne'] : "Sans catégorie";
+        $supportRequest->subject  = isset($report['text|Sujet']) ? $report['text|Sujet'] : "Sans sujet";
+        $supportRequest->save();
+
+        $supportTicket = new SupportTicket;
+        $supportTicket->request_id = $supportRequest->id;
+        $supportTicket->user_id    = Auth::user()->id;
+        $supportTicket->data       = json_encode($report);
+        $supportTicket->private    = false;
+        $supportTicket->save();
+
         dd($report, json_encode($report), $request->all());
     }
 
     private function generateHtmlReport($report)
     {
         $html = "";
-        $server = 'sigma';
+        $server = '';
         $accountId = 0;
         $characterId = 0;
 
@@ -123,10 +145,23 @@ class SupportController extends Controller
                     $html .= "<br><img src='/imgs/uploads/$value' height='200'>";
                     break;
                 case 'server':
-                    $server = $value;
-                    $html .= ucfirst($server);
+                    if (!$this->isServerExist($value))
+                    {
+                        $html .= "Non trouvé";
+                    }
+                    else
+                    {
+                        $server = $value;
+                        $html .= ucfirst($server);
+                    }
                     break;
                 case 'account':
+                    if ($server == '')
+                    {
+                        $html .= "Non trouvé";
+                        break;
+                    }
+
                     $accountId = $value;
                     $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
@@ -136,10 +171,16 @@ class SupportController extends Controller
                     }
                     else
                     {
-                        $html .= "Not trouvé";
+                        $html .= "Non trouvé";
                     }
                     break;
                 case 'character':
+                    if ($server == '' || $accountId == 0)
+                    {
+                        $html .= "Non trouvé";
+                        break;
+                    }
+
                     $characterId = $value;
                     $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
 
@@ -188,5 +229,15 @@ class SupportController extends Controller
                 return false;
             }
         }
+    }
+
+    private function isServerExist($server)
+    {
+        if (!in_array($server, config('dofus.servers')))
+        {
+            return false;
+        }
+
+        return true;
     }
 }

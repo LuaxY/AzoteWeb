@@ -7,6 +7,8 @@
 /public/vendor
 /public/filemanager
 /public/uploads/users
+/public/uploads/support
+/public/cookieRPG.txt
 /public/flags
 /resources/views/vendor
 Homestead.yaml
