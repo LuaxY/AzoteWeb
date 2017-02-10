@@ -2,8 +2,6 @@
     "fields": [{
         "type": "servers",
         "name": "Serveur",
-        "data": {
-            "child": "game"
-        }
+        "child": "game"
     }]
 }

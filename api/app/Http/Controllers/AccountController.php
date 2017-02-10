@@ -21,6 +21,7 @@ use Mail;
 use Validator;
 use Auth;
 use Cookie;
+use \Cache;
 
 use App\Helpers\EmailChecker;
 
@@ -420,6 +421,8 @@ class AccountController extends Controller
                 $forumAccount->email = $email;
                 $forumAccount->save();
             }
+
+            Cache::forget('accounts_' . Auth::user()->id);
 
             $gameAccounts = Auth::user()->accounts();
 

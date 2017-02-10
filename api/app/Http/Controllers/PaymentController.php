@@ -252,6 +252,50 @@ class PaymentController extends Controller
         return "false";
     }
 
+    public function code_re_fallback_process(Request $request)
+    {
+        if ($request->has('palier') || $request->has('code'))
+        {
+            $method = $this->payment->palier('fr', 'carte bancaire', $request->input('palier'));
+
+            if (!$method)
+            {
+                return "Code ou palier invalide #3";
+            }
+
+            $recursos = new RecursosTransaction;
+            $recursos->user_id = Auth::user()->id;
+            $recursos->key     = str_random(32);
+            $recursos->points  = $method->points;
+            $recursos->price   = $method->price;
+            $recursos->save();
+
+            if ($this->payment->check_code($recursos, $request->input('code')))
+            {
+                return "true";
+            }
+
+            return "Code ou palier invalide #2";
+        }
+
+        return "Code ou palier invalide #1";
+    }
+
+    public function code_re_fallback(Request $request)
+    {
+        if (!$this->payment instanceof Recursos)
+        {
+            return redirect()->route('error.fake', [7]);
+        }
+
+        $paliers = $this->payment->rates()->fr->{'carte bancaire'};
+
+        return view('shop.payment.popup_recursos_fallback', [
+            'ticket'  => $request->input('ticket'),
+            'paliers' => $paliers,
+        ]);
+    }
+
     public function fake_process(Request $request)
     {
         $data = $request->all();

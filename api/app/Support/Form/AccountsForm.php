@@ -7,16 +7,21 @@ use Auth;
 
 class AccountsForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
-        $child  = isset($data->child) ? $data->child : false;
         $server = isset($params['server']) ? $params['server'] : 'sigma';
 
         $accounts = Auth::user()->accounts($server);
 
         if (count($accounts) > 0)
         {
-            return view('support.form.accounts', compact('name', 'child', 'accounts'));
+            return view('support.form.accounts', [
+                'name'     => $name,
+                'child'    => isset($field->child) ? $field->child : false,
+                'accounts' => $accounts,
+                'data'     => $data,
+                'field'    => $field,
+            ]);
         }
 
         return "Aucun comptes<br>";

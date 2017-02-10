@@ -28,6 +28,12 @@
 @section('bottom')
 <style>
 
+#support .hint {
+    display: block;
+    font-size: 12px;
+    color: #777777;
+}
+
 #support .character {
     margin: 5px;
     border: #b9ae9d 2px solid;

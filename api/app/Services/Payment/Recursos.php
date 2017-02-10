@@ -140,13 +140,18 @@ class Recursos extends Payment
             $recursos->save();
         }
 
+        return $this->check_code($recursos, $recursos->code);
+    }
+
+    public function check_code($recursos, $code)
+    {
         $params = [
             't'     => 'creditcard',
             'p'     => $recursos->price,
             'co'    => 'fr',
             'c'     => config('dofus.payment.recursos.c'),
             'w'     => config('dofus.payment.recursos.w'),
-            'code'  => $recursos->code,
+            'code'  => $code,
         ];
 
         $c = curl_init("https://iframes.recursosmoviles.com/v3/checkcode.php");
@@ -160,22 +165,23 @@ class Recursos extends Payment
 
         $data = explode(':', $result);
 
+        $transaction = new Transaction;
+        $transaction->user_id     = Auth::user()->id;
+        $transaction->code        = $code;
+        $transaction->points      = $recursos->points;
+        $transaction->country     = "all";
+        $transaction->palier_name = "-";
+        $transaction->palier_id   = 0;
+        $transaction->type        = "carte bancaire";
+        $transaction->provider    = "Recursos";
+        $transaction->raw         = $result;
+
         if ($data[0] == "OK")
         {
             $recursos->isUsed = true;
             $recursos->save();
 
-            $transaction = new Transaction;
-            $transaction->user_id     = Auth::user()->id;
-            $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
-            $transaction->code        = $recursos->code;
-            $transaction->points      = $recursos->points;
-            $transaction->country     = "all";
-            $transaction->palier_name = "-";
-            $transaction->palier_id   = 0;
-            $transaction->type        = "carte bancaire";
-            $transaction->provider    = "Recursos";
-            $transaction->raw         = $result;
+            $transaction->state = ShopStatus::PAYMENT_SUCCESS;
             $transaction->save();
 
             Cache::forget('transactions_' . Auth::user()->id);
@@ -186,6 +192,9 @@ class Recursos extends Payment
 
             return true;
         }
+
+        $transaction->state = ShopStatus::PAYMENT_FAIL;
+        $transaction->save();
 
         return false;
     }

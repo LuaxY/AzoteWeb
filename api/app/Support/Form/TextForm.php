@@ -4,12 +4,13 @@ namespace App\Support\Form;
 
 class TextForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
         return view('support.form.input', [
-            'name'     => $name,
-            'type'     => 'text',
-            'required' => @$data->required,
+            'name'  => $name,
+            'type'  => 'text',
+            'data'  => $data,
+            'field' => $field,
         ]);
     }
 }

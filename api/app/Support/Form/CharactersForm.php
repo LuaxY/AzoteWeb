@@ -8,10 +8,9 @@ use Auth;
 
 class CharactersForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
-        $child  = isset($data->child) ? $data->child : false;
-        $server = isset($params['server']) ? $params['server'] : 'sigma';
+        $server    = isset($params['server'])  ? $params['server']  : 'sigma';
         $accountId = isset($params['account']) ? $params['account'] : 0;
 
         $account = ModelCustom::hasOneOnOneServer('auth', $server, Account::class, 'Id', $accountId);
@@ -22,7 +21,13 @@ class CharactersForm implements IForm
 
             if (count($characters) > 0)
             {
-                return view('support.form.characters', compact('name', 'child', 'characters'));
+                return view('support.form.characters', [
+                    'name'       => $name,
+                    'child'      => isset($field->child) ? $field->child : false,
+                    'characters' => $characters,
+                    'data'       => $data,
+                    'field'      => $field,
+                ]);
             }
 
             return "Aucun personnages<br>";

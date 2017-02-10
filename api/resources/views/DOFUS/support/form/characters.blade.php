@@ -1,5 +1,6 @@
 <div class="form-group ">
     <label class="control-label">{{ $name }}</label>
+    <span class="hint">{{ @$field->hint }}</span>
     @foreach ($characters as $character)
     <label for="{{ $character->Id }}">
         <div class="character">

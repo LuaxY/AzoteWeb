@@ -4,11 +4,12 @@ namespace App\Support\Form;
 
 class FileForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
         return view('support.form.file', [
             'name'   => $name,
-            'accept' => @$data->accept,
+            'field'  => $field,
+            'data'   => $data,
         ]);
     }
 }

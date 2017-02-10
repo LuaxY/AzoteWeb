@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7;
 
 use App\Transfert;
+use App\World;
 
 use Auth;
 
@@ -16,6 +17,13 @@ class Stump
 {
     static public function transfert($server, $accountId, $type, $amount, $url, $process, $fallback)
     {
+        $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
+
+        if (!$world || !$world->isOnline())
+        {
+            return false;
+        }
+
         $transfert = new Transfert;
         $transfert->user_id    = Auth::user()->id;
         $transfert->account_id = $accountId;
@@ -37,7 +45,7 @@ class Stump
                 'headers' => [
                     'APIKey' => config('dofus.api_key')
                 ],
-                'timeout' => 10, // seconds
+                'timeout' => 20, // seconds
             ]);
 
             if ($res->getStatusCode() == 200)
@@ -77,7 +85,7 @@ class Stump
         }
         catch (TransferException $e)
         {
-            // Other errors
+            // Other errors (timeout?)
 
             $fallback();
 

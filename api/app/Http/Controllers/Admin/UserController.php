@@ -121,7 +121,7 @@ class UserController extends Controller
             'rank'      => 'required|in:0,4',
             'points'    => 'required|numeric'
         ];
-        
+
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -135,7 +135,6 @@ class UserController extends Controller
         $user->lastname  = $request['lastname'];
         $user->rank      = $request['rank'];
         $user->points    = $request['points'];
-        $user->email     = $request['email'];
         $user->birthday  = empty($request['birthday']) ? null : $request['birthday'];
         $user->save();
 
@@ -159,6 +158,8 @@ class UserController extends Controller
             Toastr::success('E-mail send', $title = null, $options = []);
         }
 
+        Cache::forget('accounts_' . $user->id);
+
         $gameAccounts = $user->accounts();
 
         if($gameAccounts)
@@ -169,6 +170,9 @@ class UserController extends Controller
                 $gameAccount->save();
             }
         }
+
+        $user->email = $request['email'];
+        $user->save();
 
         $servers = config('dofus.servers');
         if($servers)

@@ -1,6 +1,7 @@
 <div class="form-group ">
     <label class="control-label">{{ $name }}</label>
-    <select name="text|{{ $name }}" class="form-control">
+    <span class="hint">{{ @$field->hint }}</span>
+    <select name="select|{{ $name }}" class="form-control">
         <option value="reset|null"></option>
         @foreach ($data as $choice)
             @if (isset($choice->child))

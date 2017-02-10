@@ -4,8 +4,12 @@ namespace App\Support\Form;
 
 class SubmitForm implements IForm
 {
-    public static function render($name, $data, $params)
+    public static function render($name, $field, $data, $params)
     {
-        return view('support.form.submit', compact('name'));
+        return view('support.form.submit', [
+            'name' => $name,
+            'data' => $data,
+            'field' => $field,
+        ]);
     }
 }
