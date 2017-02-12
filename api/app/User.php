@@ -277,4 +277,64 @@ class User extends Authenticatable
 
         return $transactionsCount < config('dofus.payment.minimum_for_real');
     }
+
+    public function IsBannedByKey()
+    {
+        $email = $this->email;
+        $servers = config('dofus.servers');
+
+        $keys = array(); // Array with user keys
+        foreach ($servers as $server)
+        {
+            if($server == 'sigma')
+            {
+                $keysSigma = Account::on($server . '_auth')->select('LastClientKey')->where('Email', $email)->get();
+                if($keysSigma)
+                {
+                    foreach($keysSigma as $k)
+                    {
+                        if($k->LastClientKey != null)
+                        array_push($keys, $k->LastClientKey);
+                    }
+                }
+            }
+            else
+            {
+                $keysOther = Account::on($server . '_auth')->select('LastHardwareId')->where('Email', $email)->get();
+                if($keysOther)
+                {
+                    foreach($keysOther as $v)
+                    {
+                        if($v->LastHardwareId != null)
+                        array_push($keys, $v->LastHardwareId);
+                    }
+                }
+            }
+        }
+
+        $keys_banned_db = BannedKeys::select('Key')->get();
+        $keys_banned = array(); // Array with banned keys
+        if($keys_banned_db)
+        {
+            foreach($keys_banned_db as $keyBanned)
+            {
+                array_push($keys_banned, $keyBanned->Key);
+            }
+        }  
+
+            If(!empty($keys) && !empty($keys_banned))
+            {     
+                foreach($keys as $key)
+                {
+                    if(in_array($key, $keys_banned))
+                    {
+                        $this->shadowBan = true;
+                        $this->save();
+                        
+                        return true;
+                    }
+                }
+            } 
+        return false;
+    }
 }
