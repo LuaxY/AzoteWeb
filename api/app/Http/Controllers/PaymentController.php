@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Account;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Validator;
@@ -12,6 +13,7 @@ use App\User;
 use App\Transaction;
 use App\RecursosTransaction;
 use App\BannedIP;
+use App\BannedID;
 use App\Exceptions\ShadowBanException;
 use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
@@ -70,6 +72,22 @@ class PaymentController extends Controller
             }
         }
 
+        if(Auth::user()->IsBannedByKey())
+        {
+            $e = new ShadowBanException();
+
+            $sentry = app('sentry');
+            $sentry->user_context([
+             'id'     => Auth::user()->id,
+             'pseudo' => Auth::user()->pseudo,
+             'email'  => Auth::user()->email,
+             'name'   => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+            ]);
+
+            $sentry->captureException($e);
+            
+            return true;
+        }
         return false;
     }
 
