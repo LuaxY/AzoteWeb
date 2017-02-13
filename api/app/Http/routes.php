@@ -404,7 +404,7 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
 Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
 
     Route::get('/', function() {
-        return 'Prochainement';
+        return redirect('http://' . Config::get('dofus.domain.main'));
     });
 
     Route::get('code', [
