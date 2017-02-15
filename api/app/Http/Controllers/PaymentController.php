@@ -85,7 +85,7 @@ class PaymentController extends Controller
             ]);
 
             $sentry->captureException($e);
-            
+
             return true;
         }
         return false;
@@ -257,7 +257,12 @@ class PaymentController extends Controller
 
     public function redirect_recursos_cb($key, $palier)
     {
-        return $this->payment->redirect_cb($key, $palier);
+        if ($this->payment instanceof Recursos)
+        {
+            return $this->payment->redirect_cb($key, $palier);
+        }
+
+        return redirect()->route('error.fake', [10]);
     }
 
     public function check_recursos_code($key)
