@@ -33,7 +33,7 @@ class PostController extends Controller
 
     public function news(Request $request)
     {
-        $page = $request->has('page') ? $request->input('page') : 1;
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
         $posts = Cache::remember('posts_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () {
             return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
@@ -52,7 +52,7 @@ class PostController extends Controller
         if(config('dofus.news_type.'.$type))
         {
             $typeConfig = config('dofus.news_type.'.$type);
-            $page = $request->has('page') ? $request->input('page') : 1;
+            $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
             $posts = Cache::remember('posts_'.$type.'_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () use($type) {
                 return Post::latest('published_at')->orderBy('id', 'desc')->published()->where('type', $type)->paginate(self::POSTS_PER_PAGE);
@@ -74,7 +74,7 @@ class PostController extends Controller
 
     public function show(Request $request, $id, $slug = "")
     {
-        $page = $request->has('page') ? $request->input('page') : 1;
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
         if (!is_numeric($page))
         {
@@ -118,7 +118,7 @@ class PostController extends Controller
 
     public function commentStore(Request $request, $id, $slug = "")
     {
-        $page = $request->page ? $request->page : 1;
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
         if(!Auth::user()->isAdmin())
         {
