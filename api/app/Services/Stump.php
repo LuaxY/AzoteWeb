@@ -74,11 +74,22 @@ class Stump
         }
         catch (ServerException $e)
         {
-            // Server return 5xx error
+            // 5xx errors
 
-            $transfert->state  = Transfert::FAIL;
+            $fallback();
+
+            $transfert->state  = Transfert::REFUND;
             $transfert->rawIn  = Psr7\str($e->getRequest());
-            $transfert->rawOut = Psr7\str($e->getResponse());
+
+            if ($e->hasResponse())
+            {
+                $transfert->rawOut = Psr7\str($e->getResponse());
+            }
+            else
+            {
+                $transfert->rawOut = "NO RESPONSE";
+            }
+
             $transfert->save();
 
             $success = false;
