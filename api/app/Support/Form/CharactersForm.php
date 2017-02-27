@@ -30,9 +30,9 @@ class CharactersForm implements IForm
                 ]);
             }
 
-            return "Aucun personnages<br>";
+            return "<div class='alert alert-danger'>Vous devez posséder un personnage.</div>";
         }
 
-        return "Compte introuvable<br>";
+        return "<div class='alert alert-danger'>Compte de jeu non trouvé.</div>";
     }
 }

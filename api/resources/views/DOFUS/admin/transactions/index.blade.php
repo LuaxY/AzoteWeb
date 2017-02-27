@@ -10,8 +10,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box">
-                        <table id="transactions-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                    <div class="card-box table-responsive">
+                        <table id="transactions-table" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="datatable_info">
                             <thead>
                             <tr>
                                 <th>Id</th>
@@ -119,7 +119,7 @@
             var oTable;
                 oTable = $('#transactions-table').DataTable({
                     "order": [[ 0, "desc" ]],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     autoWidth: true,
                     responsive: true,

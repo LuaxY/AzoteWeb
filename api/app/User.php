@@ -12,6 +12,7 @@ use App\ForumAccount;
 use App\Vote;
 use App\LotteryTicket;
 use App\Shop\ShopStatus;
+use App\SupportTicket;
 
 class User extends Authenticatable
 {
@@ -216,6 +217,14 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function supportRequests($state)
+    {
+        if($state == SupportRequest::OPEN) // = 0
+            return $this->hasMany(SupportRequest::class, 'user_id', 'id')->where('state', '<>', SupportRequest::CLOSE);
+        else
+            return $this->hasMany(SupportRequest::class, 'user_id', 'id')->where('state', SupportRequest::CLOSE);
+    }
+
     public function forum()
     {
         return $this->hasOne(ForumAccount::class, 'member_id', 'forum_id');
@@ -262,20 +271,35 @@ class User extends Authenticatable
 
     public function isFistBuy()
     {
-        foreach ($this->accounts() as $account)
+        $result = false;
+        $levels = array();
+        if(config('dofus.payment.check_level')) // Check minimum level if asked
         {
-            foreach ($account->characters(false, true) as $character)
+            foreach ($this->accounts() as $account)
             {
-                if ($character->level() > config('dofus.payment.level_for_real'))
+                foreach ($account->characters(false, true) as $character)
                 {
-                    return false;
+                    if ($character->level() >= config('dofus.payment.level_for_real'))
+                    {
+                        array_push($levels, $character->level());
+                    }
                 }
+            }
+            if(!$levels)
+                $result = true;
+        }
+        
+
+        if(config('dofus.payment.check_min_transactions')) // Check min transactions if asked
+        {
+            $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
+            if($transactionsCount < config('dofus.payment.minimum_for_real'))
+            {
+                $result = true;
             }
         }
 
-        $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
-
-        return $transactionsCount < config('dofus.payment.minimum_for_real');
+        return $result;
     }
 
     public function IsBannedByKey()
@@ -286,7 +310,7 @@ class User extends Authenticatable
         $keys = array(); // Array with user keys
         foreach ($servers as $server)
         {
-            if($server == 'sigma')
+            if(config('dofus.details')[$server]->version == '2.10')
             {
                 $keysSigma = Account::on($server . '_auth')->select('LastClientKey')->where('Email', $email)->get();
                 if($keysSigma)

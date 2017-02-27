@@ -9,7 +9,8 @@ class ShopMaintenance
 {
     /**
      * Handle an incoming request.
-     *
+     * If user doesn't have character or if shop is in maintenance
+     * Redirect to maintenance
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
      * @return mixed

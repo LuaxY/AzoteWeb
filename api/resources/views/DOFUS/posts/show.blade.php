@@ -140,6 +140,7 @@
                         errorsHtml = 'Unknown error';
                     }
                     toastr.error(errorsHtml);
+                    $jQuery('#form-add-comment input[type="submit"]').prop('disabled', false);
                 }
             });
         });

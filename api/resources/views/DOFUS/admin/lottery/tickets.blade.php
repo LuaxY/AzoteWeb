@@ -10,7 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card-box">
+                    <div class="card-box table-responsive">
                         <table id="tickets-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
                             <thead>
                             <tr>

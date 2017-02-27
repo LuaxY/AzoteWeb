@@ -4,22 +4,22 @@
         "name": "Votre problème concerne",
         "data": [{
             "value": "Mon mot de passe",
-            "child": "web_password"
+            "child": "final"
         }, {
             "value": "Mon adresse email",
-            "child": "web_email"
+            "child": "final"
         }, {
             "value": "Mon pseudo",
-            "child": "web_pseudo"
+            "child": "final"
         }, {
             "value": "La certification du compte",
-            "child": "web_certificate"
+            "child": "final"
         }, {
             "value": "La perte de compte",
-            "child": "web_lost"
+            "child": "web_lost_final"
         }, {
             "value": "La signalement d'un problème",
-            "child": "web_bug"
+            "child": "final"
         }]
     }]
 }

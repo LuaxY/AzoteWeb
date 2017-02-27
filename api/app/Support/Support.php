@@ -26,18 +26,19 @@ class Support
 
         $html = "";
         $json = json_decode(file_get_contents($filePath));
-
+        
         foreach ($json->fields as $field)
         {
+
             $type = $field->type;
             $name = $field->name;
             $data = (isset($field->data) ? $field->data : false);
 
             $form = false;
-
             switch($type)
             {
                 case 'text':
+                case 'email':
                 case 'integer':
                     $form = new TextForm;
                     break;

@@ -349,14 +349,58 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
         'uses' => 'PageController@servers',
         'as'   => 'servers'
     ]);
-
-    Route::get('support', function () {
-        return view('support/temp');
-    });
-
+    
     Route::get('news.rss', [
         'uses' => 'RssController@news'
     ]);
+
+    /* ============ SUPPORT ============ */
+    // Temporary support
+    Route::get('livesupport', function(){
+         return view('support/temp');
+    });
+
+    // BETA for Admins support
+    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/support'], function() {
+        
+        Route::get('/', [
+            'uses' => 'SupportController@index',
+            'as'   => 'support'
+        ]);
+
+        Route::get('closed', [
+            'uses' => 'SupportController@closed',
+            'as'   => 'support.closed'
+        ]);
+
+        Route::get('create', [
+            'uses' => 'SupportController@create',
+            'as' => 'support.create'
+        ]);
+
+        Route::post('store', [
+            'uses' => 'SupportController@store',
+            'as' => 'support.store'
+        ]);
+        
+        Route::group(['prefix' => '/ticket/{id}'], function() {
+            
+            Route::get('/', [
+                'uses' => 'SupportController@show',
+                'as'   => 'support.show'
+            ])->where('id', '[0-9]+');
+
+            Route::patch('switch', [
+                'uses' => 'SupportController@switchStatus',
+                'as'   => 'support.switch'
+            ])->where('id', '[0-9]+');
+
+            Route::post('post', [
+                'uses' => 'SupportController@postMessage',
+                'as'   => 'support.message.post'
+            ])->where('id', '[0-9]+');
+        });
+    });
 
     /* ============ SITEMAP ============ */
 
@@ -404,7 +448,7 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
 Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
 
     Route::get('/', function() {
-        return redirect('http://' . Config::get('dofus.domain.main'));
+        return "Coming Soon";
     });
 
     Route::get('code', [
@@ -497,15 +541,11 @@ Route::group(['prefix' => 'api', 'domain' => Config::get('dofus.domain.main')], 
 
     Route::group(['prefix' => 'support'], function()
     {
-        Route::get('create', 'SupportController@create');
-
         Route::any('child/{child}/{params?}', [
             'middleware' => 'auth',
-            'uses'       => 'SupportController@child',
+            'uses'       => 'SupportController@child' 
         ]);
-
-        Route::post('store', 'SupportController@store');
-    });
+    });  
 });
 
 /* ============ FORGE ============ */
@@ -819,6 +859,61 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'edit'    => 'admin.lottery.edit',
             'update'  => 'admin.lottery.update'
         ]]);
+
+        // SUPPORT //
+        Route::controller('/support/opendata', 'SupportDatatablesController', [
+            'anyDataOpen'  => 'datatables.supportopendata'
+        ]);
+        Route::controller('/support/closeddata', 'SupportDatatablesController', [
+            'anyDataClosed'  => 'datatables.supportcloseddata'
+        ]);
+        Route::controller('/support/minedata', 'SupportDatatablesController', [
+            'anyDataMine'  => 'datatables.supportminedata'
+        ]);
+        Route::group(['prefix' => 'support'], function() {
+
+            //Support actions
+            Route::get('/', [
+                'uses' => 'SupportController@index',
+                'as'   => 'admin.support'
+            ]);
+            Route::get('/closed', [
+                'uses' => 'SupportController@closedTickets',
+                'as'   => 'admin.support.closed'
+            ]);
+            Route::get('/mytickets', [
+            'uses' => 'SupportController@myTickets',
+            'as'   => 'admin.support.mytickets'
+            ]);
+
+            //Specific ticket actions
+            Route::group(['prefix' => '/ticket/{id}'], function() {
+                Route::get('/', [
+                'uses' => 'SupportController@show',
+                'as'   => 'admin.support.ticket.show'
+                ])->where('id', '[0-9]+');
+
+                Route::post('/post', [
+                'uses' => 'SupportController@postMessage',
+                'as'   => 'admin.support.ticket.post.message'
+                ])->where('id', '[0-9]+');
+           
+                Route::patch('/switch', [
+                'uses' => 'SupportController@switchStatus',
+                'as'   => 'admin.support.ticket.switch.status'
+                ])->where('id', '[0-9]+');
+
+                Route::patch('/take', [
+                'uses' => 'SupportController@take',
+                'as'   => 'admin.support.ticket.take'
+                ])->where('id', '[0-9]+');
+            
+                Route::patch('/assignto', [
+                'uses' => 'SupportController@assignTo',
+                'as'   => 'admin.support.ticket.assignto'
+                ])->where('id', '[0-9]+');
+            });
+        });
 
     });
 });

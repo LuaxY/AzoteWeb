@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Shop\ShopStatus;
 use App\Transfert;
+use App\SupportRequest;
 
 class Utils
 {
@@ -49,6 +50,30 @@ class Utils
         return $status_text;
     }
 
+    static public function support_request_status($status, $english = [])
+    {
+        switch ($status)
+        {
+            case SupportRequest::OPEN:
+                $status_text = "Ouvert";
+                $status_text_english = "Open";
+                break;
+            case SupportRequest::CLOSE:
+                $status_text = "Fermé";
+                $status_text_english = "Close";
+                break;
+            case SupportRequest::WAIT:
+                $status_text = "En attente";
+                $status_text_english = "Wait";
+                break;
+            default:
+                $status_text = "Erreur";
+                $status_text_english = "Error";
+                break;
+        }
+        return $english == true ? $status_text_english : $status_text;
+    }
+    
     static public function format_price($price, $delimiter = ' ')
     {
         return number_format(round(floor($price), 0, PHP_ROUND_HALF_DOWN), 0, ",", $delimiter);

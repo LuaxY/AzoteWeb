@@ -25,6 +25,7 @@ class Authenticate
             }
             else
             {
+                $request->session()->flash('notify', ['type' => 'info', 'message' => "Vous devez être enregistré pour accéder à cette page"]);
                 return redirect()->route('login');
             }
         }

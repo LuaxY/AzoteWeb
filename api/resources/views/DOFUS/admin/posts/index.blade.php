@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="card-box">
+                        <div class="card-box table-responsive">
                             <div class="m-b-30">
                                 <a href="{{ route('admin.post.create') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-plus"></i> Create Post</a>
                             </div>

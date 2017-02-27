@@ -1,9 +1,21 @@
+.ak-support-image img
+{
+    border: 2px solid #c9c6bb;
+    width: 200px;
+    height: 150px;
+}
+
+
 .ak-picto-less-white {
     display: inline-block;
     width: 26px;
     height: 26px;
     background-position: -287px 0;
     background-repeat: no-repeat
+}
+
+.ak-bold {
+    font-weight: bold
 }
 
 .ak-picto-more-white {
@@ -16149,7 +16161,8 @@ nav .breadcrumb .ak-first {
     float: left;
     position: relative;
     margin-right: 50px;
-    overflow: hidden
+    overflow: hidden;
+    margin-bottom: 3px;
 }
 
 .ak-nav-expand .ak-nav-expand-container .ak-nav-expand-links {
@@ -17733,7 +17746,7 @@ iframe[src="about:blank"] {
 .ak-page-menu {
     overflow: hidden;
     padding: 0;
-    margin-bottom: 0.8em;
+    margin-bottom: 0.5em;
     background: #f8f8f6
 }
 
@@ -22584,6 +22597,11 @@ img.mfp-img {
 .ak-table tr th.ak-center,
 .ak-table tr td.ak-center {
     text-align: center
+}
+
+.ak-table tr th.ak-bold,
+.ak-table tr td.ak-bold {
+    font-weight: bold
 }
 
 .ak-table tr td.ak-rank {

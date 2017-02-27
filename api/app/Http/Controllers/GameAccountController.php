@@ -27,6 +27,7 @@ use GuzzleHttp\Psr7;
 
 class GameAccountController extends Controller
 {
+    const SALT_LENGTH   = 8;
     const TICKET_LENGTH = 32;
 
     private function isAccountOwnedByMe($server, $accountId)
@@ -80,10 +81,13 @@ class GameAccountController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $salt = str_random(self::SALT_LENGTH);
+
         $account = new Account;
         $account->changeConnection($database);
         $account->Login           = $request->input('login');
-        $account->PasswordHash    = md5($request->input('password'));
+        $account->PasswordHash    = $account->hash($request->input('password'), $salt);
+        $account->Salt            = $salt;
         $account->Nickname        = $request->input('nickname');
         $account->UserGroupId     = 1;
         $account->Ticket          = strtoupper(str_random(self::TICKET_LENGTH));
@@ -101,7 +105,7 @@ class GameAccountController extends Controller
         Cache::forget('accounts_' . $server . '_' . Auth::user()->id);
         Cache::forget('accounts_' . Auth::user()->id);
 
-        $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez dés à présent jouer avec le nouveau compte de jeu !"]);
+        $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous pouvez maintenant jouer avec votre nouveau compte de jeu!"]);
 
         return redirect()->route('gameaccount.view', [$account->server, $account->Id]);
     }
@@ -148,7 +152,10 @@ class GameAccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            $account->PasswordHash = md5($request->input('password'));
+            $salt = str_random(self::SALT_LENGTH);
+
+            $account->PasswordHash = $account->hash($request->input('password'), $salt);
+            $account->Salt = $salt;
             $account->save();
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
@@ -206,7 +213,7 @@ class GameAccountController extends Controller
 
             if ($success)
             {
-                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte " . $account->Nickname]);
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte: " . $account->Nickname]);
             }
             else
             {
@@ -267,7 +274,7 @@ class GameAccountController extends Controller
 
             if ($success)
             {
-                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de convertir ". Utils::format_price($jetons, ' ') ." jetons en ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte " . $account->Nickname]);
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de convertir ". Utils::format_price($jetons, ' ') ." jetons en ". Utils::format_price($ogrines, ' ') ." Ogrines sur votre compte: " . $account->Nickname]);
             }
             else
             {
@@ -330,7 +337,7 @@ class GameAccountController extends Controller
 
             if ($success)
             {
-                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name($server) ." dans votre banque sur votre compte " . $account->Nickname]);
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vous venez de transférer 1x ". $gift->item()->name($server) ." dans la banque de votre compte" . $account->Nickname]);
             }
             else
             {
