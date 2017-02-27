@@ -24,13 +24,14 @@ class FillServers
         foreach ($json->servers as $server)
         {
             $data = new \stdClass;
-            $data->name    = $server->name;
-            $data->version = $server->version;
-            $data->ip      = $server->ip;
-            $data->port    = $server->port;
-            $data->desc    = $server->desc;
-            $data->ogrine  = $server->ogrine;
-            $data->rpg     = $server->rpg;
+            $data->name     = $server->name;
+            $data->version  = $server->version;
+            $data->ip       = $server->ip;
+            $data->port     = $server->port;
+            $data->desc     = $server->desc;
+            $data->ogrine   = $server->ogrine;
+            $data->rpg      = $server->rpg;
+            $data->prestige = $server->prestige;
 
             $servers[] = $server->name;
             $details[$server->name] = $data;

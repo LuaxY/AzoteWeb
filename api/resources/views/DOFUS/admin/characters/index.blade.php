@@ -19,7 +19,7 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="card-box card-tabs">
+                    <div class="card-box card-tabs table-responsive">
                         <div class="tab-content">
                             @foreach(config('dofus.servers') as $k => $server)
                                 <div id="cardpills-{{$server}}" class="tab-pane fade @if($k == 0) active in @endif">
@@ -59,7 +59,7 @@
                     $('[data-toggle="tooltip"]').tooltip()
                 } ).DataTable({
                     "order": [[ 0, "desc" ]],
-                    processing: false,
+                    processing: true,
                     serverSide: true,
                     autoWidth: true,
                     responsive: true,

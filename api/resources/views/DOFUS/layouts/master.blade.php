@@ -52,7 +52,7 @@
                     <div class="ak-brand" data-set="ak-brand">
                         <a class="navbar-brand" href="{{ URL::route('home') }}"></a>
                     </div>
-                    <a class="ak-support" href="{{ URL::to('support') }}">Support</a>
+                    <a class="ak-support" href="{{ URL::to('livesupport') }}">Support</a>
                     @if (!Auth::guest() && Auth::user()->isAdmin())
                     <a class="ak-admin" href="{{ URL::route('admin.dashboard') }}" target="_blank">Admin</a>
                     @endif
@@ -121,7 +121,7 @@
                         <span class="ak-navbar-right-part">
                             <li class="lvl0 sep"><a href="{{ URL::route('vote.index') }}">Vote</a></li>
                             <li class="lvl0 sep"><a href="{{ config('dofus.social.forum') }}" target="_blank">Forum</a></li>
-                            <li class="lvl0 sep"><a href="{{ URL::to('support') }}">Support</a></li>
+                            <li class="lvl0 sep"><a href="{{ URL::to('livesupport') }}">Support</a></li>
                         </span>
                     </ul>
 
@@ -185,7 +185,7 @@
                                 <div>
                                     <span class="ak-link-title">Support</span>
                                 </div>
-                                <a href="{{ URL::to('support') }}">Aide</a>
+                                <a href="{{ URL::to('livesupport') }}">Aide</a>
                                 <a href="{{ config('dofus.social.forum') }}">Forum</a>
                                 <a href="http://forum.azote.us/contact">Contact</a>
                                 <a href="http://forum.azote.us/faq">FAQ</a>
@@ -196,7 +196,7 @@
                 </div>
                 <div class="col-md-3 ak-block-download">
                     <a href="{{ URL::route('download') }}" class="btn btn-primary btn-lg">Télécharger le jeu</a>
-                    <a class="ak-problem" href="{{ URL::to('support') }}">Un problème ? Contactez le support.        </a>
+                    <a class="ak-problem" href="{{ URL::to('livesupport') }}">Un problème ? Contactez le support.        </a>
                     <div class="ak-social-network">
                         <a href="{{ config('dofus.social.facebook') }}" class="fb" target="_blank"></a>
                         <a href="{{ config('dofus.social.twitter') }}" class="tw" target="_blank"></a>

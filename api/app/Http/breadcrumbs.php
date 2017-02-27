@@ -84,3 +84,17 @@ Breadcrumbs::register('ladder.page', function($breadcrumbs, $page, $server)
     $breadcrumbs->parent('ladder', $server);
     $breadcrumbs->push($page);
 });
+
+// Accueil > Support
+Breadcrumbs::register('support', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+     $breadcrumbs->push('Support', route('support'));
+});
+
+// Accueil > Support > [page]
+Breadcrumbs::register('support.page', function($breadcrumbs, $page)
+{
+    $breadcrumbs->parent('support');
+    $breadcrumbs->push($page);
+});

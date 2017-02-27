@@ -22,11 +22,12 @@ class Account extends Model
 
     protected $dates = ['CreationDate', 'BanEndDate', 'LastConnection'];
 
-    protected $hidden = array('PasswordHash');
+    protected $hidden = array('PasswordHash', 'Salt');
 
     protected $fillable = array(
         'Login',
         'PasswordHash',
+        'Salt',
         'Nickname',
         'UserGroupId',
         'Ticket',
@@ -278,5 +279,12 @@ class Account extends Model
     public function user()
     {
         return User::where('email', $this->Email)->first();
+    }
+
+    public static function hash($password, $salt)
+    {
+        $hash = Security::hash('sha512', $password . '.' . $salt, 10);
+
+        return $hash;
     }
 }

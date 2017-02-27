@@ -1,7 +1,8 @@
 {
     "fields": [{
         "type": "textarea",
-        "name": "Message"
+        "name": "Message",
+        "required": "required"
     }, {
         "type": "submit",
         "name": "Envoyer"

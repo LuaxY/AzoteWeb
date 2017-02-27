@@ -15,7 +15,7 @@
             <div class="container">
                 <div class="row">
                     @foreach(config('dofus.servers') as $k => $server)
-                    <div class="@if(count(config('dofus.servers')) == 1)col-lg-6 @else col-lg-3 @endif">
+                    <div class="@if(count(config('dofus.servers')) == 1)col-lg-12 @else col-lg-6 @endif">
                         <div class="card-box">
                             <h4 class="header-title m-t-0 m-b-30">{{ucfirst($server)}} Accounts</h4>
 
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     @endforeach
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="card-box">
                             <h4 class="header-title m-t-0 m-b-30">Total Users</h4>
 
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="card-box">
                             <h4 class="header-title m-t-0 m-b-30">Total News</h4>
 
@@ -57,6 +57,21 @@
 
                                 <div class="widget-detail-1">
                                     <h2 class="p-t-10 m-b-0">{{ $count['posts'] }}</h2><p class="text-muted">News</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card-box">
+                            <h4 class="header-title m-t-0 m-b-30">Total Support tickets</h4>
+
+                            <div class="widget-chart-1">
+                                <div class="widget-chart-box-1">
+                                    <i class="fa fa-comments-o"></i>
+                                </div>
+
+                                <div class="widget-detail-1">
+                                    <h2 class="p-t-10 m-b-0">{{ $count['tickets'] }}</h2><p class="text-muted">Tickets</p>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +113,58 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
+                        <div class="card-box">
+                            <div class="dropdown pull-right">
+                                <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="zmdi zmdi-more-vert"></i>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{route('admin.support')}}">See all tickets</a></li>
+                                    <li><a href="{{route('admin.support.mytickets')}}">See my tickets</a></li>
+                                </ul>
+                            </div>
+
+                            <h4 class="header-title m-t-0 m-b-30">Latest Support tickets <i class="fa fa-comments-o"></i></h4>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Category</th>
+                                        <th>User</th>
+                                        <th>State</th>
+                                        <th>In charge</th>
+                                        <th>Open</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($newtickets as $newticket)
+                                        <tr>
+                                            <td><a href="{{ URL::route('admin.support.ticket.show', $newticket->id) }}">{{ $newticket->id }}</a></td>
+                                            <td>{{ $newticket->category }}</td>
+                                            <td>{{ $newticket->user->pseudo }}</td>
+                                            <td>
+                                            @if($newticket->state == \App\SupportRequest::OPEN)
+                                                <span class="label label-success">{{ Utils::support_request_status($newticket->state, 1) }}</span>
+                                            @elseif($newticket->state == \App\SupportRequest::WAIT)
+                                                <span class="label label-primary">{{ Utils::support_request_status($newticket->state, 1) }}</span>
+                                            @else
+                                                <span class="label label-danger">{{ Utils::support_request_status($newticket->state, 1) }}</span>
+                                            @endif
+                                            </td>
+                                            <td>{{ $newticket->userAssigned() ? $newticket->userAssigned()->pseudo : "Not assigned" }}</td>
+                                            <td>{{ $newticket->created_at->diffForHumans() }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
                             <div class="card-box">
                                 <div class="dropdown pull-right">
                                     <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
@@ -109,7 +176,7 @@
                                     </ul>
                                 </div>
 
-                                <h4 class="header-title m-t-0 m-b-30">Latest Users</h4>
+                                <h4 class="header-title m-t-0 m-b-30">Latest Users <i class="fa fa-users"></i></h4>
 
                                 <div class="table-responsive">
                                     <table class="table">
@@ -161,7 +228,7 @@
                                 </ul>
                             </div>
 
-                            <h4 class="header-title m-t-0 m-b-30">Latest News</h4>
+                            <h4 class="header-title m-t-0 m-b-30">Latest News <i class="fa fa-pencil"></i></h4>
 
                             <div class="table-responsive">
                                 <table class="table">

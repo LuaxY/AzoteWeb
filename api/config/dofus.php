@@ -100,7 +100,9 @@ return [
 
         'used_first' => env('PAYMENT_FIRST', 'starpass'),
 
-        'minimum_for_real' => env('PAYMENT_MINIMUM', 2),
+        'check_min_transactions' => env('PAYMENT_CHECK_MIN_TRANSACTIONS',true),
+        'minimum_for_real' => env('PAYMENT_MINIMUM', 3),
+        'check_level' => env('PAYMENT_CHECK_LEVEL', true),
         'level_for_real'   => env('PAYMENT_LEVEL', 50),
 
         'dedipass' => [
@@ -149,6 +151,10 @@ return [
             'db' => 'patchs',
             'icon-big' => 'patchnote'
         ]
+    ],
+
+    'support'     => [
+        'minutes_between_actions'  => '10',
     ]
 
 ];

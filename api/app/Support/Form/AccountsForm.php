@@ -24,6 +24,6 @@ class AccountsForm implements IForm
             ]);
         }
 
-        return "Aucun comptes<br>";
+        return "<div class='alert alert-danger'>Vous n'avez aucun compte de jeu.</div>";
     }
 }

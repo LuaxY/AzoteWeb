@@ -43,8 +43,8 @@ class LadderController extends Controller
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1);
-
-            if ($server == 'epsilon')
+                                                    
+            if (config('dofus.details')[$server]->prestige)
             {
                 $result = $result->orderBy('ch.PrestigeRank', 'DESC');
             }

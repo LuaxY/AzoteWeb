@@ -16,6 +16,7 @@ use Kamaln7\Toastr\Facades\Toastr;
 
 class GameAccountController extends Controller
 {
+    const SALT_LENGTH   = 8;
     const TICKET_LENGTH = 32;
 
     private function isServerExist($server)
@@ -61,10 +62,13 @@ class GameAccountController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
+        $salt = str_random(self::SALT_LENGTH);
+
         $account = new Account;
         $account->changeConnection($database);
         $account->Login           = $request->login;
-        $account->PasswordHash    = md5($request->password);
+        $account->PasswordHash    = $account->hash($request->password, $salt);
+        $account->Salt            = $salt;
         $account->Nickname        = $request->nickname;
         $account->UserGroupId     = 1;
         $account->Ticket          = strtoupper(str_random(self::TICKET_LENGTH));
@@ -137,8 +141,11 @@ class GameAccountController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
+        $salt = str_random(self::SALT_LENGTH);
+
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
-        $account->PasswordHash = md5($request->password);
+        $account->PasswordHash    = $account->hash($request->password, $salt);
+        $account->Salt            = $salt;
         $account->save();
 
         return response()->json([], 202);

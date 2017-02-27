@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="card-box">
+                        <div class="card-box table-responsive">
                             <div class="m-b-30">
                                 <a href="{{ route('admin.user.create') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-plus"></i> Create User</a>
                             </div>
@@ -53,7 +53,7 @@
                         $('[data-toggle="tooltip"]').tooltip()
                     } ).DataTable({
                         "order": [[ 0, "desc" ]],
-                        processing: false,
+                        processing: true,
                         serverSide: true,
                         autoWidth: true,
                         responsive: true,

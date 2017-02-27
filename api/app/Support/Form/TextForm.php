@@ -8,7 +8,7 @@ class TextForm implements IForm
     {
         return view('support.form.input', [
             'name'  => $name,
-            'type'  => 'text',
+            'type'  => $field->type,
             'data'  => $data,
             'field' => $field,
         ]);

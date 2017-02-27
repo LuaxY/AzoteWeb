@@ -48,24 +48,13 @@
                     </ul>
                 </li>
 
-
-                <li class="has_sub">
-                <!--<a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\PostController'))}}"><i class="fa fa-pencil"></i> <span> Posts </span> <span class="menu-arrow"></span></a>
-                    <ul class="list-unstyled">
-                        <li class="{{ active_class(if_route('admin.posts'))}}"><a href="{{ route('admin.posts') }}">List</a></li>
-                        <li class="{{ active_class(if_route('admin.post.create'))}}"><a href="{{ route('admin.post.create') }}">Create</a></li>
-                    </ul>-->
-                <li class="{{ active_class(if_route('admin.posts'))}}"><a href="{{ route('admin.posts') }}"><i
+                <li>
+                <a class="waves-effect {{ active_class(if_route('admin.posts'))}}" href="{{ route('admin.posts') }}"><i
                                 class="fa fa-pencil"></i> Posts</a></li>
                 </li>
 
-                <li class="has_sub">
-                <!--<a href="javascript:void(0);" class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\UserController'))}}"><i class="fa fa-users"></i> <span> Users</span> <span class="menu-arrow"></span></a>
-                    <ul class="list-unstyled">
-                        <li class= "{{ active_class(if_route('admin.users'))}}"><a href="{{ route('admin.users') }}">List</a></li>
-                        <li class="{{ active_class(if_route('admin.user.create'))}}"><a href="{{ route('admin.user.create') }}">Create</a></li>
-                    </ul>-->
-                <li class="{{ active_class(if_route('admin.users'))}}"><a href="{{ route('admin.users') }}"><i
+                <li>
+                <a class="waves-effect {{ active_class(if_route('admin.users'))}}" href="{{ route('admin.users') }}"><i
                                 class="fa fa-users"></i> Users</a></li>
                 </li>
                 <li class="has_sub">
@@ -95,6 +84,18 @@
                                     href="{{ route('admin.lottery') }}">Types</a></li>
                     </ul>
                 </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);"
+                       class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\SupportController'))}}"><i
+                                class="fa fa-comments-o"></i> <span> Support </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li class="{{ active_class(if_route('admin.support'))}}{{ active_class(if_route('admin.support.closed'))}}"><a href="{{ route('admin.support') }}">All tickets</a>
+                        </li>
+                        <li class="{{ active_class(if_route('admin.support.mytickets'))}}"><a
+                                    href="{{ route('admin.support.mytickets') }}">My tickets</a></li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="{{ route('admin.tasks') }}"
                        class="waves-effect {{ active_class(if_route('admin.tasks'))}}"><i class="fa fa-tasks"></i>

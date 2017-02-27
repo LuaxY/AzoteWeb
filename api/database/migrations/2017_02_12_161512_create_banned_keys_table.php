@@ -12,7 +12,7 @@ class CreateBannedKeysTable extends Migration
      */
     public function up()
     {
-           Schema::create('banned_keys', function (Blueprint $table) {
+        Schema::create('banned_keys', function (Blueprint $table) {
             $table->increments('id');
             $table->string('key');
             $table->timestamps();
