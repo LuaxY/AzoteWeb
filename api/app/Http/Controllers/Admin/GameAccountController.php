@@ -67,7 +67,7 @@ class GameAccountController extends Controller
         $account = new Account;
         $account->changeConnection($database);
         $account->Login           = $request->login;
-        $account->PasswordHash    = $account->hash($request->password, $salt);
+        $account->PasswordHash    = hash('sha512', $request->input('password') . '.' . $salt);
         $account->Salt            = $salt;
         $account->Nickname        = $request->nickname;
         $account->UserGroupId     = 1;
@@ -144,7 +144,7 @@ class GameAccountController extends Controller
         $salt = str_random(self::SALT_LENGTH);
 
         $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
-        $account->PasswordHash    = $account->hash($request->password, $salt);
+        $account->PasswordHash    = hash('sha512', $request->input('password') . '.' . $salt);
         $account->Salt            = $salt;
         $account->save();
 

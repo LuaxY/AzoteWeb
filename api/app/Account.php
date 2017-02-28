@@ -280,11 +280,4 @@ class Account extends Model
     {
         return User::where('email', $this->Email)->first();
     }
-
-    public static function hash($password, $salt)
-    {
-        $hash = Security::hash('sha512', $password . '.' . $salt, 10);
-
-        return $hash;
-    }
 }
