@@ -55,12 +55,13 @@ class SupportController extends Controller
 
     public function show($requestId)
     {
+        $request = SupportRequest::findOrFail($requestId);
+
         if(!$this->isTicketRequestOwnedByMe($requestId))
         {
-            throw new GenericException('not_account_owner');
+            throw new GenericException('not_ticket_owner');
         }
-        
-        $request = SupportRequest::where('id', $requestId)->first();
+
         $ticket = $request->ticket()->first(); // Initial ticket
         $messages = $request->tickets()->get(); // All messages (+ticket)
 
@@ -106,7 +107,7 @@ class SupportController extends Controller
     {
          if(!$this->isTicketRequestOwnedByMe($id))
         {
-            throw new GenericException('not_account_owner');
+            throw new GenericException('not_ticket_owner');
         }
 
         if($this->diffInMinutes($id, 2) != 'can')
@@ -153,7 +154,7 @@ class SupportController extends Controller
 
         if(!$this->isTicketRequestOwnedByMe($id))
         {
-            throw new GenericException('not_account_owner');
+            throw new GenericException('not_ticket_owner');
         }
 
         if($this->diffInMinutes($id, 1) != 'can')

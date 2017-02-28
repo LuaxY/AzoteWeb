@@ -377,11 +377,6 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
             'uses' => 'SupportController@create',
             'as' => 'support.create'
         ]);
-
-        Route::post('store', [
-            'uses' => 'SupportController@store',
-            'as' => 'support.store'
-        ]);
         
         Route::group(['prefix' => '/ticket/{id}'], function() {
             
@@ -544,6 +539,11 @@ Route::group(['prefix' => 'api', 'domain' => Config::get('dofus.domain.main')], 
         Route::any('child/{child}/{params?}', [
             'middleware' => 'auth',
             'uses'       => 'SupportController@child' 
+        ]);        
+        
+        Route::post('store', [
+            'uses' => 'SupportController@store',
+            'as' => 'support.store'
         ]);
     });  
 });

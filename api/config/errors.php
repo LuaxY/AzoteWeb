@@ -44,4 +44,10 @@ return [
         'details' => 'La clé de validation de la nouvelle adresse email est invalide.',
     ],
 
+    'not_ticket_owner' => [
+        'status'  => 401,
+        'title'   => 'Le ticket sélectionné est invalide',
+        'details' => 'Le ticket sélectionné n\'est pas valide.',
+    ],
+
 ];
