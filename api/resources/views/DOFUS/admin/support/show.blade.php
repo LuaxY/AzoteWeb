@@ -219,8 +219,8 @@
                 $(document).ready(function () {
                     var token = '{{ Session::token() }}';
                     $('[data-toggle="tooltip"]').tooltip();
-
                    $( "#form-assign-to" ).on( "submit", function( event ) {
+                        $("#form-assign-to button[type='submit']").prop("disabled", true);
                        event.preventDefault();
                        var $this = $(this);
                        var datas = $this.serialize();
@@ -237,6 +237,7 @@
                            },
 
                            error: function (jqXhr, json, errorThrown) {
+                               $("#form-assign-to button[type='submit']").prop("disabled", false);
                                var errors = jqXhr.responseJSON;
                                var errorsHtml;
                                if(errors)

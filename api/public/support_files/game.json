@@ -6,8 +6,8 @@
             "value": "Un problème technique",
             "child": "game_tech_issue"
         }, {
-            "value": "Un bug",
-            "child": "game_bug"
+            "value": "Le comportement d'un joueur",
+            "child": "game_player_behavior"
         }]
     }]
 }

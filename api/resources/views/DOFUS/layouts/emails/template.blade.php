@@ -19,14 +19,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" style="line-height:10px" width="700">
                         <tbody>
                             <tr style="line-height:10px">
-                                <td style="line-height:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;" width="700">@yield('content')</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table cellpadding="0" cellspacing="0" style="line-height:10px" width="700">
-                        <tbody>
-                            <tr style="line-height:10px">
-                                <td height="25" width="700">&nbsp;</td>
+                                <td style="line-height:14px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;" width="700">@yield('content')<p>Cordialement,</p></td>
                             </tr>
                         </tbody>
                     </table>

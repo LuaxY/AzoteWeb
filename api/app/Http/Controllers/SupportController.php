@@ -17,6 +17,7 @@ use App\SupportRequest;
 use App\SupportTicket;
 use App\User;
 use Auth;
+use Mail;
 
 class SupportController extends Controller
 {
@@ -31,6 +32,20 @@ class SupportController extends Controller
         if($mostRecent)
         {
             $diffInMinutes = Carbon::now()->diffInMinutes($mostRecent->updated_at);
+            if($diffInMinutes < config('dofus.support.minutes_between_actions'))
+                return (int)(config('dofus.support.minutes_between_actions') - $diffInMinutes);
+            else
+                return "can";
+        }
+        return "can";
+    }
+
+    private function diffInMinutesCreate()
+    {
+        $mostRecent = SupportRequest::select('created_at')->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+        if($mostRecent)
+        {
+            $diffInMinutes = Carbon::now()->diffInMinutes($mostRecent->created_at);
             if($diffInMinutes < config('dofus.support.minutes_between_actions'))
                 return (int)(config('dofus.support.minutes_between_actions') - $diffInMinutes);
             else
@@ -167,7 +182,7 @@ class SupportController extends Controller
 
         $validator = Validator::make($request->all(), SupportTicket::$rules['postMessage']);
             if ($validator->fails()) {
-                return redirect()->back();
+                return redirect()->back()->withErrors($validator);
             }
 
         $supportRequest = SupportRequest::findOrFail($id);
@@ -189,6 +204,7 @@ class SupportController extends Controller
             $supportRequest->save();
         }
 
+        $request->session()->flash('notify', ['type' => 'success', 'message' => 'Votre message a bien été envoyé']);
         return redirect()->back();
         
 
@@ -196,6 +212,13 @@ class SupportController extends Controller
 
     public function store(Request $request)
     {
+        if($this->diffInMinutesCreate() != 'can')
+        {
+            $minutes = $this->diffInMinutesCreate();
+            $message = "Vous devez attendre encore $minutes minutes avant d'effectuer cette action.";
+            return response()->json(['account' => [0 => $message]], 400);
+        }
+
         $inputs = $request->all();
         $report = [];
 
@@ -330,6 +353,14 @@ class SupportController extends Controller
         $supportTicket->private    = false;
         $supportTicket->reply      = false;
         $supportTicket->save();
+
+        $user = Auth::user();
+
+        Mail::send('emails.open-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
+            $message->from(config('mail.sender'), 'Azote.us');
+            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+            $message->subject('Azote.us - Ouverture Ticket n°'.$supportRequest->id);
+        });
 
         return response()->json([Auth::user()->email], 200);
             

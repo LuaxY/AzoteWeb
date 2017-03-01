@@ -15,6 +15,7 @@ use App\User;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
+use Mail;
 
 class SupportController extends Controller
 {
@@ -144,6 +145,15 @@ class SupportController extends Controller
             }
             $supportRequest->save();
         }
+
+        $user = $supportRequest->user;
+
+        Mail::send('emails.answer-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
+            $message->from(config('mail.sender'), 'Azote.us');
+            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+            $message->subject('Azote.us - Reponse ticket n°'.$supportRequest->id);
+        });
+
         Toastr::success("Message send", $title = null, $options = []);
         return redirect()->back();
     }
@@ -177,6 +187,17 @@ class SupportController extends Controller
         $supportTicket->private    = false;
         $supportTicket->reply      = 2; // Info reply
         $supportTicket->save();
+
+        $user = $supportRequest->user;
+
+        if(!$supportRequest->isOpen()) // If closed, send email
+        {
+            Mail::send('emails.status-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Fermeture ticket n°'.$supportRequest->id);
+            }); 
+        }
 
         Cache::forget('tickets_admin_open');
         Cache::forget('tickets_admin_close');
@@ -214,7 +235,14 @@ class SupportController extends Controller
             $supportTicket->private    = false;
             $supportTicket->reply      = 2; // Info reply
             $supportTicket->save();
+            
+            $user = $supportRequest->user;
 
+            Mail::send('emails.assign-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Mise à jour ticket n°'.$supportRequest->id);
+            }); 
             Toastr::success('You took this ticket', $title = null, $options = []);
         }
     
@@ -251,9 +279,16 @@ class SupportController extends Controller
             $supportTicket->reply      = 2; // Info reply
             $supportTicket->save();
 
+            $user = $supportRequest->user;
+
+            Mail::send('emails.assign-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
+                $message->from(config('mail.sender'), 'Azote.us');
+                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
+                $message->subject('Azote.us - Mise à jour ticket n°'.$supportRequest->id);
+            }); 
             return response()->json([$admin->pseudo], 200);
         }
-    
+            
         return response()->json([], 400);
     }
 }

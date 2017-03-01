@@ -95,6 +95,7 @@
                         <div class="ak-comment">
                             {!! Form::textarea('message', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Votre message...', 'rows' => '0', 'cols' => '0', 'id' => 'message']) !!}
                         </div>
+                         @if ($errors->has('message')) <label class="error control-label">{{ $errors->first('message') }}</label> @endif
                     </div>
                 {!! Form::submit('Envoyer', ['class' => 'ak-comment-submit btn btn-primary btn-lg']) !!}
                 {!! Form::close() !!}

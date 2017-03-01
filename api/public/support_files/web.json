@@ -18,7 +18,7 @@
             "value": "La perte de compte",
             "child": "web_lost_final"
         }, {
-            "value": "La signalement d'un problème",
+            "value": "Le signalement d'un problème",
             "child": "final"
         }]
     }]

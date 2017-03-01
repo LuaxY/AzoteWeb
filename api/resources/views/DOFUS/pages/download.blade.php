@@ -28,8 +28,8 @@
                                 <a class="btn btn-info ak-btn-big" href="{{ config('dofus.download.win') }}">télécharger le jeu <span>Version : Windows</span></a>
                                 <div class="ak-other-version">
                                     <div class="ak-list-link">
-                                        <a href="{{ config('dofus.download.win') }}">Windows</a>
-                                        <a href="{{ config('dofus.download.mac') }}">MacOS</a>
+                                        <i class="fa fa-windows"></i><a href="{{ config('dofus.download.win') }}">Windows</a>
+                                        <i class="fa fa-apple"></i><a href="{{ config('dofus.download.mac') }}">MacOS</a>
                                     </div>
                                 </div>
                                 <a class="ak-problems" href="{{ URL::to('livesupport') }}">Un problème d'installation ?</a>
@@ -73,7 +73,7 @@
                                     <div class="ak-illu-link ak-illu-link1"></div>
                                     <div class="ak-link-text">Sachez qu'ici tout est possible à l'intrépide, il vous suffit de suivre le guide !</div>
                                     <div class="ak-bottom-link">
-                                        <a class="btn btn-info btn-lg" href="http://forum.azote.us/forum/22-tutorials/">voir les tutoriels</a>
+                                        <a class="btn btn-info btn-lg" href="{{ config('dofus.social.forum') }}22-tutoriels">voir les tutoriels</a>
                                     </div>
                                 </div>
                                 <div class="ak-link-block col-sm-4">
@@ -84,7 +84,7 @@
                                     <div class="ak-illu-link ak-illu-link2"></div>
                                     <div class="ak-link-text">Communiquez librement avec toute la population du Monde des Douze.</div>
                                     <div class="ak-bottom-link">
-                                        <a class="btn btn-info btn-lg" href="https://forum.azote.us" target="_blank">découvrir la communauté</a>
+                                        <a class="btn btn-info btn-lg" href="{{ config('dofus.social.forum') }}" target="_blank">découvrir la communauté</a>
                                     </div>
                                 </div>
                                 <div class="ak-link-block col-sm-4">

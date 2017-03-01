@@ -5,38 +5,16 @@
 {? $page_name = 'Nouveau ticket' ?}
 {!! Breadcrumbs::render('support.page', $page_name) !!}
 @stop
-
-@section('content')
-<div class="ak-container ak-main-center">
-    <div class="ak-title-container ak-backlink">
-        <h1><span class="ak-icon-big ak-support"></span></a> Support - {{ $page_name }}</h1>
-        <a href="{{ URL::route('support') }}" class="ak-backlink-button">Retour à mes tickets</a>
-    </div>
-
-    <div class="ak-container ak-panel-stack">
-        <div class="ak-container ak-panel ak-glue">
-        <div class="ak-panel-title">
-                <span class="ak-panel-title-icon"></span> Ouvrir un nouveau ticket
-            </div>
-            <div class="ak-panel-content">
-            
-                <div class="panel-main">
-                    <div id="ticket-success" style="display:none;">
-                        <h4 class="text-center">Votre ticket a bien été envoyé. Il sera traité le plus rapidement possible.</h4>
-                        <p style="text-align: center;">Une copie vous a été envoyé à: <span id="success-email" class="ak-bold"></span>. <br> Le délai de réponse peut varier entre 1 et 24 heures.</p>
-                    </div>
-                    <form class="ak-form" id="support" action="{{route('support.store')}}" method="post" enctype="multipart/form-data">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@stop
-
-@section('bottom')
+@section('header')
 <style>
-
+.alert-info a
+{
+    color: #337ab7;
+}
+.alert-info a.btn
+{
+    color: #fff;
+}
 #support .hint {
     display: block;
     font-size: 12px;
@@ -64,8 +42,58 @@
     height: 50px;
 }
 </style>
+@endsection
+@section('content')
+<div class="ak-container ak-main-center">
+    <div class="ak-title-container ak-backlink">
+        <h1><span class="ak-icon-big ak-support"></span></a> Support - {{ $page_name }}</h1>
+        <a href="{{ URL::route('support') }}" class="ak-backlink-button">Retour à mes tickets</a>
+    </div>
+    <div class="ak-container ak-panel-stack" id="advert-ticket">
+        <div class="ak-container ak-panel ak-glue">
+             <div class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span> Avant toute chose
+            </div>
+            <div class="ak-panel-content">
+                <div class="alert alert-info">
+                    <p>Avant d'ouvrir un ticket, nous vous invitons à lire attentivement nos <a href="{{ config('dofus.social.forum') }}22-tutoriels">tutoriels</a> ainsi que notre <a href="{{ config('dofus.social.forum') }}faq">F.A.Q</a>.</p>
+                    <p class="mt-10">Ceci afin d'éviter d'encombrer le support et d'essayer de diminuer le temps de réponse pour vos demandes.</p>
+                    <br>
+                    <a class="btn btn-danger btn-lg" href="javascript:openticket();">Ouvrir un ticket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ak-container ak-panel-stack" style="display:none;" id="ticket-open">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span> Ouvrir un nouveau ticket
+            </div>
+            <div class="ak-panel-content">
+                <div class="panel-main">
+                    <div id="ticket-success" style="display:none;">
+                        <h4 class="text-center">Votre ticket a bien été envoyé. Il sera traité le plus rapidement possible.</h4>
+                        <p style="text-align: center;">Une copie vous a été envoyé à: <span id="success-email" class="ak-bold"></span>. <br> Le délai de réponse peut varier entre 1 et 48 heures.</p>
+                    </div>
+                    <form class="ak-form" id="support" action="{{route('support.store')}}" method="post" enctype="multipart/form-data">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@stop
+
+@section('bottom')
 <script>
 var $ = require('jquery');
+
+function openticket()
+{
+    $('#advert-ticket').fadeOut(1000);
+    $('#ticket-open').fadeIn(1500);
+    window.scrollTo(0, 0);
+}
 
 var nb_part = 0;
 
