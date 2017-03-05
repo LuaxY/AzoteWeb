@@ -69,10 +69,11 @@ class Character extends Model
             14 => 'Zobal',
             15 => 'Steamer',
             16 => 'Eliotrope',
-            17 => 'Huppermage'
+            17 => 'Huppermage',
+            18 => 'Ouginak'
         ];
-
-        return $classes[$this->Breed];
+        
+        return array_key_exists($this->Breed, $classes) ? $classes[$this->Breed] : "Classe inconnue";
     }
 
     public function alignement()
