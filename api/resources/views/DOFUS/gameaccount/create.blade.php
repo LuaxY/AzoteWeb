@@ -29,7 +29,7 @@
                                         <select name="server" class="form-control" id="server" />
                                             <option value="">Selectionnez un serveur</option>
                                             @foreach (config('dofus.details') as $server)
-                                            <option value="{{ $server->name }}" @if (Input::old('server') == $server->name) selected="selected" @endif)>{{ ucfirst($server->name) }} - {{ $server->desc }}</option>
+                                            <option value="{{ $server->name }}" @if (Input::old('server') == $server->name) selected="selected" @endif)>{{ ucfirst($server->name) }} - {{ $server->desc }} - {{ $server->version }}</option>
                                             @endforeach
                                         </select>
                                         @if ($errors->has('server')) <label class="error control-label">{{ $errors->first('server') }}</label> @endif
@@ -71,7 +71,7 @@
                                 @foreach (config('dofus.details') as $i => $server)
                                 <div class="col-sm-4 @if ($i == 0) col-sm-offset-2 @endif">
                                     <h2>{{ ucfirst($server->name) }}</h2>
-                                    <p>{{ $server->desc }}</p>
+                                    <p>{{ $server->desc }} - {{ $server->version }}</p>
                                 </div>
                                 @endforeach
                             </div>

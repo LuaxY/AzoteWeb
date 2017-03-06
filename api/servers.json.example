@@ -18,7 +18,7 @@
         {
             "name":     "epsilon",
             "desc":     "Semi-Cheat",
-            "version":  "2.38",
+            "version":  "2.40",
             "ip":       "0.0.0.0",
             "port":     9000,
             "ogrine":   20824,
