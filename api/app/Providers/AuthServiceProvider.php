@@ -16,10 +16,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-        'App\Post'  => 'App\Policies\PostPolicy',
-        'App\Task'  => 'App\Policies\TaskPolicy',
-        'App\Comment'  => 'App\Policies\CommentPolicy',
-        'App\Announce'  => 'App\Policies\AnnouncePolicy',
+        \App\Post::class  => \App\Policies\PostPolicy::class,
+        \App\Task::class  => \App\Policies\TaskPolicy::class,
+        \App\Comment::class  => \App\Policies\CommentPolicy::class,
+        \App\Announce::class  => \App\Policies\AnnouncePolicy::class,
     ];
 
     /**
@@ -32,9 +32,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        foreach ($this->getPermissions() as $permission)
-        {
-            $gate->define($permission->name, function($user) use($permission) {
+        foreach ($this->getPermissions() as $permission) {
+            $gate->define($permission->name, function ($user) use ($permission) {
                 return $user->hasRole($permission->roles);
             });
         }
@@ -42,6 +41,6 @@ class AuthServiceProvider extends ServiceProvider
 
     protected function getPermissions()
     {
-        return Permission::with('roles')->get();
+        return [];
     }
 }

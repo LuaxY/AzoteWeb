@@ -5,27 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Announce;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\World;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Validator;
 use Kamaln7\Toastr\Facades\Toastr;
 
 class AnnounceController extends Controller
 {
-    private function isServerExist($server)
-    {
-        if (!in_array($server, config('dofus.servers')))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public function index($server)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
 
@@ -35,8 +24,7 @@ class AnnounceController extends Controller
 
     public function create($server)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
 
@@ -45,8 +33,7 @@ class AnnounceController extends Controller
 
     public function store($server, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
 
@@ -72,8 +59,7 @@ class AnnounceController extends Controller
 
     public function destroy($server, Announce $announce, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
         $this->authorize('destroy', $announce);
@@ -83,14 +69,11 @@ class AnnounceController extends Controller
         $announce->delete();
 
         return response()->json([], 200);
-
-
     }
 
-    public function edit($server , $id)
+    public function edit($server, $id)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
 
@@ -100,8 +83,7 @@ class AnnounceController extends Controller
 
     public function update($server, $id, Request $request)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             abort(404);
         }
 
@@ -119,4 +101,3 @@ class AnnounceController extends Controller
         return redirect(route('admin.announces', $server));
     }
 }
-

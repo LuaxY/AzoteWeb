@@ -30,16 +30,13 @@ class PostDatatablesController extends Controller
                 <a id="delete-'.$post->id.'" class="delete pull-right btn btn-xs btn-danger" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></a>';
             })
             ->editColumn('published', function ($post) {
-                if($post->isProgrammed())
-                {
+                if ($post->isProgrammed()) {
                     $pub = '<span class="label label-info">Programmed</span>';
                 }
-                if($post->isDraft())
-                {
+                if ($post->isDraft()) {
                     $pub = '<span class="label label-danger">Draft</span>';
                 }
-                if($post->isPublished())
-                {
+                if ($post->isPublished()) {
                     $pub = '<span class="label label-success">Published</span>';
                 }
                 return $pub;
@@ -48,8 +45,4 @@ class PostDatatablesController extends Controller
             ->editColumn('type', '{{ config("dofus.news_type.".$type.".name") }}')
             ->make(true);
     }
-
-
-
-
 }

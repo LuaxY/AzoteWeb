@@ -20,8 +20,7 @@ class TransactionController extends Controller
     public function getData()
     {
         $days = [];
-        for ($i = 30; $i >= 0; $i--)
-        {
+        for ($i = 30; $i >= 0; $i--) {
             $days[] = [
                 'day' => Carbon::today()->subDay($i)->toDateString(),
                 'earn' => Transaction::GetDayEarnings(Carbon::today()->subDay($i)->toDateString())

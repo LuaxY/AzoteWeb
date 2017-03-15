@@ -23,12 +23,9 @@ class Transaction extends Model
     {
         $earn = Transaction::where('state', ShopStatus::PAYMENT_SUCCESS)->whereDate('created_at', '=', $date)->sum('points');
 
-        if($format)
-        {
+        if ($format) {
             return number_format($earn / 100, 2, $format, ' ');
-        }
-        else
-        {
+        } else {
             return $earn / 100;
         }
     }

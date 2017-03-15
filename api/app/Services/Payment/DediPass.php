@@ -16,12 +16,9 @@ class DediPass extends Payment
     {
         $json = null;
 
-        if (Cache::has('payment.dedipass'))
-        {
+        if (Cache::has('payment.dedipass')) {
             $json = Cache::get('payment.dedipass');
-        }
-        else
-        {
+        } else {
             $url = config('dofus.payment.dedipass.url');
             $url = str_replace('{PUBLIC_KEY}', config('dofus.payment.dedipass.public'), $url);
             $json = json_decode(file_get_contents($url));
@@ -31,21 +28,17 @@ class DediPass extends Payment
 
         $this->rates = new \stdClass;
 
-        if ($json)
-        {
-            foreach ($json as $method)
-            {
+        if ($json) {
+            foreach ($json as $method) {
                 $countryName = strtolower($method->country->iso);
                 $methodName  = strtolower($method->solution);
                 $palier      = $method->rate;
 
-                if (!property_exists($this->rates, $countryName))
-                {
+                if (!property_exists($this->rates, $countryName)) {
                     $this->rates->$countryName = new \stdClass;
                 }
 
-                if (!property_exists($this->rates->$countryName, $methodName))
-                {
+                if (!property_exists($this->rates->$countryName, $methodName)) {
                     $this->rates->$countryName->$methodName = new \stdClass;
                 }
 
@@ -57,19 +50,16 @@ class DediPass extends Payment
                 $newMethod->points = $method->user_earns;
                 $newMethod->link   = $method->link;
 
-                if ($methodName == "sms")
-                {
+                if ($methodName == "sms") {
                     $newMethod->number  = $method->shortcode;
                     $newMethod->keyword = $method->keyword;
                 }
 
-                if ($methodName == "audiotel" )
-                {
+                if ($methodName == "audiotel") {
                     $newMethod->number = $method->phone;
                 }
 
-                if (property_exists($method, 'legal_graphic'))
-                {
+                if (property_exists($method, 'legal_graphic')) {
                     $newMethod->legal = $method->legal_graphic;
                 }
 
@@ -87,8 +77,7 @@ class DediPass extends Payment
     {
         if (property_exists($this->rates, $country) &&
             property_exists($this->rates->$country, $method) &&
-            property_exists($this->rates->$country->$method, $palier))
-        {
+            property_exists($this->rates->$country->$method, $palier)) {
             return $this->rates->$country->$method->$palier;
         }
 
@@ -105,10 +94,10 @@ class DediPass extends Payment
         $private    = config('dofus.payment.dedipass.private');
         $validation = config('dofus.payment.dedipass.validation');
 
-        $validation = str_replace('{PUBLIC_KEY}',  $public,  $validation);
+        $validation = str_replace('{PUBLIC_KEY}', $public, $validation);
         $validation = str_replace('{PRVIATE_KEY}', $private, $validation);
-        $validation = str_replace('{PALIER}',      $palier,  $validation);
-        $validation = str_replace('{CODE}',        $code,    $validation);
+        $validation = str_replace('{PALIER}', $palier, $validation);
+        $validation = str_replace('{CODE}', $code, $validation);
 
         $check->provider = config('dofus.payment.dedipass.name');
 
@@ -129,35 +118,25 @@ class DediPass extends Payment
 
         $check->raw = $json;
 
-        if (isset($result->status) && $result->status == "success")
-        {
+        if (isset($result->status) && $result->status == "success") {
             $check->success = true;
 
             $identifier = explode('-', $result->identifier);
 
-            if ($result->identifier == 'TEST-CODE')
-            {
-                if (Auth::user()->isAdmin())
-                {
+            if ($result->identifier == 'TEST-CODE') {
+                if (Auth::user()->isAdmin()) {
                     $check->country = 'xx';
                     $check->type    = 'test';
-                }
-                else
-                {
+                } else {
                     $check->success = false;
                     $check->message = "Rang insuffisant pour utiliser le code de test";
                     return $check;
                 }
-            }
-            else
-            {
-                if (count($identifier) >= 3)
-                {
+            } else {
+                if (count($identifier) >= 3) {
                     $check->country = strtolower($identifier[1]);
                     $check->type    = strtolower($identifier[2]);
-                }
-                else
-                {
+                } else {
                     $check->country = 'xx';
                     $check->type    = strtolower($identifier[1]);
                 }
@@ -168,9 +147,7 @@ class DediPass extends Payment
             $check->points      = $result->virtual_currency;
             $check->message     = $result->message;
             $check->payout      = $result->payout;
-        }
-        else
-        {
+        } else {
             $check->message = isset($result->message) ? $result->message : "Aucune réponse du serveur de validation";
             $check->success = false;
         }

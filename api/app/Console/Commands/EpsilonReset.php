@@ -36,7 +36,8 @@ class EpsilonReset extends Command
     {
         // Load servers config
         $serverFiller = new FillServers();
-        $serverFiller->handle(null, function() {});
+        $serverFiller->handle(null, function () {
+        });
 
         // Delete all gifts for Epislon
         Gift::where('server', 'epsilon')->delete();
@@ -44,8 +45,7 @@ class EpsilonReset extends Command
         // Restor lottery ticket for Epsilon
         $tickets = LotteryTicket::where('server', 'epsilon')->get();
 
-        foreach ($tickets as $ticket)
-        {
+        foreach ($tickets as $ticket) {
             $ticket->used    = false;
             $ticket->server  = null;
             $ticket->item_id = null;
@@ -56,8 +56,7 @@ class EpsilonReset extends Command
         // Refund Ogrines
         $transfertsOgrines = Transfert::where('server', 'epsilon')->where('state', 1)->where('type', config('dofus.details')['epsilon']->ogrine)->get();
 
-        foreach ($transfertsOgrines as $transfert)
-        {
+        foreach ($transfertsOgrines as $transfert) {
             $user = $transfert->user();
             $user->points += $transfert->amount;
             $user->save();
@@ -66,8 +65,7 @@ class EpsilonReset extends Command
         // Refund Jetons
         $transfertsJetons = Transfert::where('server', 'epsilon')->where('state', 1)->where('type', 'Ogrines')->get();
 
-        foreach ($transfertsJetons as $transfert)
-        {
+        foreach ($transfertsJetons as $transfert) {
             $user = $transfert->user();
             $user->jetons += $transfert->amount / config('dofus.points_by_vote');
             $user->save();

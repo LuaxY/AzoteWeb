@@ -16,8 +16,7 @@ class UserBanned
      */
     public function handle($request, Closure $next)
     {
-        if ( Auth::check() && Auth::user()->isBanned() )
-        {
+        if (Auth::check() && Auth::user()->isBanned()) {
             $request->session()->flash('notify', ['type' => 'warning', 'message' => "Votre compte est banni!"]);
             Auth::logout();
             return redirect()->route('home');

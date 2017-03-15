@@ -16,8 +16,7 @@ class CheckUserTicket
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && !Auth::user()->ticket)
-        {
+        if (Auth::check() && !Auth::user()->ticket) {
             Auth::user()->ticket = str_random(32);
             Auth::user()->save();
         }

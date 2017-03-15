@@ -18,10 +18,8 @@ class PostController extends Controller
     private function fetchNewsType()
     {
         $typeArray = [];
-        if(config('dofus.news_type'))
-        {
-            foreach (config('dofus.news_type') as $type)
-            {
+        if (config('dofus.news_type')) {
+            foreach (config('dofus.news_type') as $type) {
                 $typeArray[$type['db']] = $type['name'];
             }
         }
@@ -42,8 +40,7 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), Post::$rules['store']);
 
-        if(!array_key_exists($request->type, config('dofus.news_type')))
-        {
+        if (!array_key_exists($request->type, config('dofus.news_type'))) {
             return redirect(route('admin.post.create'))
                 ->withErrors(['type' => 'Le type est invalide'])
                 ->withInput();
@@ -82,17 +79,14 @@ class PostController extends Controller
     {
         $this->authorize('destroy', $post);
 
-        if ($post->id != config('dofus.motd.postid'))
-        {
+        if ($post->id != config('dofus.motd.postid')) {
             $post->delete();
             $this->clearCache($post->id, $post->type);
 
             return response()->json([], 200);
+        } else {
+            return response()->json(['motd' => ['0' => 'Can\'t delete this post (MOTD)']], 422);
         }
-       else
-       {
-           return response()->json(['motd' => ['0' => 'Can\'t delete this post (MOTD)']], 422);
-       }
     }
 
     public function edit(Post $post)
@@ -108,8 +102,7 @@ class PostController extends Controller
 
         $validator = Validator::make($request->all(), Post::$rules['store']);
 
-        if(!array_key_exists($request->type, config('dofus.news_type')))
-        {
+        if (!array_key_exists($request->type, config('dofus.news_type'))) {
             return redirect()->back()
                 ->withErrors(['type' => 'Le type est invalide'])
                 ->withInput();
@@ -145,15 +138,13 @@ class PostController extends Controller
         return redirect(route('admin.posts'));
     }
 
-    private function clearCache($id = null,$type = null)
+    private function clearCache($id = null, $type = null)
     {
         // Clear specified post
-        if ($id)
-        {
+        if ($id) {
             Cache::forget('posts_'.$id);
         }
-        if($type)
-        {
+        if ($type) {
             Cache::forget('posts_'.$type.'_page_1');
             Cache::forget('posts_'.$type.'_page_2');
         }
@@ -161,5 +152,4 @@ class PostController extends Controller
         // Clear posts index page
         Cache::forget('posts_index');
     }
-
 }

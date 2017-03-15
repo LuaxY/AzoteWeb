@@ -30,13 +30,11 @@ class LotteryController extends Controller
     {
         $ticket = LotteryTicket::find($id);
 
-        if (!$ticket || $ticket->user_id != Auth::user()->id)
-        {
+        if (!$ticket || $ticket->user_id != Auth::user()->id) {
             throw new GenericException('invalid_ticket');
         }
 
-        if (count($ticket->objects($server)) <= 0)
-        {
+        if (count($ticket->objects($server)) <= 0) {
             throw new GenericException('ticket_no_objects');
         }
 
@@ -47,22 +45,18 @@ class LotteryController extends Controller
     {
         $ticket = LotteryTicket::find($id);
 
-        if (!$ticket || $ticket->user_id != Auth::user()->id || $ticket->used)
-        {
+        if (!$ticket || $ticket->user_id != Auth::user()->id || $ticket->used) {
             throw new GenericException('invalid_ticket');
         }
 
-        if (count($ticket->objects($server)) <= 0)
-        {
+        if (count($ticket->objects($server)) <= 0) {
             throw new GenericException('ticket_no_objects');
         }
 
         $object = $ticket->draw($server);
 
-        if ($object)
-        {
-            if (!$object->item($server))
-            {
+        if ($object) {
+            if (!$object->item($server)) {
                 throw new GenericException('ticket_no_objects');
             }
 

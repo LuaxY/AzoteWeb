@@ -14,7 +14,7 @@ class AddMessageToTicketTable extends Migration
     {
          Schema::table('support_requests', function (Blueprint $table) {
             $table->text('message')->after('subject');
-        });
+         });
     }
 
     /**
@@ -24,7 +24,7 @@ class AddMessageToTicketTable extends Migration
      */
     public function down()
     {
-      Schema::table('support_requests', function (Blueprint $table) {
+        Schema::table('support_requests', function (Blueprint $table) {
             $table->dropColumn('message');
         });
     }

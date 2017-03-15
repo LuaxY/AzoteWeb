@@ -59,7 +59,7 @@
                             {data: 'slug', name: 'posts.slug'},
                             {data: 'type', name: 'posts.type'},
                             {data: 'firstname', name: 'users.firstname'},
-                            {data: 'published', name: 'posts.published'},
+                            {data: 'published', name: 'posts.published', type: 'html'},
                             {data: 'action', name: 'action',  orderable: false, searchable: false}
                         ],
                         rowId: 'id'

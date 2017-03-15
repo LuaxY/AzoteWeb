@@ -10,22 +10,22 @@ class AddIsFirstBuyToUsers extends Migration
      *
      * @return void
      */
-     public function up()
-     {
-         Schema::table('users', function (Blueprint $table) {
-             $table->boolean('isFirstBuy')->default(true)->after('isFirstVote');
-         });
-     }
+    public function up()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('isFirstBuy')->default(true)->after('isFirstVote');
+        });
+    }
 
      /**
       * Reverse the migrations.
       *
       * @return void
       */
-     public function down()
-     {
-         Schema::table('users', function (Blueprint $table) {
-             $table->dropColumn('isFirstBuy');
-         });
-     }
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('isFirstBuy');
+        });
+    }
 }

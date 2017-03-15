@@ -15,12 +15,11 @@ use Auth;
 
 class Stump
 {
-    static public function transfert($server, $accountId, $type, $amount, $url, $process, $fallback)
+    public static function transfert($server, $accountId, $type, $amount, $url, $process, $fallback)
     {
         $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
 
-        if (!$world || !$world->isOnline())
-        {
+        if (!$world || !$world->isOnline()) {
             return false;
         }
 
@@ -38,8 +37,7 @@ class Stump
 
         $process();
 
-        try
-        {
+        try {
             $client = new Client();
             $res = $client->request('PUT', "http://{$api->ip}:{$api->port}$url", [
                 'headers' => [
@@ -48,8 +46,7 @@ class Stump
                 'timeout' => 20, // seconds
             ]);
 
-            if ($res->getStatusCode() == 200)
-            {
+            if ($res->getStatusCode() == 200) {
                 // Server return 200 (Good)
 
                 $transfert->state  = Transfert::OK_API;
@@ -58,9 +55,7 @@ class Stump
                 $transfert->save();
 
                 $success = true;
-            }
-            else
-            {
+            } else {
                 // Server return 2xx (Bad)
                 $transfert->state  = Transfert::REFUND;
                 //$transfert->rawIn  = Psr7\str($res->getRequest());
@@ -71,9 +66,7 @@ class Stump
 
                 $success = false;
             }
-        }
-        catch (ServerException $e)
-        {
+        } catch (ServerException $e) {
             // 5xx errors
 
             $fallback();
@@ -81,21 +74,16 @@ class Stump
             $transfert->state  = Transfert::REFUND;
             $transfert->rawIn  = Psr7\str($e->getRequest());
 
-            if ($e->hasResponse())
-            {
+            if ($e->hasResponse()) {
                 $transfert->rawOut = Psr7\str($e->getResponse());
-            }
-            else
-            {
+            } else {
                 $transfert->rawOut = "NO RESPONSE";
             }
 
             $transfert->save();
 
             $success = false;
-        }
-        catch (TransferException $e)
-        {
+        } catch (TransferException $e) {
             // Other errors (timeout?)
 
             $fallback();
@@ -103,12 +91,9 @@ class Stump
             $transfert->state  = Transfert::REFUND;
             $transfert->rawIn  = Psr7\str($e->getRequest());
 
-            if ($e->hasResponse())
-            {
+            if ($e->hasResponse()) {
                 $transfert->rawOut = Psr7\str($e->getResponse());
-            }
-            else
-            {
+            } else {
                 $transfert->rawOut = "NO RESPONSE";
             }
 

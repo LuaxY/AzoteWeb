@@ -39,8 +39,7 @@ class PostController extends Controller
             return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
         });
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return response()->json(View::make('posts.templates.posts', compact('posts'))->render());
         }
 
@@ -49,35 +48,29 @@ class PostController extends Controller
 
     public function newsType(Request $request, $type)
     {
-        if(config('dofus.news_type.'.$type))
-        {
+        if (config('dofus.news_type.'.$type)) {
             $typeConfig = config('dofus.news_type.'.$type);
             $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
-            $posts = Cache::remember('posts_'.$type.'_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () use($type) {
+            $posts = Cache::remember('posts_'.$type.'_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($type) {
                 return Post::latest('published_at')->orderBy('id', 'desc')->published()->where('type', $type)->paginate(self::POSTS_PER_PAGE);
             });
 
-            if ($request->ajax())
-            {
+            if ($request->ajax()) {
                 return response()->json(View::make('posts.templates.posts', compact('posts'))->render());
             }
 
             return view('posts.type', compact('posts', 'type', 'typeConfig'));
-        }
-        else
-        {
+        } else {
             throw new GenericException('invalid_news_type');
         }
-
     }
 
     public function show(Request $request, $id, $slug = "")
     {
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
-        if (!is_numeric($page))
-        {
+        if (!is_numeric($page)) {
             abort(404);
         }
 
@@ -85,13 +78,11 @@ class PostController extends Controller
             return Post::findOrFail($id);
         });
 
-        if ($post->isDraft() && (Auth::guest() || !Auth::user()->isAdmin()))
-        {
+        if ($post->isDraft() && (Auth::guest() || !Auth::user()->isAdmin())) {
             abort(404);
         }
 
-        if ($slug == "" || $slug != $post->slug)
-        {
+        if ($slug == "" || $slug != $post->slug) {
             return redirect()->route('posts.show', ['id' => $id, 'slug' => $post->slug]);
         }
 
@@ -108,8 +99,7 @@ class PostController extends Controller
             return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE);
         });
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             return response()->json(View::make('posts.templates.comments', compact('post', 'comments'))->render());
         }
 
@@ -120,8 +110,7 @@ class PostController extends Controller
     {
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
-        if(!Auth::user()->isAdmin())
-        {
+        if (!Auth::user()->isAdmin()) {
             $validator = Validator::make($request->all(), Comment::$rules['store']);
             if ($validator->fails()) {
                 return response()->json($validator->messages(), 400);
@@ -156,5 +145,4 @@ class PostController extends Controller
         Cache::forget('posts_' . $id . '_comments_3');
         return redirect()->back();
     }
-
 }

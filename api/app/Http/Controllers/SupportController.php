@@ -18,6 +18,7 @@ use App\SupportTicket;
 use App\User;
 use Auth;
 use Mail;
+use App\Mail\TicketOpen;
 
 class SupportController extends Controller
 {
@@ -29,13 +30,13 @@ class SupportController extends Controller
     {
         $supportRequest = SupportRequest::findOrFail($requestId);
         $mostRecent = $supportRequest->tickets()->select('updated_at')->where('user_id', $supportRequest->user_id)->where('reply', $type)->orderBy('id', 'desc')->first();
-        if($mostRecent)
-        {
+        if ($mostRecent) {
             $diffInMinutes = Carbon::now()->diffInMinutes($mostRecent->updated_at);
-            if($diffInMinutes < config('dofus.support.minutes_between_actions'))
+            if ($diffInMinutes < config('dofus.support.minutes_between_actions')) {
                 return (int)(config('dofus.support.minutes_between_actions') - $diffInMinutes);
-            else
+            } else {
                 return "can";
+            }
         }
         return "can";
     }
@@ -43,13 +44,13 @@ class SupportController extends Controller
     private function diffInMinutesCreate()
     {
         $mostRecent = SupportRequest::select('created_at')->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-        if($mostRecent)
-        {
+        if ($mostRecent) {
             $diffInMinutes = Carbon::now()->diffInMinutes($mostRecent->created_at);
-            if($diffInMinutes < config('dofus.support.minutes_between_actions'))
+            if ($diffInMinutes < config('dofus.support.minutes_between_actions')) {
                 return (int)(config('dofus.support.minutes_between_actions') - $diffInMinutes);
-            else
+            } else {
                 return "can";
+            }
         }
         return "can";
     }
@@ -72,8 +73,7 @@ class SupportController extends Controller
     {
         $request = SupportRequest::findOrFail($requestId);
 
-        if(!$this->isTicketRequestOwnedByMe($requestId))
-        {
+        if (!$this->isTicketRequestOwnedByMe($requestId)) {
             throw new GenericException('not_ticket_owner');
         }
 
@@ -82,29 +82,26 @@ class SupportController extends Controller
 
         $htmlReport = $request->generateHtmlReport(json_decode($ticket->data));
 
-        foreach($messages as $k => $message) // Chaque ticket (messages)
-        {
-           $infos = array();
-           $datas = json_decode($message->data);
+        foreach ($messages as $k => $message) { // Chaque ticket (messages)
+            $infos = [];
+            $datas = json_decode($message->data);
 
-           foreach($datas as $key => $data)
-           {
-               $keyData = explode('|', $key);
+            foreach ($datas as $key => $data) {
+                $keyData = explode('|', $key);
                
-               if (count($keyData) < 2)
-                {
+                if (count($keyData) < 2) {
                     continue;
                 }
 
                 $keyText = str_replace('"', ' ', $keyData[1]);
-                if($keyData[0] == 'message')
+                if ($keyData[0] == 'message') {
                     $infos[$keyData[0]] = $data;
-           }
-           $messages[$k]->data = $infos;
+                }
+            }
+            $messages[$k]->data = $infos;
         }
 
         return view('support/show', compact('request', 'messages', 'htmlReport'));
-
     }
 
     public function create()
@@ -120,13 +117,11 @@ class SupportController extends Controller
 
     public function switchStatus(Request $request, $id)
     {
-         if(!$this->isTicketRequestOwnedByMe($id))
-        {
+        if (!$this->isTicketRequestOwnedByMe($id)) {
             throw new GenericException('not_ticket_owner');
         }
 
-        if($this->diffInMinutes($id, 2) != 'can')
-        {
+        if ($this->diffInMinutes($id, 2) != 'can') {
             $minutes = $this->diffInMinutes($id, 2);
             $message = "Vous devez attendre encore $minutes minutes avant d'effectuer cette action.";
             $request->session()->flash('notify', ['type' => 'error', 'message' => $message]);
@@ -135,14 +130,11 @@ class SupportController extends Controller
 
         $supportRequest = SupportRequest::findOrFail($id);
 
-        if($supportRequest->isOpen())
-        {
+        if ($supportRequest->isOpen()) {
             $supportRequest->state = SupportRequest::CLOSE;
             $supportRequest->save();
             $message = "Le ticket est maintenant cloturé";
-        }
-        else
-        {
+        } else {
             $supportRequest->state = SupportRequest::OPEN;
             $supportRequest->save();
             $message = "Le ticket est maintenant ré-ouvert";
@@ -167,13 +159,11 @@ class SupportController extends Controller
     public function postMessage(Request $request, $id)
     {
 
-        if(!$this->isTicketRequestOwnedByMe($id))
-        {
+        if (!$this->isTicketRequestOwnedByMe($id)) {
             throw new GenericException('not_ticket_owner');
         }
 
-        if($this->diffInMinutes($id, 1) != 'can')
-        {
+        if ($this->diffInMinutes($id, 1) != 'can') {
             $minutes = $this->diffInMinutes($id, 1);
             $message = "Vous devez attendre encore $minutes minutes avant d'effectuer cette action.";
             $request->session()->flash('notify', ['type' => 'error', 'message' => $message]);
@@ -181,14 +171,13 @@ class SupportController extends Controller
         }
 
         $validator = Validator::make($request->all(), SupportTicket::$rules['postMessage']);
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator);
-            }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
 
         $supportRequest = SupportRequest::findOrFail($id);
         $message = $request->input('message');
-        if($supportRequest->IsOpen())
-        {
+        if ($supportRequest->IsOpen()) {
             $newKey = 'message|Message';
             $messageArray[$newKey] = $message;
 
@@ -206,14 +195,11 @@ class SupportController extends Controller
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => 'Votre message a bien été envoyé']);
         return redirect()->back();
-        
-
     }
 
     public function store(Request $request)
     {
-        if($this->diffInMinutesCreate() != 'can')
-        {
+        if ($this->diffInMinutesCreate() != 'can') {
             $minutes = $this->diffInMinutesCreate();
             $message = "Vous devez attendre encore $minutes minutes avant d'effectuer cette action.";
             return response()->json(['account' => [0 => $message]], 400);
@@ -222,12 +208,10 @@ class SupportController extends Controller
         $inputs = $request->all();
         $report = [];
 
-        foreach ($inputs as $key => $value)
-        {
+        foreach ($inputs as $key => $value) {
             $keyData = explode('|', $key);
 
-            if (count($keyData) < 2)
-            {
+            if (count($keyData) < 2) {
                 continue;
             }
 
@@ -237,99 +221,84 @@ class SupportController extends Controller
             $keyTextFormated = str_replace('_', ' ', $keyText);
             $newKey = $keyType . '|' . $keyTextFormated;
 
-            if ($keyType == 'message' || $keyType == 'text' || $keyType == 'email')
-            {
+            if ($keyType == 'message' || $keyType == 'text' || $keyType == 'email') {
                 $report[$newKey] = $value;
                 continue;
             }
 
-            if ($keyType == 'image')
-            {
+            if ($keyType == 'image') {
                 $report[$newKey] = $value;
                 continue;
             }
 
             $valueData = explode('|', $value);
 
-            if (count($valueData) < 2)
-            {
+            if (count($valueData) < 2) {
                 continue;
             }
 
             $valueType = $valueData[0];
             $valueText = $valueData[1];
 
-            if ($keyType == 'account')
-            {
+            if ($keyType == 'account') {
                 $report[$newKey] = (int)$valueText;
             }
 
-            if ($keyType == 'character')
-            {
+            if ($keyType == 'character') {
                 $report[$newKey] = (int)$valueText;
             }
 
-            if ($keyType == 'server')
-            {
+            if ($keyType == 'server') {
                 $server = $valueText;
                 $report[$newKey] = $server;
             }
 
-            if ($keyType == 'select')
-            {
+            if ($keyType == 'select') {
                 $report[$newKey] = $valueText;
-                
             }
         }
 
-        if(array_key_exists('server|Serveur', $report))
-        {
-           $server = $report['server|Serveur'];
-           if(!$this->isServerExist($server))
+        if (array_key_exists('server|Serveur', $report)) {
+            $server = $report['server|Serveur'];
+            if (!$this->isServerExist($server)) {
                 return response()->json(['server' => [0 => "Ce serveur n'éxiste pas"]], 400);
+            }
         }
-        if(array_key_exists('account|Compte de jeu', $report))
-        {
-           $accountId = $report['account|Compte de jeu'];
-           $server = $report['server|Serveur'];
-           $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-           if(!$account)
+        if (array_key_exists('account|Compte de jeu', $report)) {
+            $accountId = $report['account|Compte de jeu'];
+            $server = $report['server|Serveur'];
+            $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+            if (!$account) {
                 return response()->json(['account' => [0 => "Le compte de jeu n'éxiste pas"]], 400);
+            }
         }
-        if(array_key_exists('character|Personnage', $report))
-        {
-           $accountId = $report['account|Compte de jeu'];
-           $server = $report['server|Serveur'];
+        if (array_key_exists('character|Personnage', $report)) {
+            $accountId = $report['account|Compte de jeu'];
+            $server = $report['server|Serveur'];
            
             $characterId = $report['character|Personnage'];
 
-            if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
-            {
+            if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId)) {
                 return response()->json(['account' => [0 => "Le personnage n'éxiste pas"]], 400);
-            }        
+            }
         }
         
         $type = $report['select|Ma demande concerne'];
       
         $validator = Validator::make($report, SupportRequest::$rules[$type]);
-        if ($validator->fails()) 
-        {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
         }
 
-        $new_array = array_filter(SupportRequest::$rules[$type], function($val, $key) {
-        return strpos($key, 'image') !== false;
+        $new_array = array_filter(SupportRequest::$rules[$type], function ($val, $key) {
+            return strpos($key, 'image') !== false;
         }, ARRAY_FILTER_USE_BOTH);
         
-        if(!empty($new_array))
-        {
-            foreach($new_array as $k => $array)
-            {
-                if(array_key_exists($k, $report))
-                {
+        if (!empty($new_array)) {
+            foreach ($new_array as $k => $array) {
+                if (array_key_exists($k, $report)) {
                     $image = $report[$k];
-                    if(in_array($image->getClientOriginalExtension(), ['jpeg','jpg','png','bmp']))
-                    {
+                    if (in_array($image->getClientOriginalExtension(), ['jpeg','jpg','png','bmp'])) {
                         $imageName = time() . '.' . $image->getClientOriginalExtension();
                         $image->move(public_path() . "/uploads/support", $imageName);
                         $report[$k] = $imageName;
@@ -356,31 +325,22 @@ class SupportController extends Controller
 
         $user = Auth::user();
 
-        Mail::send('emails.open-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
-            $message->from(config('mail.sender'), 'Azote.us');
-            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-            $message->subject('Azote.us - Ouverture Ticket n°'.$supportRequest->id);
-        });
+        Mail::to($user)->send(new TicketOpen($user, $supportRequest));
 
         return response()->json([Auth::user()->email], 200);
-            
     }
 
     private function isCharacterOwnedByMe($server, $accountId, $characterId)
     {
         $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $account->server = $server;
             $characters = $account->characters(1);
 
-            if ($characters)
-            {
-                foreach ($characters as $character)
-                {
-                    if ($character && $characterId == $character->Id)
-                    {
+            if ($characters) {
+                foreach ($characters as $character) {
+                    if ($character && $characterId == $character->Id) {
                         return true;
                     }
                 }
@@ -392,8 +352,7 @@ class SupportController extends Controller
 
     private function isServerExist($server)
     {
-        if (!in_array($server, config('dofus.servers')))
-        {
+        if (!in_array($server, config('dofus.servers'))) {
             return false;
         }
 

@@ -44,24 +44,20 @@ class VoteRewardDelivery extends Command
     {
         $users = User::all();
 
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             $numberOfTickets = (int)($user->votes / 10);
             $ticketsCounter = 0;
 
-            for ($vote = 10; $vote <= $user->votes; $vote += 10)
-            {
+            for ($vote = 10; $vote <= $user->votes; $vote += 10) {
                 $description = "Cadeau " . $vote . " votes";
 
-                if (Gift::where('user_id', $user->id)->where('description', $description)->first())
-                {
+                if (Gift::where('user_id', $user->id)->where('description', $description)->first()) {
                     continue;
                 }
 
                 $description = "Ticket " . $vote . " votes";
 
-                if (LotteryTicket::where('user_id', $user->id)->where('description', $description)->first())
-                {
+                if (LotteryTicket::where('user_id', $user->id)->where('description', $description)->first()) {
                     continue;
                 }
 

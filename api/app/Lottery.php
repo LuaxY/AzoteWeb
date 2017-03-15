@@ -12,10 +12,8 @@ class Lottery extends Model
     {
         $tickets_type = Lottery::all();
         $ticketsArray = [];
-        if($tickets_type)
-        {
-            foreach ($tickets_type as $ticket_type)
-            {
+        if ($tickets_type) {
+            foreach ($tickets_type as $ticket_type) {
                 $ticketsArray[$ticket_type['type']] = $ticket_type['name'];
             }
         }

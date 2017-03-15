@@ -17571,10 +17571,8 @@ define("jquery.ankama", ["jquery", "lodash"], function(jQuery, lodash) {
         });
         if ($.isTouchDevice()) {
             $(document).on("focus", "input, div, textarea", function(e) {
-                $("body").addClass("fixfixed");
                 e.stopImmediatePropagation()
             }).on("blur", "input, div, textarea", function(e) {
-                $("body").removeClass("fixfixed");
                 e.stopImmediatePropagation()
             })
         }

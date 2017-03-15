@@ -21,8 +21,7 @@ class FillServers
         $servers = [];
         $details = [];
 
-        foreach ($json->servers as $server)
-        {
+        foreach ($json->servers as $server) {
             $data = new \stdClass;
             $data->name     = $server->name;
             $data->version  = $server->version;
@@ -36,8 +35,7 @@ class FillServers
             $servers[] = $server->name;
             $details[$server->name] = $data;
 
-            foreach (['auth', 'world'] as $db)
-            {
+            foreach (['auth', 'world'] as $db) {
                 $db_var = "db_$db";
 
                 $database = [

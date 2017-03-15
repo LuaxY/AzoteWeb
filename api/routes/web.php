@@ -2,16 +2,13 @@
 
 $locale = Request::segment(1);
 
-if (in_array($locale, Config::get('app.locales')))
-{
+if (in_array($locale, Config::get('app.locales'))) {
     App::setLocale($locale);
-}
-else
-{
+} else {
     $locale = null;
 }
 
-Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')], function() {
+Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')], function () {
 
     Route::any('/', [
         'uses' => 'PostController@index',
@@ -356,16 +353,25 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
 
     /* ============ SUPPORT ============ */
     // Temporary support
-    Route::get('livesupport', function(){
+    Route::get('livesupport', function () {
          return view('support/temp');
     });
 
     // BETA for Admins support
-    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/support'], function() {
-        
+    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/support'], function () {
+
         Route::get('/', [
             'uses' => 'SupportController@index',
             'as'   => 'support'
+        ]);
+        
+        Route::get('child/{child}/{params?}', [
+            'uses'       => 'SupportController@child'
+        ]);
+            
+        Route::post('store', [
+            'uses' => 'SupportController@store',
+            'as' => 'support.store'
         ]);
 
         Route::get('closed', [
@@ -378,7 +384,7 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
             'as' => 'support.create'
         ]);
         
-        Route::group(['prefix' => '/ticket/{id}'], function() {
+        Route::group(['prefix' => '/ticket/{id}'], function () {
             
             Route::get('/', [
                 'uses' => 'SupportController@show',
@@ -399,29 +405,27 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
 
     /* ============ SITEMAP ============ */
 
-    Route::get('sitemap.xml', function() {
+    Route::get('sitemap.xml', function () {
         $sitemap = App::make("sitemap");
         $sitemap->setCache('laravel.sitemap', 60);
 
-        if (!$sitemap->isCached())
-        {
-            $sitemap->add(URL::route('home'),           date('c', time()), '1.0', 'daily');
-            $sitemap->add(URL::route('register'),       date('c', time()), '0.9', 'daily');
-            $sitemap->add(URL::route('download'),       date('c', time()), '0.9', 'daily');
-            $sitemap->add(URL::route('login'),          date('c', time()), '0.9', 'daily');
-            $sitemap->add(URL::route('posts'),          date('c', time()), '0.8', 'daily');
-            $sitemap->add(URL::route('ladder.general', ['sigma']),   date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.pvp',     ['sigma']),   date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.guild',   ['sigma']),   date('c', time()), '0.5', 'daily');
+        if (!$sitemap->isCached()) {
+            $sitemap->add(URL::route('home'), date('c', time()), '1.0', 'daily');
+            $sitemap->add(URL::route('register'), date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('download'), date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('login'), date('c', time()), '0.9', 'daily');
+            $sitemap->add(URL::route('posts'), date('c', time()), '0.8', 'daily');
+            $sitemap->add(URL::route('ladder.general', ['sigma']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.pvp', ['sigma']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.guild', ['sigma']), date('c', time()), '0.5', 'daily');
             $sitemap->add(URL::route('ladder.general', ['epsilon']), date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.pvp',     ['epsilon']), date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('ladder.guild',   ['epsilon']), date('c', time()), '0.5', 'daily');
-            $sitemap->add(URL::route('servers'),        date('c', time()), '0.3', 'weekly');
+            $sitemap->add(URL::route('ladder.pvp', ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.guild', ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('servers'), date('c', time()), '0.3', 'weekly');
 
             $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();
 
-            foreach ($posts as $post)
-            {
+            foreach ($posts as $post) {
                 $images = [];
 
                 $images[] = [
@@ -440,9 +444,9 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
 
 /* ============ FAKE CODE PAYMENT ============ */
 
-Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
+Route::group(['domain' => Config::get('dofus.domain.fake')], function () {
 
-    Route::get('/', function() {
+    Route::get('/', function () {
         return "Coming Soon";
     });
 
@@ -492,69 +496,19 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function() {
         'uses'       => 'PaymentController@code_re_fallback_process',
         'as'         => 'code_re_fallback_process'
     ]);
-
-});
-
-/* ============ API ============ */
-
-Route::group(['prefix' => 'api', 'domain' => Config::get('dofus.domain.main')], function()
-{
-    /*Route::group(['prefix' => 'account'], function()
-    {
-        Route::post('register', 'Api\AccountController@register');
-
-        Route::post('login', 'Api\AccountController@login');
-
-        Route::get('profile', [
-            'middleware' => 'auth.api',
-            'uses'       => 'Api\AccountController@profile',
-        ]);
-
-        Route::post('update', [
-            'middleware' => 'auth.api',
-            'uses'       => 'Api\AccountController@update',
-        ]);
-
-        Route::group(['prefix' => 'game'], function()
-        {
-            Route::post('create', [
-                'middleware' => 'auth.api',
-                'uses'       => 'Api\GameAccountController@create',
-            ]);
-
-            Route::post('update', [
-                'middleware' => 'auth.api',
-                'uses'       => 'Api\GameAccountController@update',
-            ]);
-
-            Route::get('characters/{accountId}', [
-                'middleware' => 'auth.api',
-                'uses'       => 'Api\GameAccountController@characters',
-            ])->where('accountId', '[0-9]+');
-        });
-    });*/
-
-    Route::group(['prefix' => 'support'], function()
-    {
-        Route::any('child/{child}/{params?}', [
-            'middleware' => 'auth',
-            'uses'       => 'SupportController@child' 
-        ]);        
-        
-        Route::post('store', [
-            'uses' => 'SupportController@store',
-            'as' => 'support.store'
-        ]);
-    });  
+	
+	Route::any('code/code_re_callback', [
+        'uses'       => 'PaymentController@code_re_callback',
+        'as'         => 'code_re_callback'
+    ]);
 });
 
 /* ============ FORGE ============ */
 
-Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')], function()
-{
-    Route::get('image/{request}', 'Api\ForgeController@image')->where('request', '(.*)');
+Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')], function () {
+    Route::get('image/{request}', 'ForgeController@image')->where('request', '(.*)');
 
-    Route::get('player/{id}/{mode}/{orientation}/{sizeX}/{sizeY}', 'Api\ForgeController@player')->where([
+    Route::get('player/{id}/{mode}/{orientation}/{sizeX}/{sizeY}', 'ForgeController@player')->where([
         'id'          => '[0-9]+',
         'mode'        => '(full|face)',
         'orientation' => '[0-8]',
@@ -562,17 +516,21 @@ Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')]
         'sizeY'       => '[0-9]+'
     ]);
 
-    Route::get('text/{id}', 'Api\ForgeController@text')->where('id', '[0-9]+');
+    Route::get('text/{id}', 'ForgeController@text')->where('id', '[0-9]+');
 });
 
 /* ============ ADMIN PANEL ============ */
 
-Route::group(['middleware' => ['auth', 'admin']], function() {
+Route::group(['middleware' => ['auth', 'admin']], function () {
 
-    Route::controller('filemanager', 'FilemanagerLaravelController');
+    Route::group(['prefix' => 'filemanager'], function () {
+        Route::get('show', 'FilemanagerLaravelController@getShow');
+        Route::get('connectors', 'FilemanagerLaravelController@getConnectors');
+        Route::post('connectors', 'FilemanagerLaravelController@postConnectors');
+    });
 
     /* ============ ADMIN PREFIX ============ */
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'domain' => Config::get('dofus.domain.main')], function() {
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'domain' => Config::get('dofus.domain.main')], function () {
 
         Route::any('/', [
             'uses' => 'AdminController@index',
@@ -580,7 +538,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]);
 
         // ACCOUNT //
-        Route::group(['prefix' => 'account'], function() {
+        Route::group(['prefix' => 'account'], function () {
 
             Route::get('/', [
                 'uses' => 'AccountController@index',
@@ -609,9 +567,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         });
 
         // POSTS //
-        Route::controller('/posts/data', 'PostDatatablesController', [
-            'anyData'  => 'datatables.postdata'
+        Route::get('/posts/data', [
+            'uses' => 'PostDatatablesController@anyData',
+            'as'  => 'datatables.postdata'
         ]);
+
         Route::resource('post', 'PostController', ['names' => [
             'index'   => 'admin.posts', // GET Index
             'create'  => 'admin.post.create', // GET Create
@@ -640,11 +600,12 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]]);
 
         // USERS //
-        Route::controller('/users/data', 'UserDatatablesController', [
-            'anyData'  => 'datatables.userdata'
+        Route::get('/users/data', [
+            'uses' => 'UserDatatablesController@anyData',
+            'as'  => 'datatables.userdata'
         ]);
 
-        Route::group(['prefix' => 'user/{user}'], function() {
+        Route::group(['prefix' => 'user/{user}'], function () {
 
             // Users actions
             Route::patch('ban', [
@@ -698,53 +659,53 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             ]);
 
             // Game Accounts
-            Route::group(['prefix' => 'server/{server}'], function() {
+            Route::group(['prefix' => 'server/{server}'], function () {
 
                 // Index
                 Route::get('/', [
                     'uses' => 'GameAccountController@index',
                     'as'   => 'admin.user.game.accounts'
-                ])->where('user','[0-9]+');
+                ])->where('user', '[0-9]+');
                 // Store
                 Route::post('/store', [
                     'uses' => 'GameAccountController@store',
                     'as'   => 'admin.user.game.account.store'
-                ])->where('user','[0-9]+');
+                ])->where('user', '[0-9]+');
                 // Edit (view)
                 Route::get('/{id}/edit', [
                     'uses' => 'GameAccountController@edit',
                     'as'   => 'admin.user.game.account.edit'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Ban
                 Route::patch('/{id}/ban', [
                     'uses' => 'GameAccountController@ban',
                     'as'   => 'admin.user.game.account.ban'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unban
                 Route::patch('/{id}/unban', [
                     'uses' => 'GameAccountController@unban',
                     'as'   => 'admin.user.game.account.unban'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Jail
                 Route::patch('/{id}/jail', [
                     'uses' => 'GameAccountController@jail',
                     'as'   => 'admin.user.game.account.jail'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unjail
                 Route::patch('/{id}/unjail', [
                     'uses' => 'GameAccountController@unjail',
                     'as'   => 'admin.user.game.account.unjail'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Unjail
                 Route::patch('/{id}/password', [
                     'uses' => 'GameAccountController@password',
                     'as'   => 'admin.user.game.account.password'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
                 // Update
                 Route::patch('/{id}', [
                     'uses' => 'GameAccountController@update',
                     'as'   => 'admin.user.game.account.update'
-                ])->where('user','[0-9]+')->where('id', '[0-9]+');
+                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
             });
         });
 
@@ -758,11 +719,12 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]]);
 
         // CHARACTERS //
-        Route::controller('/characters/data', 'CharacterDatatablesController', [
-            'anyData'  => 'datatables.characterdata'
+        Route::get('/characters/data/{server}', [
+            'uses' => 'CharacterDatatablesController@anyData',
+            'as'  => 'datatables.charactersdata'
         ]);
 
-        Route::get('characters', [
+        Route::get('characters/{server}', [
             'uses' => 'CharacterController@index',
             'as'   => 'admin.characters'
         ]);
@@ -778,7 +740,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]);
 
         // ANNOUNCES //
-        Route::group(['prefix' => 'announces/{server}'], function() {
+        Route::group(['prefix' => 'announces/{server}'], function () {
 
             // Users actions
             Route::get('/', [
@@ -799,23 +761,26 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             Route::delete('/{Id}', [
                 'uses' => 'AnnounceController@destroy',
                 'as'   => 'admin.announce.destroy'
-            ]);
+            ])->where('Id', '[0-9]+');
+            ;
 
             Route::get('/{Id}/edit', [
                 'uses' => 'AnnounceController@edit',
                 'as'   => 'admin.announce.edit'
-            ]);
+            ])->where('Id', '[0-9]+');
+            ;
 
             Route::patch('/{Id}', [
                 'uses' => 'AnnounceController@update',
                 'as'   => 'admin.announce.update'
-            ]);
-
+            ])->where('Id', '[0-9]+');
+            ;
         });
 
         // TRANSACTIONS //
-        Route::controller('/transactions/data', 'TransactionDatatablesController', [
-            'anyData'  => 'datatables.transactionsdata'
+        Route::get('/transactions/data', [
+            'uses' => 'TransactionDatatablesController@anyData',
+            'as'  => 'datatables.transactionsdata'
         ]);
 
         Route::get('transactions', [
@@ -829,8 +794,9 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         ]);
 
         // TICKETS //
-        Route::controller('/lotterytickets/data', 'LotteryTicketDatatablesController', [
-            'anyData'  => 'datatables.lotteryticketsdata'
+        Route::get('/lotterytickets/data', [
+            'uses' => 'LotteryTicketDatatablesController@anyData',
+            'as'  => 'datatables.lotteryticketsdata'
         ]);
 
         Route::get('lottery/tickets', [
@@ -841,7 +807,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
         Route::get('lottery/{lottery}/items/{serverId}/{itemid}/search', [
             'uses' => 'LotteryItemController@getItemData',
             'as'   => 'admin.lottery.item.getdata'
-        ])->where('itemid','[0-9]+');
+        ])->where('itemid', '[0-9]+');
 
         Route::resource('lottery/{lottery}/items', 'LotteryItemController', ['only' => [
             'index', 'store', 'update', 'destroy'], 'names' => [
@@ -849,7 +815,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'store'   => 'admin.lottery.item.store',
             'update'  => 'admin.lottery.item.update',
             'destroy' => 'admin.lottery.item.destroy'
-        ]]);
+            ]]);
 
         Route::resource('lottery', 'LotteryController', ['only' => [
             'index', 'create', 'store', 'edit', 'update'], 'names' => [
@@ -858,19 +824,25 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             'store'   => 'admin.lottery.store',
             'edit'    => 'admin.lottery.edit',
             'update'  => 'admin.lottery.update'
-        ]]);
+            ]]);
 
         // SUPPORT //
-        Route::controller('/support/opendata', 'SupportDatatablesController', [
-            'anyDataOpen'  => 'datatables.supportopendata'
+        Route::get('/support/opendata', [
+            'uses' => 'SupportDatatablesController@anyDataOpen',
+            'as'  => 'datatables.supportopendata'
         ]);
-        Route::controller('/support/closeddata', 'SupportDatatablesController', [
-            'anyDataClosed'  => 'datatables.supportcloseddata'
+
+        Route::get('/support/closeddata', [
+            'uses' => 'SupportDatatablesController@anyDataClosed',
+            'as'  => 'datatables.supportcloseddata'
         ]);
-        Route::controller('/support/minedata', 'SupportDatatablesController', [
-            'anyDataMine'  => 'datatables.supportminedata'
+
+        Route::get('/support/minedata', [
+            'uses' => 'SupportDatatablesController@anyDataMine',
+            'as'  => 'datatables.supportminedata'
         ]);
-        Route::group(['prefix' => 'support'], function() {
+
+        Route::group(['prefix' => 'support'], function () {
 
             //Support actions
             Route::get('/', [
@@ -887,7 +859,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
             ]);
 
             //Specific ticket actions
-            Route::group(['prefix' => '/ticket/{id}'], function() {
+            Route::group(['prefix' => '/ticket/{id}'], function () {
                 Route::get('/', [
                 'uses' => 'SupportController@show',
                 'as'   => 'admin.support.ticket.show'
@@ -914,6 +886,5 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
                 ])->where('id', '[0-9]+');
             });
         });
-
     });
 });

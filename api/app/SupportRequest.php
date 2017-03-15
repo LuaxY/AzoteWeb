@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use URL;
 use Auth;
+
 class SupportRequest extends Model
 {
     protected $table = 'support_requests';
@@ -13,22 +14,22 @@ class SupportRequest extends Model
     const WAIT   = 1; // Ticket wait user response
     const CLOSE  = 2; // Ticket closed
     
-    public static $rules = 
+    public static $rules =
     [
-            "La boutique" => 
+            "La boutique" =>
             [
                 "text|Code reçu" => "sometimes|required|alpha_num|between:7,8",
                 "text|Sujet" => "required|between:1,30",
                 "message|Message" => "required|between:1,400",
                 "image|Preuve d'achat" => "required|image|mimes:jpeg,jpg,bmp,png"
             ],
-            "Un autre problème" => 
+            "Un autre problème" =>
             [
                 "text|Sujet" => "required|between:1,30",
                 "message|Message" => "required|between:1,400",
                 "image|Screenshot" => "image|mimes:jpeg,jpg,bmp,png"
             ],
-            "Un problème en jeu" => 
+            "Un problème en jeu" =>
             [
                 "text|Sujet" => "required|between:1,30",
                 "message|Message" => "required|between:1,400",
@@ -41,7 +42,7 @@ class SupportRequest extends Model
                 "image|Screenshot" => "image|mimes:jpeg,jpg,bmp,png",
                 "text|E-mail du compte perdu" => "sometimes|required|email"
             ],
-	];
+    ];
 
     public static $rulesAdmin =
     [
@@ -57,17 +58,15 @@ class SupportRequest extends Model
     }
 
     public function userAssigned()
-    {        
-        if($this->assign_to)
-        {
+    {
+        if ($this->assign_to) {
              $user = User::where('id', $this->assign_to)->first();
-             if($user)
-                 return $user;
-             else
-                 return 0;
-        }
-        else
-        {
+            if ($user) {
+                return $user;
+            } else {
+                return 0;
+            }
+        } else {
              return 0;
         }
     }
@@ -84,18 +83,16 @@ class SupportRequest extends Model
 
     public function lastTicketAuthor()
     {
-        $message = SupportTicket::select('user_id')->where('request_id', $this->id)->orderBy('id','desc')->first();
+        $message = SupportTicket::select('user_id')->where('request_id', $this->id)->orderBy('id', 'desc')->first();
 
-        if ($message)
-        {
-            $user = User::select('pseudo','rank')->where('id', $message->user_id)->first();
-            if($user)
+        if ($message) {
+            $user = User::select('pseudo', 'rank')->where('id', $message->user_id)->first();
+            if ($user) {
                 return $user;
-            else
+            } else {
                 return 0;
-        }
-        else
-        {
+            }
+        } else {
             return 0;
         }
     }
@@ -112,15 +109,14 @@ class SupportRequest extends Model
         $accountId = 0;
         $characterId = 0;
 
-        foreach ($report as $key => $value)
-        {
-            if($key == 'message|Message')
+        foreach ($report as $key => $value) {
+            if ($key == 'message|Message') {
                 continue;
+            }
             list($type, $key) = explode('|', $key);
 
             $html .= "<b>$key</b> : ";
-            switch ($type)
-            {
+            switch ($type) {
                 case 'text':
                 case 'message':
                 case 'select':
@@ -131,19 +127,15 @@ class SupportRequest extends Model
                     $html .= "<div class='ak-support-image'><a href='$route' data-lightbox='image' data-title='$value'><img alt='' class='img-responsive' src='$route'></a></div>";
                     break;
                 case 'server':
-                    if (!$this->isServerExist($value))
-                    {
+                    if (!World::isServerExist($value)) {
                         $html .= "Non trouvé";
-                    }
-                    else
-                    {
+                    } else {
                         $server = $value;
                         $html .= ucfirst($server);
                     }
                     break;
                 case 'account':
-                    if ($server == '')
-                    {
+                    if ($server == '') {
                         $html .= "Non trouvé";
                         break;
                     }
@@ -151,35 +143,27 @@ class SupportRequest extends Model
                     $accountId = $value;
                     $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
-                    if ($account)
-                    {
+                    if ($account) {
                         $html .= $account->Nickname;
-                    }
-                    else
-                    {
+                    } else {
                         $html .= "Non trouvé";
                     }
                     break;
                 case 'character':
-                    if ($server == '' || $accountId == 0)
-                    {
+                    if ($server == '' || $accountId == 0) {
                         $html .= "Non trouvé";
                         break;
                     }
 
                     $characterId = $value;
-                    $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);;
+                    $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);
+                    ;
 
-                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId))
-                    {
+                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId)) {
                         $html .= "Non trouvé (#1)";
-                    }
-                    elseif ($character)
-                    {
+                    } elseif ($character) {
                         $html .= $character->Name;
-                    }
-                    else
-                    {
+                    } else {
                         $html .= "Non trouvé (#2)";
                     }
                     break;
@@ -196,17 +180,13 @@ class SupportRequest extends Model
     {
         $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $account->server = $server;
             $characters = $account->characters(1);
 
-            if ($characters)
-            {
-                foreach ($characters as $character)
-                {
-                    if ($character && $characterId == $character->Id)
-                    {
+            if ($characters) {
+                foreach ($characters as $character) {
+                    if ($character && $characterId == $character->Id) {
                         return true;
                     }
                 }
@@ -214,15 +194,5 @@ class SupportRequest extends Model
                 return false;
             }
         }
-    }
-
-    private function isServerExist($server)
-    {
-        if (!in_array($server, config('dofus.servers')))
-        {
-            return false;
-        }
-
-        return true;
     }
 }

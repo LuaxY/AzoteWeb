@@ -25,8 +25,7 @@ class LotteryController extends Controller
 
     public function index()
     {
-        $lotteryTypes = Cache::remember('lottery_admin', 10, function()
-        {
+        $lotteryTypes = Cache::remember('lottery_admin', 10, function () {
             return Lottery::all();
         });
 
@@ -39,7 +38,7 @@ class LotteryController extends Controller
         return view('admin.lottery.edit', compact('type'));
     }
 
-    public function update (Request $request, Lottery $lottery)
+    public function update(Request $request, Lottery $lottery)
     {
         $rules = [
             'name'               => 'required|min:3|max:30|unique:lottery,name,' . $lottery->id,
@@ -58,8 +57,7 @@ class LotteryController extends Controller
         $lottery = Lottery::findOrFail($lottery->id);
         $lottery->name = $request->name;
 
-        if($request->hasFile('icon_path'))
-        {
+        if ($request->hasFile('icon_path')) {
             $file = $request->file('icon_path');
 
             $image_name = "ticket_".$file->getClientOriginalName();
@@ -71,8 +69,7 @@ class LotteryController extends Controller
             Image::make(sprintf('imgs/lottery/%s', $image_name))->resize(200, 200)->save();
             $lottery->icon_path = 'imgs/lottery/'.$image_name;
         }
-        if($request->hasFile('image_path'))
-        {
+        if ($request->hasFile('image_path')) {
             $file = $request->file('image_path');
 
             $image_name = "box_".$file->getClientOriginalName();
@@ -92,12 +89,12 @@ class LotteryController extends Controller
         return redirect()->route('admin.lottery');
     }
 
-    public function create ()
+    public function create()
     {
         return view('admin.lottery.create');
     }
 
-    public function store (Request $request)
+    public function store(Request $request)
     {
         $rules = [
             'name'               => 'required|min:3|max:30|unique:lottery,name',

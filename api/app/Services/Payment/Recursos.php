@@ -23,16 +23,16 @@ class Recursos extends Payment
         $prices = explode('|', config('dofus.payment.recursos.prices'));
         $coeff  = config('dofus.payment.recursos.coeff');
 
-        if ($prices)
-        {
+        if ($prices) {
             $countryName = 'fr';
             $methodName  = 'carte bancaire';
+			$methodSMS 	 = 'sms';
 
             $this->rates->$countryName = new \stdClass;
             $this->rates->$countryName->$methodName = new \stdClass;
+            $this->rates->$countryName->$methodSMS = new \stdClass;
 
-            foreach ($prices as $price)
-            {
+            foreach ($prices as $price) {
                 $newMethod = new \stdClass;
 
                 $newMethod->devise   = "&euro;";
@@ -43,8 +43,7 @@ class Recursos extends Payment
                 $newMethod->link     = route('redirect_recursos_cb');
                 $newMethod->recursos = true;
 
-                if (config('app.env') == 'production')
-                {
+                if (config('app.env') == 'production') {
                     $newMethod->link = str_replace('http:', 'https:', $newMethod->link);
                 }
 
@@ -58,7 +57,31 @@ class Recursos extends Payment
                 $palier = substr(md5($newMethod->cost), 0, 5);
 
                 $this->rates->$countryName->$methodName->$palier = $newMethod;
+            }			
+						
+			$cid = config('dofus.payment.recursos.c_sms');
+			$wmid = config('dofus.payment.recursos.w');
+			
+			$newMethodSMS = new \stdClass;
+			
+			$newMethodSMS->devise   = "&euro;";
+            $newMethodSMS->points   = 0;
+            $newMethodSMS->price    = 0;
+            $newMethodSMS->cost     = "Paliers sur la prochaine page";
+            $newMethodSMS->text     = "";
+            $newMethodSMS->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr";
+            $newMethodSMS->recursos = true;
+
+            if (config('app.env') == 'production') {
+                $newMethodSMS->link = str_replace('http:', 'https:', $newMethodSMS->link);
             }
+
+            $newMethodSMS->legal = new \stdClass;
+            $newMethodSMS->legal->header    = null;
+            $newMethodSMS->legal->phone     = null;
+            $newMethodSMS->legal->shortcode = null;
+            $newMethodSMS->legal->keyword   = null;
+            $newMethodSMS->legal->footer    = null;
         }
     }
 
@@ -71,8 +94,7 @@ class Recursos extends Payment
     {
         if (property_exists($this->rates, $country) &&
             property_exists($this->rates->$country, $method) &&
-            property_exists($this->rates->$country->$method, $palier))
-        {
+            property_exists($this->rates->$country->$method, $palier)) {
             return $this->rates->$country->$method->$palier;
         }
 
@@ -81,12 +103,13 @@ class Recursos extends Payment
 
     public function check($country, $method, $palier, $code)
     {
-
     }
 
     public function redirect_cb($key = null, $palier = null)
     {
-        if (!$key || !$palier) return redirect()->route('error.fake', [6]);
+        if (!$key || !$palier) {
+            return redirect()->route('error.fake', [6]);
+        }
 
         $method = $this->palier('fr', 'carte bancaire', $palier);
 
@@ -122,13 +145,11 @@ class Recursos extends Payment
     {
         $recursos = RecursosTransaction::where('key', $key)->first();
 
-        if (!$recursos || $recursos->isUsed)
-        {
+        if (!$recursos || $recursos->isUsed) {
             return false;
         }
 
-        if (!$recursos->code)
-        {
+        if (!$recursos->code) {
             $c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
             curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
@@ -165,8 +186,7 @@ class Recursos extends Payment
 
         $data = explode(':', $result);
 
-        if ($data[0] == "OK")
-        {
+        if ($data[0] == "OK") {
             $recursos->isUsed = true;
             $recursos->save();
 

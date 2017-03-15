@@ -24,35 +24,30 @@ class Character extends Model
         // Prestige
         $tempExp = $this->Experience;
 
-        if ($server == 'epsilon')
-        {
-            $maxExp = Cache::remember('exp_' . $server . '_max', 1000, function() use($server) {
+        if (config('dofus.details')[$server]->prestige) {
+            $maxExp = Cache::remember('exp_' . $server . '_max', 1000, function () use ($server) {
                 return Experience::on($server . '_world')->orderBy('CharacterExp', 'desc')->first();
             });
 
-            if ($maxExp)
-            {
+            if ($maxExp) {
                 $tempExp = $this->Experience - ($this->PrestigeRank * $maxExp->CharacterExp);
             }
         }
 
-        $exp = Cache::remember('exp_' . $server . '_' . $tempExp, 1000, function() use($server, $tempExp) {
+        $exp = Cache::remember('exp_' . $server . '_' . $tempExp, 1000, function () use ($server, $tempExp) {
             return Experience::on($server . '_world')->where('CharacterExp', '<=', $tempExp)->orderBy('Level', 'desc')->first();
         });
 
-        if ($exp)
-        {
+        if ($exp) {
             return $exp->Level;
-        }
-        else
-        {
+        } else {
             return 1;
         }
     }
 
     public function classe()
     {
-        $classes = [
+         $classes = [
             1  => 'Féca',
             2  => 'Osamodas',
             3  => 'Enutrof',
@@ -71,9 +66,9 @@ class Character extends Model
             16 => 'Eliotrope',
             17 => 'Huppermage',
             18 => 'Ouginak'
-        ];
+         ];
         
-        return array_key_exists($this->Breed, $classes) ? $classes[$this->Breed] : "Classe inconnue";
+         return array_key_exists($this->Breed, $classes) ? $classes[$this->Breed] : "Classe inconnue";
     }
 
     public function alignement()

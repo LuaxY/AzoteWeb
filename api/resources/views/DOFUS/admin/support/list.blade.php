@@ -72,7 +72,7 @@
                         $('[data-toggle="tooltip"]').tooltip()
                     } ).DataTable({
                         "order": [[ 0, "desc" ]],
-                        processing: false,
+                        processing: true,
                         serverSide: false,
                         autoWidth: true,
                         responsive: true,
@@ -92,7 +92,8 @@
                     });
 
                     $('#support-table tfoot th').each( function () {
-                            if($(this)[0].className != "actions")
+                        var classNamed = $(this)[0].className;
+                            if(classNamed != "actions")
                             {
                                 var title = $(this).text();
                                 $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
@@ -113,7 +114,6 @@
                     }
                     } );
 
-
                     $('#support-table tbody').on('click', 'tr td:not(.actions)', function () {
                          var row_clicked = $(this).index();
                           $( 'input', oTable.column(row_clicked).footer() ).val(noHtml(oTable.cell( this ).data())).keyup();
@@ -123,20 +123,22 @@
                         if(Number.isInteger(txt)){
                             return (txt);
                         }
-                    a = txt.indexOf('<');
-                        b = txt.indexOf('>');
-                        len = txt.length;
-                        c = txt.substring(0, a);
-                        if(b == -1) {
-                        b = a;
-                        }
-                        d = txt.substring((b + 1), len);
-                        txt = c + d;
-                        cont = txt.indexOf('<');
-                        if (a != b) {
-                        txt = noHtml(txt);
-                        }
-                    return(txt);
+                            a = txt.indexOf('<');
+                            b = txt.indexOf('>');
+                            len = txt.length;
+                            c = txt.substring(0, a);
+                                if(b == -1) 
+                                {
+                                    b = a;
+                                }
+                            d = txt.substring((b + 1), len);
+                            txt = c + d;
+                            cont = txt.indexOf('<');
+                            if (a != b) 
+                            {
+                                txt = noHtml(txt);
+                            }
+                            return(txt);
                     }
 
                     $('#support-table tbody').on('click', 'tr .toswitch', function () {

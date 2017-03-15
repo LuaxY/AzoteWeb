@@ -26,6 +26,6 @@ class AddReplyToTicketTable extends Migration
     {
          Schema::table('support_tickets', function (Blueprint $table) {
             $table->dropColumn('reply');
-        });
+         });
     }
 }

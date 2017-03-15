@@ -19,4 +19,12 @@ class World extends Model
     {
         return $this->CharsCount;
     }
+
+    public static function isServerExist($server)
+    {
+        if (!in_array($server, config('dofus.servers'))) {
+            return false;
+        }
+        return true;
+    }
 }

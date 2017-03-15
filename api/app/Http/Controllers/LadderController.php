@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Cache;
 use \DB;
-
+use App\World;
 use App\Character;
 use App\Guild;
 use App\Exceptions\GenericException;
@@ -16,24 +16,13 @@ class LadderController extends Controller
 {
     const LADDER_CACHE_EXPIRE_MINUTES = 10;
 
-    private function isServerExist($server)
-    {
-        if (!in_array($server, config('dofus.servers')))
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     public function general($server)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        $characters = Cache::remember('ladder.general.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function() use($server) {
+        $characters = Cache::remember('ladder.general.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             $db = config('database.connections');
             $auth  = $db[$server.'_auth']['database'];
             $world = $db[$server.'_world']['database'];
@@ -44,8 +33,7 @@ class LadderController extends Controller
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1);
                                                     
-            if (config('dofus.details')[$server]->prestige)
-            {
+            if (config('dofus.details')[$server]->prestige) {
                 $result = $result->orderBy('ch.PrestigeRank', 'DESC');
             }
 
@@ -53,7 +41,7 @@ class LadderController extends Controller
                 ->take(100)
                 ->get();
 
-            return Character::hydrate($result);
+            return Character::hydrate($result->toArray());
         });
 
         return view('ladder.general', ['server' => $server, 'current' => 'general',  'characters' => $characters]);
@@ -61,12 +49,11 @@ class LadderController extends Controller
 
     public function pvp($server)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        $characters = Cache::remember('ladder.pvp.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function() use($server) {
+        $characters = Cache::remember('ladder.pvp.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             $db = config('database.connections');
             $auth  = $db[$server.'_auth']['database'];
             $world = $db[$server.'_world']['database'];
@@ -82,7 +69,7 @@ class LadderController extends Controller
                 ->take(100)
                 ->get();
 
-            return Character::hydrate($result);
+            return Character::hydrate($result->toArray());
         });
 
         return view('ladder.pvp', ['server' => $server, 'current' => 'pvp', 'characters' => $characters]);
@@ -90,12 +77,11 @@ class LadderController extends Controller
 
     public function guild($server)
     {
-        if (!$this->isServerExist($server))
-        {
+        if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        $guilds = Cache::remember('ladder.guilds.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function() use($server) {
+        $guilds = Cache::remember('ladder.guilds.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             return Guild::on($server.'_world')->orderBy('Experience', 'DESC')->take(100)->get();
         });
 

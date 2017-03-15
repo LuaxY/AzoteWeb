@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yuansir\Toastr\Facades\Toastr;
 use App\ForumAccount;
+use App\Mail\Admin\UserUpdated;
+use App\Mail\UserCreated;
 
 class UserController extends Controller
 {
@@ -34,11 +36,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user->id);
         $transactions = $user->transactions(10);
-        $tickets = Cache::remember('tickets_admin_' . $user->id, 10, function() use($user) {
+        $tickets = Cache::remember('tickets_admin_' . $user->id, 10, function () use ($user) {
             return LotteryTicket::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(10)->get();
         });
         $ticketsArray = Lottery::fetchTicketsType();
-        return view('admin.users.edit', compact('user','transactions', 'tickets', 'ticketsArray'));
+        return view('admin.users.edit', compact('user', 'transactions', 'tickets', 'ticketsArray'));
     }
 
     public function store(Request $request)
@@ -66,8 +68,6 @@ class UserController extends Controller
         $user->ticket = $request->active == 1 ? null : str_random(32);
         $user->save();
 
-        // TODO validator for forum account
-
         $forumAccount = new ForumAccount;
         $forumAccount->name              = $user->pseudo;
         $forumAccount->member_group_id   = config('dofus.forum.user_group');
@@ -84,8 +84,7 @@ class UserController extends Controller
         $user->forum_id = $forumAccount->member_id;
         $user->save();
 
-        if(!$request->active)
-        {
+        if (!$request->active) {
             $forumAccountValidating = new ForumAccountValidating;
             $forumAccountValidating->vid = $user->forum_id;
             $forumAccountValidating->member_id = $user->forum_id;
@@ -93,17 +92,12 @@ class UserController extends Controller
             $forumAccountValidating->save();
         }
 
-        setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
-        if(!$request->active)
-        {
-            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
-                $message->from('welcome@azote.us', 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Confirmation d\'inscription');
-            });
-            Toastr::success('Email send to user', $title = null, $options = []);
+        if (!$request->active) {
+            Mail::to($user)->send(new UserCreated($user));
+            Toastr::success('E-mail send', $title = null, $options = []);
         }
 
         Toastr::success('User created', $title = null, $options = []);
@@ -116,7 +110,7 @@ class UserController extends Controller
             'pseudo'    => 'required|min:3|max:32|alpha_dash|unique:users,pseudo,' . $user->id,
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
-            'birthday'  => 'date',
+            'birthday'  => 'nullable|date',
             'email'     => 'required|email|unique:users,email, ' . $user->id,
             'rank'      => 'required|in:0,4',
             'points'    => 'required|numeric'
@@ -135,26 +129,20 @@ class UserController extends Controller
         $user->lastname  = $request['lastname'];
         $user->rank      = $request['rank'];
         $user->points    = $request['points'];
-        $user->birthday  = empty($request['birthday']) ? null : $request['birthday'];
+        $user->birthday  = is_null($request['birthday']) ? null : $request['birthday'];
         $user->save();
 
         $forumAccount = $user->forum()->first();
 
-        if ($forumAccount)
-        {
+        if ($forumAccount) {
             $forumAccount->email = $request['email'];
             $forumAccount->name = $request['pseudo'];
             $forumAccount->members_seo_name  = strtolower($request['pseudo']);
             $forumAccount->save();
         }
 
-        if($request->useradvert == true)
-        {
-            Mail::send('emails.admin-email-update', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Changement d\'adresse e-mail');
-            });
+        if ($request->useradvert == true) {
+            Mail::to($user)->send(new UserUpdated($user));
             Toastr::success('E-mail send', $title = null, $options = []);
         }
 
@@ -162,10 +150,8 @@ class UserController extends Controller
 
         $gameAccounts = $user->accounts();
 
-        if($gameAccounts)
-        {
-            foreach ($gameAccounts as $gameAccount)
-            {
+        if ($gameAccounts) {
+            foreach ($gameAccounts as $gameAccount) {
                 $gameAccount->Email = $request->input('email');
                 $gameAccount->save();
             }
@@ -175,10 +161,8 @@ class UserController extends Controller
         $user->save();
 
         $servers = config('dofus.servers');
-        if($servers)
-        {
-            foreach ($servers as $server)
-            {
+        if ($servers) {
+            foreach ($servers as $server) {
                 Cache::forget('accounts_' . $server . '_' . $user->id);
             }
         }
@@ -221,15 +205,13 @@ class UserController extends Controller
         $user->save();
 
         $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
-        if($userForumValidating)
-        {
+        if ($userForumValidating) {
             $userForumValidating->delete();
         }
 
         $forumAccount = $user->forum()->first();
 
-        if ($forumAccount)
-        {
+        if ($forumAccount) {
             $forumAccount->members_bitoptions = '0';
             $forumAccount->save();
         }
@@ -290,20 +272,16 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user->id);
         $old_avatar = $user->avatar;
-        if($old_avatar != config('dofus.default_avatar'))
-        {
+        if ($old_avatar != config('dofus.default_avatar')) {
             File::delete($old_avatar);
             $new_avatar = config('dofus.default_avatar');
             $user->avatar = $new_avatar;
             $user->save();
 
             return response()->json([], 200);
-        }
-        else
-        {
+        } else {
             return response()->json([], 403);
         }
-
     }
 
     public function addTicket(User $user, Request $request)
@@ -315,8 +293,7 @@ class UserController extends Controller
         }
 
         $ticketsArray = Lottery::fetchTicketsType();
-        if(!array_key_exists($request->ticket, $ticketsArray))
-        {
+        if (!array_key_exists($request->ticket, $ticketsArray)) {
             return response()->json(['ticket' => ['0' => 'Ce type de ticket est invalide']], 400);
         }
 
@@ -338,14 +315,8 @@ class UserController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user && !$user->active)
-        {
-            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Confirmation d\'inscription');
-            });
-
+        if ($user && !$user->active) {
+            Mail::to($user)->send(new UserCreated($user));
             Toastr::success('E-mail sended', $title = null, $options = []);
         }
 

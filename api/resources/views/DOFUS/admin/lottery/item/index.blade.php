@@ -121,13 +121,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
-                                    <label for="max">Perfect:</label>
-                                    {!! Form::checkbox('max', '1', null, ['class' => '', 'id' => 'max']) !!}
-                                    @if ($errors->has('max'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('max') }}</strong>
-                                        </span>
-                                    @endif
+                                    <div class="checkbox checkbox-inline checkbox-success">
+                                        {!! Form::checkbox('max', '1', null, ['class' => '', 'id' => 'max']) !!}
+                                        <label for="max">Perfect</label>
+                                        @if ($errors->has('max'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('max') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,13 +166,15 @@
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('max') ? ' has-error' : '' }}">
-                                    <label for="max">Perfect:</label>
-                                    {!! Form::checkbox('max', '1', false, ['class' => '', 'id' => 'max_edit']) !!}
-                                    @if ($errors->has('max'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('max') }}</strong>
-                                        </span>
-                                    @endif
+                                   <div class="checkbox checkbox-inline checkbox-success">
+                                        {!! Form::checkbox('max', true, false, ['id' => 'max_edit']) !!}
+                                        <label for="max_edit">Perfect</label>
+                                        @if ($errors->has('max'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('max') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

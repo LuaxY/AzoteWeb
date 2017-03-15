@@ -10,11 +10,16 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yuansir\Toastr\Facades\Toastr;
+use App\World;
 
 class CharacterController extends Controller
 {
-    public function index()
+    public function index($server)
     {
-        return view('admin.characters.index');
+        if (World::isServerExist($server)) {
+            return view('admin.characters.index', compact('server'));
+        } else {
+            abort(404);
+        }
     }
 }

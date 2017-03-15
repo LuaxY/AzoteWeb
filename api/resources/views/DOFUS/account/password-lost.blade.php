@@ -20,9 +20,10 @@
                             <div class="ak-container">
                                 <div class="ak-form">
                                     {!! Form::open(['route' => 'password-lost']) !!}
-                                        <div class="form-group">
+                                        <div class="form-group @if ($errors->has('email')) has-error @endif">
                                             <label class="control-label" for="email">Email</label>
                                             <input type="text" class="form-control" placeholder="Email" name="email" value="{{ Input::old('email') }}" id="email">
+                                            @if ($errors->has('email')) <label class="error control-label">{{ $errors->first('email') }}</label> @endif
                                         </div>
                                         <input type="submit" role="button" class="btn btn-primary btn-lg" value="Réinitialiser le mot de passe">
                                     {!! Form::close() !!}
@@ -33,10 +34,9 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <div class="ak-create-account" style="background:none;padding:0;padding-top:20px;">
+                <div class="ak-create-account" style="padding-top:5px">
                         <h2>Créer un compte</h2>
                         <p>
-                            Pas de compte ?
                             <a class="btn btn-lg btn-info" href="{{ URL::route('register') }}">Créer un compte</a>
                         </p>
                     </div>

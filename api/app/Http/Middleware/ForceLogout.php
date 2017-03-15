@@ -16,23 +16,18 @@ class ForceLogout
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check())
-        {
-            if ($request->session()->has('password'))
-            {
+        if (Auth::check()) {
+            if ($request->session()->has('password')) {
                 $password = $request->session()->get('password');
 
-                if ($password != Auth::user()->password)
-                {
+                if ($password != Auth::user()->password) {
                     Auth::logout();
     
                     return redirect()->route('home');
                 }
                 
                 $request->session()->get('password');
-            }
-            else
-            {
+            } else {
                 $request->session()->put('password', Auth::user()->password);
             }
         }

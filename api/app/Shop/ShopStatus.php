@@ -11,8 +11,7 @@ class ShopStatus
 
     public static function getState($state)
     {
-        switch ($state)
-        {
+        switch ($state) {
             case 0:
                 return 'Success';
             case 1:
@@ -23,5 +22,4 @@ class ShopStatus
                 return 'In progress';
         }
     }
-
 }

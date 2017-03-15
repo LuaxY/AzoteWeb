@@ -42,8 +42,7 @@ class RangeIPBan extends Command
         $amazonIPRanges = $this->getAmazonIPRanges();
         $OVHIPRanges = $this->getOVHIPRanges();
 
-        foreach ($amazonIPRanges as $range)
-        {
+        foreach ($amazonIPRanges as $range) {
             $bannedRange = new BannedIP;
             $bannedRange->description = "Amazon IP";
             $bannedRange->begin       = $range[0];
@@ -54,8 +53,7 @@ class RangeIPBan extends Command
             $bannedRange->save();
         }
 
-        foreach ($OVHIPRanges as $range)
-        {
+        foreach ($OVHIPRanges as $range) {
             $bannedRange = new BannedIP;
             $bannedRange->description = "OVH IP";
             $bannedRange->begin       = $range[0];
@@ -72,12 +70,10 @@ class RangeIPBan extends Command
         $json = json_decode(file_get_contents("https://ip-ranges.amazonaws.com/ip-ranges.json"));
         $ranges = [];
 
-        foreach ($json->prefixes as $prefixe)
-        {
+        foreach ($json->prefixes as $prefixe) {
             $range = $this->cidrToRange($prefixe->ip_prefix);
 
-            if ($range[0] && $range[1] && $range[0] != "0.0.0.0" && $range[1] != "0.0.0.0")
-            {
+            if ($range[0] && $range[1] && $range[0] != "0.0.0.0" && $range[1] != "0.0.0.0") {
                 $ranges[] = $range;
             }
         }
@@ -101,12 +97,10 @@ class RangeIPBan extends Command
 
         preg_match_all('/<td><a href=".*">(.*)<\/a><\/td>/', $html, $matches);
 
-        foreach ($matches[1] as $cidr)
-        {
+        foreach ($matches[1] as $cidr) {
             $range = $this->cidrToRange($cidr);
 
-            if ($range[0] && $range[1] && $range[0] != "0.0.0.0" && $range[1] != "0.0.0.0")
-            {
+            if ($range[0] && $range[1] && $range[0] != "0.0.0.0" && $range[1] != "0.0.0.0") {
                 $ranges[] = $range;
             }
         }
@@ -116,7 +110,7 @@ class RangeIPBan extends Command
 
     private function cidrToRange($cidr)
     {
-        $range = array();
+        $range = [];
         $cidr = explode('/', $cidr);
         $range[0] = long2ip((ip2long($cidr[0])) & ((-1 << (32 - (int)$cidr[1]))));
         $range[1] = long2ip((ip2long($cidr[0])) + pow(2, (32 - (int)$cidr[1])) - 1);

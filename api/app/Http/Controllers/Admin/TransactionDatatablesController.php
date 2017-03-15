@@ -33,27 +33,35 @@ class TransactionDatatablesController extends Controller
 
                 return $buttons;
             })
-            ->editColumn('state', function ($transaction){
-                return ShopStatus::getState($transaction->state);
+            ->editColumn('state', function ($transaction) {
+                $state = ShopStatus::getState($transaction->state);
+                $type = 'info';
+               
+                if ($transaction->state == 0) {
+                    $type = 'success';
+                } elseif ($transaction->state == 1) {
+                    $type = 'danger';
+                } elseif ($transaction->state == 2) {
+                        $type = 'danger';
+                } elseif ($transaction->state == 3) {
+                        $type = 'primary';
+                } else {
+                    $type = '';
+                }
+
+                return '<span class="label label-'.$type.'">'.ShopStatus::getState($transaction->state).'</span>';
             })
-            ->editColumn('user_id', function($transaction){
-                $user = Cache::remember('transaction_user_'. $transaction->user_id, 5, function () use($transaction) {
+            ->editColumn('user_id', function ($transaction) {
+                $user = Cache::remember('transaction_user_'. $transaction->user_id, 5, function () use ($transaction) {
                     return User::where('Id', $transaction->user_id)->select('Email')->first();
                 });
-                if($user)
-                {
+                if ($user) {
                     $text = '<a href="'.route('admin.user.edit', $transaction->user_id).'">'.$user->Email.'</a>';
                     return $text;
-                }
-                else
-                {
+                } else {
                     return 'User not found ('.$transaction->user_id.')';
                 }
             })
             ->make(true);
     }
-
-
-
-
 }

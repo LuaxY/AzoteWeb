@@ -13,8 +13,7 @@ class AccountsForm implements IForm
 
         $accounts = Auth::user()->accounts($server);
 
-        if (count($accounts) > 0)
-        {
+        if (count($accounts) > 0) {
             return view('support.form.accounts', [
                 'name'     => $name,
                 'child'    => isset($field->child) ? $field->child : false,

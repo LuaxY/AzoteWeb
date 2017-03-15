@@ -14,7 +14,6 @@ use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
 use App\User;
 
-
 class AccountController extends Controller
 {
     public function index()
@@ -27,7 +26,7 @@ class AccountController extends Controller
         $validator = Validator::make($request->all(), User::$rules['admin-update-profile']);
 
         if ($validator->fails()) {
-            return redirect(route('admin.profile'))
+            return redirect(route('admin.account'))
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -36,17 +35,14 @@ class AccountController extends Controller
         $user->firstname = $request['firstname'];
         $user->lastname = $request['lastname'];
 
-        if($request->hasFile('avatar'))
-        {
-
+        if ($request->hasFile('avatar')) {
             $old_avatar = Auth::user()->avatar;
             $user_id = Auth::user()->id;
             $file = $request->file('avatar');
 
             $image_name = "avatar-".$file->getClientOriginalName();
 
-            if($old_avatar != config('dofus.default_avatar'))
-            {
+            if ($old_avatar != config('dofus.default_avatar')) {
                 File::delete($old_avatar);
             }
 
@@ -54,20 +50,17 @@ class AccountController extends Controller
 
             Image::make(sprintf('uploads/users/'.$user_id.'/%s', $image_name))->resize(200, 200)->save();
             $user->avatar = 'uploads/users/'.$user_id.'/'.$image_name;
-
         }
         Toastr::success('Account updated', $title = null, $options = []);
         $user->save();
 
         return redirect()->route('admin.account');
-
     }
 
     public function resetAvatar()
     {
         $user = Auth::user();
-        if(Auth::user()->avatar != config('dofus.default_avatar'))
-        {
+        if (Auth::user()->avatar != config('dofus.default_avatar')) {
             $old_avatar = $user->avatar;
             File::delete($old_avatar);
             $new_avatar = config('dofus.default_avatar');
@@ -75,9 +68,7 @@ class AccountController extends Controller
             $user->save();
 
             return response()->json([], 200);
-        }
-        else
-        {
+        } else {
             return response()->json([], 403);
         }
     }
@@ -106,6 +97,5 @@ class AccountController extends Controller
 
         Toastr::success('Password updated', $title = null, $options = []);
         return redirect()->route('admin.account');
-
     }
 }

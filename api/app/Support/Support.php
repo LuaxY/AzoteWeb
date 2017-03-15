@@ -18,8 +18,7 @@ class Support
     {
         $filePath = public_path() . "/support_files/$child.json";
 
-        if (!file_exists($filePath))
-        {
+        if (!file_exists($filePath)) {
             // TODO convert to view
             return "Choix invalide.";
         }
@@ -27,16 +26,13 @@ class Support
         $html = "";
         $json = json_decode(file_get_contents($filePath));
         
-        foreach ($json->fields as $field)
-        {
-
+        foreach ($json->fields as $field) {
             $type = $field->type;
             $name = $field->name;
             $data = (isset($field->data) ? $field->data : false);
 
             $form = false;
-            switch($type)
-            {
+            switch ($type) {
                 case 'text':
                 case 'email':
                 case 'integer':
@@ -68,8 +64,7 @@ class Support
                     break;
             }
 
-            if ($form)
-            {
+            if ($form) {
                 $html .= $form->render($name, $field, $data, $post);
             }
         }

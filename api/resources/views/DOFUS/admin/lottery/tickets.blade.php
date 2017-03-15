@@ -20,9 +20,22 @@
                                 <th>Used</th>
                                 <th>Item</th>
                                 <th>Date</th>
+                                <th>Server</th>
                                 <th>Giver</th>
                             </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Ticket</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Date</th>
+                                <th>Server</th>
+                                <th></th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -47,15 +60,66 @@
                     ajax: '{{ route('datatables.lotteryticketsdata') }}',
                     columns: [
                         {data: 'id', name: 'id'},
-                        {data: 'type', name: 'type'},
-                        {data: 'user_id', name: 'user_id'},
-                        {data: 'used', name: 'used', searchable: false},
-                        {data: 'item_id', name: 'item_id'},
+                        {data: 'description', name: 'description', type: 'text'},
+                        {data: 'user_id', name: 'user_id', class: 'user_id', orderable: false, searchable: false},
+                        {data: 'used', name: 'used', searchable: false, class: 'used', searchable: false},
+                        {data: 'item_id', name: 'item_id', class: 'item_id', orderable: false, searchable: false},
                         {data: 'created_at', name: 'created_at'},
-                        {data: 'giver', name: 'giver', type: 'html'}
+                        {data: 'server', name: 'server'},
+                        {data: 'giver', name: 'giver', class: 'giver', orderable: false, searchable: false}
                     ],
                     rowId: 'id'
                 });
+                $('#tickets-table tfoot th').each( function () {
+                        var classNamed = $(this)[0].className;
+                            if(classNamed != "user_id" && classNamed != "used" && classNamed != "item_id" && classNamed != "giver")
+                            {
+                                var title = $(this).text();
+                                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                            }
+                        } );
+
+                    oTable.columns().every( function () {
+                    var that = this;
+                    if(this.footer())
+                    {
+                        $( 'input', this.footer() ).on( 'keyup change', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        } );
+                    }
+                    } );
+
+                    $('#tickets-table tbody').on('click', 'tr td:not(.user_id,.used,.item_id,.giver)', function () {
+                         var row_clicked = $(this).index();
+                          $( 'input', oTable.column(row_clicked).footer() ).val(noHtml(oTable.cell( this ).data())).keyup();
+                    } );
+
+                    function noHtml(txt) {
+                        if(Number.isInteger(txt)){
+                            return (txt);
+                        }
+                            a = txt.indexOf('<');
+                            b = txt.indexOf('>');
+                            len = txt.length;
+                            c = txt.substring(0, a);
+                                if(b == -1) 
+                                {
+                                    b = a;
+                                }
+                            d = txt.substring((b + 1), len);
+                            txt = c + d;
+                            cont = txt.indexOf('<');
+                            if (a != b) 
+                            {
+                                txt = noHtml(txt);
+                            }
+                            return(txt);
+                    }
+
             });
     </script>
 @endsection

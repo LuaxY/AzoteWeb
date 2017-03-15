@@ -44,7 +44,7 @@
                     {!! Form::close() !!}
                 </div>
                 <div class="col-sm-6">
-                    <p>Pour obtenir vos Ogrines vous devez récupérer la valeur OUT sur une des deux lignes « EPSILON 2.38 » ou « SIGMA 2.10 » et la reporter dans le formulaire:</p>
+                    <p>Pour obtenir vos Ogrines vous devez récupérer la valeur OUT sur une des deux lignes « EPSILON 2.40 » ou « SIGMA 2.10 » et la reporter dans le formulaire:</p>
                     <img src="{{ URL::asset('imgs/help/out.jpg') }}" alt="Valeur OUT" width="300px">
                 </div>
             </div>

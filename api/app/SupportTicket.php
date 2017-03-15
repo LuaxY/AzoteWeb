@@ -10,17 +10,17 @@ class SupportTicket extends Model
     protected $table = 'support_tickets';
 
     public static $rules = [
-		'postMessage' => [
-			'message' => 'required|min:3|max:400',
-		],
+        'postMessage' => [
+            'message' => 'required|min:3|max:400',
+        ],
         'postMessageAdmin' => [
             'message' => 'required',
         ]
-	];
-	public function author()
-	{
-		return User::where('id', $this->user_id)->first();
-	}
+    ];
+    public function author()
+    {
+        return User::where('id', $this->user_id)->first();
+    }
 
     public function request()
     {
@@ -31,5 +31,4 @@ class SupportTicket extends Model
     {
         return ($this->reply == 2);
     }
-
 }

@@ -8,10 +8,9 @@ use App\SupportRequest;
 
 class Utils
 {
-    static public function transaction_status($status)
+    public static function transaction_status($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case ShopStatus::PAYMENT_SUCCESS:
                 $status_text = "Validé";
                 break;
@@ -27,10 +26,9 @@ class Utils
         return $status_text;
     }
 
-    static public function transfert_status($status)
+    public static function transfert_status($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case Transfert::IN_PROGRESS:
                 $status_text = "En cours";
                 break;
@@ -50,10 +48,9 @@ class Utils
         return $status_text;
     }
 
-    static public function support_request_status($status, $english = [])
+    public static function support_request_status($status, $english = [])
     {
-        switch ($status)
-        {
+        switch ($status) {
             case SupportRequest::OPEN:
                 $status_text = "Ouvert";
                 $status_text_english = "Open";
@@ -74,7 +71,7 @@ class Utils
         return $english == true ? $status_text_english : $status_text;
     }
     
-    static public function format_price($price, $delimiter = ' ')
+    public static function format_price($price, $delimiter = ' ')
     {
         return number_format(round(floor($price), 0, PHP_ROUND_HALF_DOWN), 0, ",", $delimiter);
     }

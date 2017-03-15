@@ -3,6 +3,13 @@
 @section('page-title') Transactions: List @endsection
 @section('header')
     {{ Html::style('css/vendor_admin_datatables.min.css') }}
+    <style>
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    </style>
 @endsection
 @section('content')
     <!-- Start content -->
@@ -23,6 +30,17 @@
                                 <th>Date</th>
                             </tr>
                             </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th></th>
+                                <th>Provider</th>
+                                <th></th>
+                                <th>Code</th>
+                                <th>Points</th>
+                                <th>Date</th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -126,15 +144,65 @@
                     ajax: '{{ route('datatables.transactionsdata') }}',
                     columns: [
                         {data: 'id', name: 'id'},
-                        {data: 'user_id', name: 'user_id'},
+                        {data: 'user_id', name: 'user_id', class: 'user_id', orderable: false, searchable: false},
                         {data: 'provider', name: 'provider'},
-                        {data: 'state', name: 'state'},
+                        {data: 'state', name: 'state', class: 'state text-center', searchable: false},
                         {data: 'code', name: 'code'},
                         {data: 'points', name: 'points'},
                         {data: 'created_at', name: 'created_at'}
                     ],
                     rowId: 'id'
                 });
+
+                 $('#transactions-table tfoot th').each( function () {
+                        var classNamed = $(this)[0].className;
+                            if(classNamed != "user_id" && classNamed != "state text-center")
+                            {
+                                var title = $(this).text();
+                                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                            }
+                        } );
+
+                    oTable.columns().every( function () {
+                    var that = this;
+                    if(this.footer())
+                    {
+                        $( 'input', this.footer() ).on( 'keyup change', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        } );
+                    }
+                    } );
+
+                    $('#transactions-table tbody').on('click', 'tr td:not(.user_id,.state)', function () {
+                         var row_clicked = $(this).index();
+                          $( 'input', oTable.column(row_clicked).footer() ).val(noHtml(oTable.cell( this ).data())).keyup();
+                    } );
+
+                    function noHtml(txt) {
+                        if(Number.isInteger(txt)){
+                            return (txt);
+                        }
+                            a = txt.indexOf('<');
+                            b = txt.indexOf('>');
+                            len = txt.length;
+                            c = txt.substring(0, a);
+                                if(b == -1) 
+                                {
+                                    b = a;
+                                }
+                            d = txt.substring((b + 1), len);
+                            txt = c + d;
+                            cont = txt.indexOf('<');
+                            if (a != b) 
+                            {
+                                txt = noHtml(txt);
+                            }
+                            return(txt);
+                    }
             });
     </script>
 @endsection

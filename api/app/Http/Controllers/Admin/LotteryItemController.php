@@ -20,8 +20,7 @@ class LotteryItemController extends Controller
 {
     private function isLotteryExist($lotteryId)
     {
-        if(Lottery::findOrFail($lotteryId))
-        {
+        if (Lottery::findOrFail($lotteryId)) {
             return true;
         }
         return false;
@@ -30,8 +29,7 @@ class LotteryItemController extends Controller
     private function isItemExist($itemid, $server = 0)
     {
         $item = ItemTemplate::on(config('dofus.servers')[$server].'_world')->where('Id', $itemid)->first();
-        if($item)
-        {
+        if ($item) {
             return true;
         }
         return false;
@@ -41,9 +39,8 @@ class LotteryItemController extends Controller
     {
         $type = Lottery::findOrFail($lottery->id);
         $serversArray = config('dofus.servers');
-        $servers = array();
-        foreach ($serversArray as $k => $server)
-        {
+        $servers = [];
+        foreach ($serversArray as $k => $server) {
             $servers[$k] = ucfirst($server);
         }
         return view('admin.lottery.item.index', compact('type', 'servers'));
@@ -58,8 +55,7 @@ class LotteryItemController extends Controller
             return response()->json($validator->messages(), 422);
         }
 
-        if(!$this->isItemExist($itemid, $server))
-        {
+        if (!$this->isItemExist($itemid, $server)) {
             return response()->json(['itemid' => ['0' => 'Item not found']], 422);
         }
 
@@ -74,20 +70,17 @@ class LotteryItemController extends Controller
 
     public function store(Request $request, Lottery $lottery)
     {
-        if(!$this->isLotteryExist($lottery->id))
-        {
+        if (!$this->isLotteryExist($lottery->id)) {
             abort(404);
         }
 
         $validator = Validator::make($request->all(), LotteryItem::$rules['store']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
 
-        if (!$this->isItemExist($request->item, $request->input('server')))
-        {
+        if (!$this->isItemExist($request->item, $request->input('server'))) {
             return response()->json(['item' => ['0' => 'This item doesn\'t exist']], 422);
         }
 
@@ -104,8 +97,7 @@ class LotteryItemController extends Controller
 
     public function destroy(Request $request, Lottery $lottery, $itemid)
     {
-        if(!$this->isLotteryExist($lottery->id))
-        {
+        if (!$this->isLotteryExist($lottery->id)) {
             abort(404);
         }
         $item = LotteryItem::findOrFail($itemid);
@@ -115,15 +107,13 @@ class LotteryItemController extends Controller
 
     public function update(Request $request, Lottery $lottery, $itemid)
     {
-        if(!$this->isLotteryExist($lottery->id))
-        {
+        if (!$this->isLotteryExist($lottery->id)) {
             abort(404);
         }
 
         $validator = Validator::make($request->all(), LotteryItem::$rules['update']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 422);
         }
 
@@ -133,6 +123,5 @@ class LotteryItemController extends Controller
         $item->save();
 
         return response()->json([$request->percentage], 202);
-
     }
 }

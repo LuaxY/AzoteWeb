@@ -24,21 +24,18 @@ class LotteryTicket extends Model
         $objects = $this->objects($server);
         $max = 0;
 
-        foreach ($objects as $object)
-        {
+        foreach ($objects as $object) {
             $max += $object->percentage;
         }
 
         $random = rand(1, $max);
         $percentage = 1;
 
-        foreach ($objects as $object)
-        {
+        foreach ($objects as $object) {
             $current = $percentage;
             $percentage += $object->percentage;
 
-            if ($random >= $current && $random < $percentage)
-            {
+            if ($random >= $current && $random < $percentage) {
                 return $object;
             }
         }
@@ -46,14 +43,10 @@ class LotteryTicket extends Model
 
     public function item($server = null)
     {
-        if ($this->item_id)
-        {
-            if ($server)
-            {
+        if ($this->item_id) {
+            if ($server) {
                 return ItemTemplate::on($server . '_world')->where('id', $this->item_id)->first();
-            }
-            else
-            {
+            } else {
                 return $this->hasOne(ItemTemplate::class, 'Id', 'item_id')->first();
             }
         }
@@ -68,11 +61,10 @@ class LotteryTicket extends Model
 
     public function giver()
     {
-       if($this->giver)
-       {
-           $giver = User::find($this->giver);
-           return $giver ? $giver->pseudo : null;
-       }
-       return null;
+        if ($this->giver) {
+            $giver = User::find($this->giver);
+            return $giver ? $giver->pseudo : null;
+        }
+        return null;
     }
 }

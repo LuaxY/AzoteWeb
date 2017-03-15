@@ -22,12 +22,9 @@ class LotteryItem extends Model
 
     public function item($server = null)
     {
-        if ($server)
-        {
+        if ($server) {
             return ItemTemplate::on($server . '_world')->where('id', $this->item_id)->first();
-        }
-        else
-        {
+        } else {
             return $this->hasOne(ItemTemplate::class, 'Id', 'item_id')->first();
         }
     }

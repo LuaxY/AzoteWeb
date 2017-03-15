@@ -22,9 +22,9 @@ class Account extends Model
 
     protected $dates = ['CreationDate', 'BanEndDate', 'LastConnection'];
 
-    protected $hidden = array('PasswordHash', 'Salt');
+    protected $hidden = ['PasswordHash', 'Salt'];
 
-    protected $fillable = array(
+    protected $fillable = [
         'Login',
         'PasswordHash',
         'Salt',
@@ -41,7 +41,7 @@ class Account extends Model
         'VoteCount',
         'IsJailed',
         'IsBanned',
-    );
+    ];
 
     public static $rules = [
         'sanction' => [
@@ -71,60 +71,49 @@ class Account extends Model
 
     public function isAdmin()
     {
-        if ($this->Role >= 4)
+        if ($this->Role >= 4) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public function isBanned()
     {
-        if ($this->IsBanned == '1' && ($this->BanEndDate > Carbon::now() || $this->BanEndDate == null))
+        if ($this->IsBanned == '1' && ($this->BanEndDate > Carbon::now() || $this->BanEndDate == null)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public function characters($deleted = null, $nocache = null)
     {
-        if(!$nocache)
-        {
-            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 0.4, function() use($deleted) {
+        if (!$nocache) {
+            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 0.4, function () use ($deleted) {
                 $characters = [];
                 $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
-                foreach ($worldCharacters as $worldCharacter)
-                {
-                    if ($deleted)
-                    {
+                foreach ($worldCharacters as $worldCharacter) {
+                    if ($deleted) {
                         $characters[] = $worldCharacter->character();
-                    }
-                    else
-                    {
-                        if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null)
-                        {
+                    } else {
+                        if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
                             $characters[] = $worldCharacter->character();
                         }
                     }
                 }
                 return $characters;
             });
-        }
-        else
-        {
+        } else {
             $characters = [];
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
-            foreach ($worldCharacters as $worldCharacter)
-            {
-                if ($deleted)
-                {
+            foreach ($worldCharacters as $worldCharacter) {
+                if ($deleted) {
                     $characters[] = $worldCharacter->character();
-                }
-                else
-                {
-                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null)
-                    {
+                } else {
+                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
                         $characters[] = $worldCharacter->character();
                     }
                 }
@@ -137,32 +126,25 @@ class Account extends Model
 
     public function DeletedCharacters($nocache = null)
     {
-        if(!$nocache)
-        {
-            $characters = Cache::remember('characters_deleted_'.$this->server.'_'.$this->Id, 0.4, function() {
+        if (!$nocache) {
+            $characters = Cache::remember('characters_deleted_'.$this->server.'_'.$this->Id, 0.4, function () {
                 $characters = [];
                 $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
-                foreach ($worldCharacters as $worldCharacter)
-                {
-                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate)
-                    {
+                foreach ($worldCharacters as $worldCharacter) {
+                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate) {
                         $characters[] = $worldCharacter->character();
                     }
                 }
 
                 return $characters;
             });
-        }
-        else
-        {
+        } else {
             $characters = [];
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
-            foreach ($worldCharacters as $worldCharacter)
-            {
-                if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate)
-                {
+            foreach ($worldCharacters as $worldCharacter) {
+                if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate) {
                     $characters[] = $worldCharacter->character();
                 }
             }
@@ -177,15 +159,12 @@ class Account extends Model
     {
         $transferts = null;
 
-        if ($take)
-        {
-            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id . '_' . $take, 10, function() use($take) {
+        if ($take) {
+            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id . '_' . $take, 10, function () use ($take) {
                 return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->take($take)->get();
             });
-        }
-        else
-        {
-            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id, 10, function() {
+        } else {
+            $transferts = Cache::remember('transferts_' . $this->server . '_' . $this->Id, 10, function () {
                 return Transfert::where('server', $this->server)->where('account_id', $this->Id)->orderBy('created_at', 'desc')->get();
             });
         }
@@ -197,12 +176,9 @@ class Account extends Model
     {
         $account = Account::on($this->server . '_world')->where('Id', $this->Id)->first();
 
-        if ($account)
-        {
+        if ($account) {
             return $account->Tokens + $account->NewTokens;
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
@@ -211,8 +187,7 @@ class Account extends Model
     {
         $account = Account::on($this->server . '_world')->where('Id', $this->Id)->first();
 
-        if ($account)
-        {
+        if ($account) {
             $account->NewTokens += $amount;
             $account->save();
 
@@ -225,49 +200,38 @@ class Account extends Model
     public function htmlStatus()
     {
         $bannerAccountLogin = '';
-        $texts = array();
+        $texts = [];
         $hidden = '';
-        if($this->IsJailed == 1)
-        {
+        if ($this->IsJailed == 1) {
             $texts[] = 'Jailed';
             $label = 'danger';
         }
-        if($this->IsBanned == 1)
-        {
+        if ($this->IsBanned == 1) {
             $texts[] = 'Banned';
             $label = 'danger';
         }
-        if($this->IsJailed == 0 && $this->IsBanned == 0)
-        {
+        if ($this->IsJailed == 0 && $this->IsBanned == 0) {
             $texts[] = 'OK';
             $label = 'success';
             $hidden = 'hidden';
         }
-        if($this->IsJailed == 1 || $this->IsBanned == 1)
-        {
+        if ($this->IsJailed == 1 || $this->IsBanned == 1) {
             $bannerAccount = $this->findOrFail($this->BannerAccountId);
-            if($bannerAccount)
-            {
+            if ($bannerAccount) {
                 $bannerAccountLogin = $bannerAccount->Login;
-            }
-            else
-                {
+            } else {
                 $bannerAccountLogin = 'Unknown';
             }
-            if($this->BanEndDate)
-            {
+            if ($this->BanEndDate) {
                 $texts[] .= '('.$this->BanEndDate.')';
-            }
-            else{
+            } else {
                 $texts[] .= '()';
             }
         }
 
         $span = '';
-        foreach($texts as $text)
-        {
+        foreach ($texts as $text) {
             $span .= ' <span class="label label-'.$label.'">'.$text.'</span>';
-
         }
 
         $span .= ' <button id="pop-'.$this->Id.'" class="'.$hidden.' btn btn-xs btn-default" data-toggle="popover" data-placement="top" title="Sanctioned by '.$bannerAccountLogin.'" data-content="'.$this->BanReason.'"><i class="fa fa-info"></i></button>';

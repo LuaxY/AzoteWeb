@@ -68,7 +68,6 @@
                         <h2>Créer un compte</h2>
                         <p>
                             <a class="btn btn-lg btn-info" href="{{ URL::route('register') }}">Créer un compte</a>
-                            <a class="ak-info-link" href="{{ URL::to('support/faq#account') }}">Qu'est-ce qu'un compte {{ config('dofus.title') }} ?</a>
                         </p>
                     </div>
                 </div>

@@ -63,9 +63,9 @@
                                 class="fa fa-gamepad"></i> <span> World </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li class="{{ active_class(if_route('admin.characters'))}}"><a
-                                    href="{{ route('admin.characters') }}">Characters</a></li>
+                                    href="{{ route('admin.characters', config('dofus.servers')[0]) }}">Characters</a></li>
                         <li class="{{ active_class(if_route('admin.announces'))}}"><a
-                                    href="{{ route('admin.announces', 'sigma') }}">Announces</a></li>
+                                    href="{{ route('admin.announces', config('dofus.servers')[0]) }}">Announces</a></li>
                     </ul>
                 </li>
                 <li>

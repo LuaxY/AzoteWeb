@@ -75,8 +75,8 @@
                         <h4 class="text-center">Votre ticket a bien été envoyé. Il sera traité le plus rapidement possible.</h4>
                         <p style="text-align: center;">Une copie vous a été envoyé à: <span id="success-email" class="ak-bold"></span>. <br> Le délai de réponse peut varier entre 1 et 48 heures.</p>
                     </div>
-                    <form class="ak-form" id="support" action="{{route('support.store')}}" method="post" enctype="multipart/form-data">
-                    </form>
+                    {!! Form::open([ 'route' => 'support.store', 'method' => 'POST', 'id' => 'support', 'class' => 'ak-form',  'files' => true]) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -115,11 +115,11 @@ function get_child(id, name, query) {
     params = get_params();
 
     var url_base = '{{ route('home') }}';
-    var url = ''+url_base+'/api/support/child/' +name;
+    var url = ''+url_base+'/support/child/' +name;
 
     if (query != null && query != '') url +=  '/' + query;
 
-    $.post(url, params, function(data) {
+    $.get(url, params, function(data) {
         /*if (id == 0) {
             $('#support').append('<div class="part" part="0">' + data + '</div>');
         } else {
@@ -173,6 +173,8 @@ $('#support').on('change', 'select, input[type=radio]', function() {
        $("#support").on("submit", function (event) {
             
             var button = $('#support input[type="submit"]');
+            var token = '{{ Session::token() }}';
+
             button.prop('disabled', true);
             event.preventDefault();
 

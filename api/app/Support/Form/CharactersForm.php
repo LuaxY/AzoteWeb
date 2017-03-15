@@ -15,12 +15,10 @@ class CharactersForm implements IForm
 
         $account = ModelCustom::hasOneOnOneServer('auth', $server, Account::class, 'Id', $accountId);
 
-        if ($account)
-        {
+        if ($account) {
             $characters = $account->characters(false, true);
 
-            if (count($characters) > 0)
-            {
+            if (count($characters) > 0) {
                 return view('support.form.characters', [
                     'name'       => $name,
                     'child'      => isset($field->child) ? $field->child : false,

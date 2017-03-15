@@ -23,8 +23,7 @@ class VoteController extends Controller
 {
     public function index(Request $request)
     {
-        if (Auth::guest())
-        {
+        if (Auth::guest()) {
             return view('vote.guest');
         }
 
@@ -51,15 +50,13 @@ class VoteController extends Controller
 
         $delay = $this->delay();
 
-        if ($current <= 0)
-        {
+        if ($current <= 0) {
             $current = 5;
         }
 
         $rpgId = 0;
 
-        if (!config('dofus.rpg-paradize.use_callback'))
-        {
+        if (!config('dofus.rpg-paradize.use_callback')) {
             // 50/50 votes for each servers
             $rpgIndex = (int)file_get_contents(base_path() . "/vote");
             $rpgId = array_values(config('dofus.details'))[$rpgIndex]->rpg;
@@ -72,15 +69,14 @@ class VoteController extends Controller
             'giftsCount'     => $giftsCount,
             'nextGifts'      => $nextGifts,
             'progress'       => $progress,
-            'steps'	         => $steps,
+            'steps'          => $steps,
             'votesForTicket' => $votesForTicket,
             'current'        => $current,
             'delay'          => $delay,
             'rpgId'          => $rpgId,
         ];
 
-        if (Auth::user()->isFirstVote)
-        {
+        if (Auth::user()->isFirstVote) {
             $data['popup'] = 'vote';
         }
 
@@ -91,18 +87,16 @@ class VoteController extends Controller
     {
         $delay = $this->delay();
 
-        if (!$delay->canVote)
-        {
+        if (!$delay->canVote) {
             return redirect()->route('vote.index');
         }
 
-        return view ('vote.confirm');
+        return view('vote.confirm');
     }
 
     public function process(Request $request)
     {
-        if (config('dofus.rpg-paradize.use_callback'))
-        {
+        if (config('dofus.rpg-paradize.use_callback')) {
             return;
         }
 
@@ -110,8 +104,7 @@ class VoteController extends Controller
 
         $delay = $this->delay();
 
-        if (!$delay->canVote)
-        {
+        if (!$delay->canVote) {
             return redirect()->route('vote.index');
         }
 
@@ -122,8 +115,7 @@ class VoteController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -137,18 +129,15 @@ class VoteController extends Controller
         $servers = config('dofus.details');
         $outVerified = false;
 
-        foreach ($servers as $server)
-        {
+        foreach ($servers as $server) {
             $actualOUT = $this->getOuts($server->rpg);
 
-            if (abs($actualOUT - $request->input('out')) <= 5)
-            {
+            if (abs($actualOUT - $request->input('out')) <= 5) {
                 $outVerified = true;
             }
         }
 
-        if (!$outVerified)
-        {
+        if (!$outVerified) {
             // Bad OUT, restore preivous last vote date
             Auth::user()->last_vote = $previousVote;
             Auth::user()->save();
@@ -159,8 +148,7 @@ class VoteController extends Controller
         Auth::user()->votes  += 1;
         Auth::user()->jetons += 1;
 
-        if (Auth::user()->isFirstVote)
-        {
+        if (Auth::user()->isFirstVote) {
             Auth::user()->isFirstVote = false;
         }
 
@@ -168,8 +156,7 @@ class VoteController extends Controller
 
         $accounts = Auth::user()->accounts();
 
-        foreach ($accounts as $account)
-        {
+        foreach ($accounts as $account) {
             $account->LastVote = $dateLastVote;
             $account->save();
         }
@@ -201,8 +188,7 @@ class VoteController extends Controller
         Cache::forget('votes_' . Auth::user()->id);
         Cache::forget('votes_' . Auth::user()->id . '_10');
 
-        if (Auth::user()->votes % $this->votesForTicket() == 0)
-        {
+        if (Auth::user()->votes % $this->votesForTicket() == 0) {
             $ticket = new LotteryTicket;
             $ticket->type        = Auth::user()->votes % ($this->votesForTicket() * 5) == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
             $ticket->user_id     = Auth::user()->id;
@@ -214,8 +200,7 @@ class VoteController extends Controller
             $begin = Carbon::create(2016, 12, 21);
             $end   = Carbon::create(2017, 01, 01);
 
-            if ($now->gte($begin) && $now->lt($end))
-            {
+            if ($now->gte($begin) && $now->lt($end)) {
                 $ticket = new LotteryTicket;
                 $ticket->type        = LotteryTicket::NOWEL;
                 $ticket->user_id     = Auth::user()->id;
@@ -243,8 +228,7 @@ class VoteController extends Controller
     {
         $votesCount = $this->userVotes();
 
-        if ($id < 1 || $id > ceil(($votesCount+1) / ($this->votesForTicket() * 5)))
-        {
+        if ($id < 1 || $id > ceil(($votesCount+1) / ($this->votesForTicket() * 5))) {
             $id = 1;
         }
 
@@ -252,13 +236,13 @@ class VoteController extends Controller
         $steps      = $this->stepsList($id);
         $current    = 1;
 
-        $data = array(
+        $data = [
             'palierId'       => $id,
             'votesForTicket' => $this->votesForTicket(),
             'progress'       => $progress,
-            'steps'	         => $steps,
+            'steps'          => $steps,
             'current'        => $current,
-        );
+        ];
 
         return view('vote.paliers', $data);
     }
@@ -267,16 +251,13 @@ class VoteController extends Controller
     {
         $json = [];
 
-        if ($item % ($this->votesForTicket() * 5) == 0)
-        {
+        if ($item % ($this->votesForTicket() * 5) == 0) {
             $json = [
                 'name'        => 'Ticket de loterie doré',
                 'description' => 'Ce ticket permet de jouer à la loterie premium.',
                 'image'       => URL::asset('imgs/lottery/ticket_gold.png'),
             ];
-        }
-        else
-        {
+        } else {
             $json = [
                 'name'        => 'Ticket de loterie',
                 'description' => 'Ce ticket permet de jouer à la loterie.',
@@ -341,7 +322,7 @@ class VoteController extends Controller
 
     private function getOuts($rpgId)
     {
-        $outs = Cache::remember('rpg_outs_' . $rpgId, 1, function () use($rpgId) {
+        $outs = Cache::remember('rpg_outs_' . $rpgId, 1, function () use ($rpgId) {
             $curl = curl_init();
 
             $header[0] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,";
@@ -360,18 +341,17 @@ class VoteController extends Controller
             curl_setopt($curl, CURLOPT_AUTOREFERER, true);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION,true);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($curl, CURLOPT_VERBOSE, false);
-            curl_setopt($curl, CURLOPT_COOKIEFILE,'cookieRPG.txt');
-            curl_setopt($curl, CURLOPT_COOKIEJAR,'cookieRPG.txt');
+            curl_setopt($curl, CURLOPT_COOKIEFILE, 'cookieRPG.txt');
+            curl_setopt($curl, CURLOPT_COOKIEJAR, 'cookieRPG.txt');
 
             $webpage  = curl_exec($curl);
             $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
             preg_match('#Clic Sortant : ([0-9]+)#', $webpage, $matches);
 
-            if (!isset($matches[0]))
-            {
+            if (!isset($matches[0])) {
                 return 0;
             }
 
@@ -391,16 +371,13 @@ class VoteController extends Controller
         })->orderBy('id', 'DESC')->get();
 
         // Allow 3 votes by IP
-        if (count($votes) >= 3)
-        {
+        if (count($votes) >= 3) {
             $oldestVoteDate = Carbon::now();
 
-            foreach ($votes as $vote)
-            {
+            foreach ($votes as $vote) {
                 $currentDate = Carbon::parse($vote->begin);
 
-                if ($currentDate->lt($oldestVoteDate))
-                {
+                if ($currentDate->lt($oldestVoteDate)) {
                     $oldestVoteDate = $currentDate;
                 }
             }
@@ -429,27 +406,23 @@ class VoteController extends Controller
 
     public function callback(Request $request, $token = null)
     {
-        if (!$token)
-        {
+        if (!$token) {
             return "FAIL 1";
         }
 
-        if (config('dofus.rpg-paradize.check_ip') && $request->ip() != config('dofus.rpg-paradize.ip'))
-        {
+        if (config('dofus.rpg-paradize.check_ip') && $request->ip() != config('dofus.rpg-paradize.ip')) {
             return "FAIL 5";
         }
 
         $voteRequest = VoteRequest::where('token', $token)->first();
 
-        if (!$voteRequest)
-        {
+        if (!$voteRequest) {
             return "FAIL 2";
         }
 
         $user = $voteRequest->user();
 
-        if (!$user)
-        {
+        if (!$user) {
             $voteRequest->delete();
             return "FAIL 3";
         }
@@ -458,8 +431,7 @@ class VoteController extends Controller
         $duration = $now - strtotime($user->last_vote);
         $canVote  = $duration < config('dofus.rpg-paradize.delay') ? false : true;
 
-        if (!$canVote)
-        {
+        if (!$canVote) {
             $voteRequest->delete();
             return "FAIL 4";
         }
@@ -470,8 +442,7 @@ class VoteController extends Controller
         $user->votes  += 1;
         $user->jetons += 1;
 
-        if ($user->isFirstVote)
-        {
+        if ($user->isFirstVote) {
             $user->isFirstVote = false;
         }
 
@@ -479,8 +450,7 @@ class VoteController extends Controller
 
         $accounts = $user->accounts();
 
-        foreach ($accounts as $account)
-        {
+        foreach ($accounts as $account) {
             $account->LastVote = $dateLastVote;
             $account->save();
         }
@@ -496,8 +466,7 @@ class VoteController extends Controller
         Cache::forget('votes_' . $user->id);
         Cache::forget('votes_' . $user->id . '_10');
 
-        if ($user->votes % $this->votesForTicket() == 0)
-        {
+        if ($user->votes % $this->votesForTicket() == 0) {
             $ticket = new LotteryTicket;
             $ticket->type        = $user->votes % ($this->votesForTicket() * 5) == 0 ? LotteryTicket::GOLD : LotteryTicket::NORMAL;
             $ticket->user_id     = $user->id;

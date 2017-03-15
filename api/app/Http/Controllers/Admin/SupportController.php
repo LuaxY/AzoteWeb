@@ -7,8 +7,8 @@ use App\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use \Cache;
-Use App\SupportRequest;
-Use App\SupportTicket;
+use App\SupportRequest;
+use App\SupportTicket;
 use App\Http\Requests;
 use Auth;
 use App\User;
@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
 use Mail;
+use App\Mail\Admin\Support\Answer;
+use App\Mail\Admin\Support\Close;
+use App\Mail\Admin\Support\Assign;
 
 class SupportController extends Controller
 {
@@ -43,39 +46,34 @@ class SupportController extends Controller
         $request = SupportRequest::findOrFail($id);
         $ticket = $request->ticket()->first(); // Initial ticket
         $messages = $request->tickets()->get(); // All messages (+ticket)
-        $adminsDB = User::where('rank', 4)->where('id','!=', $request->assign_to)->where('id', '!=', Auth::user()->id)->get();
-        $admins = array();
-        if($adminsDB)
-        {
-            foreach($adminsDB as $admin)
-            {
+        $adminsDB = User::where('rank', 4)->where('id', '!=', $request->assign_to)->where('id', '!=', Auth::user()->id)->get();
+        $admins = [];
+        if ($adminsDB) {
+            foreach ($adminsDB as $admin) {
                 $admins[$admin->id] = $admin->pseudo;
             }
         }
 
         $htmlReport = $request->generateHtmlReport(json_decode($ticket->data));
 
-        if($messages)
-        {
-            foreach($messages as $k => $message) // Chaque ticket (messages)
-            {
-            $infos = array();
-            $datas = json_decode($message->data);
+        if ($messages) {
+            foreach ($messages as $k => $message) { // Chaque ticket (messages)
+                $infos = [];
+                $datas = json_decode($message->data);
 
-            foreach($datas as $key => $data)
-            {
-                $keyData = explode('|', $key);
+                foreach ($datas as $key => $data) {
+                    $keyData = explode('|', $key);
                 
-                if (count($keyData) < 2)
-                    {
+                    if (count($keyData) < 2) {
                         continue;
                     }
 
                     $keyText = str_replace('"', ' ', $keyData[1]);
-                    if($keyData[0] == 'message')
+                    if ($keyData[0] == 'message') {
                         $infos[$keyData[0]] = $data;
-            }
-            $messages[$k]->data = $infos;
+                    }
+                }
+                $messages[$k]->data = $infos;
             }
         }
         return view('admin.support.show', compact('request', 'messages', 'htmlReport', 'ticket', 'admins'));
@@ -84,16 +82,14 @@ class SupportController extends Controller
     public function postMessage(Request $request, $id)
     {
         $validator = Validator::make($request->all(), SupportTicket::$rules['postMessageAdmin']);
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $supportRequest = SupportRequest::findOrFail($id);
 
-        if($supportRequest->isOpen())
-        {
-            if((!$supportRequest->userAssigned() || $request->assign_to != Auth::user()->id) && $request->input('take')) // Assign ticket to admin + info message
-            {
+        if ($supportRequest->isOpen()) {
+            if ((!$supportRequest->userAssigned() || $request->assign_to != Auth::user()->id) && $request->input('take')) { // Assign ticket to admin + info message
                 $supportRequest->assign_to = Auth::user()->id;
 
                 $message = ''.Auth::user()->pseudo.' a pris en charge le ticket';
@@ -122,8 +118,7 @@ class SupportController extends Controller
             $supportTicket->reply      = true;
             $supportTicket->save();
 
-            if($request->input('close')) // Close request if requested by admin
-            {
+            if ($request->input('close')) { // Close request if requested by admin
                 $supportRequest->state = SupportRequest::CLOSE;
 
                 $message = 'Le ticket est maintenant cloturé';
@@ -138,9 +133,7 @@ class SupportController extends Controller
                 $supportTicket->private    = false;
                 $supportTicket->reply      = 2; //INFO Reply
                 $supportTicket->save();
-            }
-            else
-            {
+            } else {
                 $supportRequest->state = SupportRequest::WAIT;
             }
             $supportRequest->save();
@@ -148,13 +141,9 @@ class SupportController extends Controller
 
         $user = $supportRequest->user;
 
-        Mail::send('emails.answer-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
-            $message->from(config('mail.sender'), 'Azote.us');
-            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-            $message->subject('Azote.us - Reponse ticket n°'.$supportRequest->id);
-        });
+        Mail::to($user)->send(new Answer($user, $supportRequest));
 
-        Toastr::success("Message send", $title = null, $options = []);
+        Toastr::success("Message & e-mail send", $title = null, $options = []);
         return redirect()->back();
     }
 
@@ -162,15 +151,12 @@ class SupportController extends Controller
     {
         $supportRequest = SupportRequest::findOrFail($id);
 
-        if($supportRequest->isOpen())
-        {
+        if ($supportRequest->isOpen()) {
             $supportRequest->state = SupportRequest::CLOSE;
             $supportRequest->save();
-            $message = "Le ticket est maintenant cloturé"; 
+            $message = "Le ticket est maintenant cloturé";
             $messageHtml = "Ticket is now closed";
-        }
-        else
-        {
+        } else {
             $supportRequest->state = SupportRequest::OPEN;
             $supportRequest->save();
             $message = "Le ticket est maintenant ré-ouvert";
@@ -190,25 +176,18 @@ class SupportController extends Controller
 
         $user = $supportRequest->user;
 
-        if(!$supportRequest->isOpen()) // If closed, send email
-        {
-            Mail::send('emails.status-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Fermeture ticket n°'.$supportRequest->id);
-            }); 
+        if (!$supportRequest->isOpen()) { // If closed, send email
+            Mail::to($user)->send(new Close($user, $supportRequest));
+            Toastr::success('E-mail send', $title = null, $options = []);
         }
 
         Cache::forget('tickets_admin_open');
         Cache::forget('tickets_admin_close');
         Cache::forget('tickets_admin_mine');
 
-        if ($request->ajax())
-        {
-           return response()->json([], 200);
-        }
-        else
-        {
+        if ($request->ajax()) {
+            return response()->json([], 200);
+        } else {
             Toastr::success($messageHtml, $title = null, $options = []);
             return redirect()->back();
         }
@@ -218,8 +197,7 @@ class SupportController extends Controller
         $supportRequest = SupportRequest::findOrFail($id);
 
         $admin = User::where('id', Auth::user()->id)->where('rank', 4)->first();
-        if($admin)
-        {
+        if ($admin) {
             $supportRequest->assign_to = $admin->id;
             $supportRequest->save();
 
@@ -238,12 +216,8 @@ class SupportController extends Controller
             
             $user = $supportRequest->user;
 
-            Mail::send('emails.assign-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Mise à jour ticket n°'.$supportRequest->id);
-            }); 
-            Toastr::success('You took this ticket', $title = null, $options = []);
+            Mail::to($user)->send(new Assign($user, $supportRequest));
+            Toastr::success('You took this ticket (e-mail send)', $title = null, $options = []);
         }
     
         return redirect()->back();
@@ -254,15 +228,13 @@ class SupportController extends Controller
         $supportRequest = SupportRequest::findOrFail($id);
         
         $validator = Validator::make($request->all(), SupportRequest::$rulesAdmin['assign_to']);
-        if ($validator->fails()) 
-        {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 400);
         }
 
         $admin = User::where('id', $request->input('adminid'))->where('rank', 4)->first();
 
-        if($admin)
-        {
+        if ($admin) {
             $supportRequest->assign_to = $admin->id;
             $supportRequest->save();
 
@@ -280,12 +252,9 @@ class SupportController extends Controller
             $supportTicket->save();
 
             $user = $supportRequest->user;
+            
+            Mail::to($user)->send(new Assign($user, $supportRequest));
 
-            Mail::send('emails.assign-ticket', ['user' => $user, 'ticket' => $supportRequest], function ($message) use ($user, $supportRequest) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Mise à jour ticket n°'.$supportRequest->id);
-            }); 
             return response()->json([$admin->pseudo], 200);
         }
             

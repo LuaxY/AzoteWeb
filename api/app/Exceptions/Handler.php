@@ -2,12 +2,10 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Validation\ValidationException;
 use Illuminate\Session\TokenMismatchException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
@@ -29,14 +27,16 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        AuthorizationException::class,
-        HttpException::class,
-        ModelNotFoundException::class,
-        ValidationException::class,
-        NotFoundHttpException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Auth\Access\AuthorizationException::class,
+        \Symfony\Component\HttpKernel\Exception\HttpException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
+        \Illuminate\Session\TokenMismatchException::class,
+        \Illuminate\Validation\ValidationException::class,
+        NotFound\Symfony\Component\HttpKernel\Exception\HttpException::class,
         GenericException::class,
         TokenMismatchException::class,
-        MethodNotAllowedHttpException::class,
+        MethodNotAllowed\Symfony\Component\HttpKernel\Exception\HttpException::class,
         GenericException::class,
     ];
 
@@ -87,6 +87,7 @@ class Handler extends ExceptionHandler
             $data['date']      = Carbon::now();
             $data['user']      = Auth::user();
 
+            // TODO: Refactor mail sending if necessary
             Mail::send(['html' => 'emails.report'], $data, function ($message) use($error) {
                 $message->from(config('mail.sender'), 'Azote.us');
                 $message->to('kerubim@azote.us', 'Web Developer');
@@ -95,12 +96,10 @@ class Handler extends ExceptionHandler
             });
         }*/
 
-        if ($this->shouldReport($e))
-        {
+        if ($this->shouldReport($e)) {
             $sentry = app('sentry');
 
-            if (!Auth::guest())
-            {
+            if (!Auth::guest()) {
                 $sentry->user_context([
                     'id'     => Auth::user()->id,
                     'pseudo' => Auth::user()->pseudo,
@@ -124,8 +123,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($e instanceof GenericException)
-        {
+        if ($e instanceof GenericException) {
             $data   = $e->toArray();
             $status = $e->getStatus();
 
@@ -133,5 +131,20 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $e);
+    }
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $e
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $e)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        } else {
+            return redirect()->guest('login');
+        }
     }
 }

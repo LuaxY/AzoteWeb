@@ -19,6 +19,8 @@ return [
         'color'      => '#3d301e',
         'animated'   => false,
     ],
+    
+    'welcome'         => [], // filled in FillSettings middleware
 
     'domain' => [
         'main' => env('MAIN_DOMAIN'),
@@ -100,7 +102,7 @@ return [
 
         'used_first' => env('PAYMENT_FIRST', 'starpass'),
 
-        'check_min_transactions' => env('PAYMENT_CHECK_MIN_TRANSACTIONS',true),
+        'check_min_transactions' => env('PAYMENT_CHECK_MIN_TRANSACTIONS', true),
         'minimum_for_real' => env('PAYMENT_MINIMUM', 3),
         'check_level' => env('PAYMENT_CHECK_LEVEL', true),
         'level_for_real'   => env('PAYMENT_LEVEL', 50),
@@ -123,6 +125,7 @@ return [
         'recursos' => [
             'name'       => 'Recursos',
             'c'          => env('RECURSOS_C', null),
+            'c_sms'      => env('RECURSOS_C_SMS', null),
             'w'          => env('RECURSOS_W', null),
             'prices'     => env('RECURSOS_PRICES', null),
             'coeff'      => env('RECURSOS_COEFF', null),

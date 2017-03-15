@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use \Cache;
@@ -16,6 +17,7 @@ use App\SupportTicket;
 
 class User extends Authenticatable
 {
+    use Notifiable;
     use HasRoles; // CanResetPassword
 
     protected $dates = ['birthday', 'last_vote'];
@@ -66,6 +68,9 @@ class User extends Authenticatable
             'passwordOld' => 'required|old_password:{PASSWORD},{SALT}',
             'email'       => 'required|email|not_throw_away|unique:users,email',
         ],
+        'password-lost-email' => [
+            'email'       => 'required|email',
+        ],
         'update-profile' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
@@ -109,17 +114,14 @@ class User extends Authenticatable
 
     public function accounts($server = null)
     {
-        if ($server && in_array($server, config('dofus.servers')))
-        {
-            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function() use($server) {
+        if ($server && in_array($server, config('dofus.servers'))) {
+            $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function () use ($server) {
                 return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
             });
 
             return $accounts;
-        }
-        else
-        {
-            $accounts = Cache::remember('accounts_'.$this->id, 10, function() {
+        } else {
+            $accounts = Cache::remember('accounts_'.$this->id, 10, function () {
                 return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
             });
 
@@ -131,15 +133,12 @@ class User extends Authenticatable
     {
         $transactions = null;
 
-        if ($take)
-        {
-            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function() use($take) {
+        if ($take) {
+            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function () use ($take) {
                 return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->take($take)->get();
             });
-        }
-        else
-        {
-            $transactions = Cache::remember('transactions_' . $this->id, 10, function() {
+        } else {
+            $transactions = Cache::remember('transactions_' . $this->id, 10, function () {
                 return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
             });
         }
@@ -151,15 +150,12 @@ class User extends Authenticatable
     {
         $votes = null;
 
-        if ($take)
-        {
-            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function() use($take) {
+        if ($take) {
+            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function () use ($take) {
                 return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take($take)->get();
             });
-        }
-        else
-        {
-            $votes = Cache::remember('votes_' . $this->id, 10, function() {
+        } else {
+            $votes = Cache::remember('votes_' . $this->id, 10, function () {
                 return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->get();
             });
         }
@@ -171,15 +167,12 @@ class User extends Authenticatable
     {
         $gifts = null;
 
-        if ($onlyAvailable)
-        {
-            $gifts = Cache::remember('gifts_available_' . $server . '_' . $this->id, 10, function() use($server) {
+        if ($onlyAvailable) {
+            $gifts = Cache::remember('gifts_available_' . $server . '_' . $this->id, 10, function () use ($server) {
                 return $this->hasMany(Gift::class)->where('server', $server)->where('delivred', false)->get();
             });
-        }
-        else
-        {
-            $gifts = Cache::remember('gifts_' . $this->id, 10, function() {
+        } else {
+            $gifts = Cache::remember('gifts_' . $this->id, 10, function () {
                 return $this->hasMany(Gift::class)->get();
             });
         }
@@ -191,15 +184,12 @@ class User extends Authenticatable
     {
         $tickets = null;
 
-        if ($onlyAvailable)
-        {
-            $tickets = Cache::remember('tickets_available_' . $this->id, 10, function() {
+        if ($onlyAvailable) {
+            $tickets = Cache::remember('tickets_available_' . $this->id, 10, function () {
                 return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->where('used', false)->orderBy('created_at', 'desc')->get();
             });
-        }
-        else
-        {
-            $tickets = Cache::remember('tickets_' . $this->id, 10, function() {
+        } else {
+            $tickets = Cache::remember('tickets_' . $this->id, 10, function () {
                 return $this->hasMany(LotteryTicket::class, 'user_id', 'id')->orderBy('created_at', 'desc')->get();
             });
         }
@@ -219,10 +209,11 @@ class User extends Authenticatable
 
     public function supportRequests($state)
     {
-        if($state == SupportRequest::OPEN) // = 0
+        if ($state == SupportRequest::OPEN) { // = 0
             return $this->hasMany(SupportRequest::class, 'user_id', 'id')->where('state', '<>', SupportRequest::CLOSE);
-        else
+        } else {
             return $this->hasMany(SupportRequest::class, 'user_id', 'id')->where('state', SupportRequest::CLOSE);
+        }
     }
 
     public function forum()
@@ -232,24 +223,18 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if ($this->rank >= 4)
-        {
+        if ($this->rank >= 4) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     public function isStaff()
     {
-        if ($this->rank > 1)
-        {
+        if ($this->rank > 1) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -272,29 +257,24 @@ class User extends Authenticatable
     public function isFistBuy()
     {
         $result = false;
-        $levels = array();
-        if(config('dofus.payment.check_level')) // Check minimum level if asked
-        {
-            foreach ($this->accounts() as $account)
-            {
-                foreach ($account->characters(false, true) as $character)
-                {
-                    if ($character->level() >= config('dofus.payment.level_for_real'))
-                    {
+        $levels = [];
+        if (config('dofus.payment.check_level')) { // Check minimum level if asked
+            foreach ($this->accounts() as $account) {
+                foreach ($account->characters(false, true) as $character) {
+                    if ($character->level() >= config('dofus.payment.level_for_real')) {
                         array_push($levels, $character->level());
                     }
                 }
             }
-            if(!$levels)
+            if (!$levels) {
                 $result = true;
+            }
         }
         
 
-        if(config('dofus.payment.check_min_transactions')) // Check min transactions if asked
-        {
+        if (config('dofus.payment.check_min_transactions')) { // Check min transactions if asked
             $transactionsCount = count($this->hasMany(Transaction::class)->where('state', ShopStatus::PAYMENT_SUCCESS)->get());
-            if($transactionsCount < config('dofus.payment.minimum_for_real'))
-            {
+            if ($transactionsCount < config('dofus.payment.minimum_for_real')) {
                 $result = true;
             }
         }
@@ -307,58 +287,47 @@ class User extends Authenticatable
         $email = $this->email;
         $servers = config('dofus.servers');
 
-        $keys = array(); // Array with user keys
-        foreach ($servers as $server)
-        {
-            if(config('dofus.details')[$server]->version == '2.10')
-            {
+        $keys = []; // Array with user keys
+        foreach ($servers as $server) {
+            if (config('dofus.details')[$server]->version == '2.10') {
                 $keysSigma = Account::on($server . '_auth')->select('LastClientKey')->where('Email', $email)->get();
-                if($keysSigma)
-                {
-                    foreach($keysSigma as $k)
-                    {
-                        if($k->LastClientKey != null)
-                        array_push($keys, $k->LastClientKey);
+                if ($keysSigma) {
+                    foreach ($keysSigma as $k) {
+                        if ($k->LastClientKey != null) {
+                            array_push($keys, $k->LastClientKey);
+                        }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $keysOther = Account::on($server . '_auth')->select('LastHardwareId')->where('Email', $email)->get();
-                if($keysOther)
-                {
-                    foreach($keysOther as $v)
-                    {
-                        if($v->LastHardwareId != null)
-                        array_push($keys, $v->LastHardwareId);
+                if ($keysOther) {
+                    foreach ($keysOther as $v) {
+                        if ($v->LastHardwareId != null) {
+                            array_push($keys, $v->LastHardwareId);
+                        }
                     }
                 }
             }
         }
 
         $keys_banned_db = BannedKeys::select('Key')->get();
-        $keys_banned = array(); // Array with banned keys
-        if($keys_banned_db)
-        {
-            foreach($keys_banned_db as $keyBanned)
-            {
+        $keys_banned = []; // Array with banned keys
+        if ($keys_banned_db) {
+            foreach ($keys_banned_db as $keyBanned) {
                 array_push($keys_banned, $keyBanned->Key);
             }
-        }  
+        }
 
-            If(!empty($keys) && !empty($keys_banned))
-            {     
-                foreach($keys as $key)
-                {
-                    if(in_array($key, $keys_banned))
-                    {
-                        $this->shadowBan = true;
-                        $this->save();
+        if (!empty($keys) && !empty($keys_banned)) {
+            foreach ($keys as $key) {
+                if (in_array($key, $keys_banned)) {
+                    $this->shadowBan = true;
+                    $this->save();
                         
-                        return true;
-                    }
+                    return true;
                 }
-            } 
+            }
+        }
         return false;
     }
 }

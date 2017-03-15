@@ -15,8 +15,7 @@ class LotteryMaintenance
      */
     public function handle($request, Closure $next)
     {
-        if (config('dofus.lottery_maintenance'))
-        {
+        if (config('dofus.lottery_maintenance')) {
             $request->session()->flash('notify', ['type' => 'info', 'message' => "Loterie en maintenance."]);
             return redirect()->to('/');
         }

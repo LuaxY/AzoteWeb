@@ -18,12 +18,9 @@ class Controller extends BaseController
 
     public function error($code, $message, $errors = null)
     {
-        if ($errors)
-        {
+        if ($errors) {
             return response()->json(["message" => $message, "errors" => $errors], $code);
-        }
-        else
-        {
+        } else {
             return response()->json(["message" => $message], $code);
         }
     }

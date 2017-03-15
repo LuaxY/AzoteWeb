@@ -21,12 +21,9 @@ class ApiAuthenticate
     {
         $user = User::where('ticket', $request->header('authorizationTicket'))->first();
 
-        if ($user)
-        {
+        if ($user) {
             Auth::login($user);
-        }
-        else
-        {
+        } else {
             return response()->json(['message' => "vous n'êtes pas identifié"], 401);
         }
 

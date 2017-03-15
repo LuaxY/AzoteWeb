@@ -4,6 +4,13 @@
 @section('header')
     {{ Html::style('css/vendor_admin_datatables.min.css') }}
     {{ Html::style('css/sweetalert.min.css') }}
+    <style>
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    </style>
 @endsection
 @section('content')
         <!-- Start content -->
@@ -15,7 +22,7 @@
                             <div class="m-b-30">
                                 <a href="{{ route('admin.user.create') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-plus"></i> Create User</a>
                             </div>
-                            <table id="users-table" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="datatable_info">
+                            <table id="users-table" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="datatable_info">
                                 <thead>
                                 <tr>
                                     <th>Id</th>
@@ -29,9 +36,25 @@
                                     <th>Votes</th>
                                     <th>Active</th>
                                     <th>Actions</th>
-                                    <th>test</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                     <th>Id</th>
+                                    <th>Pseudo</th>
+                                    <th>Email</th>
+                                    <th>Firstname</th>
+                                    <th>Lastname</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Points</th>
+                                    <th>Votes</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -46,7 +69,6 @@
             {!! Html::script('js/admin/sweetalert.min.js') !!}
             <script>
                 $(document).ready(function () {
-
                     var token = '{{ Session::token() }}';
                     var oTable;
                     oTable = $('#users-table').on( 'init.dt', function () {
@@ -64,16 +86,66 @@
                             {data: 'email', name: 'email'},
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},
-                            {data: 'certified', name: 'certified', class: 'text-center'},
-                            {data: 'rank', name: 'rank'},
+                            {data: 'certified', name: 'certified', class: 'certified text-center', searchable: false},
+                            {data: 'rank', name: 'rank', class: 'rank'},
                             {data: 'points', name: 'points'},
                             {data: 'votes', name: 'votes'},
-                            {data: 'active', name: 'active', class: 'activate text-center'},
-                            {data: 'action', name: 'action',  orderable: false, searchable: false},
+                            {data: 'active', name: 'active', class: 'activate text-center', searchable: false},
+                            {data: 'action', name: 'action', class: 'actions', orderable: false, searchable: false},
                             {data: 'banReason', name: 'banReason', class:'banReason hidden'}
                         ],
-                        rowId: 'id'
+                        rowId: 'id',
                     });
+
+                    $('#users-table tfoot th').each( function () {
+                        var classNamed = $(this)[0].className;
+                            if(classNamed != "actions" && classNamed != "activate text-center" && classNamed != "certified text-center" && classNamed != "rank")
+                            {
+                                var title = $(this).text();
+                                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+                            }
+                        } );
+
+                    oTable.columns().every( function () {
+                    var that = this;
+                    if(this.footer())
+                    {
+                        $( 'input', this.footer() ).on( 'keyup change', function () {
+                            if ( that.search() !== this.value ) {
+                                that
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        } );
+                    }
+                    } );
+
+                    $('#users-table tbody').on('click', 'tr td:not(.actions,.activate,.certified,.rank)', function () {
+                         var row_clicked = $(this).index();
+                          $( 'input', oTable.column(row_clicked).footer() ).val(noHtml(oTable.cell( this ).data())).keyup();
+                    } );
+
+                    function noHtml(txt) {
+                        if(Number.isInteger(txt)){
+                            return (txt);
+                        }
+                            a = txt.indexOf('<');
+                            b = txt.indexOf('>');
+                            len = txt.length;
+                            c = txt.substring(0, a);
+                                if(b == -1) 
+                                {
+                                    b = a;
+                                }
+                            d = txt.substring((b + 1), len);
+                            txt = c + d;
+                            cont = txt.indexOf('<');
+                            if (a != b) 
+                            {
+                                txt = noHtml(txt);
+                            }
+                            return(txt);
+                    }
 
                     $('#users-table tbody').on('click', 'tr .ban', function () {
                         // Find ID of the user

@@ -94,11 +94,38 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group {{ $errors->has('animated') ? ' has-error' : '' }}">
-                                <label for="color">Animated:</label>
-                                {!! Form::checkbox('animated', 'true', ['checked' => $theme['animated'], 'class' => 'form-control', 'id' => 'color']) !!}
+                                <div class="checkbox checkbox-inline checkbox-success">
+                                    {!! Form::checkbox('animated', 'true', $theme['animated'], ['class' => 'form-control', 'id' => 'animated']) !!}
+                                    <label for="animated">Animated</label>
+                                </div>
                                 @if ($errors->has('animated'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('animated') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    {!! Form::submit('Update', ['class' => 'btn btn-info']) !!}
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card-box">
+                    <h4 class="header-title m-b-30">Welcome</h4>
+                    {!! Form::model($welcome, ['route' => 'admin.settings.update']) !!}
+                    {{ method_field('PATCH') }}
+                    {!! Form::text('settings_type', 'welcome', ['class' => 'hidden disabled']) !!}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group {{ $errors->has('message') ? ' has-error' : '' }}">
+                                <label for="backgromessageund">Message:</label>
+                                {!! Form::text('message', null, ['class' => 'form-control', 'id' => 'message']) !!}
+                                @if ($errors->has('message'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('message') }}</strong>
                                 </span>
                                 @endif
                             </div>

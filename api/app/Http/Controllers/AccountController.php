@@ -24,6 +24,10 @@ use Cookie;
 use \Cache;
 
 use App\Helpers\EmailChecker;
+use App\Mail\UserCreated;
+use App\Mail\UserPasswordLost;
+use App\Mail\UserPasswordChange;
+use App\Mail\UserMail;
 
 class AccountController extends Controller
 {
@@ -32,8 +36,7 @@ class AccountController extends Controller
 
     public function register()
     {
-        if (!Auth::guest())
-        {
+        if (!Auth::guest()) {
             return redirect()->route('download');
         }
         return view('account/register');
@@ -45,15 +48,13 @@ class AccountController extends Controller
 
         $validator = Validator::make($request->all(), User::$rules['register']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $isEmailValid = EmailChecker::check($request->input('email'));
 
-        if (!$isEmailValid)
-        {
+        if (!$isEmailValid) {
             return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
         }
 
@@ -97,14 +98,10 @@ class AccountController extends Controller
         $forumAccountValidating->ip_address = $clientIp;
         $forumAccountValidating->save();
 
-        setcookie('ips4_member_id', $forumAccount->member_id,        0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
         setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
-        Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
-            $message->from(config('mail.sender'), 'Azote.us');
-            $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-            $message->subject('Azote.us - Confirmation d\'inscription');
-        });
+        Mail::to($user)->send(new UserCreated($user));
 
         $request->session()->flash('notify', ['type' => 'info', 'message' => "Vous allez recevoir un email d'activation !"]);
 
@@ -116,8 +113,7 @@ class AccountController extends Controller
         $user = User::where('ticket', $ticket)->first();
         $clientIp = $request->ip();
 
-        if (!$user)
-        {
+        if (!$user) {
             $request->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
@@ -126,8 +122,7 @@ class AccountController extends Controller
 
         $request->session()->put('password', $user->password);
 
-        if ($user->active)
-        {
+        if ($user->active) {
             return redirect('/');
         }
 
@@ -140,15 +135,13 @@ class AccountController extends Controller
         ]);
 
         $userForumValidating = ForumAccountValidating::where('vid', $user->forum_id)->first();
-        if($userForumValidating)
-        {
+        if ($userForumValidating) {
             $userForumValidating->delete();
         }
 
         $forumAccount = $user->forum()->first();
 
-        if ($forumAccount)
-        {
+        if ($forumAccount) {
             $forumAccount->members_bitoptions = '0';
             $forumAccount->save();
         }
@@ -163,14 +156,8 @@ class AccountController extends Controller
     {
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user && !$user->active)
-        {
-            Mail::send('emails.welcome', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Confirmation d\'inscription');
-            });
-
+        if ($user && !$user->active) {
+            Mail::to($user)->send(new UserCreated($user));
             $request->session()->flash('notify', ['type' => 'info', 'message' => "Vous allez recevoir un nouvel email d'activation !"]);
         }
 
@@ -184,20 +171,21 @@ class AccountController extends Controller
 
     public function passord_lost_email(Request $request)
     {
+
+        $validator = Validator::make($request->all(), User::$rules['password-lost-email']);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $user = User::where('email', $request->input('email'))->first();
 
-        if ($user)
-        {
+        if ($user) {
             $user->ticket = str_random(self::TICKET_LENGTH);
             $user->update([
                 'ticket' => $user->ticket
             ]);
-
-            Mail::send('emails.password', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Mot de passe oublié');
-            });
+            Mail::to($user)->send(new UserPasswordLost($user));
         }
 
         request()->session()->flash('notify', ['type' => 'info', 'message' => "Un email de réinitialisation de mot de passe a été envoyé."]);
@@ -209,8 +197,7 @@ class AccountController extends Controller
     {
         $user = User::where('ticket', $ticket)->first();
 
-        if (!$user)
-        {
+        if (!$user) {
             request()->session()->flash('notify', ['type' => 'error', 'message' => "Clé d'activation invalide."]);
             return redirect('/');
         }
@@ -230,8 +217,7 @@ class AccountController extends Controller
     {
         $validator = Validator::make($request->all(), User::$rules['recover-password']);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -252,7 +238,7 @@ class AccountController extends Controller
     public function profile()
     {
         $accounts = Auth::user()->accounts();
-
+        
         /*if (Auth::user()->cannot('user-edit')) {
             abort(403);
         }*/
@@ -308,38 +294,35 @@ class AccountController extends Controller
     {
         $emailModification = EmailModification::where('user_id', 10)->first();
 
-        if ($request->all())
-        {
+        if ($request->all()) {
             $rules = User::$rules['update-email'];
             $rules['passwordOld'] = str_replace('{PASSWORD}', Auth::user()->password, $rules['passwordOld']);
-            $rules['passwordOld'] = str_replace('{SALT}',     Auth::user()->salt,     $rules['passwordOld']);
+            $rules['passwordOld'] = str_replace('{SALT}', Auth::user()->salt, $rules['passwordOld']);
 
             $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
             $emailModification = EmailModification::where('email_old', Auth::user()->email)->where('email_new', $request->input('email'))->orderBy('id', 'DESC')->first();
 
-            if ($emailModification && ($emailModification->token_old != null || $emailModification->token_new != null))
-            {
+            if ($emailModification && ($emailModification->token_old != null || $emailModification->token_new != null)) {
                 return view('account.valid-email', ['emailModification' => $emailModification]);
             }
 
             $isEmailValid = EmailChecker::check($request->input('email'));
 
-            if (!$isEmailValid)
-            {
-                // TODO check if error is displayed in view
-                return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
+            if (!$isEmailValid) {
+               return redirect()->back()->withErrors(['email' => "L'adresse email n'est pas valide."])->withInput();
             }
 
             $emailModification = new EmailModification;
             $emailModification->user_id   = Auth::user()->id;
-            $emailModification->token_old = str_random(self::TICKET_LENGTH);;
-            $emailModification->token_new = str_random(self::TICKET_LENGTH);;
+            $emailModification->token_old = str_random(self::TICKET_LENGTH);
+            ;
+            $emailModification->token_new = str_random(self::TICKET_LENGTH);
+            ;
             $emailModification->email_old = Auth::user()->email;
             $emailModification->email_new = $request->input('email');
             $emailModification->save();
@@ -350,15 +333,9 @@ class AccountController extends Controller
             $datas[] = ['email' => $emailModification->email_old, 'token' => $emailModification->token_old, 'type' => 'old'];
             $datas[] = ['email' => $emailModification->email_new, 'token' => $emailModification->token_new, 'type' => 'new'];
 
-            foreach ($datas as $data)
-            {
+            foreach ($datas as $data) {
                 $email = $data['email'];
-
-                Mail::send('emails.email-changed', ['user' => $user, 'type' => $data['type'], 'token' => $data['token']], function ($message) use ($user, $email) {
-                    $message->from(config('mail.sender'), 'Azote.us');
-                    $message->to($email, $user->firstname . ' ' . $user->lastname);
-                    $message->subject('Azote.us - Changement d\'email');
-                });
+                Mail::to($email)->send(new UserMail($user, $data));
             }
 
             return view('account.valid-email', ['emailModification' => $emailModification]);
@@ -373,51 +350,40 @@ class AccountController extends Controller
 
         $token_type = '';
 
-        if ($type == 'old')
-        {
+        if ($type == 'old') {
             $token_type = 'token_old';
-        }
-        elseif ($type == 'new')
-        {
+        } elseif ($type == 'new') {
             $token_type = 'token_new';
         }
 
-        if ($token_type == '')
-        {
+        if ($token_type == '') {
             throw new GenericException('email_token_invalid');
         }
 
         $emailModification = EmailModification::where($token_type, $token)->where('user_id', Auth::user()->id)->first();
 
-        if (!$emailModification)
-        {
+        if (!$emailModification) {
             throw new GenericException('email_token_invalid');
         }
 
-        if ($type == 'old')
-        {
+        if ($type == 'old') {
             $emailModification->token_old = null;
-        }
-        elseif ($type == 'new')
-        {
+        } elseif ($type == 'new') {
             $emailModification->token_new = null;
         }
 
         $emailModification->save();
 
-        if ($emailModification->token_old == null && $emailModification->token_new == null)
-        {
+        if ($emailModification->token_old == null && $emailModification->token_new == null) {
             $isEmailValidated = true;
         }
 
-        if ($isEmailValidated)
-        {
+        if ($isEmailValidated) {
             $email = $emailModification->email_new;
 
             $forumAccount = Auth::user()->forum()->first();
 
-            if ($forumAccount)
-            {
+            if ($forumAccount) {
                 $forumAccount->email = $email;
                 $forumAccount->save();
             }
@@ -426,10 +392,8 @@ class AccountController extends Controller
 
             $gameAccounts = Auth::user()->accounts();
 
-            if($gameAccounts)
-            {
-                foreach ($gameAccounts as $gameAccount)
-                {
+            if ($gameAccounts) {
+                foreach ($gameAccounts as $gameAccount) {
                     $gameAccount->Email = $email;
                     $gameAccount->save();
                 }
@@ -447,16 +411,14 @@ class AccountController extends Controller
 
     public function change_password(Request $request)
     {
-        if ($request->all())
-        {
+        if ($request->all()) {
             $rules = User::$rules['update-password'];
             $rules['passwordOld'] = str_replace('{PASSWORD}', Auth::user()->password, $rules['passwordOld']);
-            $rules['passwordOld'] = str_replace('{SALT}',     Auth::user()->salt,     $rules['passwordOld']);
+            $rules['passwordOld'] = str_replace('{SALT}', Auth::user()->salt, $rules['passwordOld']);
 
             $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -468,8 +430,7 @@ class AccountController extends Controller
 
             $forumAccount = Auth::user()->forum()->first();
 
-            if ($forumAccount)
-            {
+            if ($forumAccount) {
                 $forumAccount->members_pass_salt = $forumAccount->generateSalt();
                 $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
                 $forumAccount->save();
@@ -477,13 +438,9 @@ class AccountController extends Controller
 
             $user = Auth::user();
 
-            Mail::send('emails.password-changed', ['user' => $user], function ($message) use ($user) {
-                $message->from(config('mail.sender'), 'Azote.us');
-                $message->to($user->email, $user->firstname . ' ' . $user->lastname);
-                $message->subject('Azote.us - Changement de mot de passe');
-            });
-
+            Mail::to($user)->send(new UserPasswordChange($user));
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Mot de passe mis à jour."]);
+
             return redirect()->route('profile');
         }
 
@@ -492,14 +449,12 @@ class AccountController extends Controller
 
     public function change_profile(Request $request)
     {
-        if ($request->all())
-        {
+        if ($request->all()) {
             $rules = User::$rules['update-profile'];
 
             $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -511,31 +466,25 @@ class AccountController extends Controller
             return redirect()->route('profile');
         }
 
-        if(!Auth::user()->certified)
-        {
+        if (!Auth::user()->certified) {
             $authuser = Auth::user();
             return view('account/change-profile', compact('authuser'));
-        }
-        else
-        {
+        } else {
             abort(404);
         }
     }
 
     public function certify(Request $request)
     {
-        if ($request->all())
-        {
+        if ($request->all()) {
             $rules = User::$rules['certify'];
 
             $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            if(!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$request->birthday))
-            {
+            if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $request->birthday)) {
                 return redirect()->back()->withErrors(['birthday' => 'Le format de la date de naissance est invalide (aaaa-mm-jj)'])->withInput();
             }
 
@@ -543,16 +492,13 @@ class AccountController extends Controller
             $year_max = Carbon::now()->year - config('dofus.certify.min_age');
             $year_min = Carbon::now()->year - config('dofus.certify.max_age');
 
-            if($date->year <= $year_max && $date->year >= $year_min)
-            {
+            if ($date->year <= $year_max && $date->year >= $year_min) {
                 Auth::user()->certified = true;
                 Auth::user()->firstname = $request->input('firstname');
                 Auth::user()->lastname  = $request->input('lastname');
                 Auth::user()->birthday  = $request->input('birthday');
                 Auth::user()->save();
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->withErrors(['birthday' => 'Vous devez être âgé d\'au moins '.config('dofus.certify.min_age').' ans.'])->withInput();
             }
 
@@ -562,13 +508,10 @@ class AccountController extends Controller
             return redirect()->route('profile');
         }
 
-        if(!Auth::user()->certified)
-        {
+        if (!Auth::user()->certified) {
             $authuser = Auth::user();
             return view('account/certify', compact('authuser'));
-        }
-        else
-        {
+        } else {
             abort(404);
         }
     }

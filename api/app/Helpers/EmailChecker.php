@@ -11,10 +11,8 @@ class EmailChecker
     {
         $isEmailValid = false;
 
-        if ($email)
-        {
-            try
-            {
+        if ($email) {
+            try {
                 $client = new Client();
                 $res = $client->request('GET', "https://api.mailgun.net/v3/address/validate", [
                     'auth'    => [ 'api', config('dofus.mailgun_key') ],
@@ -22,18 +20,14 @@ class EmailChecker
                     'timeout' => 10, // seconds
                 ]);
 
-                if ($res->getStatusCode() == 200)
-                {
+                if ($res->getStatusCode() == 200) {
                     $json = json_decode((string)$res->getBody());
 
-                    if (isset($json->is_valid))
-                    {
+                    if (isset($json->is_valid)) {
                         $isEmailValid = $json->is_valid;
                     }
                 }
-            }
-            catch (TransferException $e)
-            {
+            } catch (TransferException $e) {
                 // continue
             }
         }

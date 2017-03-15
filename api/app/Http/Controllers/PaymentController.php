@@ -6,8 +6,9 @@ use App\Account;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Validator;
-use Auth;
 use \Cache;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 use App\User;
 use App\Transaction;
@@ -19,52 +20,69 @@ use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Services\Payment\Recursos;
 use App\Shop\ShopStatus;
+use App\Helpers\CloudFlare;
 
 class PaymentController extends Controller
 {
     private $payment;
+    protected $user;
 
     public function __construct(Request $request)
     {
-        $used = config('dofus.payment.used');
+        $this->middleware(function ($request, $next) {
 
-        if ($this->isShadowBanned($request->ip()))
-        {
-            $used = config('dofus.payment.used_first');
-        }
+            $this->user = Auth::user();
+			
+			if (!isset($this->user)) {
+				return $next($request);
+			}
+			
+            $used = config('dofus.payment.used');
+            
+            if ($this->isShadowBanned($request->ip())) {
+                $used = config('dofus.payment.used_first');
+            }
 
-        if ($used == "dedipass") $this->payment = new DediPass;
-        if ($used == "starpass") $this->payment = new Starpass;
-        if ($used == "recursos") $this->payment = new Recursos;
+            if ($used == "dedipass") {
+                $this->payment = new DediPass;
+            }
+            if ($used == "starpass") {
+                $this->payment = new Starpass;
+            }
+            if ($used == "recursos") {
+                $this->payment = new Recursos;
+            }
 
-        if (!$this->payment) return redirect()->to('shop/maintenance');
+            if (!$this->payment) {
+                return redirect()->to('shop/maintenance');
+            }
+
+            return $next($request);
+        });
     }
 
     public function isShadowBanned($ip)
     {
-        if (Auth::user()->shadowBan || Auth::user()->isFistBuy())
-        {
+        if ($this->user->shadowBan || $this->user->isFistBuy()) {
             return true;
         }
 
         $ip = ip2long($ip);
         $bannedIPs = BannedIP::all();
 
-        foreach ($bannedIPs as $ranch)
-        {
-            if ($ip >= ip2long($ranch->begin) && $ip <= ip2long($ranch->end))
-            {
-                Auth::user()->shadowBan = true;
-                Auth::user()->save();
+        foreach ($bannedIPs as $ranch) {
+            if ($ip >= ip2long($ranch->begin) && $ip <= ip2long($ranch->end)) {
+                $this->user->shadowBan = true;
+                $this->user->save();
 
                 $e = new ShadowBanException();
 
                 $sentry = app('sentry');
                 $sentry->user_context([
-                    'id'     => Auth::user()->id,
-                    'pseudo' => Auth::user()->pseudo,
-                    'email'  => Auth::user()->email,
-                    'name'   => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+                    'id'     => $this->user->id,
+                    'pseudo' => $this->user->pseudo,
+                    'email'  => $this->user->email,
+                    'name'   => $this->user->firstname . ' ' . $this->user->lastname,
                 ]);
                 $sentry->captureException($e);
 
@@ -72,16 +90,15 @@ class PaymentController extends Controller
             }
         }
 
-        if(Auth::user()->IsBannedByKey())
-        {
+        if ($this->user->IsBannedByKey()) {
             $e = new ShadowBanException();
 
             $sentry = app('sentry');
             $sentry->user_context([
-             'id'     => Auth::user()->id,
-             'pseudo' => Auth::user()->pseudo,
-             'email'  => Auth::user()->email,
-             'name'   => Auth::user()->firstname . ' ' . Auth::user()->lastname,
+             'id'     => $this->user->id,
+             'pseudo' => $this->user->pseudo,
+             'email'  => $this->user->email,
+             'name'   => $this->user->firstname . ' ' . $this->user->lastname,
             ]);
 
             $sentry->captureException($e);
@@ -98,8 +115,7 @@ class PaymentController extends Controller
 
     public function method($country = 'fr')
     {
-        if (!isset($this->payment->rates()->$country))
-        {
+        if (!isset($this->payment->rates()->$country)) {
             $country = 'fr';
         }
 
@@ -115,20 +131,16 @@ class PaymentController extends Controller
     {
         $countryBackup = $country;
 
-        if (isset($this->payment->rates()->all) && isset($this->payment->rates()->all->$method))
-        {
+        if (isset($this->payment->rates()->all) && isset($this->payment->rates()->all->$method)) {
             $country = 'all';
-        }
-        elseif (!isset($this->payment->rates()->$country) || !isset($this->payment->rates()->$country->$method))
-        {
+        } elseif (!isset($this->payment->rates()->$country) || !isset($this->payment->rates()->$country->$method)) {
             $country = 'fr';
             $method  = 'sms';
         }
 
         $paliers = [];
 
-        if (isset($this->payment->rates()->$country) && isset($this->payment->rates()->$country->$method))
-        {
+        if (isset($this->payment->rates()->$country) && isset($this->payment->rates()->$country->$method)) {
             $paliers = $this->payment->rates()->$country->$method;
         }
 
@@ -158,24 +170,19 @@ class PaymentController extends Controller
             'cgv'     => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
 
-        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null)
-        {
+        if ($this->payment->palier($data['country'], $data['method_'], $data['palier']) == null) {
             return redirect()->back()->withErrors(['palier' => 'Le palier selectionné est invalide.']);
-        }
-        else
-        {
+        } else {
             $payment = $this->payment->palier($data['country'], $data['method_'], $data['palier']);
             $country = $data['country'];
 
             $characterCount = 0;
 
-            foreach (Auth::user()->accounts() as $account)
-            {
+            foreach (Auth::user()->accounts() as $account) {
                 $characterCount += count($account->characters(false, true));
             }
 
@@ -209,15 +216,13 @@ class PaymentController extends Controller
             'method'  => 'required|in:sms,audiotel,mobilecall,paypal,paysafecard,neosurf,carte bancaire,internet plus mobile',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->route('error.fake', [1]);
         }
 
         $payment = $this->payment->palier($data['country'], $data['method'], $data['palier']);
 
-        if (!$payment)
-        {
+        if (!$payment) {
             return redirect()->route('error.fake', [2]);
         }
 
@@ -231,18 +236,17 @@ class PaymentController extends Controller
             'ticket'  => $request->input('ticket'),
         ];
 
-        if (isset($payment->recursos) && $payment->recursos)
-        {
+        if (isset($payment->recursos) && $payment->recursos) {
             $view = 'shop.payment.popup_recursos';
             $url  = route('check_recursos_code', [null]);
 
-            if (config('app.env') == 'production')
-            {
+            if (config('app.env') == 'production') {
                 $url = str_replace('http:', 'https:', $url);
             }
 
             $data['check_url'] = $url;
             $data['key']       = str_random(32);
+			$data['userid']    = $this->user->id;
         }
 
         return view($view, $data);
@@ -257,8 +261,7 @@ class PaymentController extends Controller
 
     public function redirect_recursos_cb($key, $palier)
     {
-        if ($this->payment instanceof Recursos)
-        {
+        if ($this->payment instanceof Recursos) {
             return $this->payment->redirect_cb($key, $palier);
         }
 
@@ -267,8 +270,7 @@ class PaymentController extends Controller
 
     public function check_recursos_code($key)
     {
-        if ($this->payment instanceof Recursos && $this->payment->check_cb($key))
-        {
+        if ($this->payment instanceof Recursos && $this->payment->check_cb($key)) {
             return "true";
         }
 
@@ -277,12 +279,10 @@ class PaymentController extends Controller
 
     public function code_re_fallback_process(Request $request)
     {
-        if ($request->has('palier') || $request->has('code'))
-        {
+        if ($request->has('palier') || $request->has('code')) {
             $method = $this->payment->palier('fr', 'carte bancaire', $request->input('palier'));
 
-            if (!$method)
-            {
+            if (!$method) {
                 return "Code ou palier invalide #3";
             }
 
@@ -293,8 +293,7 @@ class PaymentController extends Controller
             $recursos->price   = $method->price;
             $recursos->save();
 
-            if ($this->payment->check_code($recursos, $request->input('code')))
-            {
+            if ($this->payment->check_code($recursos, $request->input('code'))) {
                 return "true";
             }
 
@@ -306,8 +305,7 @@ class PaymentController extends Controller
 
     public function code_re_fallback(Request $request)
     {
-        if (!$this->payment instanceof Recursos)
-        {
+        if (!$this->payment instanceof Recursos) {
             return redirect()->route('error.fake', [7]);
         }
 
@@ -333,13 +331,11 @@ class PaymentController extends Controller
             'code'    => 'required|min:6|max:8|alpha_num',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($data);
         }
 
-        if ($this->payment->palier($data['country'], $data['method'], $data['palier']) == null)
-        {
+        if ($this->payment->palier($data['country'], $data['method'], $data['palier']) == null) {
             return redirect()->route('error.fake', [3]);
         }
 
@@ -357,8 +353,7 @@ class PaymentController extends Controller
         $transaction->provider = $validation->provider;
         $transaction->raw      = $validation->raw;
 
-        if ($validation->error)
-        {
+        if ($validation->error) {
             $transaction->state = ShopStatus::PAYMENT_ERROR;
             $transaction->type  = 'error';
             $transaction->save();
@@ -367,11 +362,8 @@ class PaymentController extends Controller
             Cache::forget('transactions_' . Auth::user()->id . '_10');
 
             return redirect()->back()->withErrors(['code' => $validation->error])->withInput();
-        }
-        else
-        {
-            if ($validation->success)
-            {
+        } else {
+            if ($validation->success) {
                 $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
                 $transaction->code        = $validation->code;
                 $transaction->points      = $validation->points;
@@ -388,9 +380,7 @@ class PaymentController extends Controller
                 Auth::user()->save();
 
                 return view('shop.payment.success');
-            }
-            else
-            {
+            } else {
                 $transaction->state = ShopStatus::PAYMENT_FAIL;
                 $transaction->code  = $validation->code;
                 $transaction->type  = 'fail';
@@ -402,5 +392,50 @@ class PaymentController extends Controller
                 return redirect()->back()->withErrors(['code' => $validation->message])->withInput();
             }
         }
+    }
+	
+	public function code_re_callback(Request $request)
+    {
+		$IPAddress = ip2long(CloudFlare::ip());
+		
+		if ($IPAddress < ip2long('77.81.141.0') || $IPAddress > ip2long('77.81.141.254')) {
+			abort(404);
+			return;
+		}
+		
+        $data = $request->all();
+		
+		$validator = Validator::make($data, [
+            'extra'   => 'required',
+            'price'   => 'required|numeric',
+            'country' => 'required|min:2|max:4|alpha_num',
+            'type'    => 'required',
+            'code'    => 'required|min:6|max:20|alpha_num|unique:transactions,code',
+            'po'      => 'required|min:2|max:10',
+        ]);
+
+        if ($validator->fails()) {
+			return $validator->errors()->all();
+        }
+
+		$user = User::findOrFail($request->extra);
+		$coeff  = config('dofus.payment.recursos.coeff');
+		$points = $data['price'] * $coeff;
+		
+		$transaction = new Transaction;
+		$transaction->user_id	  = $user->id;
+        $transaction->state       = ShopStatus::PAYMENT_SUCCESS;
+        $transaction->code        = $data['code'];
+        $transaction->points      = $points;
+        $transaction->country     = $data['country'];
+        $transaction->palier_name = $data['type'] . '-' . $data['country'] . '-' . $data['po'];
+        $transaction->palier_id   = 0;
+        $transaction->type        = $data['type'];
+        $transaction->save();
+
+        $user->points += $points;
+        $user->save();
+		
+        return "OK";
     }
 }

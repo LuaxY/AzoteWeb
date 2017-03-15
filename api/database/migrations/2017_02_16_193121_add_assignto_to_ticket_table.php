@@ -26,6 +26,6 @@ class AddAssigntoToTicketTable extends Migration
     {
          Schema::table('support_requests', function (Blueprint $table) {
             $table->dropColumn('assign_to');
-        });
+         });
     }
 }
