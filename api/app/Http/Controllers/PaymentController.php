@@ -19,6 +19,7 @@ use App\Exceptions\ShadowBanException;
 use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Services\Payment\Recursos;
+use App\Services\Payment\PayFee;
 use App\Shop\ShopStatus;
 use App\Helpers\CloudFlare;
 
@@ -51,6 +52,9 @@ class PaymentController extends Controller
             }
             if ($used == "recursos") {
                 $this->payment = new Recursos;
+            }
+            if ($used == "payfee") {
+                $this->payment = new PayFee;
             }
 
             if (!$this->payment) {
@@ -247,7 +251,9 @@ class PaymentController extends Controller
             $data['check_url'] = $url;
             $data['key']       = str_random(32);
 			$data['userid']    = $this->user->id;
-        }
+        } else if (isset($payment->payfee) && $payment->payfee) {
+			$view = 'shop.payment.popup_payfee';
+		}
 
         return view($view, $data);
     }
@@ -261,10 +267,11 @@ class PaymentController extends Controller
 
     public function redirect_recursos_cb($key, $palier)
     {
-        if ($this->payment instanceof Recursos) {
-            return $this->payment->redirect_cb($key, $palier);
+        if (!($this->payment instanceof Recursos)) {
+            $this->payment = new Recursos;
         }
 
+		return $this->payment->redirect_cb($key, $palier);
         return redirect()->route('error.fake', [10]);
     }
 

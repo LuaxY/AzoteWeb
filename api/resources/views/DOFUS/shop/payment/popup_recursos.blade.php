@@ -13,7 +13,7 @@
         e.preventDefault();
         window.open(link, 'Payment', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=800,height=850,left = 420,top = 150');
         $('.loader').fadeIn();
-		@if ($method == 'carte bancaire')
+		@if ($method == 'carte bancaire' && false)
 			setTimeout(startCheck, 3000);
 		@endif
         return false;
@@ -57,7 +57,7 @@
             <div class="col-md-5 col-centered">
                 <div class="panel panel-primary" style="margin-top:10px;">
                     <div class="panel-heading">Obtenir un code</div>
-					@if ($method == 'carte bancaire')
+					@if ($method == 'carte bancaire' && false)
 						<div class="panel-body">
 							<center>
 								{!! $payment->legal->header !!}
@@ -83,7 +83,7 @@
 								{!! $payment->legal->header !!}
 								
 								Cliquez sur le lien suivant pour obtenir le code :
-								<a href onClick="openModal(event, '{{ $payment->link }}&x={{ $userid }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/smsplus.png') }}" height="30" /></a>
+								<a href onClick="openModal(event, '{{ $payment->link }}&x={{ $userid }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('images/' . $method . '.png') }}" height="30" /></a>
 
 								<br>
 								{!! $payment->text !!}
