@@ -130,7 +130,13 @@ return [
             'prices'     => env('RECURSOS_PRICES', null),
             'coeff'      => env('RECURSOS_COEFF', null),
         ],
-
+		
+        'payfee' => [
+            'name'       => 'PayFee',
+            'private'    => env('PAYFEE_PRIVATE', null),
+            'user'    	 => env('PAYFEE_USER', null),
+            'rate'    	 => env('PAYFEE_RATE', null),
+        ],
     ],
 
     'ranks'       => [
