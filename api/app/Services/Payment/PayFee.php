@@ -33,7 +33,7 @@ class PayFee extends Payment
         $newMethod = new \stdClass;
 
         $newMethod->devise   = "&euro;";
-        $newMethod->points   = 105;
+        $newMethod->points   = 150;
         $newMethod->price    = 3;
         $newMethod->cost     = "3 " . $newMethod->devise;
         $newMethod->text     = "";
@@ -155,7 +155,7 @@ class PayFee extends Payment
             $check->type    	= $method;
 			$check->palier_name = $palier;
             $check->palier_id   = 0;
-            $check->points      = 105;
+            $check->points      = 150;
             $check->message     = $result->error;
             $check->payout      = 105;
         } else {
