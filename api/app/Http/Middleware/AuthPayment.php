@@ -24,7 +24,7 @@ class AuthPayment
             if (CloudFlare::ip() == $user->last_ip_address) {
                 Auth::login($user);
             } else {
-                file_put_contents('bad_ip_shop.log', "ID:{$user->id} - Pseudo:{$user->pseudo} - Email:{$user->email} - LastIP: $user->last_ip_address - CloudFlare: " . CloudFlare::ip() . "\n", FILE_APPEND);
+                //file_put_contents('bad_ip_shop.log', "ID:{$user->id} - Pseudo:{$user->pseudo} - Email:{$user->email} - LastIP: $user->last_ip_address - CloudFlare: " . CloudFlare::ip() . "\n", FILE_APPEND);
                 return redirect()->route('error.fake', [5]);
             }
         } else {
