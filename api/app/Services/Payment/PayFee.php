@@ -71,7 +71,7 @@ class PayFee extends Payment
             $CBMethod->price    = 0;
             $CBMethod->cost     = "Paliers sur la prochaine page";
             $CBMethod->text     = "";
-            $CBMethod->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=creditcard&h=paysafecard&pcreditcard=210 Ogrines,245 Ogrines,560 Ogrines,700 Ogrines,1750 Ogrines,3500 Ogrines,5250 Ogrines,7000 Ogrines";
+            $CBMethod->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=creditcard&h=paysafecard&pcreditcard=240 Ogrines,280 Ogrines,640 Ogrines,800 Ogrines,2000 Ogrines,4000 Ogrines,6000 Ogrines,8000 Ogrines";
             $CBMethod->recursos = true;
 
             if (config('app.env') == 'production') {

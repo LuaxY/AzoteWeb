@@ -427,7 +427,7 @@ class PaymentController extends Controller
 
 		$user = User::findOrFail($request->extra);
 		$coeff  = config('dofus.payment.recursos.coeff');
-		$points = $data['price'] * $coeff;
+		$points = $data['price'] * 100;
 		
 		$transaction = new Transaction;
 		$transaction->user_id	  = $user->id;
@@ -438,6 +438,7 @@ class PaymentController extends Controller
         $transaction->palier_name = $data['type'] . '-' . $data['country'] . '-' . $data['po'];
         $transaction->palier_id   = 0;
         $transaction->type        = $data['type'];
+        $transaction->provider    = "Recursos";
         $transaction->save();
 
         $user->points += $points;

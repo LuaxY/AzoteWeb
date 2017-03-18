@@ -34,7 +34,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Mise à jour en cours.</div>
+				<div class="title">Nous revenons dans quelques instants.</div>
 			</div>
 		</div>
 	</body>

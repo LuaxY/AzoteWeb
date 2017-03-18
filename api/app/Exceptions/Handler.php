@@ -34,7 +34,6 @@ class Handler extends ExceptionHandler
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
         NotFound\Symfony\Component\HttpKernel\Exception\HttpException::class,
-        GenericException::class,
         TokenMismatchException::class,
         MethodNotAllowed\Symfony\Component\HttpKernel\Exception\HttpException::class,
         GenericException::class,
