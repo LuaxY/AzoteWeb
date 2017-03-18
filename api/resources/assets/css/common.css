@@ -22066,11 +22066,9 @@ img.mfp-img {
 }
 
 .ak-forum-post-list .ak-avatar-tag {
-    font-size: 13px;
-    font-size: 1.3rem;
+    font-size: 12px;
+    font-size: 1.2rem;
     max-width: 85px;
-    text-align: center;
-    padding-left: 18px
 }
 
 .ak-forum-post-list .ak-avatar-modo .ak-avatar-tag, .ak-forum-post-list .ak-avatar-admin .ak-avatar-tag,

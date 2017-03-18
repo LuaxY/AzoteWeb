@@ -62,7 +62,7 @@ class AnnounceController extends Controller
         if (!World::isServerExist($server)) {
             abort(404);
         }
-        $this->authorize('destroy', $announce);
+        $this->authorize('destroy', $announce); // Edit later (return true)
 
         $announce = Announce::on($server.'_world')->findOrFail($request->Id);
 

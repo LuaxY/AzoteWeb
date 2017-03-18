@@ -4,24 +4,29 @@ namespace App;
 
 trait HasRoles
 {
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->hasOne(Role::class, 'id', 'role_id' );
     }
 
     public function assignRole(Role $role)
     {
-        return $this->roles()-save(
-            Role::whereName($role)->firstorFail()
-        );
+        $this->role_id = $role->id;
+        return $this->save;
     }
 
-    public function hasRole($role)
+    public function hasRole($roles)
     {
-        if (is_string($role)) {
-            return $this->roles->contains('name', $role);
+        if (is_string($roles)) 
+        {
+            return $this->role->contains('name', $roles);
         }
-
-        return !! $role->intersect($this->roles)->count();
+        $result = false;
+        foreach($roles as $role)
+        {
+            if($this->role_id == $role->id)
+                $result = true;
+        }
+        return $result;
     }
 }

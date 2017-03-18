@@ -46,11 +46,16 @@ class SupportController extends Controller
         $request = SupportRequest::findOrFail($id);
         $ticket = $request->ticket()->first(); // Initial ticket
         $messages = $request->tickets()->get(); // All messages (+ticket)
-        $adminsDB = User::where('rank', 4)->where('id', '!=', $request->assign_to)->where('id', '!=', Auth::user()->id)->get();
+        $permission_name = "manage-support";
+        $adminsDB = User::whereHas('role', function($query) use ($permission_name) {
+            $query->whereHas('permissions', function($query) use ($permission_name) {
+                $query->where('name', '=', $permission_name);
+        });
+        })->where('id', '!=', $request->assign_to)->where('id', '!=', Auth::user()->id)->get();
         $admins = [];
         if ($adminsDB) {
             foreach ($adminsDB as $admin) {
-                $admins[$admin->id] = $admin->pseudo;
+                $admins[$admin->id] = ''.$admin->pseudo.' ('.$admin->role->label.')';
             }
         }
 
@@ -196,8 +201,9 @@ class SupportController extends Controller
     {
         $supportRequest = SupportRequest::findOrFail($id);
 
-        $admin = User::where('id', Auth::user()->id)->where('rank', 4)->first();
-        if ($admin) {
+        $admin = Auth::user();
+        if ($admin) 
+        {
             $supportRequest->assign_to = $admin->id;
             $supportRequest->save();
 
@@ -232,9 +238,9 @@ class SupportController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
-        $admin = User::where('id', $request->input('adminid'))->where('rank', 4)->first();
-
-        if ($admin) {
+        $admin = User::where('id', $request->input('adminid'))->first();
+    
+        if ($admin->can('manage-support')) {
             $supportRequest->assign_to = $admin->id;
             $supportRequest->save();
 

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Exception;
 use Illuminate\Foundation\Validation\ValidationException;
 use Illuminate\Session\TokenMismatchException;
@@ -127,6 +128,10 @@ class Handler extends ExceptionHandler
             $status = $e->getStatus();
 
             return response()->view('errors.generic', $data, $status);
+        }
+
+        if ($e instanceof AuthorizationException) {
+            return response()->view('errors.403');
         }
 
         return parent::render($request, $e);

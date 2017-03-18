@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
+use App\Role;
 
 class AdminController extends Controller
 {

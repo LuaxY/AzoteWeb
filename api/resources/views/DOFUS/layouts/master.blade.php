@@ -53,7 +53,7 @@
                         <a class="navbar-brand" href="{{ URL::route('home') }}"></a>
                     </div>
                     <a class="ak-support" href="{{ URL::to('livesupport') }}">Support</a>
-                    @if (!Auth::guest() && Auth::user()->isAdmin())
+                    @if (!Auth::guest() && Auth::user()->isStaff())
                     <a class="ak-admin" href="{{ URL::route('admin.dashboard') }}" target="_blank">Admin</a>
                     @endif
                 </div>

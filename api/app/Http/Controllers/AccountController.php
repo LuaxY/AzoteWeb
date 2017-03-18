@@ -28,6 +28,7 @@ use App\Mail\UserCreated;
 use App\Mail\UserPasswordLost;
 use App\Mail\UserPasswordChange;
 use App\Mail\UserMail;
+use App\Role;
 
 class AccountController extends Controller
 {
@@ -238,11 +239,6 @@ class AccountController extends Controller
     public function profile()
     {
         $accounts = Auth::user()->accounts();
-        
-        /*if (Auth::user()->cannot('user-edit')) {
-            abort(403);
-        }*/
-
         return view('account/profile', compact('accounts'));
     }
 

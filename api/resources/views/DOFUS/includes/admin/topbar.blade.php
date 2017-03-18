@@ -3,7 +3,7 @@
 
         <!-- LOGO -->
         <div class="topbar-left">
-            <a href="{{ route('admin.dashboard') }}" class="logo"><span>Azote<span> Dofus</span></span><i class="zmdi zmdi-layers"></i></a>
+            <a href="{{ route('admin.dashboard') }}" class="logo"><span>{{config('dofus.title')}}<span> - {{config('dofus.subtitle')}}</span></span><i class="zmdi zmdi-layers"></i></a>
         </div>
 
     <!-- Button mobile view to collapse sidebar menu -->
@@ -42,6 +42,7 @@
                     -->
                     <!-- End Notification bar -->
                 </li>
+                <!--
                 <li class="hidden-xs">
                     <form role="search" class="app-search">
                         <input type="text" placeholder="Search..."
@@ -49,6 +50,7 @@
                         <a href=""><i class="fa fa-search"></i></a>
                     </form>
                 </li>
+                -->
             </ul>
 
         </div><!-- end container -->

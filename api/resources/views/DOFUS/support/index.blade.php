@@ -56,7 +56,7 @@
                     <td>{{ $request->subject }}</td>
                     <td>{{ $request->updated_at->format('d/m/Y H:i:s') }}</td>
                     <td class="ak-bold" @if($request->state == 1) style="color:green;" @endif>{{ Utils::support_request_status($request->state) }}</td>
-                    <td @if($request->lastTicketAuthor()->isAdmin()) style="color:#2baaff" @endif>{{ $request->lastTicketAuthor()->pseudo }}</td>
+                    <td @if($request->lastTicketAuthor()->can('manage-support')) style="color:#2baaff" @endif>{{ $request->lastTicketAuthor()->pseudo }}</td>
                     <td class="ak-center"><a href="{{route('support.show', $request->id)}}"><span class="ak-icon-small ak-filter"></span></a></td>
                 </tr>
                 @endforeach

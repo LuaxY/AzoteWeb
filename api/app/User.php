@@ -27,7 +27,6 @@ class User extends Authenticatable
         'password',
         'salt',
         'lang',
-        'rank',
         'firstname',
         'lastname',
         'last_ip_address',
@@ -87,7 +86,7 @@ class User extends Authenticatable
             'passwordConfirmation' => 'required|same:password',
             'firstname'            => 'required|min:3|max:32|alpha_dash',
             'lastname'             => 'required|min:3|max:32|alpha_dash',
-            'rank'                 => 'required|in:0,4',
+            'role'                 => 'required|numeric|exists:roles,id',
         ],
         'admin-update-profile' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
@@ -223,20 +222,12 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if ($this->rank >= 4) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->role_id >= 4;
     }
 
     public function isStaff()
     {
-        if ($this->rank > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->role_id > 1;
     }
 
     public function isActive()

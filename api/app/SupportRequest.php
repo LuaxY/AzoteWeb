@@ -86,7 +86,7 @@ class SupportRequest extends Model
         $message = SupportTicket::select('user_id')->where('request_id', $this->id)->orderBy('id', 'desc')->first();
 
         if ($message) {
-            $user = User::select('pseudo', 'rank')->where('id', $message->user_id)->first();
+            $user = User::select('pseudo', 'role_id')->where('id', $message->user_id)->first();
             if ($user) {
                 return $user;
             } else {

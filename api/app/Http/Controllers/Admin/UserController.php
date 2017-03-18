@@ -19,6 +19,7 @@ use Yuansir\Toastr\Facades\Toastr;
 use App\ForumAccount;
 use App\Mail\Admin\UserUpdated;
 use App\Mail\UserCreated;
+use App\Role;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::getRoles();
+        return view('admin.users.create', compact('roles'));
     }
 
     public function edit(User $user)
@@ -40,7 +42,9 @@ class UserController extends Controller
             return LotteryTicket::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(10)->get();
         });
         $ticketsArray = Lottery::fetchTicketsType();
-        return view('admin.users.edit', compact('user', 'transactions', 'tickets', 'ticketsArray'));
+        $roles = Role::getRoles();
+
+        return view('admin.users.edit', compact('user', 'transactions', 'tickets', 'ticketsArray', 'roles'));
     }
 
     public function store(Request $request)
@@ -61,6 +65,7 @@ class UserController extends Controller
         $user->firstname = $request->firstname;
         $user->lastname  = $request->lastname;
         $user->email     = $request->email;
+        $user->role_id   = $request->role;
         $user->password  = $user->hashPassword($request->password, $salt);
         $user->salt      = $salt;
 
@@ -112,7 +117,7 @@ class UserController extends Controller
             'lastname'  => 'required|min:3|max:32|alpha_dash',
             'birthday'  => 'nullable|date',
             'email'     => 'required|email|unique:users,email, ' . $user->id,
-            'rank'      => 'required|in:0,4',
+            'role'      => 'required|numeric|exists:roles,id',
             'points'    => 'required|numeric'
         ];
 
@@ -127,11 +132,11 @@ class UserController extends Controller
         $user->pseudo    = $request['pseudo'];
         $user->firstname = $request['firstname'];
         $user->lastname  = $request['lastname'];
-        $user->rank      = $request['rank'];
         $user->points    = $request['points'];
+        $user->role_id   = $request['role'];
         $user->birthday  = is_null($request['birthday']) ? null : $request['birthday'];
         $user->save();
-
+        
         $forumAccount = $user->forum()->first();
 
         if ($forumAccount) {

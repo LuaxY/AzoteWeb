@@ -21,6 +21,6 @@ class AnnouncePolicy
 
     public function destroy(User $user)
     {
-        return $user->isAdmin();
+        return true;
     }
 }

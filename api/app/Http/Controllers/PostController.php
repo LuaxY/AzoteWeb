@@ -78,7 +78,7 @@ class PostController extends Controller
             return Post::findOrFail($id);
         });
 
-        if ($post->isDraft() && (Auth::guest() || !Auth::user()->isAdmin())) {
+        if ($post->isDraft() && (Auth::guest() || !Auth::user()->can('view-drafts'))) {
             abort(404);
         }
 
@@ -110,7 +110,7 @@ class PostController extends Controller
     {
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
 
-        if (!Auth::user()->isAdmin()) {
+        if (!Auth::user()->isStaff()) {
             $validator = Validator::make($request->all(), Comment::$rules['store']);
             if ($validator->fails()) {
                 return response()->json($validator->messages(), 400);
@@ -138,7 +138,7 @@ class PostController extends Controller
     public function commentDestroy(Request $request, $id, $slug = "", $commentid)
     {
         $comment = Comment::findOrFail($commentid);
-        $this->authorize('destroy', $comment);
+        $this->authorize('destroy', $comment); // Edit later (return true)
         $comment->delete();
         Cache::forget('posts_' . $id . '_comments_1');
         Cache::forget('posts_' . $id . '_comments_2');

@@ -31,7 +31,7 @@
                                     <th>Firstname</th>
                                     <th>Lastname</th>
                                     <th>Certified</th>
-                                    <th>Rank</th>
+                                    <th>Role</th>
                                     <th>Points</th>
                                     <th>Votes</th>
                                     <th>Active</th>
@@ -87,7 +87,7 @@
                             {data: 'firstname', name: 'firstname'},
                             {data: 'lastname', name: 'lastname'},
                             {data: 'certified', name: 'certified', class: 'certified text-center', searchable: false},
-                            {data: 'rank', name: 'rank', class: 'rank'},
+                            {data: 'role', name: 'role', class: 'role'},
                             {data: 'points', name: 'points'},
                             {data: 'votes', name: 'votes'},
                             {data: 'active', name: 'active', class: 'activate text-center', searchable: false},
@@ -99,7 +99,7 @@
 
                     $('#users-table tfoot th').each( function () {
                         var classNamed = $(this)[0].className;
-                            if(classNamed != "actions" && classNamed != "activate text-center" && classNamed != "certified text-center" && classNamed != "rank")
+                            if(classNamed != "actions" && classNamed != "activate text-center" && classNamed != "certified text-center" && classNamed != "role")
                             {
                                 var title = $(this).text();
                                 $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
@@ -120,7 +120,7 @@
                     }
                     } );
 
-                    $('#users-table tbody').on('click', 'tr td:not(.actions,.activate,.certified,.rank)', function () {
+                    $('#users-table tbody').on('click', 'tr td:not(.actions,.activate,.certified,.role)', function () {
                          var row_clicked = $(this).index();
                           $( 'input', oTable.column(row_clicked).footer() ).val(noHtml(oTable.cell( this ).data())).keyup();
                     } );

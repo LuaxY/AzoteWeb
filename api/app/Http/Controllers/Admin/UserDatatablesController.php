@@ -19,7 +19,7 @@ class UserDatatablesController extends Controller
      */
     public function anyData()
     {
-        $users = User::select(['id', 'pseudo', 'email', 'firstname', 'lastname', 'birthday', 'certified', 'rank', 'active', 'points', 'votes','banned', 'banReason'])->get();
+        $users = User::select(['id', 'pseudo', 'email', 'firstname', 'lastname', 'birthday','role_id', 'certified', 'active', 'points', 'votes','banned', 'banReason'])->get();
 
         return Datatables::of($users)
             ->addColumn('action', function ($user) {
@@ -43,13 +43,11 @@ class UserDatatablesController extends Controller
                 $ac = '<a href="user/'.$user->id.'/edit">'.$user->pseudo.'</a>';
                 return $ac;
             })
-            ->editColumn('rank', function ($user) {
-                if ($user->isAdmin()) {
-                    $ac = 'Admin';
-                } else {
-                    $ac = 'User';
-                }
-                return $ac;
+            ->editColumn('role', function ($user) {
+                if($user->role)
+                    return $user->role->label;
+                else
+                    return 'Role not found';
             })
             ->editColumn('certified', function ($user) {
                 if ($user->isCertified()) {

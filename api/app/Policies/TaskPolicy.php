@@ -21,10 +21,10 @@ class TaskPolicy
     }
     public function update(User $user, Task $task)
     {
-        return $user->isAdmin() and $user->id == $task->user_id;
+        return $user->id == $task->user_id;
     }
     public function destroy(User $user, Task $task)
     {
-        return $user->isAdmin() and $user->id == $task->user_id;
+        return $user->id == $task->user_id;
     }
 }

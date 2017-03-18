@@ -69,12 +69,12 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <div class="form-group {{ $errors->has('rank') ? ' has-error' : '' }}">
-                                        <label for="rank">Rank:</label>
-                                        {!! Form::select('rank', ['0' => 'User', '4' => 'Admin'], null,['class' => 'form-control', 'id' => 'rank']) !!}
-                                        @if ($errors->has('rank'))
+                                    <div class="form-group {{ $errors->has('role') ? ' has-error' : '' }}">
+                                        <label for="role">Role:</label>
+                                        {!! Form::select('role', $roles, null,['class' => 'form-control', 'id' => 'role']) !!}
+                                        @if ($errors->has('role'))
                                             <span class="help-block">
-                                                                            <strong>{{ $errors->first('rank') }}</strong>
+                                                                            <strong>{{ $errors->first('role') }}</strong>
                                                                         </span>
                                         @endif
                                     </div>

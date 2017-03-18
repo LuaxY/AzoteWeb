@@ -48,7 +48,7 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
     ]);
 
     Route::delete(Lang::get('routes.posts.comment.destroy'), [
-        'middleware' => 'auth',
+        'middleware' => ['auth','can:delete-comments'],
         'uses' => 'PostController@commentDestroy',
         'as'   => 'posts.comment.destroy'
     ]);
@@ -357,8 +357,8 @@ Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')]
          return view('support/temp');
     });
 
-    // BETA for Admins support
-    Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/support'], function () {
+    // BETA for Staff support
+    Route::group(['middleware' => ['auth', 'staff'], 'prefix' => '/support'], function () {
 
         Route::get('/', [
             'uses' => 'SupportController@index',
@@ -521,9 +521,9 @@ Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')]
 
 /* ============ ADMIN PANEL ============ */
 
-Route::group(['middleware' => ['auth', 'admin']], function () {
+Route::group(['middleware' => ['auth', 'staff']], function () {
 
-    Route::group(['prefix' => 'filemanager'], function () {
+    Route::group(['prefix' => 'filemanager', 'middleware' => 'can:manage-filemanager'], function () {
         Route::get('show', 'FilemanagerLaravelController@getShow');
         Route::get('connectors', 'FilemanagerLaravelController@getConnectors');
         Route::post('connectors', 'FilemanagerLaravelController@postConnectors');
@@ -538,7 +538,7 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         ]);
 
         // ACCOUNT //
-        Route::group(['prefix' => 'account'], function () {
+        Route::group(['prefix' => 'account', 'middleware' => 'can:manage-account'], function () {
 
             Route::get('/', [
                 'uses' => 'AccountController@index',
@@ -567,12 +567,16 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         });
 
         // POSTS //
-        Route::get('/posts/data', [
-            'uses' => 'PostDatatablesController@anyData',
-            'as'  => 'datatables.postdata'
-        ]);
+        Route::group(['prefix' => 'posts', 'middleware' => 'can:manage-posts'], function () {
 
-        Route::resource('post', 'PostController', ['names' => [
+            Route::get('data', [
+                'uses' => 'PostDatatablesController@anyData',
+                'as'  => 'datatables.postdata'
+            ]);
+
+        });
+
+        Route::resource('post', 'PostController', ['middleware' => 'can:manage-posts', 'names' => [
             'index'   => 'admin.posts', // GET Index
             'create'  => 'admin.post.create', // GET Create
             'store'   => 'admin.post.store', // POST Store (create POST)
@@ -582,15 +586,18 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         ]]);
 
         // TASKS //
-        Route::patch('/task/updatePositions', [
-            'uses' => 'TaskController@updatePositions',
-            'as'   => 'admin.task.update.positions'
-        ]);
-        Route::patch('/task/updateModal', [
-            'uses' => 'TaskController@updateModal',
-            'as'   => 'admin.task.update.modal'
-        ]);
-        Route::resource('task', 'TaskController', ['names' => [
+        Route::group(['prefix' => 'task', 'middleware' => 'can:manage-tasks'], function () {
+            Route::patch('updatePositions', [
+                'uses' => 'TaskController@updatePositions',
+                'as'   => 'admin.task.update.positions'
+            ]);
+            Route::patch('updateModal', [
+                'uses' => 'TaskController@updateModal',
+                'as'   => 'admin.task.update.modal'
+            ]);
+        });
+
+        Route::resource('task', 'TaskController', ['middleware' => 'can:manage-tasks', 'names' => [
             'index'   => 'admin.tasks', // GET Index
             'create'  => 'admin.task.create', // GET Create
             'store'   => 'admin.task.store', // POST Store (create TASK)
@@ -600,147 +607,151 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         ]]);
 
         // USERS //
-        Route::get('/users/data', [
-            'uses' => 'UserDatatablesController@anyData',
-            'as'  => 'datatables.userdata'
-        ]);
-
-        Route::group(['prefix' => 'user/{user}'], function () {
-
-            // Users actions
-            Route::patch('ban', [
-                'uses' => 'UserController@ban',
-                'as'   => 'admin.user.ban'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('unban', [
-                'uses' => 'UserController@unban',
-                'as'   => 'admin.user.unban'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('activate', [
-                'uses' => 'UserController@activate',
-                'as'   => 'admin.user.activate'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('decertify', [
-                'uses' => 'UserController@decertify',
-                'as'   => 'admin.user.decertify'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('certify', [
-                'uses' => 'UserController@certify',
-                'as'   => 'admin.user.certify'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('password', [
-                'uses' => 'UserController@password',
-                'as'   => 'admin.user.password'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('avatar/reset', [
-                'uses' => 'UserController@resetAvatar',
-                'as'   => 'admin.user.reset.avatar'
-            ])->where('user', '[0-9]+');
-
-            Route::patch('avatar/reset', [
-                'uses' => 'UserController@resetAvatar',
-                'as'   => 'admin.user.reset.avatar'
-            ])->where('user', '[0-9]+');
-
-            Route::post('re-send-email', [
-                'uses'       => 'UserController@re_send_email',
-                'as'         => 're-send-email-admin'
+        Route::group(['middleware' => 'can:manage-users'], function () {
+            Route::get('/users/data', [
+                'uses' => 'UserDatatablesController@anyData',
+                'as'  => 'datatables.userdata'
             ]);
+            Route::group(['prefix' => 'user/{user}'], function () {
 
-            Route::post('addticket', [
-                'uses'       => 'UserController@addTicket',
-                'as'         => 'admin.user.addticket'
-            ]);
-
-            // Game Accounts
-            Route::group(['prefix' => 'server/{server}'], function () {
-
-                // Index
-                Route::get('/', [
-                    'uses' => 'GameAccountController@index',
-                    'as'   => 'admin.user.game.accounts'
+                // Users actions
+                Route::patch('ban', [
+                    'uses' => 'UserController@ban',
+                    'as'   => 'admin.user.ban'
                 ])->where('user', '[0-9]+');
-                // Store
-                Route::post('/store', [
-                    'uses' => 'GameAccountController@store',
-                    'as'   => 'admin.user.game.account.store'
+
+                Route::patch('unban', [
+                    'uses' => 'UserController@unban',
+                    'as'   => 'admin.user.unban'
                 ])->where('user', '[0-9]+');
-                // Edit (view)
-                Route::get('/{id}/edit', [
-                    'uses' => 'GameAccountController@edit',
-                    'as'   => 'admin.user.game.account.edit'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Ban
-                Route::patch('/{id}/ban', [
-                    'uses' => 'GameAccountController@ban',
-                    'as'   => 'admin.user.game.account.ban'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Unban
-                Route::patch('/{id}/unban', [
-                    'uses' => 'GameAccountController@unban',
-                    'as'   => 'admin.user.game.account.unban'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Jail
-                Route::patch('/{id}/jail', [
-                    'uses' => 'GameAccountController@jail',
-                    'as'   => 'admin.user.game.account.jail'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Unjail
-                Route::patch('/{id}/unjail', [
-                    'uses' => 'GameAccountController@unjail',
-                    'as'   => 'admin.user.game.account.unjail'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Unjail
-                Route::patch('/{id}/password', [
-                    'uses' => 'GameAccountController@password',
-                    'as'   => 'admin.user.game.account.password'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
-                // Update
-                Route::patch('/{id}', [
-                    'uses' => 'GameAccountController@update',
-                    'as'   => 'admin.user.game.account.update'
-                ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+
+                Route::patch('activate', [
+                    'uses' => 'UserController@activate',
+                    'as'   => 'admin.user.activate'
+                ])->where('user', '[0-9]+');
+
+                Route::patch('decertify', [
+                    'uses' => 'UserController@decertify',
+                    'as'   => 'admin.user.decertify'
+                ])->where('user', '[0-9]+');
+
+                Route::patch('certify', [
+                    'uses' => 'UserController@certify',
+                    'as'   => 'admin.user.certify'
+                ])->where('user', '[0-9]+');
+
+                Route::patch('password', [
+                    'uses' => 'UserController@password',
+                    'as'   => 'admin.user.password'
+                ])->where('user', '[0-9]+');
+
+                Route::patch('avatar/reset', [
+                    'uses' => 'UserController@resetAvatar',
+                    'as'   => 'admin.user.reset.avatar'
+                ])->where('user', '[0-9]+');
+
+                Route::patch('avatar/reset', [
+                    'uses' => 'UserController@resetAvatar',
+                    'as'   => 'admin.user.reset.avatar'
+                ])->where('user', '[0-9]+');
+
+                Route::post('re-send-email', [
+                    'uses'       => 'UserController@re_send_email',
+                    'as'         => 're-send-email-admin'
+                ]);
+
+                Route::post('addticket', [
+                    'uses'       => 'UserController@addTicket',
+                    'as'         => 'admin.user.addticket'
+                ]);
+
+                // Game Accounts
+                Route::group(['prefix' => 'server/{server}'], function () {
+
+                    // Index
+                    Route::get('/', [
+                        'uses' => 'GameAccountController@index',
+                        'as'   => 'admin.user.game.accounts'
+                    ])->where('user', '[0-9]+');
+                    // Store
+                    Route::post('/store', [
+                        'uses' => 'GameAccountController@store',
+                        'as'   => 'admin.user.game.account.store'
+                    ])->where('user', '[0-9]+');
+                    // Edit (view)
+                    Route::get('/{id}/edit', [
+                        'uses' => 'GameAccountController@edit',
+                        'as'   => 'admin.user.game.account.edit'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Ban
+                    Route::patch('/{id}/ban', [
+                        'uses' => 'GameAccountController@ban',
+                        'as'   => 'admin.user.game.account.ban'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Unban
+                    Route::patch('/{id}/unban', [
+                        'uses' => 'GameAccountController@unban',
+                        'as'   => 'admin.user.game.account.unban'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Jail
+                    Route::patch('/{id}/jail', [
+                        'uses' => 'GameAccountController@jail',
+                        'as'   => 'admin.user.game.account.jail'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Unjail
+                    Route::patch('/{id}/unjail', [
+                        'uses' => 'GameAccountController@unjail',
+                        'as'   => 'admin.user.game.account.unjail'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Unjail
+                    Route::patch('/{id}/password', [
+                        'uses' => 'GameAccountController@password',
+                        'as'   => 'admin.user.game.account.password'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                    // Update
+                    Route::patch('/{id}', [
+                        'uses' => 'GameAccountController@update',
+                        'as'   => 'admin.user.game.account.update'
+                    ])->where('user', '[0-9]+')->where('id', '[0-9]+');
+                });
             });
-        });
 
-        Route::resource('user', 'UserController', ['names' => [
-            'index'   => 'admin.users', // GET Index
-            'create'  => 'admin.user.create', // GET Create
-            'store'   => 'admin.user.store', // POST Store (create TASK)
-            'destroy' => 'admin.user.destroy', // DELETE
-            'edit'    => 'admin.user.edit', // GET Edit (view) /user/ID/edit
-            'update'  => 'admin.user.update' // PUT OU PATCH for update the edit
-        ]]);
+            Route::resource('user', 'UserController', ['names' => [
+                'index'   => 'admin.users', // GET Index
+                'create'  => 'admin.user.create', // GET Create
+                'store'   => 'admin.user.store', // POST Store (create TASK)
+                'destroy' => 'admin.user.destroy', // DELETE
+                'edit'    => 'admin.user.edit', // GET Edit (view) /user/ID/edit
+                'update'  => 'admin.user.update' // PUT OU PATCH for update the edit
+            ]]);
+         });
 
         // CHARACTERS //
-        Route::get('/characters/data/{server}', [
-            'uses' => 'CharacterDatatablesController@anyData',
-            'as'  => 'datatables.charactersdata'
-        ]);
+        Route::group(['prefix' => 'characters', 'middleware' => 'can:manage-characters'], function () {
+            Route::get('data/{server}', [
+                'uses' => 'CharacterDatatablesController@anyData',
+                'as'  => 'datatables.charactersdata'
+            ]);
 
-        Route::get('characters/{server}', [
-            'uses' => 'CharacterController@index',
-            'as'   => 'admin.characters'
-        ]);
+            Route::get('{server}', [
+                'uses' => 'CharacterController@index',
+                'as'   => 'admin.characters'
+            ]);
+        });
 
         // SETTINGS //
-        Route::get('settings', [
-            'uses' => 'SettingsController@index',
-            'as'   => 'admin.settings'
-        ]);
-        Route::patch('settings/update', [
-            'uses' => 'SettingsController@update',
-            'as'   => 'admin.settings.update'
-        ]);
-
+        Route::group(['prefix' => 'settings', 'middleware' => 'can:manage-settings'], function () {
+            Route::get('/', [
+                'uses' => 'SettingsController@index',
+                'as'   => 'admin.settings'
+            ]);
+            Route::patch('update', [
+                'uses' => 'SettingsController@update',
+                'as'   => 'admin.settings.update'
+            ]);
+        });
         // ANNOUNCES //
-        Route::group(['prefix' => 'announces/{server}'], function () {
+        Route::group(['prefix' => 'announces/{server}', 'middleware' => 'can:manage-announces'], function () {
 
             // Users actions
             Route::get('/', [
@@ -778,77 +789,83 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
         });
 
         // TRANSACTIONS //
-        Route::get('/transactions/data', [
-            'uses' => 'TransactionDatatablesController@anyData',
-            'as'  => 'datatables.transactionsdata'
-        ]);
+        Route::group(['prefix' => 'transactions', 'middleware' => 'can:manage-transactions'], function () {
 
-        Route::get('transactions', [
-            'uses' => 'TransactionController@index',
-            'as'   => 'admin.transactions'
-        ]);
+            Route::get('/', [
+                'uses' => 'TransactionController@index',
+                'as'   => 'admin.transactions'
+            ]);
 
-        Route::get('transactions/getdata', [
-            'uses' => 'TransactionController@getData',
-            'as'   => 'admin.transactions.getdata'
-        ]);
+            Route::get('data', [
+                'uses' => 'TransactionDatatablesController@anyData',
+                'as'  => 'datatables.transactionsdata'
+            ]);
+
+            Route::get('getdata', [
+                'uses' => 'TransactionController@getData',
+                'as'   => 'admin.transactions.getdata'
+            ]);
+        });
 
         // TICKETS //
-        Route::get('/lotterytickets/data', [
-            'uses' => 'LotteryTicketDatatablesController@anyData',
-            'as'  => 'datatables.lotteryticketsdata'
-        ]);
+        Route::group(['middleware' => 'can:manage-lottery'], function () {
+            Route::get('/lotterytickets/data', [
+                'uses' => 'LotteryTicketDatatablesController@anyData',
+                'as'  => 'datatables.lotteryticketsdata'
+            ]);
 
-        Route::get('lottery/tickets', [
-            'uses' => 'LotteryController@tickets',
-            'as'   => 'admin.lottery.tickets'
-        ]);
+            Route::get('lottery/tickets', [
+                'uses' => 'LotteryController@tickets',
+                'as'   => 'admin.lottery.tickets'
+            ]);
 
-        Route::get('lottery/{lottery}/items/{serverId}/{itemid}/search', [
-            'uses' => 'LotteryItemController@getItemData',
-            'as'   => 'admin.lottery.item.getdata'
-        ])->where('itemid', '[0-9]+');
+            Route::get('lottery/{lottery}/items/{serverId}/{itemid}/search', [
+                'uses' => 'LotteryItemController@getItemData',
+                'as'   => 'admin.lottery.item.getdata'
+            ])->where('itemid', '[0-9]+');
 
-        Route::resource('lottery/{lottery}/items', 'LotteryItemController', ['only' => [
-            'index', 'store', 'update', 'destroy'], 'names' => [
-            'index'   => 'admin.lottery.items',
-            'store'   => 'admin.lottery.item.store',
-            'update'  => 'admin.lottery.item.update',
-            'destroy' => 'admin.lottery.item.destroy'
+            Route::resource('lottery/{lottery}/items', 'LotteryItemController', ['only' => [
+                'index', 'store', 'update', 'destroy'], 'names' => [
+                'index'   => 'admin.lottery.items',
+                'store'   => 'admin.lottery.item.store',
+                'update'  => 'admin.lottery.item.update',
+                'destroy' => 'admin.lottery.item.destroy'
+                ]]);
+
+            Route::resource('lottery', 'LotteryController', ['only' => [
+                'index', 'create', 'store', 'edit', 'update'], 'names' => [
+                'index'   => 'admin.lottery',
+                'create'  => 'admin.lottery.create',
+                'store'   => 'admin.lottery.store',
+                'edit'    => 'admin.lottery.edit',
+                'update'  => 'admin.lottery.update'
             ]]);
-
-        Route::resource('lottery', 'LotteryController', ['only' => [
-            'index', 'create', 'store', 'edit', 'update'], 'names' => [
-            'index'   => 'admin.lottery',
-            'create'  => 'admin.lottery.create',
-            'store'   => 'admin.lottery.store',
-            'edit'    => 'admin.lottery.edit',
-            'update'  => 'admin.lottery.update'
-            ]]);
-
+        });
         // SUPPORT //
-        Route::get('/support/opendata', [
-            'uses' => 'SupportDatatablesController@anyDataOpen',
-            'as'  => 'datatables.supportopendata'
-        ]);
-
-        Route::get('/support/closeddata', [
-            'uses' => 'SupportDatatablesController@anyDataClosed',
-            'as'  => 'datatables.supportcloseddata'
-        ]);
-
-        Route::get('/support/minedata', [
-            'uses' => 'SupportDatatablesController@anyDataMine',
-            'as'  => 'datatables.supportminedata'
-        ]);
-
-        Route::group(['prefix' => 'support'], function () {
+        Route::group(['prefix' => 'support', 'middleware' => 'can:manage-support'], function () {
 
             //Support actions
             Route::get('/', [
                 'uses' => 'SupportController@index',
                 'as'   => 'admin.support'
             ]);
+
+            Route::get('opendata', [
+            'uses' => 'SupportDatatablesController@anyDataOpen',
+            'as'  => 'datatables.supportopendata'
+             ]);
+
+            Route::get('closeddata', [
+                'uses' => 'SupportDatatablesController@anyDataClosed',
+                'as'  => 'datatables.supportcloseddata'
+            ]);
+
+            Route::get('minedata', [
+                'uses' => 'SupportDatatablesController@anyDataMine',
+                'as'  => 'datatables.supportminedata'
+            ]);
+
+
             Route::get('/closed', [
                 'uses' => 'SupportController@closedTickets',
                 'as'   => 'admin.support.closed'
