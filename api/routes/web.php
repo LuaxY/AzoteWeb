@@ -1,14 +1,6 @@
 <?php
 
-$locale = Request::segment(1);
-
-if (in_array($locale, Config::get('app.locales'))) {
-    App::setLocale($locale);
-} else {
-    $locale = null;
-}
-
-Route::group(['prefix' => $locale, 'domain' => Config::get('dofus.domain.main')], function () {
+Route::group(['domain' => Config::get('dofus.domain.main')], function () {
 
     Route::any('/', [
         'uses' => 'PostController@index',
