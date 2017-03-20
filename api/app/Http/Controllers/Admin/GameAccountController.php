@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use \Cache;
+use App\World;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
