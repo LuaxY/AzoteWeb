@@ -28,7 +28,7 @@ mix.styles('resources/assets/css/codes.css', 'public/css/codes.css');
 mix.styles('resources/assets/css/set.css', 'public/css/set.css');
 
 
-mix.js('resources/assets/js/common.js', 'public/js');
+mix.copy('resources/assets/js/common.js', 'public/js');
 mix.copy('resources/assets/js/jquery-2.1.4.min.js', 'public/js');
 mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
 
@@ -58,10 +58,10 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     /* ---------------------SCRIPTS----------------------- */
 
     // MODERNIZR //
-    mix.js('resources/assets/js/admin/modernizr.min.js', 'public/js/admin');
+    mix.copy('resources/assets/js/admin/modernizr.min.js', 'public/js/admin');
 
     // PLUGINS THEME //
-    mix.scripts([
+    mix.copy([
         'resources/assets/js/admin/bootstrap.min.js',
         'resources/assets/js/admin/detect.js',
         'resources/assets/js/admin/fastclick.js',
@@ -73,7 +73,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     ], 'public/js/admin/vendor_admin.min.js');
 
     // ADMIN THEME //
-    mix.scripts([
+    mix.copy([
         'resources/assets/js/admin/jquery.app.js',
         'resources/assets/js/admin/jquery.core.js'
     ], 'public/js/admin/app_admin.min.js');
@@ -85,7 +85,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     mix.copy('resources/assets/js/admin/toastr/toastr.min.js', 'public/js/admin/toastr.min.js');
 
     // BROWSE SERVER //
-    mix.scripts('resources/assets/js/admin/browseserver.js', 'public/js/admin/browseserver.min.js');
+    mix.copy('resources/assets/js/admin/browseserver.js', 'public/js/admin/browseserver.min.js');
 
     // DATATABLES //
     mix.copy([
@@ -121,7 +121,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
 
     // PICK A COLOR (DEPENDENCE TINYCOLOR) //
     mix.less('vendor/bower_components/pick-a-color/src/less/pick-a-color.less', 'public/css/pick-a-color.min.css');
-    mix.scripts([
+    mix.copy([
         'vendor/bower_components/tinycolor/dist/tinycolor-min.js',
         'vendor/bower_components/pick-a-color/src/js/pick-a-color.js',
     ], 'public/js/admin/pick-a-color.min.js');

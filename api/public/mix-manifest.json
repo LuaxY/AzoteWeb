@@ -1,7 +1,6 @@
 {
-  "/js/common.js": "/js/common.js",
+  "/mix.js": "/mix.js",
   "/css/pick-a-color.min.css": "/css/pick-a-color.min.css",
-  "/js/admin/modernizr.min.js": "/js/admin/modernizr.min.js",
   "/css/404.css": "/css/404.css",
   "/css/common.css": "/css/common.css",
   "/css/download.css": "/css/download.css",
@@ -19,11 +18,7 @@
   "/css/bootstrap.min.css": "/css/bootstrap.min.css",
   "/css/vendor_admin.min.css": "/css/vendor_admin.min.css",
   "/css/app_admin.min.css": "/css/app_admin.min.css",
-  "/js/admin/vendor_admin.min.js": "/js/admin/vendor_admin.min.js",
-  "/js/admin/app_admin.min.js": "/js/admin/app_admin.min.js",
-  "/js/admin/browseserver.min.js": "/js/admin/browseserver.min.js",
   "/css/sweetalert.min.css": "/css/sweetalert.min.css",
   "/css/dropify.min.css": "/css/dropify.min.css",
-  "/js/admin/pick-a-color.min.js": "/js/admin/pick-a-color.min.js",
   "/css/dragula.min.css": "/css/dragula.min.css"
 }
