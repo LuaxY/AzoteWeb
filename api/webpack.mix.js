@@ -88,14 +88,14 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     mix.scripts('resources/assets/js/admin/browseserver.js', 'public/js/admin/browseserver.min.js');
 
     // DATATABLES //
-    mix.styles([
+    mix.copy([
         'resources/assets/css/admin/datatables/jquery.dataTables.min.css',
         'resources/assets/css/admin/datatables/buttons.bootstrap.min.css',
         'resources/assets/css/admin/datatables/fixedHeader.bootstrap.min.css',
         'resources/assets/css/admin/datatables/scroller.bootstrap.min.css',
         'resources/assets/css/admin/datatables/responsive.bootstrap.min.css',
     ], 'public/css/vendor_admin_datatables.min.css');
-    mix.scripts([
+    mix.copy([
         'resources/assets/js/admin/datatables/jquery.dataTables.min.js',
         'resources/assets/js/admin/datatables/dataTables.bootstrap.js',
         'resources/assets/js/admin/datatables/dataTables.buttons.min.js',
@@ -109,15 +109,15 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
 
     // SWEET ALERT //
     mix.styles('vendor/bower_components/sweetalert/dist/sweetalert.css', 'public/css/sweetalert.min.css');
-    mix.js('vendor/bower_components/sweetalert/dist/sweetalert.min.js', 'public/js/admin');
+    mix.copy('vendor/bower_components/sweetalert/dist/sweetalert.min.js', 'public/js/admin');
 
     // DROPIFY //
     mix.styles('vendor/bower_components/dropify/dist/css/dropify.css', 'public/css/dropify.min.css');
-    mix.js('vendor/bower_components/dropify/dist/js/dropify.min.js', 'public/js/admin');
+    mix.copy('vendor/bower_components/dropify/dist/js/dropify.min.js', 'public/js/admin');
 
     // DATETIME PICKER //
-    mix.styles('vendor/bower_components/datetimepicker/build/jquery.datetimepicker.min.css', 'public/css/jquery.datetimepicker.min.css');
-    mix.js('vendor/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js', 'public/js/admin');
+    mix.copy('vendor/bower_components/datetimepicker/build/jquery.datetimepicker.min.css', 'public/css/jquery.datetimepicker.min.css');
+    mix.copy('vendor/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js', 'public/js/admin');
 
     // PICK A COLOR (DEPENDENCE TINYCOLOR) //
     mix.less('vendor/bower_components/pick-a-color/src/less/pick-a-color.less', 'public/css/pick-a-color.min.css');
@@ -127,20 +127,20 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     ], 'public/js/admin/pick-a-color.min.js');
 
     // BOOTSTRAP TOUCHSPIN //
-    mix.styles('vendor/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css', 'public/css/jquery.bootstrap-touchspin.min.css');
-    mix.js('vendor/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js', 'public/js/admin');
+    mix.copy('vendor/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css', 'public/css/jquery.bootstrap-touchspin.min.css');
+    mix.copy('vendor/bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js', 'public/js/admin');
 
     // DRAGULA (DRAG AND DROP) //
     mix.styles('vendor/bower_components/dragula/dist/dragula.css', 'public/css/dragula.min.css');
-    mix.js('vendor/bower_components/dragula/dist/dragula.min.js', 'public/js/admin');
+    mix.copy('vendor/bower_components/dragula/dist/dragula.min.js', 'public/js/admin');
 
     // LIGHTBOX2 //
-    mix.styles('vendor/bower_components/lightbox2/dist/css/lightbox.min.css', 'public/css/lightbox.min.css');
-    mix.js('vendor/bower_components/lightbox2/dist/js/lightbox.min.js', 'public/js/lightbox.min.js');
+    mix.copy('vendor/bower_components/lightbox2/dist/css/lightbox.min.css', 'public/css/lightbox.min.css');
+    mix.copy('vendor/bower_components/lightbox2/dist/js/lightbox.min.js', 'public/js/lightbox.min.js');
     mix.copy('vendor/bower_components/lightbox2/dist/images', 'public/images');
 
     // FLAG ICON CSS //
-    mix.styles('vendor/bower_components/flag-icon-css/css/flag-icon.min.css', 'public/css/flag-icon.min.css');
+    mix.copy('vendor/bower_components/flag-icon-css/css/flag-icon.min.css', 'public/css/flag-icon.min.css');
     mix.copy('vendor/bower_components/flag-icon-css/flags', 'public/flags');
 
 

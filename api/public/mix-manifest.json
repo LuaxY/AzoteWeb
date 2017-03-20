@@ -1,12 +1,6 @@
 {
   "/js/common.js": "/js/common.js",
   "/css/pick-a-color.min.css": "/css/pick-a-color.min.css",
-  "/js/admin/dragula.min.js": "/js/admin/dragula.min.js",
-  "/js/admin/jquery.datetimepicker.full.min.js": "/js/admin/jquery.datetimepicker.full.min.js",
-  "/js/lightbox.min.js": "/js/lightbox.min.js",
-  "/js/admin/dropify.min.js": "/js/admin/dropify.min.js",
-  "/js/admin/jquery.bootstrap-touchspin.min.js": "/js/admin/jquery.bootstrap-touchspin.min.js",
-  "/js/admin/sweetalert.min.js": "/js/admin/sweetalert.min.js",
   "/js/admin/modernizr.min.js": "/js/admin/modernizr.min.js",
   "/css/404.css": "/css/404.css",
   "/css/common.css": "/css/common.css",
@@ -28,14 +22,8 @@
   "/js/admin/vendor_admin.min.js": "/js/admin/vendor_admin.min.js",
   "/js/admin/app_admin.min.js": "/js/admin/app_admin.min.js",
   "/js/admin/browseserver.min.js": "/js/admin/browseserver.min.js",
-  "/css/vendor_admin_datatables.min.css": "/css/vendor_admin_datatables.min.css",
-  "/js/admin/vendor_admin_datatables.min.js": "/js/admin/vendor_admin_datatables.min.js",
   "/css/sweetalert.min.css": "/css/sweetalert.min.css",
   "/css/dropify.min.css": "/css/dropify.min.css",
-  "/css/jquery.datetimepicker.min.css": "/css/jquery.datetimepicker.min.css",
   "/js/admin/pick-a-color.min.js": "/js/admin/pick-a-color.min.js",
-  "/css/jquery.bootstrap-touchspin.min.css": "/css/jquery.bootstrap-touchspin.min.css",
-  "/css/dragula.min.css": "/css/dragula.min.css",
-  "/css/lightbox.min.css": "/css/lightbox.min.css",
-  "/css/flag-icon.min.css": "/css/flag-icon.min.css"
+  "/css/dragula.min.css": "/css/dragula.min.css"
 }
