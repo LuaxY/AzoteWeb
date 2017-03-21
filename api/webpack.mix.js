@@ -61,7 +61,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     mix.copy('resources/assets/js/admin/modernizr.min.js', 'public/js/admin');
 
     // PLUGINS THEME //
-    mix.copy([
+    mix.scripts([
         'resources/assets/js/admin/bootstrap.min.js',
         'resources/assets/js/admin/detect.js',
         'resources/assets/js/admin/fastclick.js',
@@ -73,7 +73,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     ], 'public/js/admin/vendor_admin.min.js');
 
     // ADMIN THEME //
-    mix.copy([
+    mix.scripts([
         'resources/assets/js/admin/jquery.app.js',
         'resources/assets/js/admin/jquery.core.js'
     ], 'public/js/admin/app_admin.min.js');
@@ -88,14 +88,14 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
     mix.copy('resources/assets/js/admin/browseserver.js', 'public/js/admin/browseserver.min.js');
 
     // DATATABLES //
-    mix.copy([
+    mix.styles([
         'resources/assets/css/admin/datatables/jquery.dataTables.min.css',
         'resources/assets/css/admin/datatables/buttons.bootstrap.min.css',
         'resources/assets/css/admin/datatables/fixedHeader.bootstrap.min.css',
         'resources/assets/css/admin/datatables/scroller.bootstrap.min.css',
         'resources/assets/css/admin/datatables/responsive.bootstrap.min.css',
     ], 'public/css/vendor_admin_datatables.min.css');
-    mix.copy([
+    mix.scripts([
         'resources/assets/js/admin/datatables/jquery.dataTables.min.js',
         'resources/assets/js/admin/datatables/dataTables.bootstrap.js',
         'resources/assets/js/admin/datatables/dataTables.buttons.min.js',
