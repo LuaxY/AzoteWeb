@@ -90,7 +90,7 @@ class Account extends Model
     public function characters($deleted = null, $nocache = null)
     {
         if (!$nocache) {
-            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 0.4, function () use ($deleted) {
+            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function () use ($deleted) {
                 $characters = [];
                 $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
@@ -120,7 +120,6 @@ class Account extends Model
             }
             return $characters;
         }
-
         return $characters;
     }
 

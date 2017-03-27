@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use \Cache;
-
+use App\Helpers\Utils;
 use App\Security;
 use App\ModelCustom;
 use App\ForumAccount;
@@ -73,6 +73,7 @@ class User extends Authenticatable
         'update-profile' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
             'lastname'  => 'required|min:3|max:32|alpha_dash',
+            'avatar' => 'required',
         ],
         'certify' => [
             'firstname' => 'required|min:3|max:32|alpha_dash',
@@ -320,5 +321,13 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function avatarName()
+    {
+        if($this->avatar != config('dofus.default_avatar'))
+            return pathinfo($this->avatar, PATHINFO_FILENAME);
+        else
+            return 'default-default';
     }
 }

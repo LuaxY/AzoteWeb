@@ -24,5 +24,6 @@
   "/js/admin/vendor_admin_datatables.min.js": "/js/admin/vendor_admin_datatables.min.js",
   "/css/sweetalert.min.css": "/css/sweetalert.min.css",
   "/css/dropify.min.css": "/css/dropify.min.css",
+  "/js/admin/pick-a-color.min.js": "/js/admin/pick-a-color.min.js",
   "/css/dragula.min.css": "/css/dragula.min.css"
 }

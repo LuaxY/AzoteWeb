@@ -55,14 +55,13 @@ class DofusForge
         }
     }
 
-    public static function player($id, $server, $mode, $orientation, $sizeX, $sizeY)
+    public static function player(Character $character, $server, $mode, $orientation, $sizeX, $sizeY)
     {
-        $character = Character::on($server . '_world')->where('Id', $id)->first();
-
-        if ($character) {
-            $look = bin2hex($character->EntityLookString);
+            if(config('dofus.details')[$server]->version == "2.10")
+                $look = bin2hex($character->EntityLookString);
+            else
+                $look = bin2hex($character->DefaultLookString);
             return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}.png");
-        }
     }
 
     public static function text($id, $server = null)

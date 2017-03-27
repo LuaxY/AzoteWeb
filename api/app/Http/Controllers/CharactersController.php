@@ -16,43 +16,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CharactersController extends Controller
 {
-    private function isCharacterOwnedByMe($server, $accountId, $characterId)
-    {
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-
-        if ($account) {
-            $account->server = $server;
-            $characters = $account->characters(1);
-
-            if ($characters) {
-                foreach ($characters as $character) {
-                    if ($character && $characterId == $character->Id) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-    }
-
-    private function isCharacterDeletedOwnedByMe($server, $accountId, $characterId)
-    {
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-        if ($account) {
-            $account->server = $server;
-            $characters = $account->DeletedCharacters(1);
-            if ($characters) {
-                foreach ($characters as $character) {
-                    if ($characterId == $character->Id) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-    }
-
     public function view($server, $accountId, $characterId)
     {
         request()->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage des personnages prochainement"]);
@@ -65,7 +28,7 @@ class CharactersController extends Controller
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!$this->isCharacterDeletedOwnedByMe($server, $accountId, $characterId)) {
+        if (!World::isCharacterDeletedOwnedByMe($server, $accountId, $characterId)) {
             throw new GenericException('owner_error');
         }
 

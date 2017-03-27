@@ -499,15 +499,7 @@ Route::group(['domain' => Config::get('dofus.domain.fake')], function () {
 
 Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')], function () {
     Route::get('image/{request}', 'ForgeController@image')->where('request', '(.*)');
-
-    Route::get('player/{id}/{mode}/{orientation}/{sizeX}/{sizeY}', 'ForgeController@player')->where([
-        'id'          => '[0-9]+',
-        'mode'        => '(full|face)',
-        'orientation' => '[0-8]',
-        'sizeX'       => '[0-9]+',
-        'sizeY'       => '[0-9]+'
-    ]);
-
+    
     Route::get('text/{id}', 'ForgeController@text')->where('id', '[0-9]+');
 });
 

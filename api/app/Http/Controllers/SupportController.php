@@ -19,6 +19,7 @@ use App\User;
 use Auth;
 use Mail;
 use App\Mail\TicketOpen;
+use App\World;
 
 class SupportController extends Controller
 {
@@ -260,7 +261,7 @@ class SupportController extends Controller
 
         if (array_key_exists('server|Serveur', $report)) {
             $server = $report['server|Serveur'];
-            if (!$this->isServerExist($server)) {
+            if (!World::isServerExist($server)) {
                 return response()->json(['server' => [0 => "Ce serveur n'éxiste pas"]], 400);
             }
         }
@@ -278,7 +279,7 @@ class SupportController extends Controller
            
             $characterId = $report['character|Personnage'];
 
-            if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId)) {
+            if (!World::isCharacterOwnedByMe($server, $accountId, $characterId)) {
                 return response()->json(['account' => [0 => "Le personnage n'éxiste pas"]], 400);
             }
         }
@@ -328,34 +329,5 @@ class SupportController extends Controller
         Mail::to($user)->send(new TicketOpen($user, $supportRequest));
 
         return response()->json([Auth::user()->email], 200);
-    }
-
-    private function isCharacterOwnedByMe($server, $accountId, $characterId)
-    {
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-
-        if ($account) {
-            $account->server = $server;
-            $characters = $account->characters(1);
-
-            if ($characters) {
-                foreach ($characters as $character) {
-                    if ($character && $characterId == $character->Id) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-    }
-
-    private function isServerExist($server)
-    {
-        if (!in_array($server, config('dofus.servers'))) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -9,7 +9,7 @@
             @else
                 <input class="special" type="radio" name="character|{{ $name }}" id="{{ $character->Id }}" value="final|{{ $character->Id }}">
             @endif
-            <img src="{{ DofusForge::player($character->Id, 'sigma', 'face', 2, 50, 50) }}">
+            <img src="{{ DofusForge::player($character, $server, 'face', 1, 50, 50) }}">
             {{ $character->Name }} - {{ $character->classe() }} niveau {{ $character->level() }}
         </div>
     </label>

@@ -121,7 +121,7 @@ mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
 
     // PICK A COLOR (DEPENDENCE TINYCOLOR) //
     mix.less('vendor/bower_components/pick-a-color/src/less/pick-a-color.less', 'public/css/pick-a-color.min.css');
-    mix.copy([
+    mix.scripts([
         'vendor/bower_components/tinycolor/dist/tinycolor-min.js',
         'vendor/bower_components/pick-a-color/src/js/pick-a-color.js',
     ], 'public/js/admin/pick-a-color.min.js');

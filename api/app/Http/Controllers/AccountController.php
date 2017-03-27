@@ -6,12 +6,12 @@ use App\ForumAccountValidating;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\File;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Exceptions\GenericException;
-
+use App\Services\DofusForge;
 use App\User;
 use App\Account;
 use App\ForumAccount;
@@ -29,6 +29,8 @@ use App\Mail\UserPasswordLost;
 use App\Mail\UserPasswordChange;
 use App\Mail\UserMail;
 use App\Role;
+use App\Character;
+use App\World;
 
 class AccountController extends Controller
 {
@@ -446,14 +448,56 @@ class AccountController extends Controller
     public function change_profile(Request $request)
     {
         if ($request->all()) {
-            $rules = User::$rules['update-profile'];
 
+            $rules = User::$rules['update-profile'];
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
+            $errorAvatar = ["avatar" => "Erreur avec l'avatar choisi"];
+
+            if(count(explode('-', $request->avatar)) >= 2)
+            {
+                $requested_avatar['server'] = explode('-', $request->avatar)[1];
+                $requested_avatar['characterid'] = explode('-', $request->avatar)[0];
+            }
+            else
+            {
+                return redirect()->back()->withErrors($errorAvatar)->withInput();
+            }
+
+            if (Auth::user()->avatar != config('dofus.default_avatar')) 
+            {
+                File::delete(Auth::user()->avatar);
+            }
+
+            if($request->avatar != "default-default")
+            { 
+                if (!World::isServerExist($requested_avatar['server'])) 
+                    return redirect()->back()->withErrors($errorAvatar)->withInput();
+
+                $character = Character::on($requested_avatar['server'] . '_world')->where('Id',  $requested_avatar['characterid'])->first();
+                if(!$character)
+                    return redirect()->back()->withErrors($errorAvatar)->withInput();
+
+                $requested_avatar['account'] = $character->account($requested_avatar['server'])->Id;
+                if(!$requested_avatar['account'])
+                    return redirect()->back()->withErrors($errorAvatar)->withInput();
+
+                if(!World::isCharacterOwnedByMe($requested_avatar['server'], $requested_avatar['account'], $requested_avatar['characterid']))
+                    return redirect()->back()->withErrors($errorAvatar)->withInput();
+
+                $link = DofusForge::player($character,$requested_avatar['server'], 'face', 1, 100, 100);
+                File::copy($link, 'uploads/users/'.Auth::user()->id.'/'.$requested_avatar['characterid'].'-'.$requested_avatar['server'].'.png');
+                Auth::user()->avatar = 'uploads/users/'.Auth::user()->id.'/'.$requested_avatar['characterid'].'-'.$requested_avatar['server'].'.png';
+            }
+            else
+            {
+                Auth::user()->avatar = config('dofus.default_avatar');
+            }
+        
             Auth::user()->firstname = $request->input('firstname');
             Auth::user()->lastname  = $request->input('lastname');
             Auth::user()->save();
@@ -464,7 +508,17 @@ class AccountController extends Controller
 
         if (!Auth::user()->certified) {
             $authuser = Auth::user();
-            return view('account/change-profile', compact('authuser'));
+            $accounts = Auth::user()->accounts();
+            $characters = [];
+                foreach($accounts as $account)
+                {
+                    $characters_db = $account->characters(false, false);
+                    foreach($characters_db as $character)
+                    {
+                        array_push($characters, $character);
+                    }
+                }
+            return view('account/change-profile', compact('authuser', 'characters'));
         } else {
             abort(404);
         }

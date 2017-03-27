@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use URL;
 use Auth;
+use App\World;
 
 class SupportRequest extends Model
 {
@@ -159,7 +160,7 @@ class SupportRequest extends Model
                     $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);
                     ;
 
-                    if (!$this->isCharacterOwnedByMe($server, $accountId, $characterId)) {
+                    if (!World::isCharacterOwnedByMe($server, $accountId, $characterId)) {
                         $html .= "Non trouvé (#1)";
                     } elseif ($character) {
                         $html .= $character->Name;
@@ -175,24 +176,5 @@ class SupportRequest extends Model
         }
 
         return $html;
-    }
-    private function isCharacterOwnedByMe($server, $accountId, $characterId)
-    {
-        $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
-
-        if ($account) {
-            $account->server = $server;
-            $characters = $account->characters(1);
-
-            if ($characters) {
-                foreach ($characters as $character) {
-                    if ($character && $characterId == $character->Id) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
     }
 }

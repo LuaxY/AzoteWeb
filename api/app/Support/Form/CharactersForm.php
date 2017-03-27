@@ -25,6 +25,7 @@ class CharactersForm implements IForm
                     'characters' => $characters,
                     'data'       => $data,
                     'field'      => $field,
+                    'server'     => $server,
                 ]);
             }
 
