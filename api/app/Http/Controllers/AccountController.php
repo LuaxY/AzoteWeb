@@ -447,8 +447,8 @@ class AccountController extends Controller
 
     public function change_profile(Request $request)
     {
-        if ($request->all()) {
-
+        if ($request->all()) 
+        {
             $rules = User::$rules['update-profile'];
             $validator = Validator::make($request->all(), $rules);
 
@@ -497,31 +497,30 @@ class AccountController extends Controller
             {
                 Auth::user()->avatar = config('dofus.default_avatar');
             }
-        
-            Auth::user()->firstname = $request->input('firstname');
-            Auth::user()->lastname  = $request->input('lastname');
+            if(!Auth::user()->isCertified())
+            {
+                Auth::user()->firstname = $request->input('firstname');
+                Auth::user()->lastname  = $request->input('lastname');
+            }
             Auth::user()->save();
 
             $request->session()->flash('notify', ['type' => 'success', 'message' => "Profil mis à jour."]);
             return redirect()->route('profile');
         }
 
-        if (!Auth::user()->certified) {
-            $authuser = Auth::user();
-            $accounts = Auth::user()->accounts();
-            $characters = [];
-                foreach($accounts as $account)
+        $authuser = Auth::user();
+        $accounts = Auth::user()->accounts();
+        $characters = [];
+        
+        foreach($accounts as $account)
+        {
+            $characters_db = $account->characters(false, false);
+                foreach($characters_db as $character)
                 {
-                    $characters_db = $account->characters(false, false);
-                    foreach($characters_db as $character)
-                    {
-                        array_push($characters, $character);
-                    }
+                    array_push($characters, $character);
                 }
-            return view('account/change-profile', compact('authuser', 'characters'));
-        } else {
-            abort(404);
         }
+        return view('account/change-profile', compact('authuser', 'characters'));
     }
 
     public function certify(Request $request)

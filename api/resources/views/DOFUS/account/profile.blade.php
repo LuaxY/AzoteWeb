@@ -52,10 +52,7 @@
                     </div>
 
                     <br>
-
-                    @if(Auth::user()->certified == 0)
                     <a href="{{ URL::route('account.change_profile') }}" class="btn btn-default btn-sm">Éditer le profil</a>
-                    @endif
                     <a href="{{ URL::route('account.change_email') }}" class="btn btn-default btn-sm">Changer d'email</a>
                     <a href="{{ URL::route('account.change_password') }}" class="btn btn-default btn-sm">Changer de mot de passe</a>
                     <div class="clearfix"></div>

@@ -43,6 +43,11 @@
     left: 46px;
     margin: 0;
 }
+.ak-form .hint {
+    display: block;
+    font-size: 12px;
+    color: #777777;
+}
 </style>
 @endsection
 @section('content')
@@ -60,17 +65,18 @@
 
                     <div class="form-group @if ($errors->has('firstname')) has-error @endif">
                         <label class="control-label" for="firstname">Prénom</label>
-                        {!! Form::text('firstname', null, ['class' => 'form-control ak-tooltip', 'id' => 'firstname', 'required' => 'required']) !!}
+                        {!! Form::text('firstname', null, ['class' => 'form-control ak-tooltip', 'id' => 'firstname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
                         @if ($errors->has('firstname')) <label class="error control-label">{{ $errors->first('firstname') }}</label> @endif
                     </div>
 
                     <div class="form-group @if ($errors->has('lastname')) has-error @endif">
                         <label class="control-label" for="lastname">Nom</label>
-                        {!! Form::text('lastname', null, ['class' => 'form-control ak-tooltip', 'id' => 'lastname', 'required' => 'required']) !!}
+                        {!! Form::text('lastname', null, ['class' => 'form-control ak-tooltip', 'id' => 'lastname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
                         @if ($errors->has('lastname')) <label class="error control-label">{{ $errors->first('lastname') }}</label> @endif
                     </div>
                     <div class="form-group @if ($errors->has('avatar')) has-error @endif">
                         <label class="control-label">Avatar</label>
+                        <span class="hint">Mis à jour toutes les 10 minutes</span>
                          @if ($errors->has('avatar')) <br><label class="error control-label">{{ $errors->first('avatar') }}</label> @endif
                     </div>
                         @foreach ($characters as $character)
