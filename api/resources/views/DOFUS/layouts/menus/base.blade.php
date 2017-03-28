@@ -37,7 +37,7 @@
                 <span class="ak-panel-title-icon ak-icon-med ak-bank"></span> Mon compte
             </div>
             <div class="ak-panel-content ak-profile-panel">
-                <div class="account-avatar"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></div>
+                <div class="account-avatar"><a href="{{ URL::route('account.change_profile')}}"><img src="{{ URL::asset(Auth::user()->avatar) }}" /></a></div>
                 <div class="account-details">
                     <div class="account-name">{{ Auth::user()->pseudo }}</div>
                     <div class="account-info">
