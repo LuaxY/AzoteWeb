@@ -31,8 +31,6 @@ class DofusForge
 
         $data = $redis->get("dofus:forge:$hash");
 
-        //$data = @file_get_contents("forge/$hash.$format");
-
         if ($data) {
             return $data;
         } else 
@@ -49,7 +47,6 @@ class DofusForge
                 return $result;
             } else {
                 $redis->set("dofus:forge:$hash", $result);
-                //file_put_contents("forge/$hash.$format", $result);
                 return $result;
             }
 
