@@ -15,7 +15,7 @@ class DofusForge
 
     public static function image($request)
     {
-        //$redis = Redis::connection();
+        $redis = Redis::connection();
 
         $format = pathinfo($request, PATHINFO_EXTENSION);
         switch ($format) {
@@ -29,12 +29,14 @@ class DofusForge
         $url .= $request;
         $hash = md5($request);
 
-        //$data = $redis->get("dofus:forge:$hash");
-        $data = @file_get_contents("forge/$hash.$format");
+        $data = $redis->get("dofus:forge:$hash");
+
+        //$data = @file_get_contents("forge/$hash.$format");
 
         if ($data) {
             return $data;
-        } else {
+        } else 
+        {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_COOKIESESSION, true);
@@ -46,8 +48,8 @@ class DofusForge
                 header('Content-Type: plain/text');
                 return $result;
             } else {
-                //$redis->set("dofus:forge:$hash", $result);
-                file_put_contents("forge/$hash.$format", $result);
+                $redis->set("dofus:forge:$hash", $result);
+                //file_put_contents("forge/$hash.$format", $result);
                 return $result;
             }
 

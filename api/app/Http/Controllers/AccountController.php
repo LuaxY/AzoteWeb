@@ -16,6 +16,7 @@ use App\User;
 use App\Account;
 use App\ForumAccount;
 use App\EmailModification;
+use Redis;
 
 use Mail;
 use Validator;
