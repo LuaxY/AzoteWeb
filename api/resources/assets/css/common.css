@@ -21956,9 +21956,9 @@ img.mfp-img {
 }
 
 .ak-forum-post-form .ak-avatar img {
-    border: 5px solid;
-    height: 52px;
-    width: 52px;
+    border: 2px solid;
+    height: 70px;
+    width: 70px;
     border-radius: 0
 }
 
@@ -22081,10 +22081,10 @@ img.mfp-img {
 }
 
 .ak-forum-post-list .ak-avatar img {
-    border: 5px solid;
+    border: 2px solid;
     border-radius: 0;
-    height: 62px;
-    width: 62px
+    height: 70px;
+    width: 70px
 }
 
 .ak-forum-post-list .ak-user {

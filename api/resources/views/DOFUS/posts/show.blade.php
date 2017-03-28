@@ -58,7 +58,7 @@
                             <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="" border="0">
                         </div>
                         <div class="ak-comment">
-                            {!! Form::textarea('comment', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Commenter...', 'rows' => '0', 'cols' => '0', 'id' => 'comment']) !!}
+                            {!! Form::textarea('comment', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Commenter...', 'rows' => '0', 'cols' => '0', 'id' => 'comment', 'style' => 'height:70px;']) !!}
                         </div>
                     </div>
                 {!! Form::submit('Valider', ['class' => 'ak-comment-submit btn btn-primary btn-lg']) !!}
