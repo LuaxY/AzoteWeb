@@ -19,7 +19,7 @@ class SupportTicket extends Model
     ];
     public function author()
     {
-        return User::where('id', $this->user_id)->first();
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function request()

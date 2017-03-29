@@ -124,9 +124,16 @@ class SupportRequest extends Model
                     $html .= $value;
                     break;
                 case 'image':
-                    $route = URL::asset('uploads/support/'.$value.'');
-                    $html .= "<div class='ak-support-image'><a href='$route' data-lightbox='image' data-title='$value'><img alt='' class='img-responsive' src='$route'></a></div>";
-                    break;
+                    if(is_string($value))
+                    {
+                        $route = URL::asset('uploads/support/'.$value.'');
+                        $html .= "<div class='ak-support-image'><a href='$route' data-lightbox='image' data-title='$value'><img alt='' class='img-responsive' src='$route'></a></div>";
+                    }
+                    else
+                    {
+                        $html .= "Empty";
+                    }
+                break;
                 case 'server':
                     if (!World::isServerExist($value)) {
                         $html .= "Non trouvé";
@@ -142,7 +149,7 @@ class SupportRequest extends Model
                     }
 
                     $accountId = $value;
-                    $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
+                    $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
                     if ($account) {
                         $html .= $account->Nickname;
@@ -160,12 +167,10 @@ class SupportRequest extends Model
                     $character = ModelCustom::hasOneOnOneServer('world', $server, Character::class, 'Id', $characterId);
                     ;
 
-                    if (!World::isCharacterOwnedByMe($server, $accountId, $characterId)) {
-                        $html .= "Non trouvé (#1)";
-                    } elseif ($character) {
+                   if ($character) {
                         $html .= $character->Name;
                     } else {
-                        $html .= "Non trouvé (#2)";
+                        $html .= "Non trouvé";
                     }
                     break;
                 default:

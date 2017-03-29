@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="m-b-30">
-                            <a href="{{ URL::previous() }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to tickets</a>
+                            <a href="{{ route('admin.support') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to tickets</a>
                         </div>
                     </div>
                 </div>
@@ -58,10 +58,10 @@
                          </div>
                                     <div class="media m-b-20" style="overflow: visible;">
                                         <div class="media-left">
-                                            <a data-toggle="tooltip" data-placement="top" title="" data-original-title="{{$request->user->pseudo}}" href="{{route('admin.user.edit', $request->user->id)}}"> <img class="media-object img-circle" alt="64x64" src="{{URL::asset($request->user->avatar)}}" style="width: 48px; height: 48px;"> </a>
+                                            <a data-toggle="tooltip" data-placement="top" title="" data-original-title="{{ $request->user ? $request->user->pseudo : '(User not found)' }}" href="{{route('admin.user.edit', $request->user ? $request->user->id : '0' )}}"> <img class="media-object img-circle" alt="64x64" src="{{URL::asset($request->user ? $request->user->avatar : '0')}}" style="width: 48px; height: 48px;"> </a>
                                         </div>
                                         <div class="media-body">
-                                            <h4 class="media-heading m-b-0">{{$request->user->pseudo}}</h4>
+                                            <h4 class="media-heading m-b-0">{{ $request->user ? $request->user->pseudo : '(User not found)' }}</h4>
                                             <span class="label label-success">{{$request->category}}</span>
                                         </div>
                                     </div>
@@ -117,10 +117,10 @@
                                         @foreach($messages as $message)
                                             <div class="media m-b-10">
                                                 <div class="media-left">
-                                                    <img class="media-object img-circle thumb-sm" alt="avatar" src="{{URL::asset($message->author()->avatar)}}">
+                                                    <img class="media-object img-circle thumb-sm" alt="avatar" src="{{URL::asset($message->author ? $message->author->avatar : '')}}">
                                                 </div>
                                                 <div class="media-body">
-                                                    <h4 class="media-heading">{{ $message->author()->pseudo }}<small class="text-muted"> - {{ $message->created_at->diffForHumans() }}</small></h4>
+                                                    <h4 class="media-heading">{{ $message->author ? $message->author->pseudo : '(User not found)' }}<small class="text-muted"> - {{ $message->created_at->diffForHumans() }}</small></h4>
                                                     <p class="m-b-0 @if($message->isInfo()) text-inverse @endif" @if($message->isInfo()) style="font-weight:bold; font-size:12px;" @endif">
                                                        @if($message->isInfo()) INFO: @endif {{ $message->data['message'] }}
                                                     </p>

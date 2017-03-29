@@ -156,7 +156,7 @@
                                             <tr>
                                                 <td><a href="{{ URL::route('admin.support.ticket.show', $newticket->id) }}">{{ $newticket->id }}</a></td>
                                                 <td>{{ $newticket->category }}</td>
-                                                <td>{{ $newticket->user->pseudo }}</td>
+                                                <td>{{ $newticket->user ? $newticket->user->pseudo : '(User not found)' }}</td>
                                                 <td>
                                                 @if($newticket->state == \App\SupportRequest::OPEN)
                                                     <span class="label label-success">{{ Utils::support_request_status($newticket->state, 1) }}</span>
