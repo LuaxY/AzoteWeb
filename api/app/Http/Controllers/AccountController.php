@@ -491,6 +491,9 @@ class AccountController extends Controller
                     return redirect()->back()->withErrors($errorAvatar)->withInput();
 
                 $link = DofusForge::player($character,$requested_avatar['server'], 'face', 1, 100, 100);
+                $path = 'uploads/users/'.Auth::user()->id;
+                if(!File::exists($path))
+                    File::makeDirectory($path);
                 File::copy($link, 'uploads/users/'.Auth::user()->id.'/'.$requested_avatar['characterid'].'-'.$requested_avatar['server'].'.png');
                 Auth::user()->avatar = 'uploads/users/'.Auth::user()->id.'/'.$requested_avatar['characterid'].'-'.$requested_avatar['server'].'.png';
             }
