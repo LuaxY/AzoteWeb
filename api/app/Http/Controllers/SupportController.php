@@ -20,6 +20,7 @@ use Auth;
 use Mail;
 use App\Mail\TicketOpen;
 use App\World;
+use Illuminate\Support\Facades\Cache;
 
 class SupportController extends Controller
 {
@@ -152,6 +153,11 @@ class SupportController extends Controller
         $supportTicket->reply      = 2; // Info reply
         $supportTicket->save();
 
+        Cache::forget('tickets_admin_open');
+        Cache::forget('tickets_admin_close');
+        Cache::forget('tickets_admin_mine');
+        Cache::forget('newtickets');
+
         $request->session()->flash('notify', ['type' => 'success', 'message' => $message]);
 
         return redirect()->back();
@@ -193,6 +199,10 @@ class SupportController extends Controller
             $supportRequest->state = SupportRequest::OPEN;
             $supportRequest->save();
         }
+
+        Cache::forget('tickets_admin_open');
+        Cache::forget('tickets_admin_mine');
+        Cache::forget('newtickets');
 
         $request->session()->flash('notify', ['type' => 'success', 'message' => 'Votre message a bien été envoyé']);
         return redirect()->back();
@@ -327,7 +337,8 @@ class SupportController extends Controller
         $user = Auth::user();
 
         Mail::to($user)->send(new TicketOpen($user, $supportRequest));
-
+        Cache::forget('newtickets');
+        Cache::forget('tickets_admin_open');
         return response()->json([Auth::user()->email], 200);
     }
 }

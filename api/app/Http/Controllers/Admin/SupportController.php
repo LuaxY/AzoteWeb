@@ -146,6 +146,11 @@ class SupportController extends Controller
 
         $user = $supportRequest->user;
 
+        Cache::forget('tickets_admin_open');
+        Cache::forget('tickets_admin_close');
+        Cache::forget('tickets_admin_mine');
+        Cache::forget('newtickets');
+
         Mail::to($user)->send(new Answer($user, $supportRequest));
 
         Toastr::success("Message & e-mail send", $title = null, $options = []);
@@ -183,12 +188,14 @@ class SupportController extends Controller
 
         if (!$supportRequest->isOpen()) { // If closed, send email
             Mail::to($user)->send(new Close($user, $supportRequest));
-            Toastr::success('E-mail send', $title = null, $options = []);
+            if(!$request->ajax())
+                Toastr::success('E-mail send', $title = null, $options = []);
         }
 
         Cache::forget('tickets_admin_open');
         Cache::forget('tickets_admin_close');
         Cache::forget('tickets_admin_mine');
+        Cache::forget('newtickets');
 
         if ($request->ajax()) {
             return response()->json([], 200);
@@ -222,6 +229,11 @@ class SupportController extends Controller
             
             $user = $supportRequest->user;
 
+            Cache::forget('tickets_admin_open');
+            Cache::forget('tickets_admin_close');
+            Cache::forget('tickets_admin_mine');
+            Cache::forget('newtickets');
+            
             Mail::to($user)->send(new Assign($user, $supportRequest));
             Toastr::success('You took this ticket (e-mail send)', $title = null, $options = []);
         }
@@ -260,6 +272,11 @@ class SupportController extends Controller
             $user = $supportRequest->user;
             
             Mail::to($user)->send(new Assign($user, $supportRequest));
+
+            Cache::forget('tickets_admin_open');
+            Cache::forget('tickets_admin_close');
+            Cache::forget('tickets_admin_mine');
+            Cache::forget('newtickets');
 
             return response()->json([$admin->pseudo], 200);
         }
