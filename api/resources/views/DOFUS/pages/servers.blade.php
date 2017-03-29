@@ -30,8 +30,8 @@
                 @foreach ($servers as $server)
                 <tr>
                     <td class="ak-server-online">
-                        <span class="ak-icon-med ak-server-online"></span>
-                        En ligne
+                        <span class="ak-icon-med @if($serverOnline[$server->name] == true)ak-server-online @else ak-server-offline @endif"></span>
+                        {{ $serverOnline[$server->name] == false ? 'Hors ligne' : 'En ligne' }}
                     </td>
                     <td class="server server_{{ $server->name }}">
                         <span></span>
