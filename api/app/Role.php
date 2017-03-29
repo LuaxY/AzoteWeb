@@ -4,9 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use Illuminate\Validation\Rule;
 
 class Role extends Model
 {
+    protected $fillable = [
+        'id',
+        'name',
+        'label',
+    ];
+
+     public static $rules = [
+        'store' => [
+            'name'               => 'required|min:3|max:20|alpha',
+            'id'                 => 'present|unique:roles,id'
+        ],
+    ];
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);

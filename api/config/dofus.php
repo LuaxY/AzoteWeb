@@ -60,11 +60,6 @@ return [
         'article'  => 'http://forum.azote.us/topic/26-compte-web-certifi%C3%A9-quest-ce/'
     ],
 
-    'tawk'         => [
-        'id'  => env('TAWK_ID', false),
-        'api' => env('TAWK_API'),
-    ],
-
     'forum'       => [
         'domain'     => env('FORUM_DOMAIN', ''),
         'user_group' => env('FORUM_USER_GROUP', 3)

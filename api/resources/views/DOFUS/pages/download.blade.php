@@ -32,7 +32,7 @@
                                         <i class="fa fa-apple"></i><a href="{{ config('dofus.download.mac') }}">MacOS</a>
                                     </div>
                                 </div>
-                                <a class="ak-problems" href="{{ URL::to('livesupport') }}">Un problème d'installation ?</a>
+                                <a class="ak-problems" href="{{ URL::to('support') }}">Un problème d'installation ?</a>
                                 <div class="ak-create-account-block">
                                     @if (Auth::guest())
                                     Pour jouer à {{ config('dofus.title') }}, vous devez posséder un compte. <a href="{{ URL::route('register') }}">Créer un compte {{ config('dofus.title') }}</a>
@@ -94,7 +94,7 @@
                                     <div class="ak-illu-link ak-illu-link3"></div>
                                     <div class="ak-link-text">Le support est là pour vous répondre !</div>
                                     <div class="ak-bottom-link">
-                                        <a class="btn btn-info btn-lg" href="{{ URL::to('livesupport') }}">contacter le support</a>
+                                        <a class="btn btn-info btn-lg" href="{{ URL::to('support') }}">contacter le support</a>
                                     </div>
                                 </div>
                             </div>

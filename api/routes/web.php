@@ -344,13 +344,8 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
     ]);
 
     /* ============ SUPPORT ============ */
-    // Temporary support
-    Route::get('livesupport', function () {
-         return view('support/temp');
-    });
 
-    // BETA for Staff support
-    Route::group(['middleware' => ['auth', 'staff'], 'prefix' => '/support'], function () {
+    Route::group(['middleware' => ['auth'], 'prefix' => '/support'], function () {
 
         Route::get('/', [
             'uses' => 'SupportController@index',
@@ -770,6 +765,41 @@ Route::group(['middleware' => ['auth', 'staff']], function () {
                 'as'   => 'admin.announce.update'
             ])->where('Id', '[0-9]+');
             ;
+        });
+
+        // ROLES //
+        Route::group(['prefix' => 'roles', 'middleware' => 'can:manage-roles'], function () {
+
+            // Users actions
+            Route::get('/', [
+                'uses' => 'RoleController@index',
+                'as'   => 'admin.roles'
+            ]);
+
+            Route::post('/', [
+                'uses' => 'RoleController@store',
+                'as'   => 'admin.role.store'
+            ]);
+
+            Route::get('/create', [
+                'uses' => 'RoleController@create',
+                'as'   => 'admin.role.create'
+            ]);
+
+            Route::delete('/{id}', [
+                'uses' => 'RoleController@destroy',
+                'as'   => 'admin.role.destroy'
+            ])->where('id', '[0-9]+');
+
+            Route::patch('/{id}', [
+                'uses' => 'RoleController@update',
+                'as'   => 'admin.role.update'
+            ])->where('id', '[0-9]+');
+
+            Route::get('/{id}/edit', [
+                'uses' => 'RoleController@edit',
+                'as'   => 'admin.role.edit'
+            ])->where('id', '[0-9]+');
         });
 
         // TRANSACTIONS //

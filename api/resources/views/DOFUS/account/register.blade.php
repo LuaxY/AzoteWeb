@@ -124,7 +124,7 @@
                                     <a href="{{ config('dofus.download.mac') }}">MacOS</a>
                                 </div>
                             </div>
-                            <a class="ak-problems" href="{{ URL::to('livesupport') }}" target="_blank">Un problème d'installation ?</a>
+                            <a class="ak-problems" href="{{ URL::to('support') }}" target="_blank">Un problème d'installation ?</a>
                         </div>
                     </div>
 
@@ -179,7 +179,7 @@
                                     <div class="ak-illu-link ak-illu-link3"></div>
                                     <div class="ak-link-text">Le support est là pour vous répondre !</div>
                                     <div class="ak-bottom-link">
-                                        <a class="btn btn-info btn-lg" href="{{ URL::to('livesupport') }}">contacter le support</a>
+                                        <a class="btn btn-info btn-lg" href="{{ URL::to('support') }}">contacter le support</a>
                                     </div>
                                 </div>
                             </div>
