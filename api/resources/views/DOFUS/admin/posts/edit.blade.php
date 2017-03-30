@@ -13,10 +13,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
+                        <div class="m-b-30">
+                            <a href="{{ route('admin.posts') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
+                        </div>
                         <div class="card-box">
                             <div class="m-b-30">
-                                <a href="{{ route('admin.posts') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
-
                                 @if($post->isProgrammed())
                                 <div class="text-center alert alert-info">
                                     <strong>Programmed!</strong> This post is programmed to be published on {{ $post->published_at }}

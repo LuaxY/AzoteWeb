@@ -16,10 +16,24 @@ use Illuminate\Support\Facades\Validator;
 
 class CharactersController extends Controller
 {
-    public function view($server, $accountId, $characterId)
+    public function view(Request $request, $server, $accountId, $characterId)
     {
-        request()->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage des personnages prochainement"]);
+        $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage des personnages prochainement"]);
         return redirect()->back();
+
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        if (!World::isCharacterOwnedByMe($server, $accountId, $characterId)) {
+            throw new GenericException('owner_error');
+        }
+
+        $character = Character::on($server . '_world')->where('Id', $characterId)->first();
+        if(!$character)
+            abort(404);
+        
+        return view('gameaccount.character.view', compact('character'));
     }
 
     public function recover(Request $request, $server, $accountId, $characterId)

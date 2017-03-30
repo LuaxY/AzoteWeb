@@ -800,6 +800,21 @@ Route::group(['middleware' => ['auth', 'staff']], function () {
                 'uses' => 'RoleController@edit',
                 'as'   => 'admin.role.edit'
             ])->where('id', '[0-9]+');
+
+            Route::get('/{id}/permissions', [
+                'uses' => 'RoleController@permissions',
+                'as'   => 'admin.role.permissions'
+            ])->where('id', '[0-9]+');
+
+            Route::delete('/{id}/permissions/remove', [
+                'uses' => 'RoleController@permissionRemove',
+                'as'   => 'admin.role.permission.remove'
+            ])->where('id', '[0-9]+');
+
+            Route::post('/{id}/permissions/add', [
+                'uses' => 'RoleController@permissionAdd',
+                'as'   => 'admin.role.permission.add'
+            ])->where('id', '[0-9]+');
         });
 
         // TRANSACTIONS //

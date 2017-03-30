@@ -7,10 +7,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
+                        <div class="m-b-30">
+                            <a href="{{ route('admin.users') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
+                        </div>                    
                         <div class="card-box">
-                            <div class="m-b-30">
-                                <a href="{{ route('admin.users') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
-                            </div>
                                 {!! Form::open(['route' => 'admin.user.store', 'files' => true]) !!}
                                 {{ method_field('POST') }}
                             <div class="row">

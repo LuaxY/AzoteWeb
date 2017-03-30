@@ -65,6 +65,13 @@
                     </li>
                 @endcan
 
+                @can('manage-roles')
+                    <li>
+                    <a class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\RoleController'))}}" href="{{ route('admin.roles') }}"><i
+                                    class="fa fa-key"></i> Roles</a></li>
+                    </li>
+                @endcan
+
                 @if (Auth::user()->can('manage-characters') || Auth::user()->can('manage-announces'))
                     <li class="has_sub">
                         <a href="javascript:void(0);"

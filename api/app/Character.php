@@ -18,6 +18,11 @@ class Character extends Model
     public $timestamps = false;
 
     public $server;
+    
+    public function items()
+    {
+        return $this->hasMany(CharacterItem::class, 'OwnerId', 'Id')->get();
+    }
 
     public function level($server = 'sigma')
     {

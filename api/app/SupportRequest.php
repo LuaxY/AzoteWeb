@@ -152,7 +152,7 @@ class SupportRequest extends Model
                     $account = Account::on($server . '_auth')->where('Id', $accountId)->first();
 
                     if ($account) {
-                        $html .= $account->Nickname;
+                        $html .= $account->Login;
                     } else {
                         $html .= "Non trouvé";
                     }

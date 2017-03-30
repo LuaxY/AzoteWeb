@@ -9,7 +9,7 @@
                     <div class="col-sm-12">
                         <div class="m-b-30">
                             <a href="{{ route('admin.announces', $server) }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-long-arrow-return"></i> Return to list</a>
-                        </div>                    
+                        </div>
                         <div class="card-box">
                             {!! Form::open(['route' => ['admin.announce.store',$server], 'files' => true]) !!}
                                 {{ method_field('POST') }}
