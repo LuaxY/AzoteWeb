@@ -45,7 +45,7 @@
                             <b>Statut</b>: {{ Utils::support_request_status($request->state) }}<br>
                             @if($request->userAssigned())
                                 <b>Admin en charge</b>: 
-                                <span @if($request->lastTicketAuthor()->can('manage-support')) style="color:#2baaff" @endif>{{$request->userAssigned()->pseudo}}</span>
+                                <span @if($request->userAssigned()->can('manage-support')) style="color:#2baaff" @endif>{{$request->userAssigned()->pseudo}}</span>
                             @else
                                 <i>Aucun admin en charge pour le moment</i>
                             @endif
@@ -67,15 +67,15 @@
         <div class="ak-panel-content">
             <div class="ak-forum-post-list">
                 @foreach($messages as $message)
-                <div class="ak-comments-row @if ($message->author()->can('manage-support')) ak-avatar-admin @endif" id="message-{{$message->id}}">
+                <div class="ak-comments-row @if ($message->author->can('manage-support')) ak-avatar-admin @endif" id="message-{{$message->id}}">
                         <div class="ak-avatar">
                             <div class="ak-avatar-img">
-                                <img src="{{ URL::asset($message->author()->avatar) }}" alt="" border="0" /> </div>
-                            <div class="ak-avatar-tag">{{$message->author()->role->label}}</div>
+                                <img src="{{ URL::asset($message->author->avatar) }}" alt="" border="0" /> </div>
+                            <div class="ak-avatar-tag">{{$message->author->role->label}}</div>
                         </div>
                         <div class="ak-comment">
                             <div class="ak-user">
-                                <strong>{{ $message->author()->firstname }}</strong>
+                                <strong>{{ $message->author->firstname }}</strong>
                                 <small class="ak-time">{{ date('d F Y à H:i', strtotime($message->created_at)) }}</small>
                                 <span class="actions pull-right">
                                     
