@@ -37,19 +37,27 @@
                                 class="fa fa-dashboard"></i> <span> Dashboard </span> </a>
                 </li>
 
-                @can('manage-account')
+                 @if (Auth::user()->can('manage-account') || Auth::user()->can('manage-support'))
                     <li class="has_sub">
                         <a href="javascript:void(0);"
                         class="waves-effect {{ active_class(if_controller('App\Http\Controllers\Admin\AccountController'))}}"><i
                                     class="zmdi zmdi-account-o"></i> <span> Account </span> <span class="menu-arrow"></span></a>
                         <ul class="list-unstyled">
+                            @can('manage-account')
                             <li class="{{ active_class(if_route('admin.account'))}}"><a href="{{ route('admin.account') }}">Profile</a>
                             </li>
-                            <li class="{{ active_class(if_route('admin.password'))}}"><a
-                                        href="{{ route('admin.password') }}">Password</a></li>
+                            @endcan
+                            @can('manage-account')
+                            <li class="{{ active_class(if_route('admin.password'))}}"><a href="{{ route('admin.password') }}">Password</a>
+                            </li>
+                            @endcan
+                            @can('manage-support')
+                            <li class="{{ active_class(if_route('admin.account.settings'))}}"><a href="{{ route('admin.account.settings') }}">Settings</a>
+                            </li>
+                            @endcan
                         </ul>
                     </li>
-                @endcan
+                @endif
 
                 @can('manage-posts')
                     <li>

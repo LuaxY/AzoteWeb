@@ -98,4 +98,163 @@ class AccountController extends Controller
         Toastr::success('Password updated', $title = null, $options = []);
         return redirect()->route('admin.account');
     }
+
+    public function settings()
+    {
+        return view('admin.settings');
+    }
+
+    public function settingsUpdate(Request $request)
+    {
+        if ($request->settings_type == 'preloadtext')
+         {
+            $json = json_decode(Auth::user()->settings);
+
+            if(!$json)
+                $json = new \stdClass;
+
+            if (@!isset($json->preloadtext)) 
+                $json->preloadtext = new \stdClass;
+ 
+            $json->preloadtext   = $request->preloadtext;
+
+            Toastr::success('Preloadtext updated', $title = null, $options = []);
+        }
+
+        Auth::user()->settings = json_encode($json);
+        Auth::user()->save();
+
+        return redirect(route('admin.account.settings'));
+    }
+
+    public function templateAdd(Request $request)
+    {
+        $rules = [
+            'title' => 'required|alpha_dash|between:1,20',
+            'description' => 'required|between:1,30',
+            'content' => 'required|between:10,5000',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 400);
+        }
+
+        $json = json_decode(Auth::user()->settings);
+
+        if(!$json)
+            $json = new \stdClass;
+        if(@!isset($json->templates))
+            $json->templates = [];
+
+        // VALIDATION
+        $json2 = json_decode(Auth::user()->settings);
+        $collect = collect($json2->templates);
+        $check = $collect->where('title', $request->title)->first();
+        if($check)
+            return response()->json(['title' => ['0' => 'Ce titre éxiste déjà']], 400);  
+
+        // CREATION
+        $new = new \stdClass;
+        $new->title = $request->title;
+        $new->description = $request->description;
+        $new->content = $request->content;
+
+        array_push($json->templates, $new);
+
+        Auth::user()->settings = json_encode($json);
+        Auth::user()->save();
+
+        return response()->json([], 200);
+    }
+    public function templateEdit(Request $request, $templateTitle)
+    {
+        $json = json_decode(Auth::user()->settings);
+
+       if(!$json)
+            return redirect(route('admin.account.settings'));
+       if(@!isset($json->templates))
+            return redirect(route('admin.account.settings'));
+        
+        $collect = collect($json->templates);
+        $template = $collect->where('title', $templateTitle)->first();
+        if(@!isset($template))
+            return redirect(route('admin.account.settings'));
+
+         return view('admin.templates.edit', compact('template'));
+    }
+    public function templateUpdate(Request $request, $templateTitle)
+    {
+        $rules = [
+            'title' => 'required|alpha_dash|between:1,20',
+            'description' => 'required|between:1,30',
+            'content' => 'required|between:10,5000',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $json = json_decode(Auth::user()->settings);
+
+        if(!$json)
+            return redirect(route('admin.account.settings'));
+        if(@!isset($json->templates))
+            return redirect(route('admin.account.settings'));
+
+        $collect = collect($json->templates);
+        $templateToUpdate = $collect->where('title', $templateTitle)->first();
+
+        if(@!isset($templateToUpdate))
+            return redirect(route('admin.account.settings'));
+    
+        // VALIDATION
+        if($templateTitle != $request->title)
+        {
+            $json2 = json_decode(Auth::user()->settings);
+            $collect = collect($json2->templates);
+            $check = $collect->where('title', $request->title)->first();
+            if($check)
+            {
+                 return redirect()->back()
+                ->withErrors(['title' => 'Ce titre éxiste déjà'])
+                ->withInput();
+            }
+        }
+
+        $templateToUpdate->title = $request->title;
+        $templateToUpdate->description = $request->description;
+        $templateToUpdate->content = $request->content;
+
+        Auth::user()->settings = json_encode($json);
+        Auth::user()->save();
+
+        Toastr::success('Template updated', $title = null, $options = []);
+        return redirect(route('admin.account.settings'));
+    }
+    public function templateDestroy(Request $request, $templateTitle)
+    {
+        $json = json_decode(Auth::user()->settings);
+
+        if(!$json)
+            return response()->json([], 404);
+        if(@!isset($json->templates))
+            return response()->json([], 404);
+
+        $collect = collect($json->templates);
+
+        $filtered = $collect->reject(function ($value, $key) use($templateTitle) {
+            if($value->title == $templateTitle)
+                return true;
+        });
+        $json->templates = $filtered->toArray();
+
+        Auth::user()->settings = json_encode($json);
+        Auth::user()->save();
+        
+        return response()->json([], 200);
+    }
 }

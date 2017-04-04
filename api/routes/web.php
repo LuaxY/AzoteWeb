@@ -180,6 +180,12 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'         => 'characters.view'
     ]);
 
+    Route::get(Lang::get('routes.characters.caracteristics'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@caracteristics',
+        'as'         => 'characters.caracteristics'
+    ]);
+
     Route::any(Lang::get('routes.characters.recover'), [
         'middleware' => 'auth',
         'uses'       => 'CharactersController@recover',
@@ -517,32 +523,62 @@ Route::group(['middleware' => ['auth', 'staff']], function () {
         ]);
 
         // ACCOUNT //
-        Route::group(['prefix' => 'account', 'middleware' => 'can:manage-account'], function () {
+        Route::group(['prefix' => 'account'], function () {
+            Route::group(['middleware' => 'can:manage-account'], function () {
+                Route::get('/', [
+                    'uses' => 'AccountController@index',
+                    'as'   => 'admin.account'
+                ]);
 
-            Route::get('/', [
-                'uses' => 'AccountController@index',
-                'as'   => 'admin.account'
-            ]);
+                Route::patch('/update', [
+                    'uses' => 'AccountController@accountUpdate',
+                    'as'   => 'admin.account.update'
+                ]);
 
-            Route::patch('/update', [
-                'uses' => 'AccountController@accountUpdate',
-                'as'   => 'admin.account.update'
-            ]);
+                route::patch('/avatar/reset', [
+                    'uses' => 'AccountController@resetAvatar',
+                    'as'   => 'admin.account.avatar.reset'
+                ]);
 
-            route::patch('/avatar/reset', [
-                'uses' => 'AccountController@resetAvatar',
-                'as'   => 'admin.account.avatar.reset'
-            ]);
+                Route::get('/password', [
+                    'uses' => 'AccountController@password',
+                    'as'   => 'admin.password'
+                ]);
 
-            Route::get('/password', [
-                'uses' => 'AccountController@password',
-                'as'   => 'admin.password'
-            ]);
+                Route::patch('/password/update', [
+                    'uses' => 'AccountController@passwordUpdate',
+                    'as'   => 'admin.password.update'
+                ]);
+            });
+            Route::group(['middleware' => 'can:manage-support'], function () {
+                Route::get('/settings', [
+                    'uses' => 'AccountController@settings',
+                    'as'   => 'admin.account.settings'
+                ]);            
+                Route::patch('/settings', [
+                    'uses' => 'AccountController@settingsUpdate',
+                    'as'   => 'admin.account.settings.update'
+                ]);
 
-            Route::patch('/password/update', [
-                'uses' => 'AccountController@passwordUpdate',
-                'as'   => 'admin.password.update'
-            ]);
+                Route::post('/settings/template/add', [
+                    'uses' => 'AccountController@templateAdd',
+                    'as'   => 'admin.account.settings.template.post'
+                ]);
+
+                Route::get('/settings/template/edit/{templateTitle}', [
+                    'uses' => 'AccountController@templateEdit',
+                    'as'   => 'admin.account.settings.template.edit'
+                ]);
+
+                Route::patch('/settings/template/edit/{templateTitle}', [
+                    'uses' => 'AccountController@templateUpdate',
+                    'as'   => 'admin.account.settings.template.update'
+                ]);
+                Route::delete('/settings/template/delete/{templateTitle}', [
+                    'uses' => 'AccountController@templateDestroy',
+                    'as'   => 'admin.account.settings.template.destroy'
+                ]);
+            });
         });
 
         // POSTS //

@@ -330,4 +330,26 @@ class User extends Authenticatable
         else
             return 'default-default';
     }
+    public function personnal_templates()
+    {
+        if($this->settings)
+        {
+             $settings = json_decode($this->settings);
+                if(@isset($settings->templates))
+                    return $settings->templates;
+        }
+        return [];
+    }
+
+    public function preloadtext()
+    {
+        if($this->settings)
+        {
+            $settings = json_decode($this->settings);
+            if(@isset($settings->preloadtext))
+                    return $settings->preloadtext;
+        }
+        return "";
+    }
+
 }

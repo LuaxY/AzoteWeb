@@ -6,6 +6,8 @@
 {!! Breadcrumbs::render('support.page', $page_name) !!}
 @stop
 @section('header')
+    {{ Html::script('tinymce/tinymce.min.js') }}
+    {{ Html::script('tinymce/tinymce_simple_front.js') }}
 <style>
 .alert-info a
 {
@@ -87,7 +89,14 @@
 @section('bottom')
 <script>
 var $ = require('jquery');
-
+function launchTinymce()
+{
+    if($("textarea").length > 0){
+        editor_simple_front_config.selector = "textarea";
+        $("textarea").removeClass('hidden');
+        tinymce.init(editor_simple_front_config);
+    };
+}
 function openticket()
 {
     $('#advert-ticket').fadeOut(1000);
@@ -169,9 +178,8 @@ $('#support').on('change', 'select, input[type=radio]', function() {
 
     return false;
 });*/
-
-       $("#support").on("submit", function (event) {
-            
+            $("#support").on("submit", function (event) {
+            tinymce.triggerSave();
             var button = $('#support input[type="submit"]');
             var token = '{{ Session::token() }}';
 
@@ -211,6 +219,7 @@ $('#support').on('change', 'select, input[type=radio]', function() {
                 }
             });
         });
+
 
 get_child(1, 'support');
 //get_child(0, 'final');

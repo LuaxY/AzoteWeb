@@ -28,7 +28,7 @@ class LadderController extends Controller
             $world = $db[$server.'_world']['database'];
 
             $result = DB::table($world.'.characters AS ch')
-                ->select('ch.*')
+                ->select('ch.Id', 'ch.Experience', 'ch.PrestigeRank', 'ch.Name', 'ch.Breed', 'ch.Sex')
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1);
@@ -59,7 +59,7 @@ class LadderController extends Controller
             $world = $db[$server.'_world']['database'];
 
             $result = DB::table($world.'.characters AS ch')
-                ->select('ch.*')
+                ->select('ch.Id', 'ch.Name', 'ch.Breed', 'ch.Sex', 'ch.Honor', 'ch.AlignmentSide', 'ch.PrestigeRank', 'ch.Experience')
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1)

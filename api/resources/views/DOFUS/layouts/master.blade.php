@@ -135,9 +135,7 @@
         <div class="tablet device-profile visible-sm" data-deviceprofile="tablet"></div>
         <div class="mobile device-profile visible-xs" data-deviceprofile="mobile"></div>
     </header>
-
-    <!--<div class="ak-beta"></div>-->
-
+    @yield('beta')
     @yield('page')
 
     <footer>

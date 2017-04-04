@@ -11,7 +11,7 @@ class SupportTicket extends Model
 
     public static $rules = [
         'postMessage' => [
-            'message' => 'required|min:3|max:400',
+            'message' => 'required|between:10,5000',
         ],
         'postMessageAdmin' => [
             'message' => 'required',

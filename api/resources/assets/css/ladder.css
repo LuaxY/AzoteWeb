@@ -212,6 +212,22 @@ aside .ak-right-breed-list .ak-panel-content {
     background-position: -525px -35px
 }
 
+.ak-breed-icon.breed17_1 {
+    background-position: -1155px 0
+}
+
+.ak-breed-icon.breed17_0 {
+    background-position: -1155px -35px
+}
+
+.ak-breed-icon.breed18_1 {
+    background-position:-595px 0
+}
+
+.ak-breed-icon.breed18_0 {
+    background-position:-595px -35px
+}
+
 .ak-breed-icon-big {
     background: transparent url("../imgs/assets/breeds_big.png") 0 0 no-repeat
 }

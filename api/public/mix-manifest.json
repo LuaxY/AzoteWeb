@@ -15,6 +15,8 @@
   "/css/server.css": "/css/server.css",
   "/css/codes.css": "/css/codes.css",
   "/css/set.css": "/css/set.css",
+  "/css/builders.css": "/css/builders.css",
+  "/css/directories.css": "/css/directories.css",
   "/css/bootstrap.min.css": "/css/bootstrap.min.css",
   "/css/vendor_admin.min.css": "/css/vendor_admin.min.css",
   "/css/app_admin.min.css": "/css/app_admin.min.css",

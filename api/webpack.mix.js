@@ -26,6 +26,8 @@ mix.styles('resources/assets/css/ladder-tiny.css', 'public/css/ladder-tiny.css')
 mix.styles('resources/assets/css/server.css', 'public/css/server.css');
 mix.styles('resources/assets/css/codes.css', 'public/css/codes.css');
 mix.styles('resources/assets/css/set.css', 'public/css/set.css');
+mix.styles('resources/assets/css/builders.css', 'public/css/builders.css');
+mix.styles('resources/assets/css/directories.css', 'public/css/directories.css');
 
 
 mix.copy('resources/assets/js/common.js', 'public/js');

@@ -2,6 +2,8 @@
 @section('title') Support @endsection
 @section('page-title') Support: Ticket n°{{$request->id}} @endsection
 @section('header')
+    {{ Html::script('tinymce/tinymce.min.js') }}
+    {{ Html::script('tinymce/tinymce_editor_support.js') }}
     {!! Html::style('css/lightbox.min.css') !!}
     {!! Html::script('js/lightbox.min.js') !!}
     {{ Html::style('css/sweetalert.min.css') }}
@@ -69,7 +71,7 @@
                                     <h4 class="font-600 m-b-20">{{$request->subject}}</h4>
 
                                     <p>
-                                        {{$request->message}}
+                                        {!! $request->message !!}
                                     </p>
 
                                     <ul class="list-inline task-dates m-b-0 m-t-20">
@@ -122,7 +124,7 @@
                                                 <div class="media-body">
                                                     <h4 class="media-heading">{{ $message->author ? $message->author->pseudo : '(User not found)' }}<small class="text-muted"> - {{ $message->created_at->diffForHumans() }}</small></h4>
                                                     <p class="m-b-0 @if($message->isInfo()) text-inverse @endif" @if($message->isInfo()) style="font-weight:bold; font-size:12px;" @endif">
-                                                       @if($message->isInfo()) INFO: @endif {{ $message->data['message'] }}
+                                                       @if($message->isInfo()) INFO: @endif {!! $message->data['message'] !!}
                                                     </p>
                                                 </div>
                                             </div>
@@ -136,9 +138,9 @@
                                             {!! Form::open(['route' => ['admin.support.ticket.post.message', $request->id]]) !!}
                                                  <div class="form-group {{ $errors->has('message') ? ' has-error' : '' }}">
                                                     @if($request->isOpen())
-                                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => 'Your message...', 'rows' => '0', 'cols' => '0', 'id' => 'message']) !!}
+                                                    {!! Form::textarea('message', Auth::user()->preloadtext(), ['class' => 'form-control hidden', 'id' => 'message']) !!}
                                                     @else
-                                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => 'Your message...', 'rows' => '0', 'cols' => '0', 'id' => 'message', 'disabled']) !!}
+                                                    {!! Form::textarea('message', null, ['class' => 'form-control', 'id' => 'message', 'disabled']) !!}
                                                     @endif
                                                     @if ($errors->has('message'))
                                                         <span class="help-block">
@@ -219,6 +221,15 @@
                 $(document).ready(function () {
                     var token = '{{ Session::token() }}';
                     $('[data-toggle="tooltip"]').tooltip();
+
+                    if($("#message").length > 0){
+                        editor_support_config.selector = "textarea#message";
+                        editor_support_config.path_absolute = '{{ url('') }}';
+                        editor_support_config.templates = {!!json_encode(Auth::user()->personnal_templates())!!};
+                        $("#message").removeClass('hidden');
+                        tinymce.init(editor_support_config);
+                    }
+
                    $( "#form-assign-to" ).on( "submit", function( event ) {
                         $("#form-assign-to button[type='submit']").prop("disabled", true);
                        event.preventDefault();

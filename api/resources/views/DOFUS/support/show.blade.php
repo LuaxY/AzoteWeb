@@ -4,6 +4,8 @@
 @section('header')
     {!! Html::style('css/lightbox.min.css') !!}
     {!! Html::script('js/lightbox.min.js') !!}
+    {{ Html::script('tinymce/tinymce.min.js') }}
+    {{ Html::script('tinymce/tinymce_simple_front.js') }}
 @stop
 
 @section('breadcrumbs')
@@ -81,7 +83,7 @@
                                     
                                 </span>
                             </div>
-                            <div class="ak-text-content" @if($message->isInfo()) style="font-weight:bold;"@endif>@if($message->isInfo()) INFO: @endif{{ $message->data['message'] }}</div>
+                            <div class="ak-text-content" @if($message->isInfo()) style="font-weight:bold;"@endif>@if($message->isInfo()) INFO: @endif {!! $message->data['message'] !!}</div>
                         </div>
                     </div>
                 @endforeach
@@ -93,7 +95,7 @@
                             <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="" border="0">
                         </div>
                         <div class="ak-comment">
-                            {!! Form::textarea('message', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Votre message...', 'rows' => '0', 'cols' => '0', 'id' => 'message']) !!}
+                            {!! Form::textarea('message', null, ['class' => 'ak-comment-textarea', 'rows' => '10', 'cols' => '0', 'id' => 'message']) !!}
                         </div>
                          @if ($errors->has('message')) <label class="error control-label">{{ $errors->first('message') }}</label> @endif
                     </div>
@@ -104,3 +106,13 @@
     </div>
 </div>
 @stop
+@section('bottom')
+<script>
+    var $ = require('jquery');
+if($("textarea").length > 0){
+                        editor_simple_front_config.selector = "textarea";
+                        $("textarea").removeClass('hidden');
+                        tinymce.init(editor_simple_front_config);
+                    };
+</script>
+@endsection

@@ -38,8 +38,8 @@ class Guild extends Model
         return $guildMembers;
     }
 
-    public function emblem()
+    public function emblem($sizeX, $sizeY)
     {
-        return DofusForge::asset("dofus/renderer/emblem/{$this->EmblemForegroundShape}/{$this->EmblemBackgroundShape}/0x".strtoupper(dechex($this->EmblemForegroundColor))."/0x".strtoupper(dechex($this->EmblemBackgroundColor))."/48_48-0.png");
+        return DofusForge::asset("dofus/renderer/emblem/{$this->EmblemForegroundShape}/{$this->EmblemBackgroundShape}/0x".strtoupper(dechex($this->EmblemForegroundColor))."/0x".strtoupper(dechex($this->EmblemBackgroundColor))."/".$sizeX."_".$sizeY."-0.png");
     }
 }

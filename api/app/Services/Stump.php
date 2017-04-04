@@ -104,4 +104,42 @@ class Stump
 
         return $success;
     }
+
+    public static function inventory($server, $characterId, $url)
+    {
+        $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
+
+        if (!$world || !$world->isOnline()) {
+            return false;
+        }
+
+        $api = config('dofus.details')[$server];
+        $success = false;
+
+        try {
+            $client = new Client();
+            $res = $client->request('PUT', "http://{$api->ip}:{$api->port}$url", [
+                'headers' => [
+                    'APIKey' => config('dofus.api_key')
+                ],
+                'timeout' => 5, // seconds
+            ]);
+
+            if ($res->getStatusCode() == 200) {
+                // Server return 200 (Good)
+               return $res;
+            } else {
+                // Server return 2xx (Bad)
+                $success = false;
+            }
+        } catch (ServerException $e) {
+            // 5xx errors
+            $success = false;
+        } catch (TransferException $e) {
+            // Other errors (timeout?)
+            $success = false;
+        }
+
+        return $success;
+    }
 }

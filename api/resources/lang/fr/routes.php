@@ -68,7 +68,9 @@ return [
 
     /** Characters **/
 
-    'characters.view' => 'personnages/{server}/{accountId}/{characterId}',
+    'characters.view' => 'pages-persos/{server}/{characterId}-{characterName}',
+
+    'characters.caracteristics' => 'pages-persos/{server}/{characterId}-{characterName}/caracteristiques',
 
     'characters.recover' => 'personnages/{server}/{accountId}/{characterId}/recuperer',
 

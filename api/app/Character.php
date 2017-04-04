@@ -4,8 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use \Cache;
-
+use App\Guild;
 use App\Experience;
+use App\Alignment;
+use \DB;
+use App\Helpers\Utils;
 
 class Character extends Model
 {
@@ -18,10 +21,83 @@ class Character extends Model
     public $timestamps = false;
 
     public $server;
-    
+
+    public function position($type = 'pvp', $spec = 'all', $server = 'sigma')
+    {
+        $resultDB = Cache::remember('position.'.$this->Id.'.'.$type.'.'.$spec.'.'.$server, 1440, function () use ($server, $type, $spec) {
+            $power = 0;
+            if($type == 'xp')
+                $power = $this->Experience + ($this->PrestigeRank * 3000000000000);
+            $db = config('database.connections');
+            $auth  = $db[$server.'_auth']['database'];
+            $world = $db[$server.'_world']['database'];
+        
+            $result = DB::table($world.'.characters AS ch')
+                ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
+                ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
+                ->where('acc.UserGroupId', 1);
+                
+                if($type == 'pvp')
+                    $result = $result->where('ch.Honor', '>=', $this->Honor);
+                if($type == 'xp')
+                    $result = $result->where(DB::raw('ch.Experience + (ch.PrestigeRank * 3000000000000)'), '>', $power);
+                
+                if($spec == 'breed')
+                    $result = $result->where('Breed', $this->Breed);
+
+                $result = $result->count('ch.Id');
+
+            return Utils::format_price((int)($result + 1), ' ');
+        });
+
+        return $resultDB;
+ 
+    }
+
+    public function alignment()
+    {
+        $alignment = new Alignment($this->AlignmentSide, $this->Honor);
+        return $alignment;
+    }
+
+    public function titleActive($server = 'sigma')
+    {
+        $titleactive =  Cache::remember('titleactive_'.$server.'_'.$this->TitleId, 1000, function () use($server) {
+               return ModelCustom::hasOneOnOneServer('world', $server, Title::class, 'Id', $this->TitleId);
+        });
+       return $titleactive ? $titleactive : null;
+    }
+
+    public function ornamentActive($server = 'sigma')
+    {
+        $ornamentactive =  Cache::remember('ornamentactive'.$server.'_'.$this->Ornament, 1000, function () use($server) {
+               return ModelCustom::hasOneOnOneServer('world', $server, Ornament::class, 'Id', $this->Ornament);
+        });
+       return $ornamentactive ? $ornamentactive : null;
+    }
+
     public function items()
     {
-        return $this->hasMany(CharacterItem::class, 'OwnerId', 'Id')->get();
+        return $this->hasMany(CharacterItem::class, 'OwnerId', 'Id');
+    }
+
+    public function guild($server = 'sigma')
+    {
+        $guildmember = Cache::remember('guildmember_'.$server.'_'.$this->Id, 1000, function () use($server) {
+               return ModelCustom::hasOneOnOneServer('world', $server, GuildMember::class, 'CharacterId', $this->Id);
+        });
+
+        if($guildmember)
+        {
+            $guild = Cache::remember('guild_'.$this->GuildId, 1000, function () use($server, $guildmember) {
+                return Guild::on($server.'_world')->findOrFail($guildmember->GuildId);
+            });
+            if($guild)
+                return $guild;
+            else
+                return null;
+        }
+        return null;
     }
 
     public function level($server = 'sigma')

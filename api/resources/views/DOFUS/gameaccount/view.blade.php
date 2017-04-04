@@ -63,11 +63,11 @@
                 <td class="ak-rank"></td>
                 <td class="ak-name">
                     <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                    <a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}">{{ $character->Name }}</a>
+                    <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}">{{ $character->Name }}</a>
                 </td>
                 <td class="ak-class">{{ $character->classe() }}</td>
                 <td class="ak-center">{{ $character->level() }}</td>
-                <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $account->Id, $character->Id]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+                <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
             </tr>
         @endforeach
     </table>

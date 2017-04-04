@@ -13,27 +13,85 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
+use App\ItemPosition;
+use App\Services\Stump;
 
 class CharactersController extends Controller
 {
-    public function view(Request $request, $server, $accountId, $characterId)
+    public function view(Request $request, $server, $characterId, $characterName)
     {
-        $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage des personnages prochainement"]);
-        return redirect()->back();
-
         if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
 
-        if (!World::isCharacterOwnedByMe($server, $accountId, $characterId)) {
-            throw new GenericException('owner_error');
-        }
-
-        $character = Character::on($server . '_world')->where('Id', $characterId)->first();
+        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 1000, function () use($server, $characterId, $characterName) {
+               return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
+        });
         if(!$character)
             abort(404);
         
-        return view('gameaccount.character.view', compact('character'));
+        $character->server = $server;
+        return view('gameaccount.character.view', compact('character', 'server'));
+    }
+
+    public function caracteristics(Request $request, $server, $characterId, $characterName)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 1000, function () use($server, $characterId, $characterName) {
+               return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
+        });
+        if(!$character)
+            abort(404);
+        
+        $character->server = $server;
+
+        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 1000, function () use($server, $character) {
+                $itemsall = array('left' => [], 'right' => [], 'bottom' => []);
+               $json = Stump::inventory($server, $character->Id, "/Character/$character->Id/Inventory");
+               if(!$json)
+                return $itemsall;
+               $items = json_decode($json);
+                foreach($items as $item)
+                {
+                    switch($item->Position)
+                    {
+                        case ItemPosition::ACCESSORY_POSITION_SHIELD:
+                        case ItemPosition::ACCESSORY_POSITION_AMULET:      
+                        case ItemPosition::INVENTORY_POSITION_RING_LEFT:
+                        case ItemPosition::ACCESSORY_POSITION_CAPE:
+                        case ItemPosition::ACCESSORY_POSITION_BOOTS:
+                            array_push($itemsall['left'], $item);
+                        break;
+                        case ItemPosition::ACCESSORY_POSITION_WEAPON:
+                        case ItemPosition::ACCESSORY_POSITION_HAT:      
+                        case ItemPosition::INVENTORY_POSITION_RING_RIGHT:
+                        case ItemPosition::ACCESSORY_POSITION_BELT:
+                        case ItemPosition::ACCESSORY_POSITION_PETS:
+                            array_push($itemsall['right'], $item);
+                        break;
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_1:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_2:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_3:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_4:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_5:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_6:
+                            array_push($itemsall['bottom'], $item);
+                        break;
+                        default:
+                        break;
+                    }
+                }
+                return $itemsall;
+        });
+       
+        $itemsleft = collect($itemsall['left']);
+        $itemsright = collect($itemsall['right']);
+        $itemsbottom = collect($itemsall['bottom']);
+
+        return view('gameaccount.character.caracteristics', compact('character', 'server', 'itemsleft', 'itemsright', 'itemsbottom'));
     }
 
     public function recover(Request $request, $server, $accountId, $characterId)

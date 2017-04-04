@@ -30,6 +30,8 @@ class SupportController extends Controller
     }
     private function diffInMinutes($requestId, $type)
     {
+        if(Auth::user()->isStaff())
+            return "can";
         $supportRequest = SupportRequest::findOrFail($requestId);
         $mostRecent = $supportRequest->tickets()->select('updated_at')->where('user_id', $supportRequest->user_id)->where('reply', $type)->orderBy('id', 'desc')->first();
         if ($mostRecent) {
@@ -45,6 +47,8 @@ class SupportController extends Controller
 
     private function diffInMinutesCreate()
     {
+        if(Auth::user()->isStaff())
+            return "can";
         $mostRecent = SupportRequest::select('created_at')->where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
         if ($mostRecent) {
             $diffInMinutes = Carbon::now()->diffInMinutes($mostRecent->created_at);
@@ -269,6 +273,7 @@ class SupportController extends Controller
             }
         }
 
+
         if (array_key_exists('server|Serveur', $report)) {
             $server = $report['server|Serveur'];
             if (!World::isServerExist($server)) {
@@ -295,7 +300,7 @@ class SupportController extends Controller
         }
         
         $type = $report['select|Ma demande concerne'];
-      
+
         $validator = Validator::make($report, SupportRequest::$rules[$type]);
         if ($validator->fails()) {
             return response()->json($validator->messages(), 400);

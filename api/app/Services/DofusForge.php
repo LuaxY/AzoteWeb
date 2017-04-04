@@ -29,7 +29,7 @@ class DofusForge
         $url .= $request;
         $hash = md5($request);
 
-        $data = $redis->get("dofus:forge:$hash");
+        $data = $redis->get("dofus:forge:$hash:$request");
 
         if ($data) {
             return $data;
@@ -40,13 +40,12 @@ class DofusForge
             curl_setopt($curl, CURLOPT_COOKIESESSION, true);
             $result = curl_exec($curl);
             $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-            if ($code == 404) {
+            if ($code != 200) {
                 header("HTTP/1.1 404 Not Found");
                 header('Content-Type: plain/text');
                 return $result;
-            } else {
-                $redis->set("dofus:forge:$hash", $result);
+            } elseif($code == 200) {
+                $redis->set("dofus:forge:$hash:$request", $result);
                 return $result;
             }
 
@@ -54,42 +53,48 @@ class DofusForge
         }
     }
 
-    public static function player(Character $character, $server, $mode, $orientation, $sizeX, $sizeY)
+    public static function player(Character $character, $server, $mode, $orientation, $sizeX, $sizeY, $margin = 0)
     {
             if(config('dofus.details')[$server]->version == "2.10")
                 $look = bin2hex($character->EntityLookString);
             else
                 $look = bin2hex($character->DefaultLookString);
-            return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}.png");
+            return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
+    }
+
+    public static function item($iconId, $size)
+    {
+        return self::asset('dofus/www/game/items/'.$size.'/' . $iconId . '.png');
     }
 
     public static function text($id, $server = null)
     {
-        /*$redis = Redis::connection();
+        if(!$server)
+            $server = config('dofus.servers')[0];
 
-        $text = $redis->get("dofus:text:$id");
+        $redis = Redis::connection();
+
+        $text = $redis->get("dofus:forge:text:$server:$id");
 
         if ($text)
         {
             return $text;
         }
         else
-        {*/
-            $lang = null;
-
-        if ($server) {
+        {
             $lang = Lang::on($server . '_world')->select('French')->where('Id', $id)->first();
-        } else {
-            $lang = Lang::select('French')->where('Id', $id)->first();
-        }
+            if(!$lang)
+                $text = "Text not found.";
 
-            $text = "Text not found.";
-
-        if ($lang && $lang->French) {
-            $text = $lang->French;
-        }
+            if ($lang && $lang->French)
+            {
+                $redis->set("dofus:forge:text:$server:$id", $lang->French);
+                $text = $lang->French;
+            }
+            else
+                $text = "Text not found.";
 
             return $text;
-        //}
+        }
     }
 }

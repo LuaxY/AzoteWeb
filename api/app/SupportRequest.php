@@ -20,26 +20,26 @@ class SupportRequest extends Model
             "La boutique" =>
             [
                 "text|Code reçu" => "sometimes|required|alpha_num|between:7,8",
-                "text|Sujet" => "required|between:1,30",
-                "message|Message" => "required|between:1,400",
+                "text|Sujet" => "required|between:3,30",
+                "message|Message" => "required|between:10,5000",
                 "image|Preuve d'achat" => "required|image|mimes:jpeg,jpg,bmp,png"
             ],
             "Un autre problème" =>
             [
-                "text|Sujet" => "required|between:1,30",
-                "message|Message" => "required|between:1,400",
+                "text|Sujet" => "required|between:3,30",
+                "message|Message" => "required|between:10,5000",
                 "image|Screenshot" => "image|mimes:jpeg,jpg,bmp,png"
             ],
             "Un problème en jeu" =>
             [
-                "text|Sujet" => "required|between:1,30",
-                "message|Message" => "required|between:1,400",
-                "image|Screenshot" => "image|mimes:jpeg,jpg,bmp,png"
+                "text|Sujet" => "required|between:3,30",
+                "message|Message" => "required|between:10,5000",
+                "image|Preuve" => "image|mimes:jpeg,jpg,bmp,png"
             ],
             "Mon compte web" =>
             [
-                "text|Sujet" => "required|between:1,30",
-                "message|Message" => "required|between:1,400",
+                "text|Sujet" => "required|between:3,30",
+                "message|Message" => "required|between:10,5000",
                 "image|Screenshot" => "image|mimes:jpeg,jpg,bmp,png",
                 "text|E-mail du compte perdu" => "sometimes|required|email"
             ],

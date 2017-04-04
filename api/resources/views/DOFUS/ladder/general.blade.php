@@ -48,7 +48,7 @@
                     </td>
                     <td class="ak-name">
                         <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                        {{ $character->Name }}
+                        {{ Html::link(route('characters.view', [$server, $character->Id, $character->Name]), $character->Name) }}
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
                     <td class="ak-center">{{ $character->level($server) }}</td>
