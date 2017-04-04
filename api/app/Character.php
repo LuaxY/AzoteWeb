@@ -89,7 +89,7 @@ class Character extends Model
 
         if($guildmember)
         {
-            $guild = Cache::remember('guild_'.$this->GuildId, 1000, function () use($server, $guildmember) {
+            $guild = Cache::remember('guild_'.$guildmember->GuildId, 1000, function () use($server, $guildmember) {
                 return Guild::on($server.'_world')->findOrFail($guildmember->GuildId);
             });
             if($guild)

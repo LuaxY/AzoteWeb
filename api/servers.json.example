@@ -7,7 +7,7 @@
             "ip":       "0.0.0.0",
             "port":     9000,
             "ogrine":   20824,
-            "prestige": false,
+            "prestige": true,
             "db_host":  "127.0.0.1",
             "db_user":  "root",
             "db_pass":  "",
