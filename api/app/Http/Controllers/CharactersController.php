@@ -48,8 +48,8 @@ class CharactersController extends Controller
         
         $character->server = $server;
 
-        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 1000, function () use($server, $character) {
-                $itemsall = array('left' => [], 'right' => [], 'bottom' => []);
+        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 10, function () use($server, $character) {
+               $itemsall = array('left' => [], 'right' => [], 'bottom' => []);
                $json = Stump::inventory($server, $character->Id, "/Character/$character->Id/Inventory");
                if(!$json)
                 return $itemsall;

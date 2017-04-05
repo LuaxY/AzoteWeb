@@ -118,7 +118,7 @@ class Stump
 
         try {
             $client = new Client();
-            $res = $client->request('PUT', "http://{$api->ip}:{$api->port}$url", [
+            $res = $client->request('GET', "http://{$api->ip}:{$api->port}$url", [
                 'headers' => [
                     'APIKey' => config('dofus.api_key')
                 ],
@@ -127,7 +127,7 @@ class Stump
 
             if ($res->getStatusCode() == 200) {
                 // Server return 200 (Good)
-               return $res;
+               return $res->getBody();
             } else {
                 // Server return 2xx (Bad)
                 $success = false;
