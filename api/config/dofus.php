@@ -122,8 +122,10 @@ return [
             'c'          => env('RECURSOS_C', null),
             'c_sms'      => env('RECURSOS_C_SMS', null),
             'w'          => env('RECURSOS_W', null),
-            'prices'     => env('RECURSOS_PRICES', null),
-            'coeff'      => env('RECURSOS_COEFF', null),
+            'pricesCB'   => env('RECURSOS_PRICES_CB', null),
+            'pricesPS'   => env('RECURSOS_PRICES_PS', null),
+            'coeffCB'    => env('RECURSOS_COEFF_CB', null),
+            'coeffPS'    => env('RECURSOS_COEFF_PS', null),
         ],
 		
         'payfee' => [

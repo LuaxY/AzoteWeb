@@ -51,67 +51,78 @@ class PayFee extends Payment
 
         $this->rates->$countryName->$methodName->$palier = $newMethod;
 		
-        $prices = explode('|', config('dofus.payment.recursos.prices'));
-        $coeff  = config('dofus.payment.recursos.coeff');
-
-        if ($prices) {
-			$methodNameCB  	= 'carte bancaire';
-            $methodNamePS  	= 'paysafecard';
-
-            $this->rates->$countryName->$methodNameCB = new \stdClass;
-            $this->rates->$countryName->$methodNamePS = new \stdClass;
-
-			$cid = config('dofus.payment.recursos.c_sms');
-			$wmid = config('dofus.payment.recursos.w');
+        $pricesCB = explode('|', config('dofus.payment.recursos.pricesCB'));
+        $pricesPS = explode('|', config('dofus.payment.recursos.pricesPS'));
+        $coeffCB  = config('dofus.payment.recursos.coeffCB');
+        $coeffPS  = config('dofus.payment.recursos.coeffPS');
+		
+		$cid = config('dofus.payment.recursos.c_sms');
+		$wmid = config('dofus.payment.recursos.w');
 			
-			$CBMethod = new \stdClass;
-			
-			$CBMethod->devise   = "&euro;";
-            $CBMethod->points   = 0;
-            $CBMethod->price    = 0;
-            $CBMethod->cost     = "Paliers sur la prochaine page";
-            $CBMethod->text     = "";
-            $CBMethod->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=creditcard&h=paysafecard&pcreditcard=240 Ogrines,280 Ogrines,640 Ogrines,800 Ogrines,2000 Ogrines,4000 Ogrines,6000 Ogrines,8000 Ogrines";
-            $CBMethod->recursos = true;
+        if ($pricesCB) {
+			$methodName = 'carte bancaire';
 
-            if (config('app.env') == 'production') {
-                $CBMethod->link = str_replace('http:', 'https:', $CBMethod->link);
-            }
+            $this->rates->$countryName->$methodName = new \stdClass;
+			
+			foreach ($pricesCB as $price) {
+				$Method = new \stdClass;
+				
+				$Method->devise   = "&euro;";
+				$Method->points   = $price * $coeffCB;
+				$Method->price    = $price;
+				$Method->cost     = $price . " " . $Method->devise;
+				$Method->text     = "";
+				//$Method->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=creditcard&h=paysafecard&pcreditcard=240 Ogrines,280 Ogrines,640 Ogrines,800 Ogrines,2000 Ogrines,4000 Ogrines,6000 Ogrines,8000 Ogrines";
+				$Method->link	  = route('redirect_recursos_cb');
+				$Method->recursos = true;
 
-            $CBMethod->legal = new \stdClass;
-            $CBMethod->legal->header    = null;
-            $CBMethod->legal->phone     = null;
-            $CBMethod->legal->shortcode = null;
-            $CBMethod->legal->keyword   = null;
-            $CBMethod->legal->footer    = null;
-			
-			$PSMethod = new \stdClass;
-			
-			$PSMethod->devise   = "&euro;";
-            $PSMethod->points   = 0;
-            $PSMethod->price    = 0;
-            $PSMethod->cost     = "Paliers sur la prochaine page";
-            $PSMethod->text     = "";
-            $PSMethod->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=paysafecard&&h=creditcard&ppaysafecard=210 Ogrines,245 Ogrines,560 Ogrines,700 Ogrines,1750 Ogrines,3500 Ogrines,5250 Ogrines,7000 Ogrines";
-            $PSMethod->recursos = true;
+				if (config('app.env') == 'production') {
+					//$Method->link = str_replace('http:', 'https:', $Method->link);
+				}
 
-            if (config('app.env') == 'production') {
-                $PSMethod->link = str_replace('http:', 'https:', $PSMethod->link);
-            }
-
-            $PSMethod->legal = new \stdClass;
-            $PSMethod->legal->header    = null;
-            $PSMethod->legal->phone     = null;
-            $PSMethod->legal->shortcode = null;
-            $PSMethod->legal->keyword   = null;
-            $PSMethod->legal->footer    = null;
-			
-			$palier = substr(md5($CBMethod->cost), 0, 5);
-            $this->rates->$countryName->$methodNameCB->$palier = $CBMethod;
-			
-			$palier = substr(md5($PSMethod->cost), 0, 5);
-            $this->rates->$countryName->$methodNamePS->$palier = $PSMethod;
+				$Method->legal = new \stdClass;
+				$Method->legal->header    = null;
+				$Method->legal->phone     = null;
+				$Method->legal->shortcode = null;
+				$Method->legal->keyword   = null;
+				$Method->legal->footer    = null;		
+				
+				$palier = substr(md5($Method->cost), 0, 5);
+				$this->rates->$countryName->$methodName->$palier = $Method;
+			}
 		}
+		
+		/*if ($pricesPS) {
+            $methodName = 'paysafecard';
+
+            $this->rates->$countryName->$methodName = new \stdClass;
+			
+			foreach ($pricesPS as $price) {
+				$Method = new \stdClass;
+				
+				$Method->devise   = "&euro;";
+				$Method->points   = $price * $coeffPS;
+				$Method->price    = $price;
+				$Method->cost     = $price . " " . $Method->devise;
+				$Method->text     = "";
+				$Method->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=paysafecard&&h=creditcard&ppaysafecard=210 Ogrines,245 Ogrines,560 Ogrines,700 Ogrines,1750 Ogrines,3500 Ogrines,5250 Ogrines,7000 Ogrines";
+				$Method->recursos = true;
+
+				if (config('app.env') == 'production') {
+					//$Method->link = str_replace('http:', 'https:', $Method->link);
+				}
+
+				$Method->legal = new \stdClass;
+				$Method->legal->header    = null;
+				$Method->legal->phone     = null;
+				$Method->legal->shortcode = null;
+				$Method->legal->keyword   = null;
+				$Method->legal->footer    = null;	
+				
+				$palier = substr(md5($Method->cost), 0, 5);
+				$this->rates->$countryName->$methodName->$palier = $Method;
+			}		
+		}*/
     }
 
     public function rates()
@@ -136,7 +147,7 @@ class PayFee extends Payment
         $check->code = $code;
         $check->error = false;
 
-        $check->provider = config('dofus.payment.dedipass.name');
+        $check->provider = "PayFee";
 
 		$rate = 2;
 		$user = 11;

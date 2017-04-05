@@ -28,7 +28,7 @@
             <div class="panel-main text-center">
                 @if ($canBuy)
                     @if (config('app.env') == 'production')
-                        <a href="https://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
+                        <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
                     @else
                         <a href="http://{{ config('dofus.domain.fake') }}/code?ticket={{ Auth::user()->ticket }}&country={{ $country }}&pay_id={{ $method }}_{{ $palier }}" target="_blank"><btton class="btn btn-primary btn-lg">Procéder au paiement</button></a>
                     @endif
