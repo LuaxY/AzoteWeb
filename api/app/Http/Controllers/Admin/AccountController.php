@@ -149,10 +149,13 @@ class AccountController extends Controller
 
         // VALIDATION
         $json2 = json_decode(Auth::user()->settings);
-        $collect = collect($json2->templates);
-        $check = $collect->where('title', $request->title)->first();
-        if($check)
-            return response()->json(['title' => ['0' => 'Ce titre éxiste déjà']], 400);  
+        if($json2 && @isset($json2->templates))
+        {
+            $collect = collect($json2->templates);
+            $check = $collect->where('title', $request->title)->first();
+            if($check)
+                return response()->json(['title' => ['0' => 'Ce titre éxiste déjà']], 400);  
+        }
 
         // CREATION
         $new = new \stdClass;
@@ -215,13 +218,16 @@ class AccountController extends Controller
         if($templateTitle != $request->title)
         {
             $json2 = json_decode(Auth::user()->settings);
-            $collect = collect($json2->templates);
-            $check = $collect->where('title', $request->title)->first();
-            if($check)
+            if($json2 && @isset($json2->templates))
             {
-                 return redirect()->back()
-                ->withErrors(['title' => 'Ce titre éxiste déjà'])
-                ->withInput();
+                $collect = collect($json2->templates);
+                $check = $collect->where('title', $request->title)->first();
+                if($check)
+                {
+                    return redirect()->back()
+                    ->withErrors(['title' => 'Ce titre éxiste déjà'])
+                    ->withInput();
+                }
             }
         }
 
