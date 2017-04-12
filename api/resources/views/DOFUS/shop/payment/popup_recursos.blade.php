@@ -13,7 +13,7 @@
         e.preventDefault();
         window.open(link, 'Payment', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=800,height=850,left = 420,top = 150');
         $('.loader').fadeIn();
-		@if ($method == 'carte bancaire' && false)
+		@if ($method == 'carte bancaire')
 			setTimeout(startCheck, 3000);
 		@endif
         return false;
@@ -57,7 +57,7 @@
             <div class="col-md-5 col-centered">
                 <div class="panel panel-primary" style="margin-top:10px;">
                     <div class="panel-heading">Obtenir un code</div>
-					@if ($method == 'carte bancaire' && false)
+					@if ($method == 'carte bancaire')
 						<div class="panel-body">
 							<center>
 								{!! $payment->legal->header !!}
@@ -99,8 +99,8 @@
                     <div class="panel-body">
                         <ol>
                             <li>Cliquez sur le lien ci-dessus.</li>
-                            <li>Suivez les instructions indiqués.</li>
-                            <li>Une fois le paiement effectué, vous serez redirigé.</li>
+                            <li>Une fois vos informations entrées, validez et normalement le code sera validé automatiquement et vos Ogrines seront créditées sur votre compte site.</li>
+                            <li>En cas d'erreur, veuillez vérifier vos e-mails afin de rentrer manuellement le code avec le bouton ci-dessus.</li>
                         </ol>
                     </div>
                 </div>

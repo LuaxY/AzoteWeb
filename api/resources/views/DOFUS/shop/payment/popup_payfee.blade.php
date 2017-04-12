@@ -28,40 +28,44 @@
                     <div class="panel-heading">Obtenir un code</div>
 						<div class="panel-body">
 							<center>
+								{!! $payment->legal->header !!}
+								
+								Cliquez sur le lien suivant pour obtenir le code :
+								<a href onClick="openModal(event, '{{ $payment->link }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('imgs/shop/payment/audiotel.png') }}" height="30" /></a>
+			
+								<br>
+								{!! $payment->text !!}
+								<br>
+								{!! $payment->legal->footer !!}
 							</center>
+							
+							{!! Form::open(['route' => 'code', 'class' => 'form-group']) !!}
+								<input type="hidden" name="ticket" value="{{ Auth::user()->ticket }}" />
+								<input type="hidden" name="country" value="{{ $country }}" />
+								<input type="hidden" name="pay_id" value="{{ $method }}_{{ $palier }}" />
+								<div class="form-group @if ($errors->has('code')) has-error @endif">
+									<div class="input-group input-group-lg">
+										<span class="input-group-addon" id="sizing-addon1">Code</span>
+										<input type="text" class="form-control" name="code" value="{{ Input::old('code') }}" @if ($errors->has('code')) class="has-error" @endif aria-describedby="sizing-addon1">
+										<span class="input-group-btn">
+											<button class="btn btn-primary" type="submit">Valider</button>
+										</span>
+									</div>
+									@if ($errors->has('code'))<label class="error control-label">{{ $errors->first('code') }}</label> @endif
+								</div>
+							{!! Form::close() !!}
 						</div>
                 </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Informations</div>
 					<div class="panel-body">
-						<center>
-							{!! $payment->legal->header !!}
-							
-							Cliquez sur le lien suivant pour obtenir le code :
-                            <a href onClick="openModal(event, '{{ $payment->link }}'); return false;" class="btn btn-default" target="_blank">Payer avec <img src="{{ URL::asset('imgs/shop/payment/audiotel.png') }}" height="30" /></a>
-		
-							<br>
-							{!! $payment->text !!}
-							<br>
-							{!! $payment->legal->footer !!}
-						</center>
-						
-						{!! Form::open(['route' => 'code', 'class' => 'form-group']) !!}
-                            <input type="hidden" name="ticket" value="{{ Auth::user()->ticket }}" />
-                            <input type="hidden" name="country" value="{{ $country }}" />
-                            <input type="hidden" name="pay_id" value="{{ $method }}_{{ $palier }}" />
-                            <div class="form-group @if ($errors->has('code')) has-error @endif">
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-addon" id="sizing-addon1">Code</span>
-                                    <input type="text" class="form-control" name="code" value="{{ Input::old('code') }}" @if ($errors->has('code')) class="has-error" @endif aria-describedby="sizing-addon1">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="submit">Valider</button>
-                                    </span>
-                                </div>
-                                @if ($errors->has('code'))<label class="error control-label">{{ $errors->first('code') }}</label> @endif
-                            </div>
-                        {!! Form::close() !!}
+                        <ol>
+                            <li>Cliquez sur le lien ci-dessus.</li>
+                            <li>Une fois sur la page, cliquez sur le bouton "Afficher le numéro"</li>
+                            <li>Appelez le numéro affiché puis notez le code.</li>
+                            <li>Retournez sur cette page puis entrez votre code.</li>
+                        </ol>
 					</div>
                 </div>
 

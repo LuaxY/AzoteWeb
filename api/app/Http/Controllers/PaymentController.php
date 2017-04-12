@@ -41,8 +41,10 @@ class PaymentController extends Controller
             $used = config('dofus.payment.used');
             
             if ($this->isShadowBanned($request->ip())) {
-                $used = config('dofus.payment.used_first');
-            }
+				$used = "payfee";
+            } else if ($this->user->isFistBuy()) {
+				$used = config('dofus.payment.used_first');
+			}
 
             if ($used == "dedipass") {
                 $this->payment = new DediPass;
@@ -65,9 +67,8 @@ class PaymentController extends Controller
         });
     }
 
-    public function isShadowBanned($ip)
-    {
-        if ($this->user->shadowBan || $this->user->isFistBuy()) {
+    public function isShadowBanned($ip) {
+        if ($this->user->shadowBan) {
             return true;
         }
 
@@ -245,7 +246,7 @@ class PaymentController extends Controller
             $url  = route('check_recursos_code', [null]);
 
             if (config('app.env') == 'production') {
-                $url = str_replace('http:', 'https:', $url);
+                //$url = str_replace('http:', 'https:', $url);
             }
 
             $data['check_url'] = $url;
@@ -272,12 +273,15 @@ class PaymentController extends Controller
         }
 
 		return $this->payment->redirect_cb($key, $palier);
-        return redirect()->route('error.fake', [10]);
     }
 
     public function check_recursos_code($key)
     {
-        if ($this->payment instanceof Recursos && $this->payment->check_cb($key)) {
+		if (!($this->payment instanceof Recursos)) {
+            $this->payment = new Recursos;
+        }
+		
+        if ($this->payment->check_cb($key)) {
             return "true";
         }
 
@@ -286,21 +290,25 @@ class PaymentController extends Controller
 
     public function code_re_fallback_process(Request $request)
     {
+		if (!($this->payment instanceof Recursos)) {
+            $this->payment = new Recursos;
+        }
+		
         if ($request->has('palier') || $request->has('code')) {
             $method = $this->payment->palier('fr', 'carte bancaire', $request->input('palier'));
-
+			$code = $request->input('code');
+			
             if (!$method) {
                 return "Code ou palier invalide #3";
             }
 
-            $recursos = new RecursosTransaction;
-            $recursos->user_id = Auth::user()->id;
-            $recursos->key     = str_random(32);
-            $recursos->points  = $method->points;
-            $recursos->price   = $method->price;
-            $recursos->save();
+			$recursos = RecursosTransaction::where('code', $code)->first();
 
-            if ($this->payment->check_code($recursos, $request->input('code'))) {
+			if (!$recursos || $recursos->isUsed) {
+				return "Code ou palier invalide #4";
+			}
+			
+            if ($this->payment->check_code($recursos, $code)) {
                 return "true";
             }
 
@@ -313,7 +321,7 @@ class PaymentController extends Controller
     public function code_re_fallback(Request $request)
     {
         if (!$this->payment instanceof Recursos) {
-            return redirect()->route('error.fake', [7]);
+            $this->payment = new Recursos;
         }
 
         $paliers = $this->payment->rates()->fr->{'carte bancaire'};

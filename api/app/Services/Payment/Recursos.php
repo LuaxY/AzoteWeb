@@ -19,70 +19,80 @@ class Recursos extends Payment
     public function __construct()
     {
         $this->rates = new \stdClass;
+        $countryName   = 'fr';
+        $this->rates->$countryName = new \stdClass;
 
-        $prices = explode('|', config('dofus.payment.recursos.prices'));
-        $coeff  = config('dofus.payment.recursos.coeff');
+        $pricesCB = explode('|', config('dofus.payment.recursos.pricesCB'));
+        $pricesPS = explode('|', config('dofus.payment.recursos.pricesPS'));
+        $coeffCB  = config('dofus.payment.recursos.coeffCB');
+        $coeffPS  = config('dofus.payment.recursos.coeffPS');
+		
+		$cid = config('dofus.payment.recursos.c_sms');
+		$wmid = config('dofus.payment.recursos.w');
+			
+        if ($pricesCB) {
+			$methodName = 'carte bancaire';
 
-        if ($prices) {
-            $countryName = 'fr';
-            $methodName  = 'carte bancaire';
-			$methodSMS 	 = 'sms';
-
-            $this->rates->$countryName = new \stdClass;
             $this->rates->$countryName->$methodName = new \stdClass;
-            $this->rates->$countryName->$methodSMS = new \stdClass;
-
-            foreach ($prices as $price) {
-                $newMethod = new \stdClass;
-
-                $newMethod->devise   = "&euro;";
-                $newMethod->points   = $price * $coeff;
-                $newMethod->price    = $price;
-                $newMethod->cost     = $price . " " . $newMethod->devise;
-                $newMethod->text     = "";
-                $newMethod->link     = route('redirect_recursos_cb');
-                $newMethod->recursos = true;
-
-                if (config('app.env') == 'production') {
-                    $newMethod->link = str_replace('http:', 'https:', $newMethod->link);
-                }
-
-                $newMethod->legal = new \stdClass;
-                $newMethod->legal->header    = null;
-                $newMethod->legal->phone     = null;
-                $newMethod->legal->shortcode = null;
-                $newMethod->legal->keyword   = null;
-                $newMethod->legal->footer    = null;
-
-                $palier = substr(md5($newMethod->cost), 0, 5);
-
-                $this->rates->$countryName->$methodName->$palier = $newMethod;
-            }			
-						
-			$cid = config('dofus.payment.recursos.c_sms');
-			$wmid = config('dofus.payment.recursos.w');
 			
-			$newMethodSMS = new \stdClass;
+			foreach ($pricesCB as $price) {
+				$Method = new \stdClass;
+				
+				$Method->devise   = "&euro;";
+				$Method->points   = $price * $coeffCB;
+				$Method->price    = $price;
+				$Method->cost     = $price . " " . $Method->devise;
+				$Method->text     = "";
+				$Method->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=creditcard&h=paysafecard&pcreditcard=240 Ogrines,280 Ogrines,640 Ogrines,800 Ogrines,2000 Ogrines,4000 Ogrines,6000 Ogrines,8000 Ogrines";
+				$Method->recursos = true;
+
+				if (config('app.env') == 'production') {
+					//$Method->link = str_replace('http:', 'https:', $Method->link);
+				}
+
+				$Method->legal = new \stdClass;
+				$Method->legal->header    = null;
+				$Method->legal->phone     = null;
+				$Method->legal->shortcode = null;
+				$Method->legal->keyword   = null;
+				$Method->legal->footer    = null;		
+				
+				$palier = substr(md5($Method->cost), 0, 5);
+				$this->rates->$countryName->$methodName->$palier = $Method;
+			}
+		}
+		
+		if ($pricesPS) {
+            $methodName = 'paysafecard';
+
+            $this->rates->$countryName->$methodName = new \stdClass;
 			
-			$newMethodSMS->devise   = "&euro;";
-            $newMethodSMS->points   = 0;
-            $newMethodSMS->price    = 0;
-            $newMethodSMS->cost     = "Paliers sur la prochaine page";
-            $newMethodSMS->text     = "";
-            $newMethodSMS->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr";
-            $newMethodSMS->recursos = true;
+			foreach ($pricesPS as $price) {
+				$Method = new \stdClass;
+				
+				$Method->devise   = "&euro;";
+				$Method->points   = $price * $coeffPS;
+				$Method->price    = $price;
+				$Method->cost     = $price . " " . $Method->devise;
+				$Method->text     = "";
+				$Method->link     = "https://iframes.recursosmoviles.com/v3/?wmid=$wmid&cid=$cid&c=fr&m=paysafecard&&h=creditcard&ppaysafecard=210 Ogrines,245 Ogrines,560 Ogrines,700 Ogrines,1750 Ogrines,3500 Ogrines,5250 Ogrines,7000 Ogrines";
+				$Method->recursos = true;
 
-            if (config('app.env') == 'production') {
-                $newMethodSMS->link = str_replace('http:', 'https:', $newMethodSMS->link);
-            }
+				if (config('app.env') == 'production') {
+					//$Method->link = str_replace('http:', 'https:', $Method->link);
+				}
 
-            $newMethodSMS->legal = new \stdClass;
-            $newMethodSMS->legal->header    = null;
-            $newMethodSMS->legal->phone     = null;
-            $newMethodSMS->legal->shortcode = null;
-            $newMethodSMS->legal->keyword   = null;
-            $newMethodSMS->legal->footer    = null;
-        }
+				$Method->legal = new \stdClass;
+				$Method->legal->header    = null;
+				$Method->legal->phone     = null;
+				$Method->legal->shortcode = null;
+				$Method->legal->keyword   = null;
+				$Method->legal->footer    = null;	
+				
+				$palier = substr(md5($Method->cost), 0, 5);
+				$this->rates->$countryName->$methodName->$palier = $Method;
+			}		
+		}
     }
 
     public function rates()
@@ -131,9 +141,21 @@ class Recursos extends Payment
         $page = curl_exec($c);
         curl_close($c);
 
+		$c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
+		curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
+		curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+		$code = curl_exec($c);
+		curl_close($c);
+			
+		if (!$page || !$code) {
+			return redirect()->route('error.fake', [10]);
+		}
+		
         $recursos = new RecursosTransaction;
         $recursos->user_id = Auth::user()->id;
         $recursos->key     = $key;
+		$recursos->code	   = $code;
         $recursos->points  = $method->points;
         $recursos->price   = $method->price;
         $recursos->save();
@@ -149,21 +171,21 @@ class Recursos extends Payment
             return false;
         }
 
-        if (!$recursos->code) {
-            $c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
-            curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
-            curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
-            $code = curl_exec($c);
-            curl_close($c);
+		if (!$recursos->code) {
+			$c = curl_init("https://iframes.recursosmoviles.com/v3/checkid.php?id=$key");
+			curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($c, CURLOPT_REFERER, 'https://iframes.recursosmoviles.com');
+			curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
+			$code = curl_exec($c);
+			curl_close($c);
 
-            $recursos->code = $code;
-            $recursos->save();
-        }
-
+			$recursos->code = $code;
+			$recursos->save();		
+		}
+		
         return $this->check_code($recursos, $recursos->code);
     }
-
+	
     public function check_code($recursos, $code)
     {
         $params = [
@@ -186,7 +208,7 @@ class Recursos extends Payment
 
         $data = explode(':', $result);
 
-        if ($data[0] == "OK") {
+        if ($data[0] == "OK" || (strpos($data[1], '(004)') !== false && !Transaction::where('code', $code)->first())) {
             $recursos->isUsed = true;
             $recursos->save();
 

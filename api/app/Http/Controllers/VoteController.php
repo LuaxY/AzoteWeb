@@ -132,7 +132,7 @@ class VoteController extends Controller
         foreach ($servers as $server) {
             $actualOUT = $this->getOuts($server->rpg);
 
-            if (abs($actualOUT - $request->input('out')) <= 5) {
+            if (abs($actualOUT - $request->input('out')) <= 300) {
                 $outVerified = true;
             }
         }
