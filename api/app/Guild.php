@@ -34,12 +34,25 @@ class Guild extends Model
 
     public function members($server)
     {
-        $guildMembers = ModelCustom::hasManyOnOneServer('world', $server, GuildMember::class, 'GuildId', $this->Id);
+        $guildMembers = GuildMember::on($server.'_world')->where('GuildId', $this->Id);
         return $guildMembers;
     }
 
     public function emblem($sizeX, $sizeY)
     {
         return DofusForge::asset("dofus/renderer/emblem/{$this->EmblemForegroundShape}/{$this->EmblemBackgroundShape}/0x".strtoupper(dechex($this->EmblemForegroundColor))."/0x".strtoupper(dechex($this->EmblemBackgroundColor))."/".$sizeX."_".$sizeY."-0.png");
+    }
+
+    public function perceptor($mode, $orientation, $sizeX, $sizeY, $margin = 0)
+    {
+        $baselook = "{714|".$this->emblemfetch($this->server)->SkinId."|8=#".strtoupper(dechex($this->EmblemForegroundColor)).",7=#".strtoupper(dechex($this->EmblemBackgroundColor))."|110}";
+        $look = bin2hex($baselook);
+
+        return DofusForge::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
+    }
+
+    public function emblemfetch($server)
+    {
+        return ModelCustom::hasOneOnOneServer('world', $server, GuildEmblem::class, 'Id', $this->EmblemForegroundShape);
     }
 }

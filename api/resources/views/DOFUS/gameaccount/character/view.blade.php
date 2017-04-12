@@ -5,7 +5,7 @@
     {!! Html::style('css/builders.css') !!}
 @stop
 @section('breadcrumbs')
-{? $page_name = 'Personnage' ?}
+{? $page_name = config('dofus.subtitle') ?}
 {!! Breadcrumbs::render('home') !!}
 @stop
 @section('beta')
@@ -15,7 +15,6 @@
 <div class="ak-container ak-main-center">
    <div class="ak-title-container ak-backlink">
       <h1><span class="ak-icon-big ak-character"></span></a>{{$character->Name}}</h1>
-      <a href="" class="ak-backlink-button">Retour</a>
    </div>
    <div class="ak-page-menu">
       <nav class="ak-nav-expand ">
@@ -84,8 +83,8 @@
                      <div class="ak-emblem" style="background:url({{ URL::asset($character->guild()->emblem(110,110)) }}) center center;width:110px;height:110px">
                      </div>
                   </div>
-                  <a href="" class="ak-infos-guildname">{{$character->guild($server)->Name}}</a><br>
-                  <span class="ak-infos-guildlevel">Niveau {{$character->guild($server)->level()}}</span> - <span class="ak-infos-guildmembers">{{count($character->guild($server)->members($server))}} membres</span>
+                  <a href="{{ route('guild.view', [$server, $character->guild($server)->Id, $character->guild($server)->Name])}}" class="ak-infos-guildname">{{$character->guild($server)->Name}}</a><br>
+                  <span class="ak-infos-guildlevel">Niveau {{$character->guild($server)->level()}}</span> - <span class="ak-infos-guildmembers">{{count($character->guild($server)->members($server)->get())}} membres</span>
                </div>
             </div>
             @endif

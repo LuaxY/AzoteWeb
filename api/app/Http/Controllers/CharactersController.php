@@ -48,11 +48,19 @@ class CharactersController extends Controller
         
         $character->server = $server;
 
-        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 10, function () use($server, $character) {
+        $json = Cache::remember('character_inventory_json_'.$server.'_'.$characterId, 10, function () use ($server, $character){
+            $json = Stump::get($server, "/Character/$character->Id/Inventory");
+            //$json = file_get_contents('uploads/tests/api.json');
+            return $json;
+        });
+        if(!$json)
+        {
+          $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage impossible actuellement"]);
+          return redirect()->back();
+        }
+
+        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 10, function () use($json,$server, $character) {
                $itemsall = array('left' => [], 'right' => [], 'bottom' => []);
-               $json = Stump::inventory($server, $character->Id, "/Character/$character->Id/Inventory");
-               if(!$json)
-                return $itemsall;
                $items = json_decode($json);
                 foreach($items as $item)
                 {

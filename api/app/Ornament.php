@@ -10,5 +10,4 @@ use App\Services\DofusForge;
 class Ornament extends Model
 {
    protected $table = 'tinsel_ornaments';
-
 }

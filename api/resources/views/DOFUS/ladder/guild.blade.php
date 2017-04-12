@@ -48,9 +48,9 @@
                     </td>
                     <td></td>
                     <td class="ak-center"><div class="ak-emblem" style="background:url({{ URL::asset($guild->emblem(48,48)) }}) center center;width:48px;height:48px"></div></td>
-                    <td class="ak-name">{{ $guild->Name }}</td>
+                    <td class="ak-name"><a href="{{route('guild.view', [$server, $guild->Id, $guild->Name])}}">{{ $guild->Name }}</a></td>
                     <td class="ak-center">{{ $guild->level() }}</td>
-                    <td class="ak-xp-total">{{ count($guild->members($server)) }}</td>
+                    <td class="ak-xp-total">{{ count($guild->members($server)->get()) }}</td>
                 </tr>
                 @endforeach
             </tbody>

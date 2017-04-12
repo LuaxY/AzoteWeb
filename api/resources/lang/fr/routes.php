@@ -74,6 +74,12 @@ return [
 
     'characters.recover' => 'personnages/{server}/{accountId}/{characterId}/recuperer',
 
+    /** Guilds **/
+
+    'guilds.view' => 'pages-guildes/{server}/{guildId}-{guildName}',
+
+    'guilds.members' => 'pages-guildes/{server}/{guildId}-{guildName}/membres',
+
     /** Shop **/
 
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',

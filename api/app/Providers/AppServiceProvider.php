@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 
 use Validator;
 use App\User;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::extend(function ($value) {
             return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
         });
+
+        Carbon::setlocale(config('app.locale'));
     }
 
     /**

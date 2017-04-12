@@ -105,7 +105,7 @@ class Stump
         return $success;
     }
 
-    public static function inventory($server, $characterId, $url)
+    public static function get($server, $url)
     {
         $world = World::on($server . '_auth')->where('Name', strtoupper($server))->first();
 

@@ -192,6 +192,20 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'         => 'characters.recover'
     ]);
 
+    /* ============ GUILDS ============ */
+
+    Route::get(Lang::get('routes.guilds.view'), [
+        'middleware' => 'auth',
+        'uses'       => 'GuildController@view',
+        'as'         => 'guild.view'
+    ]);
+
+    Route::get(Lang::get('routes.guilds.members'), [
+        'middleware' => 'auth',
+        'uses'       => 'GuildController@members',
+        'as'         => 'guild.members'
+    ]);
+
     /* ============ AUTH ============ */
 
     Route::get(Lang::get('routes.account.login'), [

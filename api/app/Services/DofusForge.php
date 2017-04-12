@@ -56,9 +56,18 @@ class DofusForge
     public static function player(Character $character, $server, $mode, $orientation, $sizeX, $sizeY, $margin = 0)
     {
             if(config('dofus.details')[$server]->version == "2.10")
+            {
                 $look = bin2hex($character->EntityLookString);
+            }
             else
-                $look = bin2hex($character->DefaultLookString);
+            {
+                $look = Stump::get($server, "/Character/$character->Id/Look");
+                if(!$look)
+                    $look = $character->DefaultLookString;
+
+                $look = bin2hex($look);
+            }
+    
             return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
     }
 
