@@ -28,7 +28,7 @@ class GuildController extends Controller
             throw new GenericException('invalid_server', $server);
         }
 
-        $guild = Cache::remember('guild_view_'.$server.'_'.$guildId, 1000, function () use($server, $guildId, $guildName) {
+        $guild = Cache::remember('guild_view_'.$server.'_'.$guildId, 120, function () use($server, $guildId, $guildName) {
                return Guild::on($server . '_world')->where('Id', $guildId)->where('Name', $guildName)->first();
         });
 
@@ -36,7 +36,7 @@ class GuildController extends Controller
             abort(404);
 
         $guild->server = $server;
-        $members = Cache::remember('guild_members_'.$server.'_'.$guildId, 1000, function () use($server, $guild) {
+        $members = Cache::remember('guild_members_'.$server.'_'.$guildId, 120, function () use($server, $guild) {
                return $guild->members($server)->orderByRaw(DB::raw("RankId = 0, RankId"))->take(10)->get();
         });
 
@@ -51,7 +51,7 @@ class GuildController extends Controller
             throw new GenericException('invalid_server', $server);
         }
 
-        $guild = Cache::remember('guild_view_'.$server.'_'.$guildId, 1000, function () use($server, $guildId, $guildName) {
+        $guild = Cache::remember('guild_view_'.$server.'_'.$guildId, 120, function () use($server, $guildId, $guildName) {
                return Guild::on($server . '_world')->where('Id', $guildId)->where('Name', $guildName)->first();
         });
 
@@ -60,7 +60,7 @@ class GuildController extends Controller
 
         $guild->server = $server;
 
-        $members = Cache::remember('guild_members_'.$server.'_'.$guildId.'_page_'.$page, 1000, function () use($server, $guild) {
+        $members = Cache::remember('guild_members_'.$server.'_'.$guildId.'_page_'.$page, 120, function () use($server, $guild) {
                return $guild->members($server)->orderByRaw(DB::raw("RankId = 0, RankId"))->paginate(self::MEMBERS_PER_PAGE);
         });
 

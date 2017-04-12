@@ -24,7 +24,7 @@ class Character extends Model
 
     public function position($type = 'pvp', $spec = 'all', $server = 'sigma')
     {
-        $resultDB = Cache::remember('position.'.$this->Id.'.'.$type.'.'.$spec.'.'.$server, 1440, function () use ($server, $type, $spec) {
+        $resultDB = Cache::remember('position.'.$this->Id.'.'.$type.'.'.$spec.'.'.$server, 30, function () use ($server, $type, $spec) {
             $power = 0;
             if($type == 'xp')
                 $power = $this->Experience + ($this->PrestigeRank * 3000000000000);
@@ -38,7 +38,7 @@ class Character extends Model
                 ->where('acc.UserGroupId', 1);
                 
                 if($type == 'pvp')
-                    $result = $result->where('ch.Honor', '>=', $this->Honor);
+                    $result = $result->where('ch.Honor', '>', $this->Honor);
                 if($type == 'xp')
                     $result = $result->where(DB::raw('ch.Experience + (ch.PrestigeRank * 3000000000000)'), '>', $power);
                 
@@ -62,7 +62,7 @@ class Character extends Model
 
     public function titleActive($server = 'sigma')
     {
-        $titleactive =  Cache::remember('titleactive_'.$server.'_'.$this->TitleId, 1000, function () use($server) {
+        $titleactive =  Cache::remember('titleactive_'.$server.'_'.$this->TitleId, 1440, function () use($server) {
                return ModelCustom::hasOneOnOneServer('world', $server, Title::class, 'Id', $this->TitleId);
         });
        return $titleactive ? $titleactive : null;
@@ -70,7 +70,7 @@ class Character extends Model
 
     public function ornamentActive($server = 'sigma')
     {
-        $ornamentactive =  Cache::remember('ornamentactive'.$server.'_'.$this->Ornament, 1000, function () use($server) {
+        $ornamentactive =  Cache::remember('ornamentactive'.$server.'_'.$this->Ornament, 1440, function () use($server) {
                return ModelCustom::hasOneOnOneServer('world', $server, Ornament::class, 'Id', $this->Ornament);
         });
        return $ornamentactive ? $ornamentactive : null;
@@ -83,13 +83,13 @@ class Character extends Model
 
     public function guild($server = 'sigma')
     {
-        $guildmember = Cache::remember('guildmember_'.$server.'_'.$this->Id, 1000, function () use($server) {
+        $guildmember = Cache::remember('guildmember_'.$server.'_'.$this->Id, 120, function () use($server) {
                return ModelCustom::hasOneOnOneServer('world', $server, GuildMember::class, 'CharacterId', $this->Id);
         });
 
         if($guildmember)
         {
-            $guild = Cache::remember('guild_'.$guildmember->GuildId, 1000, function () use($server, $guildmember) {
+            $guild = Cache::remember('guild_'.$guildmember->GuildId, 120, function () use($server, $guildmember) {
                 return Guild::on($server.'_world')->findOrFail($guildmember->GuildId);
             });
             if($guild)
@@ -106,7 +106,7 @@ class Character extends Model
         $tempExp = $this->Experience;
 
         if (config('dofus.details')[$server]->prestige) {
-            $maxExp = Cache::remember('exp_' . $server . '_max', 1000, function () use ($server) {
+            $maxExp = Cache::remember('exp_' . $server . '_max', 1440, function () use ($server) {
                 return Experience::on($server . '_world')->orderBy('CharacterExp', 'desc')->first();
             });
 
@@ -115,7 +115,7 @@ class Character extends Model
             }
         }
 
-        $exp = Cache::remember('exp_' . $server . '_' . $tempExp, 1000, function () use ($server, $tempExp) {
+        $exp = Cache::remember('exp_' . $server . '_' . $tempExp, 1440, function () use ($server, $tempExp) {
             return Experience::on($server . '_world')->where('CharacterExp', '<=', $tempExp)->orderBy('Level', 'desc')->first();
         });
 

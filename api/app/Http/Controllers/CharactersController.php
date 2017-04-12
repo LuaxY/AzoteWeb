@@ -24,7 +24,7 @@ class CharactersController extends Controller
             throw new GenericException('invalid_server', $server);
         }
 
-        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 1000, function () use($server, $characterId, $characterName) {
+        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 120, function () use($server, $characterId, $characterName) {
                return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
         });
         if(!$character)
@@ -40,7 +40,7 @@ class CharactersController extends Controller
             throw new GenericException('invalid_server', $server);
         }
 
-        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 1000, function () use($server, $characterId, $characterName) {
+        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 120, function () use($server, $characterId, $characterName) {
                return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
         });
         if(!$character)

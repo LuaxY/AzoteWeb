@@ -14,7 +14,7 @@ use App\Exceptions\GenericException;
 
 class LadderController extends Controller
 {
-    const LADDER_CACHE_EXPIRE_MINUTES = 10;
+    const LADDER_CACHE_EXPIRE_MINUTES = 30;
 
     public function general($server)
     {
