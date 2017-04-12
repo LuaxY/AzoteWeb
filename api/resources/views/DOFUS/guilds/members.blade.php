@@ -16,7 +16,6 @@
 <div class="ak-container ak-main-center">
    <div class="ak-title-container ak-backlink">
       <h1><span class="ak-icon-big ak-guild"></span></a>{{$guild->Name}}</h1>
-      <a href="" class="ak-backlink-button">Retour</a>
    </div>
    <div class="ak-page-menu">
       <nav class="ak-nav-expand ">

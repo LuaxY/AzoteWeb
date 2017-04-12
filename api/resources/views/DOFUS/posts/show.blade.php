@@ -42,6 +42,18 @@
                 </div>
             </div>
         </div>
+        <div class="ak-container">
+            <div class="ak-social">
+                <div class="pull-left">
+                    <div class="ak-social-block facebook">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{URL::current()}}" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="">Partager</a>        </div>
+                    <div class="ak-social-block twitter">
+                        <a href="http://twitter.com/home?status={{URL::current()}}" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="">Tweet</a>        </div>
+                    <div class="ak-social-block google">
+                        <a href="https://plus.google.com/share?url={{URL::current()}}" onclick="javascript:window.open(this.href,'','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="">Partager</a>        </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="ak-forum-post-panel ak-container ak-panel" id="ak-block-posts">
         <div class="ak-panel-title">
