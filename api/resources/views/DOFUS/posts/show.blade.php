@@ -18,7 +18,7 @@
             <span class="ak-icon-big ak-news"></span>
         </a>
         {{ $post->title }}
-        <span class="ak-subtitle"><span>{{  config('dofus.news_type.'.$post->type.'.name') }}</span> - {{ date('d F Y', strtotime($post->published_at)) }}</span>
+        <span class="ak-subtitle"><span>{{  config('dofus.news_type.'.$post->type.'.name') }}</span> -  {!! ucwords(utf8_encode($post->published_at->formatLocalized('%e %B %Y'))) !!}</span>
     </h1>
 
     <a href="{{ URL::route('posts.type', $post->type ) }}" class="ak-backlink-button">Retour à la liste</a>
@@ -68,7 +68,7 @@
                         <div class="ak-comment">
                             <div class="ak-user">
                                 <strong>{{ $comment->author->firstname }}</strong>
-                                <small class="ak-time">{{ date('d F Y à H:i', strtotime($comment->created_at)) }}</small>
+                                <small class="ak-time">{!! ucwords(utf8_encode($comment->created_at->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</small>
                                 <span class="actions pull-right">
                                     @if(!Auth::guest() && Auth::user()->can('delete-comments'))
                                         {!! Form::open(['route' => ['posts.comment.destroy', $post->id, $post->slug, $comment->id], 'class' => 'form-inline']) !!}

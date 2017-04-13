@@ -39,7 +39,7 @@
                             <b>Pseudo</b>: {{ Auth::user()->pseudo }}<br>
                             <b>Identité</b>: {{ Auth::user()->lastname }} {{ Auth::user()->firstname }}<br>
                             @if(Auth::user()->birthday)
-                                <b>Date de naissance</b>: {{ Auth::user()->birthday->format('j F Y') }}<br>
+                                <b>Date de naissance</b>: {!! ucwords(utf8_encode(Auth::user()->birthday->formatLocalized('%e %B %Y'))) !!}<br>
                             @endif
                             <b>Email</b>: {{ Auth::user()->email }}
                         </div>
@@ -117,7 +117,7 @@
         @foreach (Auth::user()->transactions(10) as $transaction)
         <tr>
             <td class="ak-center">{{ $transaction->id }}</td>
-            <td>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</td>
+            <td>{!! ucwords(utf8_encode($transaction->created_at->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</td>
             <td><span class="ak-icon-small ak-ogrines-icon"></span> &nbsp; {{ Utils::format_price($transaction->points) }}</td>
             <td>{{ $transaction->code }}</td>
             <td>{{ Utils::transaction_status($transaction->state) }}</td>
@@ -143,7 +143,7 @@
         @foreach (Auth::user()->votes(10) as $vote)
         <tr>
             <td></td>
-            <td>{{ $vote->created_at->format('d/m/Y H:i:s') }}</td>
+            <td>{!! ucwords(utf8_encode($vote->created_at->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</td>
             <td>+1 <span class="ak-icon-small ak-votes-icon"></span></td>
         </tr>
         @endforeach
