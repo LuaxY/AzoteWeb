@@ -34,14 +34,12 @@ class PostController extends Controller
     public function news(Request $request)
     {
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
-
+        if (!is_numeric($page)) {
+            abort(404);
+        }
         $posts = Cache::remember('posts_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () {
             return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
         });
-
-        if ($request->ajax()) {
-            return response()->json(View::make('posts.templates.posts', compact('posts'))->render());
-        }
 
         return view('posts.news', compact('posts'));
     }
@@ -56,10 +54,6 @@ class PostController extends Controller
                 return Post::latest('published_at')->orderBy('id', 'desc')->published()->where('type', $type)->paginate(self::POSTS_PER_PAGE);
             });
 
-            if ($request->ajax()) {
-                return response()->json(View::make('posts.templates.posts', compact('posts'))->render());
-            }
-
             return view('posts.type', compact('posts', 'type', 'typeConfig'));
         } else {
             throw new GenericException('invalid_news_type');
@@ -69,11 +63,11 @@ class PostController extends Controller
     public function show(Request $request, $id, $slug = "")
     {
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
-
+        $errors;
         if (!is_numeric($page)) {
             abort(404);
         }
-
+        
         $post = Cache::remember('posts_' . $id, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
             return Post::findOrFail($id);
         });
@@ -95,39 +89,32 @@ class PostController extends Controller
            ->url($request->url())
            ->siteName(config('dofus.title') . ' - ' . config('dofus.subtitle'));
 
-        $comments = Cache::remember('posts_' . $id . '_comments_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($id) {
-            return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE);
-        });
-
-        if ($request->ajax()) {
-            return response()->json(View::make('posts.templates.comments', compact('post', 'comments'))->render());
-        }
-
-        return view('posts.show', compact('post', 'comments', 'og'));
-    }
-
-    public function commentStore(Request $request, $id, $slug = "")
-    {
-        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
-
-        if (!Auth::user()->isStaff()) {
+        if ($request->pjax() && $request->isMethod('post')) 
+        {
             $validator = Validator::make($request->all(), Comment::$rules['store']);
-            if ($validator->fails()) {
-                return response()->json($validator->messages(), 400);
+            if ($validator->fails()) 
+            {
+                $errors = $validator->messages();
+            }
+            else
+            {
+                $comment = new Comment;
+                $comment->post_id = $id;
+                $comment->author_id = Auth::user()->id;
+                $comment->text = $request->comment;
+                $comment->save();
+                
+                $totalResults = Comment::where('post_id', $id)->count();
+                $this->clearCommentsCache($totalResults, $id, self::COMMENTS_PER_PAGE);
+                $page = $this->getLastPage($totalResults, self::COMMENTS_PER_PAGE);
             }
         }
 
-        $comment = new Comment;
-        $comment->post_id = $id;
-        $comment->author_id = Auth::user()->id;
-        $comment->text = $request->comment;
-        $comment->save();
+        $comments = Cache::remember('posts_' . $id . '_comments_' . $page, self::CACHE_EXPIRE_MINUTES, function () use ($id, $page) {
+            return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE, ['*'], 'page', $page);
+        });
 
-        $post = Post::findOrFail($id);
-
-        Cache::forget('posts_' . $id . '_comments_'. $page);
-
-        return view('posts.templates.comment', compact('comment', 'post'));
+        return view('posts.show', compact('post', 'comments', 'og', 'errors'));
     }
 
     public function redirect(Request $request, $id, $slug = "")
@@ -140,9 +127,22 @@ class PostController extends Controller
         $comment = Comment::findOrFail($commentid);
         $this->authorize('destroy', $comment); // Edit later (return true)
         $comment->delete();
-        Cache::forget('posts_' . $id . '_comments_1');
-        Cache::forget('posts_' . $id . '_comments_2');
-        Cache::forget('posts_' . $id . '_comments_3');
+        $totalResults = Comment::where('post_id', $id)->count();
+        $this->clearCommentsCache($totalResults, $id, self::COMMENTS_PER_PAGE);
+            
         return redirect()->back();
+    }
+
+    public function clearCommentsCache($totalResults, $postId, $perPage)
+    {
+        $totalPages = (int)ceil($totalResults/$perPage);
+        for($x = 1; $x <= $totalPages; $x++)
+        {
+            Cache::forget('posts_' . $postId . '_comments_'. $x);
+        }
+    }
+    public function getLastPage($totalResults, $perPage)
+    {
+        return (int)ceil($totalResults/$perPage);
     }
 }

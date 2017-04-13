@@ -4,9 +4,6 @@
 @section('header')
     {!! Html::style('css/lightbox.min.css') !!}
     {!! Html::script('js/lightbox.min.js') !!}
-    <script>
-        var $jQuery = jQuery.noConflict();
-    </script>
 @stop
 
 @section('breadcrumbs')
@@ -61,18 +58,52 @@
         </div>
         <div class="ak-panel-content">
             <div class="ak-forum-post-list">
-                @include('posts.templates.comments')
+                @foreach ($comments as $comment)
+                    <div class="ak-comments-row @if ($comment->author->isStaff()) ak-avatar-admin @endif">
+                        <div class="ak-avatar">
+                            <div class="ak-avatar-img">
+                                <img src="{{ URL::asset($comment->author->avatar) }}" alt="" border="0" /> </div>
+                            <div class="ak-avatar-tag">{{$comment->author->role->label}}</div>
+                        </div>
+                        <div class="ak-comment">
+                            <div class="ak-user">
+                                <strong>{{ $comment->author->firstname }}</strong>
+                                <small class="ak-time">{{ date('d F Y à H:i', strtotime($comment->created_at)) }}</small>
+                                <span class="actions pull-right">
+                                    @if(!Auth::guest() && Auth::user()->can('delete-comments'))
+                                        {!! Form::open(['route' => ['posts.comment.destroy', $post->id, $post->slug, $comment->id], 'class' => 'form-inline']) !!}
+                                        {{ method_field('DELETE') }}
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
+                                        {!! Form::close() !!}
+                                    @endif
+                                </span>
+                            </div>
+                            <div class="ak-text-content">{{ $comment->text }}</div>
+                        </div>
+                    </div>
+                @endforeach
+                <div class="text-center ak-pagination">
+                    <nav>
+                        {{ $comments->links('pagination.default', ['target' => '#ak-block-posts', 'settings' => '{"scroll":true}']) }}
+                    </nav>
+                </div>
             </div>
             @if(Auth::check())
-                {!! Form::open(['route' => ['posts.comment.store', $post->id, $post->slug], 'class' => 'ak-forum-post-form', 'id' => 'form-add-comment']) !!}
+                {!! Form::open(['url' => URL::full(), 'class' => 'ak-forum-post-form ak-ajaxloader', 'data-target' => '.ak-forum-post-panel']) !!}
                     <div class="row ak-comment-container">
                         <div class="ak-avatar">
                             <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="" border="0">
                         </div>
+                        <input type="hidden" name="postback" value="forum_add_comment">
+                        <input type="hidden" name="topic_title" value="Bonus ce Weekend : +25% d'Expérience pour vous et vos Métiers !">
+                        <input type="hidden" name="user" value="26940534">
                         <div class="ak-comment">
-                            {!! Form::textarea('comment', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Commenter...', 'rows' => '0', 'cols' => '0', 'id' => 'comment', 'style' => 'height:70px;']) !!}
+                            {!! Form::textarea('comment', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Commenter...', 'rows' => '0', 'cols' => '0', 'style' => 'height:70px;']) !!}
                         </div>
                     </div>
+                        @if ($errors->has('comment'))
+                        <div class="ak-error" style="color: red; font-weight: bold;">{{ $errors->first('comment') }}</div>
+                        @endif
                 {!! Form::submit('Valider', ['class' => 'ak-comment-submit btn btn-primary btn-lg']) !!}
                 {!! Form::close() !!}
             @endif
@@ -82,80 +113,7 @@
 @stop
 
 @section('bottom')
+    {!! Html::script('js/common2.js') !!}
 <script>
-    $jQuery(function() {
-        $jQuery(document).ready(function() {
-            $jQuery(document).on('click', '.pagination li a', function (e) {
-                getPosts($jQuery(this).attr('href').split('page=')[1]);
-                e.preventDefault();
-            });
-        });
-        function getPosts(page) {
-            $jQuery.ajax({
-                url : '?page=' + page,
-                dataType: 'json',
-            }).done(function (data) {
-                $jQuery('.ak-forum-post-list').html(data);
-                history.replaceState(null, 'page '+page, '?page='+page);
-            }).fail(function () {
-                toastr.error('Unknown error');
-            });
-        }
-        $jQuery("#form-add-comment").on("submit", function (event) {
-            $jQuery('#form-add-comment input[type="submit"]').prop('disabled', true);
-            event.preventDefault();
-            if(location.search)
-            {
-                var currentpage = location.search.split('page=')[1];
-            }
-            else
-            {
-                var currentpage = 1;
-            }
-            var $this = $jQuery(this);
-            var datas = $this.serialize() + '&page=' + currentpage;
-
-            $jQuery.ajax({
-                method: 'POST',
-                url: $this.attr("action"),
-                data: datas,
-
-                beforeSend:function (xhr, s) {
-                    var lastpage = $jQuery('#pagination').data('lastpage');
-                    if(lastpage == 0){
-                        lastpage = 1;
-                    }
-                    if(currentpage != lastpage){
-                        getPosts(lastpage, location.href);
-                        s.data = $this.serialize() + '&page=' + lastpage;
-                    }
-                },
-                success: function (html) {
-                    $jQuery('#form-add-comment').fadeOut(2000);
-                    setTimeout(function(){
-                        var added_div = $jQuery(html).insertBefore($jQuery('div .ak-pagination')).hide();
-                        $jQuery('div .ak-pagination').prev("div").fadeIn(3000);
-                        var counter = $jQuery('.counter').html();
-                        $jQuery('.counter').html(parseInt(counter) + 1);
-                    }, 500);
-                },
-                error: function (jqXhr, json, errorThrown) {
-                    var errors = jqXhr.responseJSON;
-                    var errorsHtml;
-                    if (errors) {
-                        errorsHtml = '';
-                        $jQuery.each(errors, function (key, value) {
-                            errorsHtml += '<li>' + value[0] + '</li>';
-                        });
-                    }
-                    else {
-                        errorsHtml = 'Unknown error';
-                    }
-                    toastr.error(errorsHtml);
-                    $jQuery('#form-add-comment input[type="submit"]').prop('disabled', false);
-                }
-            });
-        });
-    });
 </script>
 @endsection

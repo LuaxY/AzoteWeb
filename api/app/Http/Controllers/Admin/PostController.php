@@ -15,6 +15,8 @@ use Yuansir\Toastr\Facades\Toastr;
 
 class PostController extends Controller
 {
+    const POSTS_PER_PAGE = 8;
+
     private function fetchNewsType()
     {
         $typeArray = [];
@@ -69,7 +71,7 @@ class PostController extends Controller
             'published_at' => $published_at
         ]);
 
-        $this->clearCache(null, $request->type);
+        $this->clearPostsCache(null, $request->type, $this->CountAllPosts(), $this->CountTypePosts($request->type), self::POSTS_PER_PAGE);
 
         Toastr::success('Post created', $title = null, $options = []);
         return redirect(route('admin.posts'));
@@ -78,10 +80,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $this->authorize('destroy', $post); // Edit later (return true)
-
+        $type = $post->type;
         if ($post->id != config('dofus.motd.postid')) {
             $post->delete();
-            $this->clearCache($post->id, $post->type);
+            $this->clearPostsCache($post->id, $type, $this->CountAllPosts(), $this->CountTypePosts($type), self::POSTS_PER_PAGE);
 
             return response()->json([], 200);
         } else {
@@ -132,24 +134,40 @@ class PostController extends Controller
             'published_at' => $published_at
         ]);
 
-        $this->clearCache($post->id, $post->type);
+        $this->clearPostsCache($post->id, $post->type, $this->CountAllPosts(), $this->CountTypePosts($post->type), self::POSTS_PER_PAGE);
 
         Toastr::success('Post updated', $title = null, $options = []);
         return redirect(route('admin.posts'));
     }
 
-    private function clearCache($id = null, $type = null)
+    private function clearPostsCache($id = null, $type = null, $totalResults, $totalResultsForType = null, $perPage)
     {
-        // Clear specified post
-        if ($id) {
+        if($id)
             Cache::forget('posts_'.$id);
-        }
-        if ($type) {
-            Cache::forget('posts_'.$type.'_page_1');
-            Cache::forget('posts_'.$type.'_page_2');
-        }
 
-        // Clear posts index page
+        $totalPages = (int)ceil($totalResults/$perPage);
+            for($x = 1; $x <= $totalPages; $x++)
+            {
+                Cache::forget('posts_page_' . $x);
+                if($type)
+                    Cache::forget('posts_'.$type.'_page_' . $x);
+            }
+        if($type && $totalResultsForType)
+        {
+            $totalPagesType = (int)ceil($totalResultsForType/$perPage);
+            for($y = 1; $y <= $totalPagesType; $y++)
+            {
+                    Cache::forget('posts_'.$type.'_page_' . $y);
+            }
+        }
         Cache::forget('posts_index');
+    }
+    private function CountAllPosts()
+    {
+        return Post::latest('published_at')->published()->count();
+    }
+    private function CountTypePosts($type)
+    {
+        return Post::latest('published_at')->where('type', $type)->published()->count();
     }
 }

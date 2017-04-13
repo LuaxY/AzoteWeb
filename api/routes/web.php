@@ -33,9 +33,9 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'uses' => 'PostController@redirect'
     ]);
 
-    Route::post(Lang::get('routes.posts.comment.store'), [
+    Route::post(Lang::get('routes.posts.show'), [
         'middleware' => 'auth',
-        'uses' => 'PostController@commentStore',
+        'uses' => 'PostController@show',
         'as'   => 'posts.comment.store'
     ]);
 
