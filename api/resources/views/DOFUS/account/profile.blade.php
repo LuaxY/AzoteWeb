@@ -11,7 +11,15 @@
     <div class="ak-title-container">
         <h1><span class="ak-icon-big ak-bank"></span></a> Mon compte</h1>
     </div>
-
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-content">
+                <div class="alert alert-danger">
+                    <strong>Avertissement!</strong> Par sécurité, les mot de passes de tous vos comptes de jeu ont été réinitialisés.<br><br> <center>Vous <strong>devez les modifier</strong> via votre gestion de compte afin de vous connecter en jeu</center>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
