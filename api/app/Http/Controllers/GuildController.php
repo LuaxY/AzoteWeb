@@ -67,7 +67,6 @@ class GuildController extends Controller
         if ($request->pjax()) {
              return view('guilds.members', compact('guild', 'server', 'members'));
         }
-
         return view('guilds.members', compact('guild', 'server', 'members'));
     }
 }

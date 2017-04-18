@@ -28,7 +28,7 @@ background-position:-116px -25px;
 }
 
 .ak-icon-big.ak-filter,.ak-icon-med.ak-filter {
-background-image:url(/dofus/ng/modules/icons/sprite.png);
+background-image:url("../imgs/assets/sprite_encyclopedia.png");
 background-repeat:no-repeat;
 }
 
@@ -1669,7 +1669,7 @@ float:left;
 height:52px;
 margin-top:5px;
 width:60px;
-background:url(/dofus/ng/modules/mmorpg/community/icons/sprite.png) 0 -2135px no-repeat transparent;
+background:url("../imgs/assets/sprite_encyclopedia.png") 0 -2135px no-repeat transparent;
 }
 
 .ak-success-details-content .ak-category-title {

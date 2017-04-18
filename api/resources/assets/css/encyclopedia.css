@@ -52,6 +52,19 @@
 .ak-encyclo-detail-illu .ak-entitylook-container {
     display: inline-block
 }
+.ak-encyclo-detail-illu-l {
+    text-align: center;
+    border: 4px inset;
+    margin-bottom: 6px;
+    margin-bottom: 0.6rem
+}
+.ak-encyclo-detail-illu-l img {
+    display: inline-block;
+    height: auto;
+}
+.ak-encyclo-detail-illu-l .ak-entitylook-container {
+    display: inline-block
+}
 .ak-btn-unlock {
     padding: 0;
     padding-right: 12px;
@@ -106,6 +119,14 @@
     margin-bottom: 12px
 }
 .ak-encyclo-detail-illu {
+    border-top-color: #b1ac9c;
+    border-right-color: #c9c6bb;
+    border-bottom-color: #dfdbcd;
+    border-left-color: #c9c6bb;
+    background: url("../imgs/assets/bg-item.jpg") center center no-repeat;
+    background-size: cover;
+}
+.ak-encyclo-detail-illu-l {
     border-top-color: #b1ac9c;
     border-right-color: #c9c6bb;
     border-bottom-color: #dfdbcd;

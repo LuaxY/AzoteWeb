@@ -518,6 +518,12 @@ Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')]
     Route::get('text/{id}', 'ForgeController@text')->where('id', '[0-9]+');
 });
 
+/* ============ LINKER ============ */
+
+Route::group(['prefix' => 'linker', 'domain' => Config::get('dofus.domain.main')], function () {
+    Route::get('/{request}', 'LinkerController@get')->where('request', '(.*)')->name('linker.get');
+});
+
 /* ============ ADMIN PANEL ============ */
 
 Route::group(['middleware' => ['auth', 'staff']], function () {

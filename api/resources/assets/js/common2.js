@@ -2106,12 +2106,11 @@ function(e) {
                 var t = n("<div/>", {
                     html: "&nbsp;"
                 }).css({
-                    background: 'url("' + n.akStatic() + '/ankama/api/linker/img/linker-loader.gif") no-repeat scroll transparent',
                     height: "16px",
                     width: "16px",
                     position: "absolute",
                     "z-index": "2147483646"
-                }).hide().addClass("linkerLoading").appendTo("body");
+                }).hide().addClass("linkerLoading linker-loader").appendTo("body");
                 n(document).mousemove(function(n) {
                     if (n.pageX || n.pageY) e._fCoordX = n.pageX, e._fCoordY = n.pageY;
                     else if (n.clientX || n.clientY) e._fCoordX = n.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, e._fCoordY = n.clientY + document.body.scrollTop + document.documentElement.scrollTop;
@@ -2685,12 +2684,11 @@ function(e, t) {
                 var t = n("<div/>", {
                     html: "&nbsp;"
                 }).css({
-                    background: 'url("' + n.akStatic() + '/ankama/api/linker/img/linker-loader.gif") no-repeat scroll transparent',
                     height: "16px",
                     width: "16px",
                     position: "absolute",
                     "z-index": "2147483646"
-                }).hide().addClass("linkerLoading").appendTo("body");
+                }).hide().addClass("linkerLoading linker-loader").appendTo("body");
                 n(document).mousemove(function(n) {
                     if (n.pageX || n.pageY) e._fCoordX = n.pageX, e._fCoordY = n.pageY;
                     else if (n.clientX || n.clientY) e._fCoordX = n.clientX + document.body.scrollLeft + document.documentElement.scrollLeft, e._fCoordY = n.clientY + document.body.scrollTop + document.documentElement.scrollTop;

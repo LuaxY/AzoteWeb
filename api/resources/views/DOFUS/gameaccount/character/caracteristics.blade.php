@@ -2,7 +2,7 @@
 @include('layouts.menus.base')
 @section('header')
     {!! Html::style('css/directories.css') !!}
-    {!! Html::style('css/builders.css') !!}
+    {!! Html::style('css/encyclopedia.css') !!}
 @stop
 @section('breadcrumbs')
 {? $page_name = config('dofus.subtitle') ?}
@@ -65,27 +65,32 @@
                     <div class="ak-equipment-left">
                         <div class="ak-equipment-item ak-equipment-shield" id="ak-dofus-character-equipment-item-shield">
                             @if($itemsleft->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_SHIELD))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_SHIELD)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_SHIELD)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"left","builder":""}}</script>                        
                             @endif
                         </div>
                         <div class="ak-equipment-item ak-equipment-amulet" id="ak-dofus-character-equipment-item-amulet">
                             @if($itemsleft->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_AMULET))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_AMULET)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_AMULET)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"left","builder":""}}</script>                      
                             @endif                    
                         </div>
                         <div class="ak-equipment-item ak-equipment-ring1" id="ak-dofus-character-equipment-item-ring1">
                             @if($itemsleft->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_RING_LEFT))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsleft->where('Position', \App\ItemPosition::INVENTORY_POSITION_RING_LEFT)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsleft->where('Position', \App\ItemPosition::INVENTORY_POSITION_RING_LEFT)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"left","builder":""}}</script>                        
                             @endif 
                         </div>
                         <div class="ak-equipment-item ak-equipment-cap" id="ak-dofus-character-equipment-item-cap">
                             @if($itemsleft->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_CAPE))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_CAPE)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_CAPE)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"left","builder":""}}</script>                      
                             @endif 
                         </div>
                         <div class="ak-equipment-item ak-equipment-boots" id="ak-dofus-character-equipment-item-boots">
                             @if($itemsleft->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_BOOTS))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_BOOTS)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsleft->where('Position', \App\ItemPosition::ACCESSORY_POSITION_BOOTS)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"left","builder":""}}</script>                        
                             @endif 
                         </div>
                     </div>
@@ -101,27 +106,32 @@
                     <div class="ak-equipment-right">
                         <div class="ak-equipment-item ak-equipment-weapon" id="ak-dofus-character-equipment-item-weapon">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_WEAPON))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_WEAPON)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_WEAPON)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right",builder":""}}</script>                          
                             @endif
                         </div>
                         <div class="ak-equipment-item ak-equipment-hat" id="ak-dofus-character-equipment-item-hat">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_HAT))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_HAT)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_HAT)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right","builder":""}}</script>                      
                             @endif
                         </div>
                         <div class="ak-equipment-item ak-equipment-ring2" id="ak-dofus-character-equipment-item-ring2">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_RING_RIGHT))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsright->where('Position', \App\ItemPosition::INVENTORY_POSITION_RING_RIGHT)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsright->where('Position', \App\ItemPosition::INVENTORY_POSITION_RING_RIGHT)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right","builder":""}}</script>                       
                             @endif                   
                         </div>
                         <div class="ak-equipment-item ak-equipment-belt" id="ak-dofus-character-equipment-item-belt">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_BELT))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_BELT)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_BELT)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right","builder":""}}</script>                     
                             @endif                  
                         </div>
                         <div class="ak-equipment-item ak-equipment-pet" id="ak-dofus-character-equipment-item-pet">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_PETS))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_PETS)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_PETS)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right","builder":""}}</script>                       
                             @endif                  
                         </div>
                     </div>
@@ -129,32 +139,38 @@
                     <div class="ak-equipment-bottom">
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_1))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_1)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_1)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                       
                             @endif               
                     </div>
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_2))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_2)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_2)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                      
                             @endif             
                     </div>
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_3))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_3)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_3)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                       
                             @endif           
                     </div>
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_4))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_4)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_4)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                       
                             @endif            
                     </div>
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_5))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_5)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_5)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                        
                             @endif              
                     </div>
                     <div class="ak-equipment-item ak-equipment-dofus" id="ak-dofus-character-equipment-item-dofus">
                             @if($itemsbottom->containsStrict('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_6))
-                            <span class="ak-linker"><img src="{{DofusForge::item($itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_6)->first()->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_13240","linker-path":"\/fr\/linker\/item","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"13240","character":"3207405","server":"4003","builder":""}}</script>                      
+                            @php $item = $itemsbottom->where('Position', \App\ItemPosition::INVENTORY_POSITION_DOFUS_6)->first() @endphp
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"bottom","builder":""}}</script>                       
                             @endif             
                     </div>
                     </div>
@@ -306,3 +322,6 @@
        </div>
 </div>
 @stop
+@section('bottom')
+    {!! Html::script('js/common2.js') !!}
+@endsection

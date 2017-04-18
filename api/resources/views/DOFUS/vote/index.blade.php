@@ -175,7 +175,7 @@
             // Clear previous data
             $(".ak-name-gift").html("");
             $(".ak-encyclo-detail-right .ak-panel-content").html("");
-            $(".ak-encyclo-detail-illu img").attr("src", "");
+            $(".ak-encyclo-detail-illu-l img").attr("src", "");
             $(".ak-step").removeClass("ak-step1 ak-step2 ak-step3 ak-step4 ak-step5");
 
             // Display new data
@@ -192,7 +192,7 @@
                 // Dislay new reward
                 $(".ak-name-gift").html(res.name);
                 $(".ak-encyclo-detail-right .ak-panel-content").html(res.description);
-                $(".ak-encyclo-detail-illu img").attr("src", res.image);
+                $(".ak-encyclo-detail-illu-l img").attr("src", res.image);
 
                 // Hide loader
                 loader('ak-block-rewards', false);

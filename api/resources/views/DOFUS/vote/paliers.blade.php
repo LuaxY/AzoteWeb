@@ -27,7 +27,7 @@
                 <div class="ak-panel-content">
                     <div class="row">
                         <div class="col-sm-3">
-                            <div class="ak-encyclo-detail-illu"><img src="" class="img-maxresponsive" data-max="200"></div>
+                            <div class="ak-encyclo-detail-illu-l"><img src="" class="img-maxresponsive" data-max="200"></div>
                         </div>
                         <div class="col-sm-9">
                             <div class="ak-encyclo-detail-right ak-nocontentpadding">

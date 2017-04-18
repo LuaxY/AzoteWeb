@@ -25043,6 +25043,9 @@ a.ak-content-nav-button.ak-next {
     background-size: contain;
     background-repeat: no-repeat
 }
+.linker-loader{
+    background: url("../imgs/assets/linker-loader.gif") no-repeat scroll transparent
+}
 
 .qtip.ak-linker-tooltip {
     max-width: none;
@@ -25103,7 +25106,7 @@ a.ak-content-nav-button.ak-next {
 }
 
 .qtip.ak-linker-tooltip .ak-tooltip-linker .ak-content-list.ak-tabs-inner-content > .ak-pagination {
-    position: absolute;
+    position: relative;
     width: 100%;
     bottom: 0
 }
@@ -27653,7 +27656,7 @@ a.ak-content-nav-button.ak-next {
 .ak-tooltip-content {
     background: #2baaff;
     color: #fff;
-    border-color: #bfcb16
+    border-color: white;
 }
 
 .ak-tooltip-content .qtip-titlebar {
