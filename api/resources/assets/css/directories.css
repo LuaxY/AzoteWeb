@@ -2247,6 +2247,10 @@ color:#422f14;
 background:url(../imgs/assets/characters/bg_guild.jpg) 0 center no-repeat;
 background-size:cover;
 }
+.ak-directories-header .ak-directories-prestige {
+font-weight:700;
+color:#d1501c;
+}
 
 .ak-best-alliance .ak-ladder-first,.ak-best-alliance .ak-ladder-second,.ak-best-alliance .ak-ladder-third {
 display:inline-block;

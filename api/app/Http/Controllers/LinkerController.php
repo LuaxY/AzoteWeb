@@ -39,8 +39,12 @@ class LinkerController extends Controller
 
         foreach($effects as $effect)
         {
-            $text = $effect->Template->Description ? $effect->Template->Description : "";
-            $value = $effect->Value ? $effect->Value : "";
+            if(@!isset($effect->Template->Description)) 
+                $effect->Template->Description = "-Description not found-";
+            $text = $effect->Template->Description;
+            if(@!isset($effect->Template->Value)) 
+                $effect->Template->Value = "-Value not found-";
+            $value = $effect->Value;
             if($effect->Template->UseDice)
                 $text = preg_replace('/#1.*#2/', $value, $text);
 
