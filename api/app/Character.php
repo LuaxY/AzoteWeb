@@ -81,6 +81,12 @@ class Character extends Model
         return $this->hasMany(CharacterItem::class, 'OwnerId', 'Id');
     }
 
+    public function spells()
+    {
+        $spells = CharacterSpell::on($this->server.'_world')->where('OwnerId', $this->Id);
+        return $spells;
+    }
+
     public function guild($server = 'sigma')
     {
         $guildmember = Cache::remember('guildmember_'.$server.'_'.$this->Id, 120, function () use($server) {

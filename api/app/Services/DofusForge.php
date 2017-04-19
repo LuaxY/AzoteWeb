@@ -76,6 +76,11 @@ class DofusForge
         return self::asset('dofus/www/game/items/'.$size.'/' . $iconId . '.png');
     }
 
+    public static function spell($iconId, $size)
+    {
+        return self::asset('dofus/www/game/spells/'.$size.'/sort_' . $iconId . '.png');
+    }
+
     public static function text($id, $server = null)
     {
         if(!$server)

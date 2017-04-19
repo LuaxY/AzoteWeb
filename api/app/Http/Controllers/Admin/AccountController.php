@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Yuansir\Toastr\Facades\Toastr;
 use App\User;
+use App\Services\DofusForge;
+use App\Character;
 
 class AccountController extends Controller
 {

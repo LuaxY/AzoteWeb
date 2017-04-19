@@ -99,7 +99,11 @@ class CharactersController extends Controller
         $itemsright = collect($itemsall['right']);
         $itemsbottom = collect($itemsall['bottom']);
 
-        return view('gameaccount.character.caracteristics', compact('character', 'server', 'itemsleft', 'itemsright', 'itemsbottom'));
+        $spells = Cache::remember('character_spells'.$server.'_'.$characterId, 10, function () use($character){
+            return $character->spells()->get();
+        });
+
+        return view('gameaccount.character.caracteristics', compact('character', 'server', 'spells', 'itemsleft', 'itemsright', 'itemsbottom'));
     }
 
     public function recover(Request $request, $server, $accountId, $characterId)

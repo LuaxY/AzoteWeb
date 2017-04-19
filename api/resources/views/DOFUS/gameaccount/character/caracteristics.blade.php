@@ -107,7 +107,7 @@
                         <div class="ak-equipment-item ak-equipment-weapon" id="ak-dofus-character-equipment-item-weapon">
                             @if($itemsright->containsStrict('Position', \App\ItemPosition::ACCESSORY_POSITION_WEAPON))
                             @php $item = $itemsright->where('Position', \App\ItemPosition::ACCESSORY_POSITION_WEAPON)->first() @endphp
-                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right",builder":""}}</script>                          
+                            <span class="ak-linker" data-hasqtip="linker_item_{{$item->ItemId}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"right","builder":""}}</script>                          
                             @endif
                         </div>
                         <div class="ak-equipment-item ak-equipment-hat" id="ak-dofus-character-equipment-item-hat">
@@ -319,7 +319,38 @@
                 </div>
             </div>
         </div>
-       </div>
+        <div class="ak-container ak-panel ak-caracteristics-spells-content">
+            <h2 class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span>
+                Sorts    
+            </h2>
+            <div class="ak-panel-content">
+            @if(config('dofus.details')[$server]->version == 2.10)
+            <p class="alert alert-info">En raison de la version du serveur ({{config('dofus.details')[$server]->version}}), il est possible que certaines icônes ne correspondent pas.</p>
+            @endif
+                <div class="ak-spells-list">
+                    <a class="ak-anchor" id="spell-details"></a>
+                    <div>
+                        <div class="ak-spell-list-row">
+                        @foreach($spells as $spell)
+                            <div class="ak-list-block ak-spell ak-spell-selected">
+                                <span class="ak-spell-nb">{{$spell->Level}}</span>
+                                <img src="{{$spell->template($server)->image('55')}}" alt="{{$spell->template($server)->name()}}">
+                                <script type="application/json">{"pjax":{"push":false}}</script>
+                                <span class="ak-tooltip hidden" style="display: none;">{{$spell->template($server)->name()}}</span>
+                            </div>
+                        @endforeach 
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
 </div>
 @stop
 @section('bottom')
