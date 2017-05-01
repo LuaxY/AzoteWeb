@@ -103,7 +103,7 @@ class CharactersController extends Controller
             return $character->spells()->get();
         });
 
-        return view('gameaccount.character.caracteristics', compact('character', 'server', 'spells', 'itemsleft', 'itemsright', 'itemsbottom'));
+        return view('gameaccount.character.caracteristics', compact('json', 'character', 'server', 'spells', 'itemsleft', 'itemsright', 'itemsbottom'));
     }
 
     public function recover(Request $request, $server, $accountId, $characterId)

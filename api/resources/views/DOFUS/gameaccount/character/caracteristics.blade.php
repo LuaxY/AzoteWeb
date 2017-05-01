@@ -12,6 +12,9 @@
     <div class="ak-beta"></div>
 @endsection
 @section('content')
+@if(Auth::user()->isAdmin())
+{{dd($json)}}
+@endif
 <div class="ak-container ak-main-center">
    <div class="ak-title-container ak-backlink">
       <h1><span class="ak-icon-big ak-character"></span></a>{{$character->Name}}</h1>

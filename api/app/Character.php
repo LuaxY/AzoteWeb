@@ -24,7 +24,12 @@ class Character extends Model
 
     public function countStuff($server, $type, array $carrac)
     {
-        $json = Cache::get('character_inventory_json_'.$server.'_'.$this->Id);
+        $json = Cache::remember('character_inventory_json_'.$server.'_'.$this->Id, 10, function () use ($server, $character){
+            $json = Stump::get($server, "/Character/$character->Id/Inventory");
+            //$json = file_get_contents('uploads/tests/api.json');
+            return $json;
+        });
+
         if(!$json)
             return '(not found)';
 
