@@ -30,6 +30,8 @@ class Character extends Model
 
         $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 10, function () use ($json, $carrac) {
             $items = json_decode($json);
+            if(!$items)
+                return ('not decode');
             $value = 0;
             foreach($items as $item)
             {
