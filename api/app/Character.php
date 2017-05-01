@@ -9,6 +9,7 @@ use App\Experience;
 use App\Alignment;
 use \DB;
 use App\Helpers\Utils;
+use App\Services\Stump;
 
 class Character extends Model
 {
@@ -24,8 +25,8 @@ class Character extends Model
 
     public function countStuff($server, $type, array $carrac)
     {
-        $json = Cache::remember('character_inventory_json_'.$server.'_'.$this->Id, 10, function () use ($server, $character){
-            $json = Stump::get($server, "/Character/$character->Id/Inventory");
+        $json = Cache::remember('character_inventory_json_'.$server.'_'.$this->Id, 10, function () use ($server){
+            $json = Stump::get($server, "/Character/$this->Id/Inventory");
             //$json = file_get_contents('uploads/tests/api.json');
             return $json;
         });

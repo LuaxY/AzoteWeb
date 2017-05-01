@@ -13,7 +13,7 @@
 @endsection
 @section('content')
 @if(Auth::user()->isAdmin())
-{{dd($json)}}
+{{dd(json_decode($json))}}
 @endif
 <div class="ak-container ak-main-center">
    <div class="ak-title-container ak-backlink">
