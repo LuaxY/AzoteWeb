@@ -93,7 +93,7 @@
         <div class="row ak-container">
             <div class="ak-block-shop">
                 <div class="text-center ak-shop-top">
-                    <a href="{{ URL::route('shop.payment.country') }}" class="ak-shop-title"> La boutique</a>
+                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-title"> La boutique</a>
                 </div>
                 <div class="ak-shop-articles">
                     <div class="row ak-container">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="{{ URL::route('shop.payment.country') }}" class="ak-shop-link"> Aller sur la boutique</a>
+                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-link"> Aller sur la boutique</a>
                 </div>
             </div>
             <a class="ak-home-facebook" href="{{ config('dofus.social.facebook') }}" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>

@@ -115,7 +115,7 @@
                                 </ul>
                             </li>
                             <li class="lvl0 sep"><a href="{{ URL::route('register') }}">Rejoindre</a></li>
-                            <li class="lvl0 sep"><a href="{{ URL::route('shop.payment.country') }}">Boutique</a></li>
+                            <li class="lvl0 sep"><a href="{{ URL::route('shop.index') }}">Boutique</a></li>
                         </span>
                         <li class="lvl0 ak-menu-brand">
                             <a class="navbar-brand" href="{{ URL::route('home') }}"></a>
@@ -160,7 +160,7 @@
                     <div class="ak-infos-dofus">
                         <span class="ak-infos-nickname">{{Auth::user()->pseudo}}</span>
                         <span class="ak-game-not-subscribe">@if(Auth::user()->certified == 0) <a href="{{ URL::route('account.certify') }}" style="color:red;">Compte non certifié</a> @else Compte certifié @endif</span>
-                        <a href="{{ URL::route('shop.payment.country') }}" class="ak-subscribe-link btn btn-primary btn-lg">Voir la Boutique</a>
+                        <a href="{{ URL::route('shop.index') }}" class="ak-subscribe-link btn btn-primary btn-lg">Voir la Boutique</a>
                     </div>
                 </div>
             </div>

@@ -52,7 +52,7 @@ Breadcrumbs::register('gameaccount.page', function ($breadcrumbs, $page, $params
 // Accueil > Boutique
 Breadcrumbs::register('shop', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push('Boutique', route('shop.payment.country'));
+    $breadcrumbs->push('Boutique', route('shop.index'));
 });
 
 // Accueil > Boutique > [page]
