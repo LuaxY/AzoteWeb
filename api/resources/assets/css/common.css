@@ -650,8 +650,8 @@ a.bg-danger:hover, a.bg-danger:focus {
 }
 
 ul, ol {
-    /*margin-top: 0;
-    margin-bottom: 10px*/
+    margin-top: 0;
+    margin-bottom: 10px
 }
 
 ul ul, ul ol, ol ul, ol ol {
@@ -12690,8 +12690,8 @@ p a {
     width: 0
 }
 
-.ak-box-logged .ak-account-infos .ak-infos-ogrines, .ak-box-logged .ak-account-infos .ak-infos-kroz,
-.ak-box-logged .ak-account-infos .ak-infos-ankabox {
+.ak-box-logged .ak-account-infos .ak-infos-ogrines, .ak-box-logged .ak-account-infos .ak-infos-gifts,
+.ak-box-logged .ak-account-infos .ak-infos-jetons, .ak-box-logged .ak-account-infos .ak-infos-tickets {
     margin-top: 1px
 }
 
@@ -12779,8 +12779,8 @@ p a {
 
 .ak-box-logged .ak-infos-logged-picto {
     text-align: right;
-    padding-right: 5px;
-    padding-right: 0.5rem;
+    padding-right: 6px;
+    padding-right: 0.6rem;
     vertical-align: middle;
     width: 50px
 }
@@ -12794,11 +12794,12 @@ p a {
 
 .ak-box-logged .ak-infos-picto {
     margin: 0;
-    background: transparent url(../imgs/assets/picto-logged.png) 0 0 no-repeat;
+    background-image: url("../imgs/assets/sprite_currency.png");
+    background-repeat: no-repeat;
     display: inline-block;
-    height: 30px;
+    height: 35px;
     position: relative;
-    width: 29px
+    width: 35px;
 }
 
 .ak-box-logged .ak-infos-nickname {
@@ -13040,8 +13041,8 @@ p a {
     color: #6B6868
 }
 
-.ak-box-logged .ak-account-infos .ak-infos-ogrines, .ak-box-logged .ak-account-infos .ak-infos-kroz,
-.ak-box-logged .ak-account-infos .ak-infos-ankabox {
+.ak-box-logged .ak-account-infos .ak-infos-ogrines, .ak-box-logged .ak-account-infos .ak-infos-gifts,
+.ak-box-logged .ak-account-infos .ak-infos-jetons, .ak-box-logged .ak-account-infos .ak-infos-tickets {
     background-color: #f2f2f2
 }
 
@@ -13055,15 +13056,23 @@ p a {
 }
 
 .ak-box-logged .ak-account-infos .ak-infos-ogrines .ak-infos-picto {
-    background-position: center -30px
+    background-position: 0 -5px;
+    background-size: 34px auto;
 }
 
-.ak-box-logged .ak-account-infos .ak-infos-kroz .ak-infos-picto {
-    background-position: center -60px
+.ak-box-logged .ak-account-infos .ak-infos-gifts .ak-infos-picto {
+    background-position: 0 -95px;
+    background-size: 34px auto;
 }
 
-.ak-box-logged .ak-account-infos .ak-infos-ankabox .ak-infos-picto {
-    background-position: center -90px
+.ak-box-logged .ak-account-infos .ak-infos-jetons .ak-infos-picto {
+    background-position: 0 -180px;
+    background-size: 34px auto;
+}
+
+.ak-box-logged .ak-account-infos .ak-infos-tickets .ak-infos-picto {
+    background-position: 0 -135px;
+    background-size: 34px auto;
 }
 
 .ak-box-logged .ak-account-infos .ak-infos-goultines .ak-infos-picto {
@@ -15993,11 +16002,13 @@ footer .ak-footer-content .ak-social-network a.go:hover {
     }
 
     .ak-navbar-fixed .navbar .ak-navbar-left a.ak-brand {
-        background: transparent url(/g/modules/masterpage/block/header/idbar/logo-azote.png) 15px 1px no-repeat
+        background: transparent url("../imgs/azote_text.png") 15px 1px no-repeat;
+        background-size: contain;
     }
 
     .ak-navbar-fixed .navbar .ak-navbar-left a.ak-brand:hover {
-        background: transparent url(/g/modules/masterpage/block/header/idbar/logo-azote.png) 15px -21px no-repeat
+        background: transparent url("../imgs/azote_text.png") 15px 1px no-repeat;
+        background-size: contain;
     }
 }
 
@@ -28181,7 +28192,7 @@ a.ak-content-nav-button.ak-next {
 
 .ak-responsivemosaic .ak-mosaic-item .ak-mosaic-item-illu {
     border-color: #c9c6bb;
-    background: url("/g/modules/lists/dofus/bg-item.jpg") center center no-repeat;
+    background: url("../imgs/assets/bg-item.jpg") center center no-repeat;
     background-size: cover;
     color: #c9c6bb
 }
@@ -28204,7 +28215,7 @@ a.ak-content-nav-button.ak-next {
 
 .ak-responsivemosaic .ak-mosaic-item:hover .ak-mosaic-item-illu,
 .ak-responsivemosaic .ak-mosaic-item.inlineopen .ak-mosaic-item-illu {
-    background: url("/g/modules/lists/dofus/bg-item-hover.jpg") center center no-repeat;
+    background: url("../imgs/assets/bg-item-hover.jpg") center center no-repeat;
     background-size: cover
 }
 
@@ -29027,6 +29038,10 @@ li.ak-selected .ak-breed-icon.breed16_0 {
 li.ak-selected .ak-breed-icon.breed17_0 {
     background-position: 0 -910px
 }
+li.ak-selected .ak-breed-icon.breed18_0 {
+    background-position: 0 -965px
+}
+
 
 .ak-eventslist .ak-eventslist-banner {
     margin: 0.5em 0;

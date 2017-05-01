@@ -82,6 +82,3 @@
     </div>
 </div>
 @stop
-@section('bottom')
-    {!! Html::script('js/common2.js') !!}
-@endsection

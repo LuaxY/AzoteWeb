@@ -74,22 +74,24 @@
                             <span class="label label-danger">0</span>
                         </a>-->
                         <div class="ak-button-modal ak-nav-logged">
-                            <a class="ak-logged-account" href="{{ URL::route('profile') }}">
+                            <div class="ak-logged-account">
                                 <span class="ak-nickname">{{ Auth::user()->pseudo }}</span>
                                 <span class="avatar">
                                     <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="Avatar">
                                 </span>
-                            </a>
+                            </div>
                         </div>
+                         <script type="application/json">{"target":".ak-box-logged"}</script>
                     </div>
                     @endif
                 </div>
             </div>
         </div>
-
         <nav class="navbar navbar-default" data-role="ak_navbar">
             <div class="navbar-container">
-
+                <div class="ak-navbar-left">
+                    <a class="ak-brand" href="{{ URL::route('home') }}">Azote</a>
+                </div>
                 <a class="ak-main-logo" href="{{ URL::route('home') }}"></a>
 
                 <div class="navbar-header">
@@ -126,9 +128,95 @@
                     </ul>
 
                 </div>
+                @if(Auth::check())
+                <div class="ak-navbar-right">
+                    <div class="ak-button-modal ak-nav-logged">
+                        <div class="ak-logged-account">
+                            <span class="ak-nickname">{{Auth::user()->pseudo}}</span>
+                            <span class="avatar">
+                            <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="Avatar">
+                            </span>
+                        </div>
+                    </div>
+                    <script type="application/json">{"target":".ak-box-logged"}</script>
+                </div>
+                @endif
             </div>
         </nav>
-
+        @if(Auth::check())
+        <div class="ak-idbar-box ak-box-logged">
+            <div class="ak-row ak-account-header">
+                <div class="ak-row-cell ak-logged-avatar">
+                    <div class="ak-logged-avatar-container">
+                        <img src="{{ URL::asset(Auth::user()->avatar) }}" class="">
+                        <a href="{{ URL::route('account.change_profile') }}" target="_blank" class="ak-picto ak-icon-change-avatar">
+                        <div class="ak-avatar-mask">
+                            <span class="ak-avatar-mask-infos">Changer d'avatar</span>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="ak-row-cell ak-logged-infos">
+                    <div class="ak-infos-dofus">
+                        <span class="ak-infos-nickname">{{Auth::user()->pseudo}}</span>
+                        <span class="ak-game-not-subscribe">@if(Auth::user()->certified == 0) <a href="{{ URL::route('account.certify') }}" style="color:red;">Compte non certifié</a> @else Compte certifié @endif</span>
+                        <a href="{{ URL::route('shop.payment.country') }}" class="ak-subscribe-link btn btn-primary btn-lg">Voir la Boutique</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ak-account-infos">
+                <div class="ak-row ak-infos-ogrines">
+                    <div class="ak-row-cell ak-infos-logged-picto"><span class="ak-infos-picto"></span></div>
+                    <div class="ak-row-cell ak-infos-logged">
+                        <span class="ak-infos-title">Ogrines : </span>
+                        <span class="ak-infos-nb">{{ Utils::format_price(Auth::user()->points) }}</span>
+                        <a href="{{ URL::route('shop.payment.country') }}" class="ak-infos-link">
+                        Acheter des Ogrines                    </a>
+                    </div>
+                </div>
+                <div class="ak-row ak-infos-gifts">
+                    <div class="ak-row-cell ak-infos-logged-picto"><span class="ak-infos-picto"></span></div>
+                    <div class="ak-row-cell ak-infos-logged">
+                        <span class="ak-infos-title">Cadeaux : </span>
+                        <span class="ak-infos-nb">{{ Utils::format_price(Auth::user()->votes / 10) }}</span>
+                        <a href="{{ URL::route('vote.index') }}" class="ak-infos-link">Obtenir des cadeaux</a>
+                    </div>
+                </div>
+                <div class="ak-row ak-infos-jetons">
+                    <div class="ak-row-cell ak-infos-logged-picto"><span class="ak-infos-picto"></span></div>
+                    <div class="ak-row-cell ak-infos-logged">
+                        <span class="ak-infos-title">Jetons : </span>
+                        <span class="ak-infos-nb">{{ Utils::format_price(Auth::user()->jetons) }}</span>
+                        <a href="{{ URL::route('vote.index') }}" class="ak-infos-link">Gagner des jetons</a>
+                    </div>
+                </div>
+                <div class="ak-row ak-infos-tickets">
+                    <div class="ak-row-cell ak-infos-logged-picto"><span class="ak-infos-picto"></span></div>
+                    <div class="ak-row-cell ak-infos-logged">
+                        <span class="ak-infos-title">Tickets : </span>
+                        <span class="ak-infos-nb">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>
+                        <a href="{{ URL::route('lottery.index') }}" class="ak-infos-link">Jouer à la lotterie</a>
+                    </div>
+                </div>
+                <div class="ak-infos-row ak-account-manage">
+                    <div class="ak-azote-logo">
+                    </div>
+                    <div class="ak-infos-logged">
+                        <a class="ak-infos-logged-link" href="{{ URL::route('profile') }}">
+                        Gestion de compte        </a>
+                        @if(Auth::user()->certified == 0)
+                        <a class="ak-infos-logged-link" href="{{ URL::route('account.certify') }}">
+                        Protégez votre compte !        </a>
+                        @else
+                        <a class="ak-infos-logged-link" target="_blank" href="{{ config('dofus.social.forum') }}">
+                        Consulter le forum        </a>
+                        @endif
+                        <a class="btn btn-default" href="{{ URL::route('logout') }}">Déconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         <!-- Keep in order largest -> lowest device resolution -->
         <div class="largedesktop device-profile visible-lg" data-deviceprofile="largedesktop"></div>
         <div class="desktop device-profile visible-md" data-deviceprofile="desktop"></div>
@@ -207,10 +295,10 @@
                     <div class="ak-legal">
                         <div class="row">
                             <div class="col-sm-1">
-                                <a href="" class="ak-logo-azote"></a>
+                                <a href="{{ URL::route('home') }}" class="ak-logo-azote"></a>
                             </div>
                             <div class="col-sm-8">
-                                <p>&copy; {{ date('Y') }} <a href="">{{ config('dofus.title') }}</a>. Tous droits réservés. <a href="{{ URL::to('cgu') }}" target="_blank">Conditions d'utilisation</a> - <a href="{{ URL::to('privacy') }}"target="_blank">Politique de confidentialité</a> - <a href="{{ URL::to('cgv') }}" target="_blank">Conditions Générales de Vente</a> - <a href="{{ URL::to('legal') }}" target="_blank">Mentions Légales</a></p>
+                                <p>&copy; {{ date('Y') }} <a href="{{ URL::route('home') }}">{{ config('dofus.title') }}</a>. Tous droits réservés. <a href="{{ URL::to('cgu') }}" target="_blank">Conditions d'utilisation</a> - <a href="{{ URL::to('privacy') }}"target="_blank">Politique de confidentialité</a> - <a href="{{ URL::to('cgv') }}" target="_blank">Conditions Générales de Vente</a> - <a href="{{ URL::to('legal') }}" target="_blank">Mentions Légales</a></p>
                             </div>
                             <div class="col-sm-3"><span class="prevention"></span></div>
                         </div>
@@ -232,8 +320,8 @@
     {{ Toastr::add(Session::get('notify')['type'], str_replace("'", "\\'", Session::get('notify')['message'])) }}
     {!! Toastr::render() !!}
     @endif
+    {!! Html::script('js/common2.js') !!}
     @yield('bottom')
-
     <script type="text/javascript">
         var $ = require('jquery');
 

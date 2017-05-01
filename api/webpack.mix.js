@@ -32,6 +32,7 @@ mix.styles('resources/assets/css/directories.css', 'public/css/directories.css')
 
 mix.copy('resources/assets/js/common.js', 'public/js');
 mix.copy('resources/assets/js/common2.js', 'public/js');
+mix.copy('resources/assets/js/shopcommon.js', 'public/js');
 mix.copy('resources/assets/js/jquery-2.1.4.min.js', 'public/js');
 mix.copy('resources/assets/js/jquery-ui.min.js', 'public/js');
 

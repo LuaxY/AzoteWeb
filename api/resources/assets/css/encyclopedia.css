@@ -696,6 +696,21 @@ aside .ak-right-breed-list .ak-panel-content {
 .ak-breed-icon.breed16_0 {
     background-position: -525px -35px
 }
+.ak-breed-icon.breed17_1 {
+    background-position: -1155px 0
+}
+
+.ak-breed-icon.breed17_0 {
+    background-position: -1155px -35px
+}
+
+.ak-breed-icon.breed18_1 {
+    background-position:-595px 0
+}
+
+.ak-breed-icon.breed18_0 {
+    background-position:-595px -35px
+}
 .ak-breed-icon-big {
     background: transparent url("../imgs/assets/icons/breeds_big.png") 0 0 no-repeat
 }
@@ -749,6 +764,9 @@ aside .ak-right-breed-list .ak-panel-content {
 }
 .ak-breed-icon-big.breed17_0 {
     background-position: -56px -910px
+}
+.ak-breed-icon-big.breed18_0 {
+    background-position: -56px -965px
 }
 .ak-breed-icon-big:hover, .ak-breed-icon-big.on {
     background: transparent url("../imgs/assets/icons/breeds_big.png") 0 0 no-repeat
@@ -804,6 +822,9 @@ aside .ak-right-breed-list .ak-panel-content {
 .ak-breed-icon-big:hover.breed17_0, .ak-breed-icon-big.on.breed17_0 {
     background-position: 0 -910px
 }
+.ak-breed-icon-big:hover.breed18_0, .ak-breed-icon-big.on.breed18_0 {
+    background-position: 0 -965px
+}
 li.ak-selected .ak-breed-icon {
     background: transparent url("../imgs/assets/icons/breeds_big.png") 0 0 no-repeat
 }
@@ -857,6 +878,9 @@ li.ak-selected .ak-breed-icon.breed16_0 {
 }
 li.ak-selected .ak-breed-icon.breed17_0 {
     background-position: 0 -910px
+}
+li.ak-selected .ak-breed-icon.breed18_0 {
+    background-position: 0 -965px
 }
 .ak-breed-section .ak-illu {
     padding-top: 44.23%
@@ -2200,6 +2224,16 @@ li.ak-selected .ak-breed-icon.breed17_0 {
     background-image: url("../imgs/assets/sprite_encyclopedia.png");
     background-repeat: no-repeat
 }
+.ak-icon-small.ak-tx-spellscroll
+{
+    background-image: url("../imgs/assets/spellscroll.png");
+    background-repeat: no-repeat;
+}
+.ak-icon-small.ak-tx-caracscroll
+{
+    background-image: url("../imgs/assets/caracscroll.png");
+    background-repeat: no-repeat;
+}
 .ak-icon-big.ak-breeds, .ak-icon-big.ak-consumables, .ak-icon-big.ak-dungeons, .ak-icon-big.ak-equipments, .ak-icon-big.ak-jobs, .ak-icon-big.ak-monsters, .ak-icon-big.ak-pets, .ak-icon-big.ak-quests, .ak-icon-big.ak-ressources, .ak-icon-big.ak-rides, .ak-icon-big.ak-companions, .ak-icon-big.ak-weapons, .ak-icon-big.ak-plus-dofus, .ak-icon-big.ak-plus_dofus, .ak-icon-big.ak-mmo, .ak-icon-big.ak-mmorpg, .ak-icon-big.ak-egg, .ak-icon-big.ak-encyclopedia, .ak-icon-big.ak-sets, .ak-icon-big.ak-spells, .ak-icon-big.ak-universe, .ak-icon-big.ak-tutorials, .ak-icon-big.ak-game, .ak-icon-big.ak-tree-tutorial, .ak-icon-big.ak-idols, .ak-icon-big.ak-havenbag, .ak-icon-big.ak-trappings {
     background-size: 126px auto
 }
@@ -2344,7 +2378,7 @@ li.ak-selected .ak-breed-icon.breed17_0 {
 .ak-icon-med, .ak-icon-med.ak-trappings {
     background-position: 0 -1353px
 }
-.ak-icon-small.ak-neutral, .ak-icon-small.ak-tx-neutral, .ak-icon-small.ak-move, .ak-icon-small.ak-tx-movementpoints, .ak-icon-small.ak-water, .ak-icon-small.ak-tx-chance, .ak-icon-small.ak-range, .ak-icon-small.ak-tx-range, .ak-icon-small.ak-air, .ak-icon-small.ak-tx-agility, .ak-icon-small.ak-tx-initiative, .ak-icon-small.ak-action, .ak-icon-small.ak-tx-actionpoints, .ak-icon-small.ak-tx-prospecting, .ak-icon-small.ak-life, .ak-icon-small.ak-tx-vitality, .ak-icon-small.ak-tx-lifepoints, .ak-icon-small.ak-tx-wisdom, .ak-icon-small.ak-fire, .ak-icon-small.ak-tx-intelligence, .ak-icon-small.ak-earth, .ak-icon-small.ak-tx-strength, .ak-icon-small.ak-tx-escape, .ak-icon-small.ak-tx-invocation, .ak-icon-small.ak-tx-tackle, .ak-icon-small.ak-tx-summonablecreaturesboost, .ak-icon-small.ak-tx-criticalhit, .ak-icon-small.ak-tx-weapondamage, .ak-icon-small.ak-tx-trappercent, .ak-icon-small.ak-tx-trap, .ak-icon-small.ak-tx-shieldpoints, .ak-icon-small.ak-tx-return, .ak-icon-small.ak-tx-pushreduction, .ak-icon-small.ak-tx-push, .ak-icon-small.ak-tx-lifepoints, .ak-icon-small.ak-tx-heal, .ak-icon-small.ak-tx-dodgemp, .ak-icon-small.ak-tx-dodgeap, .ak-icon-small.ak-tx-damagespercent, .ak-icon-small.ak-tx-damage, .ak-icon-small.ak-tx-criticalreduction, .ak-icon-small.ak-tx-criticaldamage, .ak-icon-small.ak-tx-attackmp, .ak-icon-small.ak-tx-attackap {
+.ak-icon-small.ak-neutral, .ak-icon-small.ak-tx-neutral, .ak-icon-small.ak-move, .ak-icon-small.ak-tx-movementpoints, .ak-icon-small.ak-water, .ak-icon-small.ak-tx-chance, .ak-icon-small.ak-range, .ak-icon-small.ak-tx-range, .ak-icon-small.ak-air, .ak-icon-small.ak-tx-agility, .ak-icon-small.ak-tx-initiative, .ak-icon-small.ak-action, .ak-icon-small.ak-tx-actionpoints, .ak-icon-small.ak-tx-prospecting, .ak-icon-small.ak-life, .ak-icon-small.ak-tx-vitality, .ak-icon-small.ak-tx-lifepoints, .ak-icon-small.ak-tx-wisdom, .ak-icon-small.ak-fire, .ak-icon-small.ak-tx-intelligence, .ak-icon-small.ak-earth, .ak-icon-small.ak-tx-strength, .ak-icon-small.ak-tx-escape, .ak-icon-small.ak-tx-invocation, .ak-icon-small.ak-tx-tackle, .ak-icon-small.ak-tx-summonablecreaturesboost, .ak-icon-small.ak-tx-criticalhit, .ak-icon-small.ak-tx-weapondamage, .ak-icon-small.ak-tx-trappercent, .ak-icon-small.ak-tx-trap, .ak-icon-small.ak-tx-shieldpoints, .ak-icon-small.ak-tx-return, .ak-icon-small.ak-tx-pushreduction, .ak-icon-small.ak-tx-push, .ak-icon-small.ak-tx-lifepoints, .ak-icon-small.ak-tx-heal, .ak-icon-small.ak-tx-dodgemp, .ak-icon-small.ak-tx-dodgeap, .ak-icon-small.ak-tx-damagespercent, .ak-icon-small.ak-tx-damage, .ak-icon-small.ak-tx-criticalreduction, .ak-icon-small.ak-tx-criticaldamage, .ak-icon-small.ak-tx-attackmp, .ak-icon-small.ak-tx-attackap, .ak-icon-small.ak-tx-stalskamas {
     background-size: auto auto
 }
 .ak-icon-small.ak-neutral, .ak-icon-small.ak-tx-neutral {

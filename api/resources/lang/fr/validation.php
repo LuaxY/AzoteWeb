@@ -153,5 +153,7 @@ return [
     'old_password' => 'Le mot de passe actuel n\'est pas valide.',
     'old_password_stump' => 'Le mot de passe actuel n\'est pas valide.',
     'not_throw_away' => 'Email poubelle interdit.',
-
+    'breedarray'     => 'L\'attribut :attribute doit être un nombre valide.',
+    'serverarray'     => 'L\'attribut :attribute doit être un serveur valide.',
+    'sexarray'     => 'L\'attribut :attribute doit être un nombre valide.',
 ];

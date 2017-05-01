@@ -29,7 +29,7 @@
                         <label class="control-label" for="ogrinesWeb">Jetons disponible</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-votes-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price(Auth::user()->jetons) }}" id="jetonsWeb" readonly />
+                            <input type="text" class="form-control" value="{{ Utils::format_price(Auth::user()->jetons) }}" id="jetonsWeb" readonly />
                         </div>
                     </div>
 
@@ -37,7 +37,7 @@
                         <label class="control-label" for="ogrines">Convertir des jetons</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-votes-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="jetons" placeholder="Saisir le nombre de jetons à convertir" value="{{ Input::old('jetons') }}" id="jetons" autocapitalize="off" autocorrect="off" required="required" />
+                            <input type="text" class="form-control" tabindex="1" autocomplete="off" name="jetons" placeholder="Saisir le nombre de jetons à convertir" value="{{ Input::old('jetons') }}" id="jetons" autocapitalize="off" autocorrect="off" required="required" />
                         </div>
                         @if ($errors->has('jetons')) <label class="error control-label">{{ $errors->first('jetons') }}</label> @endif
                     </div>

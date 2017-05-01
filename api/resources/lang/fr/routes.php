@@ -82,6 +82,10 @@ return [
 
     /** Shop **/
 
+    'shop.index' => 'boutique',
+
+    'shop.market' => 'boutique/market',
+
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',
 
     'shop.payment.choose-method' => 'boutique/paiement/{country?}/choix-mode-paiement',

@@ -14,12 +14,16 @@
 @section('content')
 <div class="ak-title-container ak-backlink">
     <h1 class="ak-return-link">
-        <span class="ak-icon-big ak-shop"></span> Achat d'ogrines
+        <span class="ak-icon-big ak-shop"></span> Ogrines
     </h1>
     <a href="{{ URL::route('shop.payment.country') }}" class="ak-backlink-button">Retour aux pays</a>
 </div>
 
 <div class="ak-container ak-panel-stack ak-payments-process-choice">
+    <div class="ak-category-infos">
+      <div class="hr "></div>
+    <img src="{{URL::asset('imgs/shop/shop_ogrines.png')}}" class="img-responsive">
+  </div>
     <div class="ak-container ak-panel">
         <div class="ak-panel-title">
               <span class="ak-panel-title-icon"></span> Choisissez votre mode de paiement &nbsp;<span class="icon-flag flag-{{ $country }}">

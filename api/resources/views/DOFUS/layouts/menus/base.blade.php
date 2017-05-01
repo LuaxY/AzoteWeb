@@ -17,7 +17,7 @@
 
                         <div class="form-group @if ($errors->has('auth')) has-error @endif">
                             <label class="control-label" for="userpass">Mot de passe</label>
-                            <input type="password" class="form-control ak-field-password ak-tooltip" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
+                            <input type="password" class="form-control" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
                         </div>
 
                         <div class="form-group">
@@ -53,6 +53,8 @@
                                     <span class="ak-reserve">{{ Utils::format_price(Auth::user()->points) }}</span>
                                     <span class="ak-icon-small ak-ogrines-icon"></span>
                                 </a>
+                                <div class="ak-tooltip hidden" style="display: none;">Acheter des Ogrines</div>
+                                 <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-blue"}}}</script>   
                             </div>
                         </div>
                         <div class="col-xs-4">
@@ -61,6 +63,8 @@
                                     <span class="ak-reserve">{{ Utils::format_price(Auth::user()->jetons) }}</span>
                                     <span class="ak-icon-small ak-votes-icon"></span>
                                 </a>
+                                <div class="ak-tooltip hidden" style="display: none;">Gagner des Jetons</div>
+                                 <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-blue"}}}</script>
                             </div>
                         </div>
                         <div class="col-xs-4">
@@ -69,6 +73,8 @@
                                     <span class="ak-reserve">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>
                                     <span class="ak-icon-small ak-ticket-icon"></span>
                                 </a>
+                                <div class="ak-tooltip hidden" style="display: none;">Jouer à la lotterie</div>
+                                 <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-blue"}}}</script>
                             </div>
                         </div>
                     </div>

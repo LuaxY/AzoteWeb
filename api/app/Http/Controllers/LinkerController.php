@@ -31,7 +31,7 @@ class LinkerController extends Controller
         $itemid = $request->input('id');
         $itemsall = Cache::get('character_inventory_'.$server.'_'.$characterId);
         if(!$itemsall)
-            return response()->json([], 402);
+            return redirect()->back();
         $collection = collect($itemsall[$position]);
         $item = $collection->where('ItemId', $itemid)->first();
         $effects = $item->Effects;
@@ -42,12 +42,12 @@ class LinkerController extends Controller
             if(@!isset($effect->Template->Description)) 
                 $effect->Template->Description = "-Description not found-";
             $text = $effect->Template->Description;
-            if(@!isset($effect->Template->Value)) 
-                $effect->Template->Value = "-Value not found-";
+            if(@!isset($effect->Value)) 
+                $effect->Value = "-Value not found-";
             $value = $effect->Value;
             if($effect->Template->UseDice)
                 $text = preg_replace('/#1.*#2/', $value, $text);
-
+                
             $characteristic = Characteristic::findOrFail($effect->Template->Characteristic);
             if(!empty($characteristic->asset))
                 $asset = strtolower(str_replace('_', '-', $characteristic->asset));

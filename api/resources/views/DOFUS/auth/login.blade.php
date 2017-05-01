@@ -39,7 +39,7 @@
 
                                             <div class="form-group @if ($errors->has('auth')) has-error @endif">
                                                 <label class="control-label" for="userpass">Mot de passe</label>
-                                                <input type="password" class="form-control ak-field-password ak-tooltip" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
+                                                <input type="password" class="form-control" placeholder="Mot de passe" name="password" value="{{ Input::old('password') }}" id="userpass" data-hasqtip="0">
                                             </div>
 
                                             <div class="form-group">

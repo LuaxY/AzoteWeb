@@ -29,7 +29,7 @@
                         <label class="control-label" for="ogrinesWeb">Ogrines disponible</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price(Auth::user()->points) }}" id="ogrinesWeb" readonly />
+                            <input type="text" class="form-control" value="{{ Utils::format_price(Auth::user()->points) }}" id="ogrinesWeb" readonly />
                         </div>
                     </div>
 
@@ -37,7 +37,7 @@
                         <label class="control-label" for="ogrinesGame">Ogrines en jeu ({{ $account->Nickname }})</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
+                            <input type="text" class="form-control" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
                         </div>
                     </div>
 
@@ -45,7 +45,7 @@
                         <label class="control-label" for="ogrines">Ajouter des Ogrines</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="ogrines" placeholder="Saisir le nombre d'Ogrines à transférer" value="{{ Input::old('ogrines') }}" id="ogrines" autocapitalize="off" autocorrect="off" required="required" />
+                            <input type="text" class="form-control" tabindex="1" autocomplete="off" name="ogrines" placeholder="Saisir le nombre d'Ogrines à transférer" value="{{ Input::old('ogrines') }}" id="ogrines" autocapitalize="off" autocorrect="off" required="required" />
                         </div>
                         @if ($errors->has('ogrines')) <label class="error control-label">{{ $errors->first('ogrines') }}</label> @endif
                     </div>

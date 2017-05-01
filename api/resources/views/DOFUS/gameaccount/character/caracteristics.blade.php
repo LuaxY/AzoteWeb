@@ -336,7 +336,6 @@
                             <div class="ak-list-block ak-spell ak-spell-selected">
                                 <span class="ak-spell-nb">{{$spell->Level}}</span>
                                 <img src="{{$spell->template($server)->image('55')}}" alt="{{$spell->template($server)->name()}}">
-                                <script type="application/json">{"pjax":{"push":false}}</script>
                                 <span class="ak-tooltip hidden" style="display: none;">{{$spell->template($server)->name()}}</span>
                             </div>
                         @endforeach 
@@ -347,12 +346,377 @@
             </div>
         </div>
 
-
-
-
+<div class="ak-container ak-panel ak-caracteristics-details">
+   <div class="ak-panel-title">
+      <span class="ak-panel-title-icon"></span>
+      Caractéristiques            
+   </div>
+   <div class="ak-panel-content">
+      <div class="ak-caracteristics-progress row">
+         <div class="ak-progress ak-progress-left col-xs-6">
+            <span class="ak-progress-exp-label">Expérience : </span>
+            <div class="progress">
+               <div class="progress-bar ak-progress-bar-exp" style="width:{{ceil(($character->tempExp() / $character->expNextLevel()) * 100)}}%"></div>
+               <span class="ak-progress-text">{{min(ceil(($character->tempExp() / $character->expNextLevel()) * 100),100)}} <sup>%</sup> ({{$character->tempExp()}} / {{$character->expNextLevel()}})</span>
+            </div>
+         </div>
+         <div class="ak-progress ak-progress-left col-xs-6">
+            <span class="ak-progress-hp-label">Points de vie : </span>
+            <div class="progress">
+               <div class="progress-bar ak-progress-bar-health" style="width:100%"></div>
+               <span class="ak-progress-text">{{$character->BaseHealth + $character->Vitality + $character->PermanentAddedVitality + $character->countStuff($server,'vitality',['125','153'])}}</span>
+            </div>
+         </div>
+      </div>
+      <div class="ak-caracteristics-table-container row">
+         <div class="col-md-6 ak-primary-caracteristics">
+            <table border="1" class="ak-container ak-table ak-displaymode-alternative">
+               <thead>
+                  <tr>
+                     <th data-priority="4" colspan="2">Caractéristiques primaires</th>
+                     <th data-priority="4">Base</th>
+                     <th data-priority="4">Bonus</th>
+                     <th data-priority="4">Total</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="ak-bg-odd">
+                    <td><span class="ak-icon-small ak-tx-vitality"></span></td>
+                    <td><strong>Vitalité</strong></td>
+                    <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Vitality}} + {{$character->PermanentAddedVitality}}">{{$character->Vitality + $character->PermanentAddedVitality}}</span></td>
+                    <td>{{$character->countStuff($server,'vitality',['125','153'])}}</td>
+                    <td>{{$character->Vitality + $character->PermanentAddedVitality + $character->countStuff($server,'vitality',['125','153'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-wisdom"></span></td>
+                     <td><strong>Sagesse</strong></td>
+                     <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Wisdom}} + {{$character->PermanentAddedWisdom}}">{{$character->Wisdom + $character->PermanentAddedWisdom}}</span></td></span></td>
+                     <td>{{$character->countStuff($server,'wisdom',['124','156'])}}</td>
+                     <td>{{$character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-strength"></span></td>
+                     <td><strong>Force</strong></td>
+                     <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Strength}} + {{$character->PermanentAddedStrength}}">{{$character->Strength + $character->PermanentAddedStrength}}</span></td>
+                     <td>{{$character->countStuff($server,'strength',['118','157'])}}</td>
+                     <td>{{$character->Strength + $character->PermanentAddedStrength + $character->countStuff($server,'strength',['118','157'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-intelligence"></span></td>
+                     <td><strong>Intelligence</strong></td>
+                     <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Intelligence}} + {{$character->PermanentAddedIntelligence}}">{{$character->Intelligence + $character->PermanentAddedIntelligence}}</span></td>
+                     <td>{{$character->countStuff($server,'intelligence',['126','155'])}}</td>
+                     <td>{{$character->Intelligence + $character->PermanentAddedIntelligence + $character->countStuff($server,'intelligence',['126','155'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-chance"></span></td>
+                     <td><strong>Chance</strong></td>
+                     <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Chance}} + {{$character->PermanentAddedChance}}">{{$character->Chance + $character->PermanentAddedChance}}</span></td>
+                     <td>{{$character->countStuff($server,'chance',['123','152'])}}</td>
+                     <td>{{$character->Chance + $character->PermanentAddedChance + $character->countStuff($server,'chance',['123','152'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-agility"></span></td>
+                     <td><strong>Agilité</strong></td>
+                     <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Agility}} + {{$character->PermanentAddedAgility}}">{{$character->Agility + $character->PermanentAddedAgility}}</span></td>
+                     <td>{{$character->countStuff($server,'agility',['119','154'])}}</td>
+                     <td>{{$character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-actionpoints"></span></td>
+                     <td><strong>Points d'action (PA)</strong></td>
+                     <td>{{$character->AP}}</td>
+                     <td>{{$character->countStuff($server,'ap',['111','168'])}}</td>
+                     <td>{{$character->AP + $character->countStuff($server,'ap',['111','168'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-movementpoints"></span></td>
+                     <td><strong>Points de mouvement (PM)</strong></td>
+                     <td>{{$character->MP}}</td>
+                     <td>{{$character->countStuff($server,'mp',['128','169'])}}</td>
+                     <td>{{$character->MP + $character->countStuff($server,'mp',['128','169'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-initiative"></span></td>
+                     <td><strong>Initiative</strong></td>
+                     <td>{{$character->countBaseInitiative()}}</td>
+                     <td>{{$character->countStuff($server,'initiative',['174','175'])}}</td>
+                     <td>{{floor(($character->countBaseInitiative() + $character->countStuff($server,'initiative',['174','175'])) * ($character->actualLifePoints() / $character->maxLifePoints()))}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-prospecting"></span></td>
+                     <td><strong>Prospection</strong></td>
+                     <td>{{$character->Prospection}}</td>
+                     <td>{{$character->countStuff($server,'prospection',['176','177'])}}</td>
+                     <td>{{$character->Prospection + $character->countStuff($server,'prospection',['176','177'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-range"></span></td>
+                     <td><strong>Portée</strong></td>
+                     <td>0</td>
+                     <td>{{$character->countStuff($server,'range',['117','116'])}}</td>
+                     <td>{{$character->countStuff($server,'range',['117','116'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-invocation"></span></td>
+                     <td><strong>Invocation</strong></td>
+                     <td>1</td>
+                     <td>{{$character->countStuff($server,'invocation',['182'])}}</td>
+                     <td>{{1 + $character->countStuff($server,'invocation',['182'])}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="col-md-6 ak-secondary-caracteristics">
+            <table border="1" class="ak-container ak-table ak-displaymode-alternative">
+               <thead>
+                  <tr>
+                     <th data-priority="4" colspan="2">Caractéristiques secondaires</th>
+                     <th data-priority="4">Base</th>
+                     <th data-priority="4">Bonus</th>
+                     <th data-priority="4">Total</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-attackmp"></span></td>
+                     <td><strong>Retrait (PA)</strong></td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'attackmp',['410','411'])}}</td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10) + $character->countStuff($server,'attackmp',['410','411'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-dodgeap"></span></td>
+                     <td><strong>Esquive (PA)</strong></td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'dodgeap',['160','162'])}}</td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10) + $character->countStuff($server,'dodgeap',['160','162'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-attackap"></span></td>
+                     <td><strong>Retrait (PM)</strong></td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'attackap',['412','413'])}}</td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10) + $character->countStuff($server,'attackap',['412','413'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-dodgemp"></span></td>
+                     <td><strong>Esquive (PM)</strong></td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'dodgemp',['161','163'])}}</td>
+                     <td>{{floor(($character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])) / 10) + $character->countStuff($server,'dodgemp',['161','163'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-criticalhit"></span></td>
+                     <td><strong>Coups critiques</strong></td>
+                     <td>0</td>
+                     <td>{{$character->countStuff($server,'criticalhit',['115','171'])}}</td>
+                     <td>{{$character->countStuff($server,'criticalhit',['115','171'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-heal"></span></td>
+                     <td><strong>Soins</strong></td>
+                     <td>0</td>
+                     <td>{{$character->countStuff($server,'heal',['178','179'])}}</td>
+                     <td>{{$character->countStuff($server,'heal',['178','179'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-tackle"></span></td>
+                     <td><strong>Tacle</strong></td>
+                     <td>{{floor(($character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'tackle',['753','755'])}}</td>
+                     <td>{{floor(($character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])) / 10) + $character->countStuff($server,'tackle',['753','755'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-escape"></span></td>
+                     <td><strong>Fuite</strong></td>
+                     <td>{{floor(($character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])) / 10)}}</td>
+                     <td>{{$character->countStuff($server,'escape',['752','754'])}}</td>
+                     <td>{{floor(($character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])) / 10) + $character->countStuff($server,'escape',['752','754'])}}</td>
+                  </tr>
+               </tbody>
+            </table>
+            <table border="1" class="ak-container ak-table ak-displaymode-alternative">
+               <thead>
+                  <tr>
+                     <th data-priority="4" colspan="2">Autres</th>
+                     <th data-priority="4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-spellscroll"></span></td>
+                     <td><strong>Points de sorts</strong></td>
+                     <td>{{$character->SpellsPoints}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-caracscroll"></span></td>
+                     <td><strong>Points de carractéristiques</strong></td>
+                     <td>{{$character->StatsPoints}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-stalskamas"></span></td>
+                     <td><strong>Kamas</strong></td>
+                     <td>{{$character->Kamas}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div class="ak-caracteristics-table-container row">
+         <div class="col-md-6 ak-primary-caracteristics">
+            <table border="1" class="ak-container ak-table ak-displaymode-alternative">
+               <thead>
+                  <tr>
+                     <th data-priority="4" colspan="2">Dommages</th>
+                     <th data-priority="4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-damage"></span></td>
+                     <td><strong>Dommages</strong></td>
+                     <td>{{$character->countStuff($server,'damage',['112','145'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-damagespercent"></span></td>
+                     <td><strong>Puissance</strong></td>
+                     <td>{{$character->countStuff($server,'damagespercent',['138','186'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-criticaldamage"></span></td>
+                     <td><strong>Dommages critiques</strong></td>
+                     <td>{{$character->countStuff($server,'criticaldamage',['418','419'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-neutral"></span></td>
+                     <td><strong>Neutre (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damageneutral',['430','431'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-earth"></span></td>
+                     <td><strong>Terre (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damageearth',['422','423'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-fire"></span></td>
+                     <td><strong>Feu (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damagefire',['424','425'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-water"></span></td>
+                     <td><strong>Eau (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damagewater',['426','427'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-air"></span></td>
+                     <td><strong>Air (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damageair',['428','429'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-return"></span></td>
+                     <td><strong>Renvoi</strong></td>
+                     <td>{{$character->countStuff($server,'damagereturn',['220'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-trap"></span></td>
+                     <td><strong>Pièges (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'damagetrap',['225'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-trappercent"></span></td>
+                     <td><strong>Pièges (Puissance)</strong></td>
+                     <td>{{$character->countStuff($server,'damagetrappercent',['226'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-push"></span></td>
+                     <td><strong>Poussée</strong></td>
+                     <td>{{$character->countStuff($server,'damagepush',['414','415'])}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="col-md-6 ak-secondary-caracteristics">
+            <table border="1" class="ak-container ak-table ak-displaymode-alternative">
+               <thead>
+                  <tr>
+                     <th data-priority="4" colspan="2">Résistances</th>
+                     <th data-priority="4"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-neutral"></span></td>
+                     <td><strong>Neutre (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'resneutral',['244','249'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-neutral"></span></td>
+                     <td><strong>Neutre (%)</strong></td>
+                     <td>{{$character->countStuff($server,'resneutralpercent',['214','219'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-earth"></span></td>
+                     <td><strong>Terre (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'researth',['240','245'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-earth"></span></td>
+                     <td><strong>Terre (%)</strong></td>
+                     <td>{{$character->countStuff($server,'researthpercent',['210','215'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-fire"></span></td>
+                     <td><strong>Feu (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'resfire',['243','248'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-fire"></span></td>
+                     <td><strong>Feu (%)</strong></td>
+                     <td>{{$character->countStuff($server,'resfirepercent',['213','218'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-water"></span></td>
+                     <td><strong>Eau (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'reswater',['241','246'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-water"></span></td>
+                     <td><strong>Eau (%)</strong></td>
+                     <td>{{$character->countStuff($server,'reswaterpercent',['211','216'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-air"></span></td>
+                     <td><strong>Air (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'resair',['242','247'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-air"></span></td>
+                     <td><strong>Air (%)</strong></td>
+                     <td>{{$character->countStuff($server,'resairpercent',['242','217'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-odd">
+                     <td><span class="ak-icon-small ak-tx-criticalhit"></span></td>
+                     <td><strong>Coups critiques (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'rescriticalhit',['420','421'])}}</td>
+                  </tr>
+                  <tr class="ak-bg-even">
+                     <td><span class="ak-icon-small ak-tx-push"></span></td>
+                     <td><strong>Poussée (fixe)</strong></td>
+                     <td>{{$character->countStuff($server,'respush',['416','417'])}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div class="ak-caracteristics-table-container row">
+         <div class="col-md-6 ak-primary-caracteristics">
+         </div>
+         <div class="col-md-6 ak-secondary-caracteristics">
+         </div>
+      </div>
+   </div>
+</div>
     </div>
 </div>
 @stop
-@section('bottom')
-    {!! Html::script('js/common2.js') !!}
-@endsection

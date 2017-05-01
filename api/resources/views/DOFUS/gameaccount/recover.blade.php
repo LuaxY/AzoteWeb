@@ -24,7 +24,7 @@
                     {!! Form::open(['route' => ['characters.recover', $account->server, $account->Id, $character->Id]]) !!}
                     <label class="control-label" for="nickname">Pseudo</label>
                     <div class="form-group @if ($errors->has('nickname')) has-error @endif">
-                            <input type="text" class="form-control ak-tooltip" value="{{ $character->Name }}" id="nickname" name="nickname"/><br>
+                            <input type="text" class="form-control" value="{{ $character->Name }}" id="nickname" name="nickname"/><br>
                         @if ($errors->has('nickname')) <label class="error control-label">{{ $errors->first('nickname') }}</label> @endif
                     </div>
                     <b>Classe</b>: {{ $character->classe() }}<br>
@@ -34,7 +34,7 @@
                         <label class="control-label" for="price">Prix</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($character->recoverPrice()) }}" id="price" name="price" readonly />
+                            <input type="text" class="form-control" value="{{ Utils::format_price($character->recoverPrice()) }}" id="price" name="price" readonly />
                         </div>
                         @if ($errors->has('price')) <label class="error control-label">{{ $errors->first('price') }}</label> @endif
                     </div>

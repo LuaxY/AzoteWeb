@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="ak-icon-small ak-ogrines-icon"></span></span>
-                            <input type="text" class="form-control ak-tooltip" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
+                            <input type="text" class="form-control" value="{{ Utils::format_price($account->points()) }}" id="ogrinesGame" readonly />
                         </div>
                     </div>
                     <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}" class="btn btn-default btn-sm">Transferer des Ogrines <span class="ak-icon-small ak-ogrines-icon"></span></a>
@@ -67,7 +67,10 @@
                 </td>
                 <td class="ak-class">{{ $character->classe() }}</td>
                 <td class="ak-center">{{ $character->level() }}</td>
-                <td class="ak-center"><a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}"><span class="ak-icon-small ak-filter"></span></a></td>
+                <td class="ak-center">
+                    <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}"><span class="ak-icon-small ak-filter ak-tooltip" title="Consulter"></span>
+                    </a>
+                </td>
             </tr>
         @endforeach
     </table>
@@ -97,7 +100,7 @@
                 </td>
                 <td class="ak-class">{{ $characterDeleted->classe() }}</td>
                 <td class="ak-center">{{ $characterDeleted->level() }}</td>
-                <td class="ak-center"><a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}"><span class="fa fa-undo"></span> Récupérer</a></td>
+                <td class="ak-center"><a href="{{ URL::route('characters.recover', [$account->server, $account->Id, $characterDeleted->Id]) }}"><span class="fa fa-undo"></span> Restaurer</a></td>
             </tr>
         @endforeach
     </table>

@@ -27,8 +27,8 @@ cursor:help;
 background-position:-116px -25px;
 }
 
-.ak-icon-big.ak-filter,.ak-icon-med.ak-filter {
-background-image:url("../imgs/assets/sprite_encyclopedia.png");
+.ak-icon-big.ak-filter,.ak-icon-med.ak-filter,.ak-icon-tiny.ak-filter {
+background-image:url("../imgs/assets/sprite_zoom.png");
 background-repeat:no-repeat;
 }
 
@@ -47,6 +47,21 @@ background-size:46px auto;
 .ak-icon-med.ak-filter {
 background-position:0 -7px;
 }
+
+.ak-icon-tiny.ak-filter {
+    background-position:0 -3px;
+    background-size: 30px auto
+}
+
+.ak-icon-tiny.ak-cart {
+    background-position: 0 -42px;
+     background-size: 30px auto
+}
+.ak-icon-tiny.ak-cart {
+    background-image: url("../imgs/assets/sprite_market.png");
+    background-repeat:no-repeat;
+}
+
 
 .ak-directories-header {
 height:58px;
@@ -2738,7 +2753,7 @@ background-image:url(/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/breeds.
 display:inline-block;
 height:54px;
 width:54px;
-background:transparent url(/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/icons/big.png) 0 0 no-repeat;
+background:transparent url(../imgs/assets/breeds_big.png) 0 0 no-repeat;
 }
 
 aside .ak-right-breed-list .ak-panel-content {
@@ -2872,6 +2887,13 @@ background-position:-525px 0;
 
 .ak-breed-icon.breed16_0 {
 background-position:-525px -35px;
+}
+.ak-breed-icon.breed17_1 {
+    background-position: -1155px 0
+}
+
+.ak-breed-icon.breed17_0 {
+    background-position: -1155px -35px
 }
 
 .ak-breed-icon-big.breed1_0 {
@@ -3447,7 +3469,7 @@ background-position:-32px -63px;
 }
 
 .ak-breed-icon-big:hover,.ak-breed-icon-big.on,li.ak-selected .ak-breed-icon {
-background:transparent url(/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/icons/big.png) 0 0 no-repeat;
+background:transparent url("../imgs/assets/breeds_big.png") 0 0 no-repeat;
 }
 
 .ak-breed-icon-big:hover.breed2_0,.ak-breed-icon-big.on.breed2_0,li.ak-selected .ak-breed-icon.breed2_0 {

@@ -21,13 +21,13 @@
 
                     <div class="form-group @if ($errors->has('passwordOld')) has-error @endif">
                         <label class="control-label" for="passwordOld">Mot de passe actuel</label>
-                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="passwordOld" placeholder="Mot de passe" value="{{ Input::old('passwordOld') }}" id="passwordOld" autocapitalize="off" autocorrect="off" required="required" />
+                        <input type="password" class="form-control" tabindex="1" autocomplete="off" name="passwordOld" placeholder="Mot de passe" value="{{ Input::old('passwordOld') }}" id="passwordOld" autocapitalize="off" autocorrect="off" required="required" />
                         @if ($errors->has('passwordOld')) <label class="error control-label">{{ $errors->first('passwordOld') }}</label> @endif
                     </div>
 
                     <div class="form-group @if ($errors->has('email')) has-error @endif">
                         <label class="control-label" for="email">Nouvelle adresse email</label>
-                        <input type="email" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="email" placeholder="Votre adresse e-mail" value="{{ Input::old('email') }}" id="email" autocapitalize="off" autocorrect="off" required="required" />
+                        <input type="email" class="form-control" tabindex="2" autocomplete="off" name="email" placeholder="Votre adresse e-mail" value="{{ Input::old('email') }}" id="email" autocapitalize="off" autocorrect="off" required="required" />
                         @if ($errors->has('email')) <label class="error control-label">{{ $errors->first('email') }}</label> @endif
                     </div>
 

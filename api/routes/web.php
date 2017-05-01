@@ -228,6 +228,18 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
 
     /* ============ SHOP ============ */
 
+    Route::get(Lang::get('routes.shop.index'), [
+        'middleware' => ['auth'],
+        'uses'       => 'ShopController@index',
+        'as'         => 'shop.index'
+    ]);
+    
+    Route::get(Lang::get('routes.shop.market'), [
+        'middleware' => ['auth'],
+        'uses'       => 'ShopController@market',
+        'as'         => 'shop.market'
+    ]);
+    
     Route::get(Lang::get('routes.shop.payment.choose-country'), [
         'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@country',

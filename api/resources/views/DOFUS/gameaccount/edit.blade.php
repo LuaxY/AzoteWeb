@@ -21,13 +21,13 @@
 
                     <div class="form-group @if ($errors->has('password')) has-error @endif">
                         <label class="control-label" for="password">Nouveau mot de passe</label>
-                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="password" placeholder="Nouveau mot de passe" value="{{ Input::old('password') }}" id="password" autocapitalize="off" autocorrect="off" required="required" />
+                        <input type="password" class="form-control" tabindex="1" autocomplete="off" name="password" placeholder="Nouveau mot de passe" value="{{ Input::old('password') }}" id="password" autocapitalize="off" autocorrect="off" required="required" />
                         @if ($errors->has('password')) <label class="error control-label">{{ $errors->first('password') }}</label> @endif
                     </div>
 
                     <div class="form-group @if ($errors->has('passwordConfirmation')) has-error @endif">
                         <label class="control-label" for="passwordConfirmation">Confirmation</label>
-                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="passwordConfirmation" placeholder="Confirmation" value="{{ Input::old('passwordConfirmation') }}" id="passwordConfirmation" autocapitalize="off" autocorrect="off" required="required" />
+                        <input type="password" class="form-control" tabindex="1" autocomplete="off" name="passwordConfirmation" placeholder="Confirmation" value="{{ Input::old('passwordConfirmation') }}" id="passwordConfirmation" autocapitalize="off" autocorrect="off" required="required" />
                         @if ($errors->has('passwordConfirmation')) <label class="error control-label">{{ $errors->first('passwordConfirmation') }}</label> @endif
                     </div>
 

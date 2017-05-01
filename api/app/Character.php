@@ -22,6 +22,35 @@ class Character extends Model
 
     public $server;
 
+    public function countStuff($server, $type, array $carrac)
+    {
+        $json = Cache::get('character_inventory_json_'.$server.'_'.$this->Id);
+        if(!$json)
+            return '(not found)';
+
+        $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 10, function () use ($json, $carrac) {
+            $items = json_decode($json);
+            $value = 0;
+            foreach($items as $item)
+            {
+                if(!in_array($item->Position,[0,64]))
+                {
+                    foreach($item->Effects as $effect)
+                    {
+                        if(in_array($effect->Template->Id,$carrac))
+                        {
+                            if($effect->Template->Operator == '+')
+                                $value += $effect->Value;
+                            else
+                                $value -= $effect->Value;
+                        }
+                    }
+                }
+            }
+            return $value;
+        });
+            return $value;
+    }
     public function position($type = 'pvp', $spec = 'all', $server = 'sigma')
     {
         $resultDB = Cache::remember('position.'.$this->Id.'.'.$type.'.'.$spec.'.'.$server, 30, function () use ($server, $type, $spec) {
@@ -105,10 +134,54 @@ class Character extends Model
         }
         return null;
     }
+    public function maxLifePoints()
+    {
+        $result = $this->BaseHealth + $this->Vitality + $this->PermanentAddedVitality + $this->countStuff($this->server,'vitality',['125','153']);
+        return $result;
+    }
+    public function actualLifePoints()
+    {
+        $result = $this->maxLifePoints() - $this->DamageTaken;
+        return $result;
+    }
+    public function countBaseInitiative()
+    {
+        $agility = $this->Agility + $this->PermanentAddedAgility + $this->countStuff($this->server,'agility',['119','154']);
+        $chance = $this->Chance + $this->PermanentAddedChance + $this->countStuff($this->server,'chance',['123','152']);
+        $intelligence = $this->Intelligence + $this->PermanentAddedIntelligence + $this->countStuff($this->server,'intelligence',['126','155']);
+        $strength = $this->Strength + $this->PermanentAddedStrength + $this->countStuff($this->server,'strength',['118','157']);
 
+        $result = $agility + $chance + $intelligence + $strength;
+        return $result;
+    }
+    public function tempExp()
+    {
+        $tempExp = $this->Experience;
+
+        if (config('dofus.details')[$this->server]->prestige) {
+            $maxExp = Cache::remember('exp_' . $this->server . '_max', 1440, function (){
+                return Experience::on($this->server . '_world')->orderBy('CharacterExp', 'desc')->first();
+            });
+
+            if ($maxExp) {
+                $tempExp = $this->Experience - ($this->PrestigeRank * $maxExp->CharacterExp);
+            }
+        }
+        return $tempExp;
+    }
+    public function expNextLevel()
+    {
+        $level = $this->level($this->server);
+        if($level != 200)
+            $seekLevel = $level + 1;
+        else
+            $seekLevel = $level;
+        $experience = Experience::on($this->server . '_world')->select('CharacterExp')->where('Level', $seekLevel)->first();
+        return $experience ? $experience->CharacterExp : "1";
+    }
     public function level($server = 'sigma')
     {
-        // Prestige
+        // 
         $tempExp = $this->Experience;
 
         if (config('dofus.details')[$server]->prestige) {
@@ -170,6 +243,14 @@ class Character extends Model
         $align = $alignement[$this->AlignmentSide];
 
         return '<font color="' . $align[1] . '">' . $align[0] . '</font>';
+    }
+
+    public function sex()
+    {
+        if($this->Sex == 0)
+            return "Mâle";
+        else
+            return "Femelle";
     }
 
     public function isDeleted()

@@ -14,12 +14,16 @@
 @section('content')
 <div class="ak-title-container ak-backlink">
     <h1 class="ak-return-link">
-        <span class="ak-icon-big ak-shop"></span> Achat d'ogrines
+        <span class="ak-icon-big ak-shop"></span> Ogrines
     </h1>
     <a href="{{ URL::route('shop.payment.method', $countryBackup) }}" class="ak-backlink-button">Retour aux méthodes de paiement</a>
 </div>
 
 <div class="ak-container ak-panel-stack ak-payments-process-choice">
+    <div class="ak-category-infos">
+      <div class="hr "></div>
+        <img src="{{URL::asset('imgs/shop/shop_ogrines.png')}}" class="img-responsive">
+    </div>
     <div class="ak-container ak-panel">
         <div class="ak-panel-title">
               <span class="ak-panel-title-icon"></span> Choisissez votre offre pour {{ $methodName }} &nbsp;<span class="icon-flag flag-{{ $country }}">
@@ -98,7 +102,7 @@
                                 </div>
                             </div>
                             <div class="ak-column ak-container col-md-5">
-                                <button type="submit" class="btn btn-lg btn-primary ak-btn-fluid ak-btn-wrap btn-pay-now ak-tooltip">Payer maintenant<span>(Commande avec obligation de paiement)</span></button>
+                                <button type="submit" class="btn btn-lg btn-primary ak-btn-fluid ak-btn-wrap btn-pay-now">Payer maintenant<span>(Commande avec obligation de paiement)</span></button>
                             </div>
                         </div>
                     </div>

@@ -65,13 +65,13 @@
 
                     <div class="form-group @if ($errors->has('firstname')) has-error @endif">
                         <label class="control-label" for="firstname">Prénom</label>
-                        {!! Form::text('firstname', null, ['class' => 'form-control ak-tooltip', 'id' => 'firstname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
+                        {!! Form::text('firstname', null, ['class' => 'form-control', 'id' => 'firstname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
                         @if ($errors->has('firstname')) <label class="error control-label">{{ $errors->first('firstname') }}</label> @endif
                     </div>
 
                     <div class="form-group @if ($errors->has('lastname')) has-error @endif">
                         <label class="control-label" for="lastname">Nom</label>
-                        {!! Form::text('lastname', null, ['class' => 'form-control ak-tooltip', 'id' => 'lastname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
+                        {!! Form::text('lastname', null, ['class' => 'form-control', 'id' => 'lastname', 'required' => 'required', $authuser->isCertified() ? 'readonly' :'']) !!}
                         @if ($errors->has('lastname')) <label class="error control-label">{{ $errors->first('lastname') }}</label> @endif
                     </div>
                     <div class="form-group @if ($errors->has('avatar')) has-error @endif">

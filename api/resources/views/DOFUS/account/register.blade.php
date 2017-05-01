@@ -34,37 +34,37 @@
 
                                                     <div class="form-group @if ($errors->has('pseudo')) has-error @endif">
                                                         <label class="control-label" for="pseudo">Votre pseudo</label>
-                                                        <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="pseudo" placeholder="Votre pseudo" value="{{ Input::old('pseudo') }}" id="pseudo" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="text" class="form-control" tabindex="1" autocomplete="off" name="pseudo" placeholder="Votre pseudo" value="{{ Input::old('pseudo') }}" id="pseudo" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('pseudo')) <label class="error control-label">{{ $errors->first('pseudo') }}</label> @endif
                                                     </div>
 
                                                     <div class="form-group @if ($errors->has('firstname')) has-error @endif">
                                                         <label class="control-label" for="firstname">Votre prénom</label>
-                                                        <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="firstname" placeholder="Votre prénom" value="{{ Input::old('firstname') }}" id="firstname" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="text" class="form-control" tabindex="1" autocomplete="off" name="firstname" placeholder="Votre prénom" value="{{ Input::old('firstname') }}" id="firstname" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('firstname')) <label class="error control-label">{{ $errors->first('firstname') }}</label> @endif
                                                     </div>
 
                                                     <div class="form-group @if ($errors->has('lastname')) has-error @endif">
                                                         <label class="control-label" for="lastname">Votre nom</label>
-                                                        <input type="text" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="lastname" placeholder="Votre nom" value="{{ Input::old('lastname') }}" id="lastname" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="text" class="form-control" tabindex="1" autocomplete="off" name="lastname" placeholder="Votre nom" value="{{ Input::old('lastname') }}" id="lastname" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('lastname')) <label class="error control-label">{{ $errors->first('lastname') }}</label> @endif
                                                     </div>
 
                                                     <div class="form-group @if ($errors->has('email')) has-error @endif">
                                                         <label class="control-label" for="email">Votre adresse e-mail</label>
-                                                        <input type="email" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="email" placeholder="Votre adresse e-mail" value="{{ Input::old('email') }}" id="email" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="email" class="form-control" tabindex="1" autocomplete="off" name="email" placeholder="Votre adresse e-mail" value="{{ Input::old('email') }}" id="email" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('email')) <label class="error control-label">{{ $errors->first('email') }}</label> @endif
                                                     </div>
 
                                                     <div class="form-group @if ($errors->has('password')) has-error @endif">
                                                         <label class="control-label" for="password">Votre mot de passe</label>
-                                                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="password" placeholder="Votre mot de passe" value="{{ Input::old('password') }}" id="password" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="password" class="form-control" tabindex="1" autocomplete="off" name="password" placeholder="Votre mot de passe" value="{{ Input::old('password') }}" id="password" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('password')) <label class="error control-label">{{ $errors->first('password') }}</label> @endif
                                                     </div>
 
                                                     <div class="form-group @if ($errors->has('passwordConfirmation')) has-error @endif">
                                                         <label class="control-label" for="passwordConfirmation">Confirmation</label>
-                                                        <input type="password" class="form-control ak-tooltip" tabindex="1" autocomplete="off" name="passwordConfirmation" placeholder="Confirmation" value="{{ Input::old('passwordConfirmation') }}" id="passwordConfirmation" autocapitalize="off" autocorrect="off" required="required" />
+                                                        <input type="password" class="form-control" tabindex="1" autocomplete="off" name="passwordConfirmation" placeholder="Confirmation" value="{{ Input::old('passwordConfirmation') }}" id="passwordConfirmation" autocapitalize="off" autocorrect="off" required="required" />
                                                         @if ($errors->has('passwordConfirmation')) <label class="error control-label">{{ $errors->first('passwordConfirmation') }}</label> @endif
                                                     </div>
 

@@ -14,15 +14,6 @@
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
-                <div class="alert alert-danger">
-                    <strong>Avertissement!</strong> Par sécurité, les mot de passes de tous vos comptes de jeu ont été réinitialisés.<br><br> <center>Vous <strong>devez les modifier</strong> via votre gestion de compte afin de vous connecter en jeu</center>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ak-container ak-panel-stack">
-        <div class="ak-container ak-panel ak-glue">
-            <div class="ak-panel-content">
                 <div class="panel-main profile">
                     @if(Auth::user()->certified == 0)
                     <!--<div class="pull-right">
@@ -91,10 +82,10 @@
             <td>{{ ucfirst($account->server) }}</td>
             <td class="ak-center">{{ count($account->characters()) }}</td>
             <td class="ak-center">
-                <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter"></span></a>
-                <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon"></span></a>
-                <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-gifts-icon"></span></a>
-                <a href="{{ URL::route('gameaccount.jetons', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-votes-icon"></span></a>
+                <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter ak-tooltip" title="Détails du compte"></span></a>
+                <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon ak-tooltip" title="Transférer des jetons"></span></a>
+                <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-gifts-icon ak-tooltip" title="Transférer des cadeaux"></span></a>
+                <a href="{{ URL::route('gameaccount.jetons', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-votes-icon ak-tooltip" title="Convertir des jetons"></span></a>
             </td>
         </tr>
         @endforeach
