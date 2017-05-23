@@ -116,43 +116,55 @@ class User extends Authenticatable
 
     public function accounts($server = null)
     {
-        if ($server && in_array($server, config('dofus.servers'))) {
+        if ($server && in_array($server, config('dofus.servers'))) 
+        {
             $accounts = Cache::remember('accounts_'.$server.'_'.$this->id, 10, function () use ($server) {
                 return ModelCustom::hasManyOnOneServer('auth', $server, Account::class, 'Email', $this->email);
             });
 
             return $accounts;
-        } else {
+        } 
+        else {
             $accounts = Cache::remember('accounts_'.$this->id, 10, function () {
                 return ModelCustom::hasManyOnManyServers('auth', Account::class, 'Email', $this->email);
             });
-
             return $accounts;
         }
+        return $accounts;
     }
     public function characters($minimal = null)
     {
         $characters = Cache::remember('characters_user_'.$this->id.'_'.$minimal, 10, function () use ($minimal) {
-             $characters_array = [];
-            foreach($this->accounts() as $account)
+            $characters_array = [];
+            $accounts = $this->accounts();
+            if($accounts)
             {
-                    $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $account->server, WorldCharacter::class, 'AccountId', $account->Id);
-                    foreach ($worldCharacters as $worldCharacter) {
-                            if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
-                                if($minimal)
-                                {
-                                    if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
-                                       array_push($characters_array,$worldCharacter->character());
-                                }
-                                else
-                                    array_push($characters_array,$worldCharacter->character());
+                foreach($accounts as $account)
+                {
+                        $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $account->server, WorldCharacter::class, 'AccountId', $account->Id);
+                        if($worldCharacters)
+                        {
+                            foreach ($worldCharacters as $worldCharacter) {
+                                    if($worldCharacter->character()) 
+                                    {
+                                        if($worldCharacter->character()->DeletedDate == null)
+                                        {
+                                            if($minimal)
+                                            {
+                                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                                array_push($characters_array,$worldCharacter->character());
+                                            }
+                                            else
+                                                array_push($characters_array,$worldCharacter->character());
+                                        }
+                                    }
                             }
-                            
-                        
-                    }
+                        }
+                }
             }
             return $characters_array;
         });
+
        return $characters;
     }
     public function transactions()

@@ -104,7 +104,7 @@
    <div class="row ak-container ak-directories">
       <div class="ak-column ak-container col-md-4 ak-directories-left">
          <div class="ak-container ak-panel-stack ak-glue">
-             @if($character->guild())
+             @if($character->guild($server))
             <div class="ak-container ak-panel ak-belong-guild">
                <div class="ak-panel-title">
                   <span class="ak-panel-title-icon"></span>
@@ -112,7 +112,7 @@
                </div>
                <div class="ak-panel-content">
                   <div class="ak-character-illu">
-                     <div class="ak-emblem" style="background:url({{ URL::asset($character->guild()->emblem(110,110)) }}) center center;width:110px;height:110px">
+                     <div class="ak-emblem" style="background:url({{ URL::asset($character->guild($server)->emblem(110,110)) }}) center center;width:110px;height:110px">
                      </div>
                   </div>
                   <a href="{{ route('guild.view', [$server, $character->guild($server)->Id, $character->guild($server)->Name])}}" class="ak-infos-guildname">{{$character->guild($server)->Name}}</a><br>

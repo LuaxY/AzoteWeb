@@ -96,9 +96,9 @@
                                                         <div class="ak-level">{{$character->classe()}} - Niv : {{$character->level()}} @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}}@endif</div>
                                                         <div class="ak-server">{{ucfirst($character->server)}}</div>
                                                     </div>
-                                                    @if($character->guild())
+                                                    @if($character->guild($character->server))
                                                     <div class="ak-character-infos ak-emblem">
-                                                        <a href="{{ route('guild.view', [$character->server, $character->guild($character->server)->Id, $character->guild($character->server)->Name])}}"><div class="ak-emblem" style="background:url({{ URL::asset($character->guild()->emblem(40,40)) }}) center center;width:40px;height:40px"></div></a>
+                                                        <a href="{{ route('guild.view', [$character->server, $character->guild($character->server)->Id, $character->guild($character->server)->Name])}}"><div class="ak-emblem" style="background:url({{ URL::asset($character->guild($character->server)->emblem(40,40)) }}) center center;width:40px;height:40px"></div></a>
                                                     </div>
                                                     @endif
                                                     <div class="ak-character-infos ak-emblem">
