@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <table class="ak-ladder ak-container ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
+    <table class="ak-ladder ak-container ak-table ak-responsivetable ak-characterslist" style="white-space: nowrap; visibility: visible;">
         <tr>
             <th class="ak-center"></th>
             <th>Pseudo</th>
@@ -63,13 +63,22 @@
                 <td class="ak-rank"></td>
                 <td class="ak-name">
                     <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
+                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level() >= 20))
                     <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}">{{ $character->Name }}</a>
+                    @else
+                    {{ $character->Name }}
+                    @endif
                 </td>
                 <td class="ak-class">{{ $character->classe() }}</td>
                 <td class="ak-center">{{ $character->level() }}</td>
                 <td class="ak-center">
+                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level() >= 20))
                     <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}"><span class="ak-icon-small ak-filter ak-tooltip" title="Consulter"></span>
                     </a>
+                    @else
+                    <span class="ak-character-info" style="font-weight:bold; font-size:1.3rem;"></span>
+                                <div class="ak-tooltip hidden ak-tooltip-blue"> Pour avoir une page perso, votre personnage doit être niveau 20 minimum et s'être connecté en jeu il y a moins de 6 mois. </div><script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-blue"}}}</script></div>
+                    @endif
                 </td>
             </tr>
         @endforeach

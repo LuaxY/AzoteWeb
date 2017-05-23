@@ -61,13 +61,15 @@ class DofusForge
             }
             else
             {
-                $look = Stump::get($server, "/Character/$character->Id/Look");
+                $jsonLook = Stump::get($server, "/Character/$character->Id/Look");
+                $look = json_decode($jsonLook);
+
                 if(!$look)
                     $look = $character->DefaultLookString;
 
                 $look = bin2hex($look);
             }
-    
+
             return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
     }
 

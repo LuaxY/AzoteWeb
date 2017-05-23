@@ -35,7 +35,7 @@ class FillServers
             $servers[] = $server->name;
             $details[$server->name] = $data;
 
-            foreach (['auth', 'world'] as $db) {
+            foreach (['auth', 'world', 'data'] as $db) {
                 $db_var = "db_$db";
 
                 $database = [

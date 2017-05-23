@@ -11348,6 +11348,16 @@ p a {
     padding: 1.2rem 3.4rem
 }
 
+.btn-xxl, .btn-group-xxl > .btn, .btn-group-xxl > .btn
+{
+    font-size: 30px;
+    font-size: 3rem;
+    line-height: 34px;
+    line-height: 3.4rem;
+    padding: 16px 154px;
+    padding: 1.6rem 15.4rem;
+}
+
 .btn-sm, .btn-group-sm > .btn, .btn-group-sm > .btn {
     font-size: 21px;
     font-size: 2.1rem;
@@ -12330,7 +12340,7 @@ p a {
     vertical-align: top;
     border-left: 1px solid;
     cursor: pointer;
-    background: #373737 url(/g/modules/masterpage/block/header/idbar/characters.png) right center no-repeat;
+    background: #373737 url(../imgs/assets/characters/characters.png) right center no-repeat;
     color: #b6b6b6;
     border-color: #000
 }
@@ -13619,7 +13629,22 @@ p a {
     line-height: 15px
 }
 
+.ak-characterslist span.ak-character-info {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    border-radius: 8px;
+    line-height: 15px
+}
+
 .ak-box-characters .ak-box-title span:before {
+    display: inline-block;
+    content: '?';
+    width: 16px;
+    height: 16px
+}
+
+.ak-characterslist span.ak-character-info:before {
     display: inline-block;
     content: '?';
     width: 16px;
@@ -13707,7 +13732,14 @@ p a {
     background: #2baaff
 }
 
+.ak-characterslist span.ak-character-info {
+    background: #2baaff
+}
+
 .ak-box-characters .ak-box-title span:before {
+    color: #fff
+}
+.ak-characterslist span.ak-character-info:before  {
     color: #fff
 }
 
@@ -21682,6 +21714,14 @@ img.mfp-img {
     margin-right: 10px;
     margin-right: 1rem;
     position: relative
+}
+.ak-icon-big.ak-sell {
+    background-position: 0 -3px;
+     background-size: 40px auto
+}
+.ak-icon-big.ak-sell {
+    background-image: url("../imgs/assets/sprite_market.png");
+    background-repeat:no-repeat;
 }
 
 .ak-list-filters-check li label .ak-icon-small {

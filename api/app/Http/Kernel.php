@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'staff'      => \App\Http\Middleware\Staff::class,
         'lottery'    => \App\Http\Middleware\LotteryMaintenance::class,
         'AuthPayment'=> \App\Http\Middleware\AuthPayment::class,
-        'ShopMaintenance'=> \App\Http\Middleware\ShopMaintenance::class,
+        'ShopMaintenance' => \App\Http\Middleware\ShopMaintenance::class,
+        'marketMaintenance' => \App\Http\Middleware\MarketMaintenance::class,
     ];
 }

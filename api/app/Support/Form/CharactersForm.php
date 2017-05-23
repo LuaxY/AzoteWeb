@@ -16,7 +16,7 @@ class CharactersForm implements IForm
         $account = ModelCustom::hasOneOnOneServer('auth', $server, Account::class, 'Id', $accountId);
 
         if ($account) {
-            $characters = $account->characters(false, true);
+            $characters = $account->characters(false, false);
 
             if (count($characters) > 0) {
                 return view('support.form.characters', [

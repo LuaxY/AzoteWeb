@@ -13,6 +13,7 @@
             "db_pass":  "",
             "db_auth":  "azote_sigma_auth",
             "db_world": "azote_sigma_world",
+            "db_data":  "azote_sigma_data",
             "rpg":      107257
         },
         {
@@ -28,6 +29,7 @@
             "db_pass":  "",
             "db_auth":  "azote_epsilon_auth",
             "db_world": "azote_epsilon_world",
+            "db_data":  "azote_epsilon_data",
             "rpg":      108290
         }
     ]

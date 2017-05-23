@@ -10,6 +10,7 @@ use App\Alignment;
 use \DB;
 use App\Helpers\Utils;
 use App\Services\Stump;
+use App\ItemPosition;
 
 class Character extends Model
 {
@@ -25,23 +26,18 @@ class Character extends Model
 
     public function countStuff($server, $type, array $carrac)
     {
-        $json = Cache::remember('character_inventory_json_'.$server.'_'.$this->Id, 10, function () use ($server){
-            $json = Stump::get($server, "/Character/$this->Id/Inventory");
-            //$json = file_get_contents('uploads/tests/api.json');
-            return $json;
-        });
-
+        $json = $this->getJsonInventory();
         if(!$json)
             return '(not found)';
 
         $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 10, function () use ($json, $carrac) {
-            $items = json_decode($json);
+            $items = $json;
             if(!$items)
                 return ('not decode');
             $value = 0;
             foreach($items as $item)
             {
-                if(!in_array($item->Position,[0,64]))
+                if(!in_array($item->Position,[63]))
                 {
                     foreach($item->Effects as $effect)
                     {
@@ -276,10 +272,112 @@ class Character extends Model
         $worldCharacter = ModelCustom::hasOneOnOneServer('auth', $server, WorldCharacter::class, 'CharacterId', $this->Id);
         return $worldCharacter ? $worldCharacter->account() : null;
     }
+    public function user()
+    {
+        $account = $this->account($this->server);
+        if($account)
+        {
+             $user = User::where('email', $account->Email)->first();
+                return $user ? $user : null;
+        }
+        return null;
+    }
 
     public function recoverPrice()
     {
         $price = $this->level() * config('dofus.recover_level_multiplicator_price');
         return $price < config('dofus.recover_minimal_price') ? config('dofus.recover_minimal_price') : $price;
+    }
+
+    public function getJsonInventory()
+    {
+        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id, 10, function (){
+            $json = Stump::get($this->server, "/Character/$this->Id/Inventory");
+            return json_decode($json);
+        });
+
+        return $json;
+    }
+    public function getJsonInventoryEquiped()
+    {
+        $json = Cache::remember('character_inventory_equiped_json_'.$this->server.'_'.$this->Id, 10, function (){
+            $json = Stump::get($this->server, "/Character/$this->Id/Inventory/Equiped");
+            return json_decode($json);
+        });
+        return $json;
+    }
+
+    public function getJsonInventoryByItemType($typeId)
+    {
+        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id.'_'.$typeId, 10, function () use($typeId){
+            $json = Stump::get($this->server, "/Character/$this->Id/Inventory/Type/$typeId");
+            return json_decode($json);
+        });
+
+        return $json;
+    }
+
+    public function getEquipment($json)
+    {
+        $itemsall = Cache::remember('character_equipment_'.$this->server.'_'.$this->Id, 10, function () use($json) {
+               $itemsall = array('left' => [], 'right' => [], 'bottom' => [], 'costume' => []);
+               $items = $json;
+                foreach($items as $item)
+                {
+                    switch($item->Position)
+                    {
+                        case ItemPosition::ACCESSORY_POSITION_SHIELD:
+                        case ItemPosition::ACCESSORY_POSITION_AMULET:      
+                        case ItemPosition::INVENTORY_POSITION_RING_LEFT:
+                        case ItemPosition::ACCESSORY_POSITION_CAPE:
+                        case ItemPosition::ACCESSORY_POSITION_BOOTS:
+                            array_push($itemsall['left'], $item);
+                        break;
+                        case ItemPosition::ACCESSORY_POSITION_WEAPON:
+                        case ItemPosition::ACCESSORY_POSITION_HAT:      
+                        case ItemPosition::INVENTORY_POSITION_RING_RIGHT:
+                        case ItemPosition::ACCESSORY_POSITION_BELT:
+                        case ItemPosition::ACCESSORY_POSITION_PETS:
+                            array_push($itemsall['right'], $item);
+                        break;
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_1:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_2:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_3:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_4:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_5:
+                        case ItemPosition::INVENTORY_POSITION_DOFUS_6:
+                            array_push($itemsall['bottom'], $item);
+                        break;
+                        case ItemPosition::INVENTORY_POSITION_COSTUME:
+                            array_push($itemsall['costume'], $item);
+                        break;
+                        default:
+                        break;
+                    }
+                }
+                return $itemsall;
+        });
+        return $itemsall;
+    }
+
+    public function getInventory($json)
+    {
+        $items = Cache::remember('character_inventory_'.$this->server.'_'.$this->Id, 10, function () use($json) {
+               $items = [];
+               $allitems = $json;
+                foreach($allitems as $item)
+                {
+                    switch($item->Position)
+                    {
+                        case ItemPosition::INVENTORY_POSITION_NOT_EQUIPED:
+                            array_push($items, $item);
+                        break;
+                        default:
+                        break;
+                    }
+                }
+                return $items;
+        });
+        return $items;
     }
 }

@@ -37,6 +37,8 @@ class AccountController extends Controller
 {
     const SALT_LENGTH   = 8;
     const TICKET_LENGTH = 32;
+    const TRANSACTIONS_PER_PAGE = 10;
+    const VOTES_PER_PAGE = 10;
 
     public function register()
     {
@@ -568,4 +570,40 @@ class AccountController extends Controller
             abort(404);
         }
     }
+    
+    public function purchases(Request $request)
+    {
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
+        if (!is_numeric($page)) {
+            abort(404);
+        }
+        
+        $transactions = Cache::remember('account_transactions_page_' . $page, 15, function () {
+            return Auth::user()->transactions()->paginate(self::TRANSACTIONS_PER_PAGE);
+        });
+
+        return view ('account/purchases', compact('transactions'));
+    } 
+
+    public function votes(Request $request)
+    {
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
+        if (!is_numeric($page)) {
+            abort(404);
+        }
+        
+        $votes = Cache::remember('account_votes_page_' . $page, 15, function () {
+            return Auth::user()->votes()->paginate(self::VOTES_PER_PAGE);
+        });
+
+        return view ('account.votes', compact('votes'));
+    } 
+
+    public function market(Request $request)
+    {
+        $mcInSell = Auth::user()->marketCharacters()->inSell()->get();
+        $mcSold = Auth::user()->marketCharacters()->sold()->get();
+
+        return view ('account.market', compact('mcInSell', 'mcSold'));
+    } 
 }

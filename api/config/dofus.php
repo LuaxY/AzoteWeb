@@ -49,6 +49,8 @@ return [
 
     'shop_maintenance' => env('SHOP_MAINTENANCE', true),
 
+    'market_maintenance' => env('MARKET_MAINTENANCE', true),
+
     'download'     => [
         'mac' => 'http://dl.azote.us/Azote_Setup.dmg',
         'win' => 'http://dl.azote.us/Azote_Setup.exe',
@@ -161,6 +163,12 @@ return [
 
     'support'     => [
         'minutes_between_actions'  => '10',
+    ],
+
+    'characters_market'     => [
+        'minimal_price'  => '1000',
+        'procent_taxe'   => '5',
+        'maximum_per_user' => '4'
     ]
 
 ];

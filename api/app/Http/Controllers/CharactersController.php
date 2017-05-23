@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Account;
 use App\Character;
+use Carbon\Carbon;
 use App\Exceptions\GenericException;
 use App\RecoverCharacter;
 use App\WorldCharacter;
@@ -15,96 +16,107 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use App\ItemPosition;
 use App\Services\Stump;
-
+use App\MarketCharacter;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 class CharactersController extends Controller
 {
     public function view(Request $request, $server, $characterId, $characterName)
     {
-        if (!World::isServerExist($server)) {
-            throw new GenericException('invalid_server', $server);
-        }
-
-        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 120, function () use($server, $characterId, $characterName) {
-               return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
-        });
-        if(!$character)
-            abort(404);
+        $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
         
-        $character->server = $server;
-        return view('gameaccount.character.view', compact('character', 'server'));
+        $marketCharacter = null;
+        if(MarketCharacter::inSell($character))
+            $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
+
+        $user = $character->user();
+        if(!$user)
+             abort(404);
+        $settings = $user->getCharactersSettings($server,$characterId);
+
+        return view('gameaccount.character.view', compact('character', 'server', 'marketCharacter', 'settings'));
     }
 
     public function caracteristics(Request $request, $server, $characterId, $characterName)
     {
-        if (!World::isServerExist($server)) {
-            throw new GenericException('invalid_server', $server);
-        }
-
-        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 120, function () use($server, $characterId, $characterName) {
-               return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
-        });
-        if(!$character)
-            abort(404);
+         $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
         
-        $character->server = $server;
+        $marketCharacter = null;
+        if(MarketCharacter::inSell($character))
+            $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
+        
+        $user = $character->user();
+        if(!$user)
+             abort(404);
+        $settings = $user->getCharactersSettings($server,$characterId);
 
-        $json = Cache::remember('character_inventory_json_'.$server.'_'.$characterId, 10, function () use ($server, $character){
-            $json = Stump::get($server, "/Character/$character->Id/Inventory");
-            //$json = file_get_contents('uploads/tests/api.json');
-            return $json;
-        });
+        $json = $character->getJsonInventoryEquiped();
+
         if(!$json)
         {
           $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage impossible actuellement"]);
           return redirect()->back();
         }
 
-        $itemsall = Cache::remember('character_inventory_'.$server.'_'.$characterId, 10, function () use($json,$server, $character) {
-               $itemsall = array('left' => [], 'right' => [], 'bottom' => []);
-               $items = json_decode($json);
-                foreach($items as $item)
-                {
-                    switch($item->Position)
-                    {
-                        case ItemPosition::ACCESSORY_POSITION_SHIELD:
-                        case ItemPosition::ACCESSORY_POSITION_AMULET:      
-                        case ItemPosition::INVENTORY_POSITION_RING_LEFT:
-                        case ItemPosition::ACCESSORY_POSITION_CAPE:
-                        case ItemPosition::ACCESSORY_POSITION_BOOTS:
-                            array_push($itemsall['left'], $item);
-                        break;
-                        case ItemPosition::ACCESSORY_POSITION_WEAPON:
-                        case ItemPosition::ACCESSORY_POSITION_HAT:      
-                        case ItemPosition::INVENTORY_POSITION_RING_RIGHT:
-                        case ItemPosition::ACCESSORY_POSITION_BELT:
-                        case ItemPosition::ACCESSORY_POSITION_PETS:
-                            array_push($itemsall['right'], $item);
-                        break;
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_1:
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_2:
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_3:
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_4:
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_5:
-                        case ItemPosition::INVENTORY_POSITION_DOFUS_6:
-                            array_push($itemsall['bottom'], $item);
-                        break;
-                        default:
-                        break;
-                    }
-                }
-                return $itemsall;
-        });
+        $itemsall = $character->getEquipment($json);
        
         $itemsleft = collect($itemsall['left']);
         $itemsright = collect($itemsall['right']);
         $itemsbottom = collect($itemsall['bottom']);
+        $costume = collect($itemsall['costume']);
 
         $spells = Cache::remember('character_spells'.$server.'_'.$characterId, 10, function () use($character){
             return $character->spells()->get();
         });
 
-        return view('gameaccount.character.caracteristics', compact('json', 'character', 'server', 'spells', 'itemsleft', 'itemsright', 'itemsbottom'));
+        return view('gameaccount.character.caracteristics', compact('json', 'character', 'server', 'spells', 'itemsleft', 'itemsright', 'itemsbottom', 'costume', 'marketCharacter', 'settings'));
     }
+    
+    public function inventory(Request $request, $server, $characterId, $characterName)
+    {
+        $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
+        
+        $marketCharacter = null;
+        if(MarketCharacter::inSell($character))
+            $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
+        
+        $user = $character->user();
+        if(!$user)
+             abort(404);
+        $settings = $user->getCharactersSettings($server,$characterId);
+
+        $idols =  $character->getJsonInventoryByItemType(178);
+        $json =  $character->getJsonInventory();
+
+        if(is_null($json) || is_null($idols))
+        {
+          $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage impossible actuellement"]);
+          return redirect()->back();
+        }
+        $itemsall = $character->getInventory($json);
+        $itemscollection = collect($itemsall);
+        $items = $this->collection_paginate($request, $itemscollection, 45);
+        
+        return view('gameaccount.character.inventory', compact('character', 'server', 'marketCharacter', 'idols', 'items', 'settings'));
+    }
+
+    function collection_paginate($request, $items, $per_page)
+    {
+        $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
+        if (!is_numeric($page)) {
+            abort(404);
+        }
+        $offset = ($page * $per_page) - $per_page;
+
+        return new LengthAwarePaginator(
+            $items->forPage($page, $per_page)->values(),
+            $items->count(),
+            $per_page,
+            Paginator::resolveCurrentPage(),
+            ['path' => Paginator::resolveCurrentPath()]
+        );
+    }
+
 
     public function recover(Request $request, $server, $accountId, $characterId)
     {
@@ -126,7 +138,8 @@ class CharactersController extends Controller
             $newname = $request->input('nickname');
             $oldname = $character->Name;
 
-            $validator = Validator::make(['price_amount' => $price, 'nickname' => $newname], ['price_amount' => 'required|integer|min:1|max:' . Auth::user()->points, 'nickname' => ['required', 'regex:/^[A-Z][a-z]{2,9}(?:-[A-Za-z][a-z]{2,9}|[a-z]{1,10})$/']]);
+            $validator = Validator::make(['price_amount' => $price, 'nickname' => $newname], 
+            ['price_amount' => 'required|integer|min:1|max:' . Auth::user()->points, 'nickname' => ['required', 'regex:/^[A-Z][a-z]{2,9}(?:-[A-Za-z][a-z]{2,9}|[a-z]{1,10})$/']]);
 
             if ($validator->fails()) {
                 if ($validator->errors()->has('price_amount')) {
@@ -168,5 +181,128 @@ class CharactersController extends Controller
 
         $character = Character::on($server . '_world')->where('Id', $characterId)->first();
         return view('gameaccount.recover', compact('account', 'character'));
+    }
+
+    private function urlValidationAndGetCharacter($server, $characterId, $characterName)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        $character = Cache::remember('character_view_'.$server.'_'.$characterId, 120, function () use($server, $characterId, $characterName) {
+               return Character::on($server . '_world')->where('Id', $characterId)->where('Name', $characterName)->first();
+        });
+        if(!$character)
+            abort(404);
+        if((!MarketCharacter::inSell($character)) && (($character->level() < 20 && $character->PrestigeRank < 1) || $character->LastUsage < Carbon::today()->subMonths(6)->toDateString()))
+            abort(404);
+
+        $character->server = $server;
+        
+        return $character;
+    }
+
+    public function settings(Request $request, $server, $characterId, $characterName)
+    {
+        $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
+        $settings = null;
+        $json = json_decode(Auth::user()->settings);
+        if(!$json)
+            $json = new \stdClass;
+        if(@!isset($json->characters))
+            $json->characters = [];
+
+        $collect = collect($json->characters);
+        $templateToCheck = $collect->where('identifier', $characterId.'_'.$server)->first();
+
+        if(!Auth::user()->isCharacterOwnedByMe($server,$characterId, true) && !MarketCharacter::inSell($character))
+        { 
+            abort(404);
+        }
+
+            if($request->isMethod('post'))
+            {
+                $rules = [
+                'show_alignment' => 'sometimes|boolean',
+                'show_ladder' => 'sometimes|boolean',
+                'show_equipments' => 'sometimes|boolean',
+                'show_spells' => 'sometimes|boolean',
+                'show_caracteristics' => 'sometimes|boolean',
+                'show_inventory' => 'sometimes|boolean',
+                'show_idols' => 'sometimes|boolean',
+                'history' => 'required|string|nullable|between:5,300',
+                ];
+
+                $validator = Validator::make($request->all(), $rules);
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+
+                if($templateToCheck)
+                {
+                    $templateToCheck->show_alignment = $request->show_alignment ? $request->show_alignment : 0;
+                    $templateToCheck->show_ladder = $request->show_ladder ? $request->show_ladder : 0;
+                    $templateToCheck->show_equipments = $request->show_equipments ? $request->show_equipments : 0;
+                    $templateToCheck->show_spells = $request->show_spells ? $request->show_spells : 0;
+                    $templateToCheck->show_caracteristics = $request->show_caracteristics ? $request->show_caracteristics : 0;
+                    $templateToCheck->show_inventory = $request->show_inventory ? $request->show_inventory : 0;
+                    $templateToCheck->show_idols = $request->show_idols ? $request->show_idols : 0;
+                    $templateToCheck->history = $request->history;
+                    $templateToCheck->historyDate = Carbon::now()->format('d/m/Y');
+                }
+                else
+                {
+                    $new = new \stdClass;
+                    $new->identifier = $characterId.'_'.$server;
+                    $new->show_alignment = $request->show_alignment ? $request->show_alignment : 0;
+                    $new->show_ladder = $request->show_ladder ? $request->show_ladder : 0;
+                    $new->show_equipments = $request->show_equipments ? $request->show_equipments : 0;
+                    $new->show_spells = $request->show_spells ? $request->show_spells : 0;
+                    $new->show_caracteristics = $request->show_caracteristics ? $request->show_caracteristics : 0;
+                    $new->show_inventory = $request->show_inventory ? $request->show_inventory : 0;
+                    $new->show_idols = $request->show_idols ? $request->show_idols : 0;
+                    $new->history = $request->history;
+                    $new->historyDate = Carbon::now()->format('d/m/Y');
+                                
+                    array_push($json->characters, $new);
+                }
+            
+                Auth::user()->settings = json_encode($json);
+                Auth::user()->save();
+
+                $request->session()->flash('notify', ['type' => 'success', 'message' => "Vos paramètres ont été mis à jour"]);
+                return redirect()->route('characters.view', [$server,$characterId,$characterName]);
+            }
+            else
+            {
+                if($templateToCheck)
+                {
+                    $settings = $templateToCheck;
+                }
+                else
+                {
+                    $new = new \stdClass;
+                    $new->identifier = $characterId.'_'.$server;
+                    $new->show_alignment = 1;
+                    $new->show_ladder = 1;
+                    $new->show_equipments = 1;
+                    $new->show_spells = 1;
+                    $new->show_caracteristics = 1;
+                    $new->show_inventory = 1;
+                    $new->show_idols = 1;
+                    $new->history = null;
+                    $new->historyDate = null;
+
+                    array_push($json->characters, $new);
+
+                    Auth::user()->settings = json_encode($json);
+                    Auth::user()->save();
+
+                    $settings = $new;
+
+                }
+                return view('gameaccount.character.settings', compact('character', 'server', 'settings'));
+            }
+
     }
 }

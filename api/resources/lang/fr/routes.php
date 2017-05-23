@@ -30,6 +30,12 @@ return [
 
     'account.profile' => 'compte/profil',
 
+    'account.purchases' => 'compte/achats',
+
+    'account.votes' => 'compte/votes',
+
+    'account.market' => 'compte/marche',
+
     'account.login' => 'compte/connexion',
 
     'account.logout' => 'compte/deconnexion',
@@ -72,6 +78,10 @@ return [
 
     'characters.caracteristics' => 'pages-persos/{server}/{characterId}-{characterName}/caracteristiques',
 
+    'characters.inventory' => 'pages-persos/{server}/{characterId}-{characterName}/inventaire',
+
+    'characters.settings' => 'pages-persos/{server}/{characterId}-{characterName}/gestion',
+
     'characters.recover' => 'personnages/{server}/{accountId}/{characterId}/recuperer',
 
     /** Guilds **/
@@ -84,7 +94,13 @@ return [
 
     'shop.index' => 'boutique',
 
-    'shop.market' => 'boutique/market',
+    'shop.market' => 'boutique/marche',
+
+    'shop.market.sell' => 'boutique/marche/vendre',
+
+    'shop.market.remove' => 'boutique/marche/retirer',
+
+    'shop.market.buy' => 'boutique/marche/{id}',
 
     'shop.payment.choose-country' => 'boutique/paiement/choix-pays',
 

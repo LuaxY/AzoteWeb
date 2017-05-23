@@ -73,6 +73,41 @@
                         <!--<a class="ak-nav-notifications ak-button-modal">
                             <span class="label label-danger">0</span>
                         </a>-->
+                        <a class="ak-button-modal ak-nav-characters">
+                            <span>{{count(Auth::user()->characters(true))}}</span>
+                        </a>
+                        <script type="application/json">{"target":".ak-box-characters"}</script>
+                        <div class="ak-idbar-box ak-box-characters">
+                            <div class="ak-box-title">
+                                Mes personnages <span></span>
+                                <div class="ak-tooltip hidden ak-tooltip-white"> 
+                                Pour apparaître et avoir une page perso, votre personnage doit être niveau 20 minimum et s'être connecté en jeu il y a moins de 6 mois. 
+                                </div>
+                                <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-white"}}}</script>
+                            </div>
+                                    <div class="ak-characters-list">
+                                        @foreach(Auth::user()->characters(true) as $character)
+                                                <div class="ak-character">
+                                                    <div class="ak-character-img">
+                                                        <a href="{{ URL::route('characters.view', [$character->server, $character->Id, $character->Name]) }}"><div class="ak-entitylook" alt="" style="background:url({{ DofusForge::player($character, $character->server, 'face', 2, 55, 55) }}) top left;width:55px;height:55px"></div></a>
+                                                    </div>
+                                                    <div class="ak-character-infos">
+                                                        <div class="ak-name"><a href="{{ URL::route('characters.view', [$character->server, $character->Id, $character->Name]) }}">{{$character->Name}}</a></div>
+                                                        <div class="ak-level">{{$character->classe()}} - Niv : {{$character->level()}} @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}}@endif</div>
+                                                        <div class="ak-server">{{ucfirst($character->server)}}</div>
+                                                    </div>
+                                                    @if($character->guild())
+                                                    <div class="ak-character-infos ak-emblem">
+                                                        <a href="{{ route('guild.view', [$character->server, $character->guild($character->server)->Id, $character->guild($character->server)->Name])}}"><div class="ak-emblem" style="background:url({{ URL::asset($character->guild()->emblem(40,40)) }}) center center;width:40px;height:40px"></div></a>
+                                                    </div>
+                                                    @endif
+                                                    <div class="ak-character-infos ak-emblem">
+                                                        <a href="{{route('shop.market.sell')}}"><span class="ak-tooltip ak-icon-big ak-sell" style="width:40px; height:40px;"></span><script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"Vendre"},"style":{"classes":"ak-tooltip-content"}},"forceOnTouch":true}</script></a>
+                                                    </div>
+                                                </div>
+                                        @endforeach
+                                    </div>
+                        </div>
                         <div class="ak-button-modal ak-nav-logged">
                             <div class="ak-logged-account">
                                 <span class="ak-nickname">{{ Auth::user()->pseudo }}</span>

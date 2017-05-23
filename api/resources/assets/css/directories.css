@@ -32,6 +32,16 @@ background-image:url("../imgs/assets/sprite_zoom.png");
 background-repeat:no-repeat;
 }
 
+.ak-icon-specific.ak-settings
+{
+background-image:url("../imgs/assets/settings.png");
+background-repeat:no-repeat;
+background-size: 25px auto;
+display: inline-block;
+width: 25px;
+height: 25px;
+}
+
 .ak-icon-big {
 background-size:65px auto;
 }
@@ -57,9 +67,14 @@ background-position:0 -7px;
     background-position: 0 -42px;
      background-size: 30px auto
 }
-.ak-icon-tiny.ak-cart {
+.ak-icon-tiny.ak-cart,.ak-icon-tiny.ak-trashcan {
     background-image: url("../imgs/assets/sprite_market.png");
     background-repeat:no-repeat;
+}
+
+.ak-icon-tiny.ak-trashcan {
+    background-size: auto auto;
+    background-position: -12px -703px
 }
 
 

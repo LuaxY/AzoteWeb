@@ -64,6 +64,24 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'         => 'profile'
     ]);
 
+    Route::get(Lang::get('routes.account.purchases'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@purchases',
+        'as'         => 'history.purchases'
+    ]);
+
+    Route::get(Lang::get('routes.account.votes'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@votes',
+        'as'         => 'history.votes'
+    ]);
+
+    Route::get(Lang::get('routes.account.market'), [
+        'middleware' => 'auth',
+        'uses'       => 'AccountController@market',
+        'as'         => 'history.market'
+    ]);
+
     Route::get(Lang::get('routes.account.activation'), [
         'middleware' => 'guest',
         'uses'       => 'AccountController@activation',
@@ -186,6 +204,24 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'         => 'characters.caracteristics'
     ]);
 
+    Route::get(Lang::get('routes.characters.inventory'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@inventory',
+        'as'         => 'characters.inventory'
+    ]);
+
+    Route::get(Lang::get('routes.characters.settings'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@settings',
+        'as'         => 'characters.settings'
+    ]);
+
+    Route::post(Lang::get('routes.characters.settings'), [
+        'middleware' => 'auth',
+        'uses'       => 'CharactersController@settings',
+        'as'         => 'characters.settings'
+    ]);
+
     Route::any(Lang::get('routes.characters.recover'), [
         'middleware' => 'auth',
         'uses'       => 'CharactersController@recover',
@@ -235,11 +271,41 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
     ]);
     
     Route::get(Lang::get('routes.shop.market'), [
-        'middleware' => ['auth'],
+        'middleware' => ['staff', 'marketMaintenance'],
         'uses'       => 'ShopController@market',
         'as'         => 'shop.market'
     ]);
-    
+
+    Route::get(Lang::get('routes.shop.market.sell'), [
+        'middleware' => ['staff', 'marketMaintenance'],
+        'uses'       => 'ShopController@marketSell',
+        'as'         => 'shop.market.sell'
+    ]);
+
+    Route::post(Lang::get('routes.shop.market.sell'), [
+        'middleware' => ['staff', 'marketMaintenance'],
+        'uses'       => 'ShopController@marketSell',
+        'as'         => 'shop.market.sell'
+    ]);
+
+    Route::delete(Lang::get('routes.shop.market.remove'), [
+        'middleware' => ['staff', 'marketMaintenance'],
+        'uses'       => 'ShopController@marketRemove',
+        'as'         => 'shop.market.remove'
+    ]);
+
+    Route::get(Lang::get('routes.shop.market.buy'), [
+        'middleware' => ['staff', 'marketMaintenance'],
+        'uses'       => 'ShopController@marketBuy',
+        'as'         => 'shop.market.buy'
+    ]);
+
+    Route::post(Lang::get('routes.shop.market.buy'), [
+        'middleware' => ['staff', 'marketMaintenance'],
+        'uses'       => 'ShopController@marketBuy',
+        'as'         => 'shop.market.buy'
+    ]);
+
     Route::get(Lang::get('routes.shop.payment.choose-country'), [
         'middleware' => ['auth', 'ShopMaintenance'],
         'uses'       => 'PaymentController@country',
@@ -534,6 +600,12 @@ Route::group(['prefix' => 'forge', 'domain' => Config::get('dofus.domain.main')]
 
 Route::group(['prefix' => 'linker', 'domain' => Config::get('dofus.domain.main')], function () {
     Route::get('/{request}', 'LinkerController@get')->where('request', '(.*)')->name('linker.get');
+});
+
+/* ============ Utils ============ */
+
+Route::group(['prefix' => 'utils', 'domain' => Config::get('dofus.domain.main')], function () {
+    Route::get('/{server}/{name}', 'UtilsController@checkNameAvailability')->where('name', '^[A-Z][a-z]{2,9}(?:-[A-Za-z][a-z]{2,9}|[a-z]{1,10})$')->name('utils.checknameavailability');
 });
 
 /* ============ ADMIN PANEL ============ */

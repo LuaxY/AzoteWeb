@@ -77,7 +77,7 @@
                     <tbody>
                         @foreach($members as $member)
                         <tr class="tr_class">
-                            <td><span class="ak-breed-icon breed{{$member->character($server)->Breed}}_{{$member->character($server)->Sex}}" title="{{$member->character($server)->classe()}}"></span><a href="">{{$member->character($server)->Name}}</a></td>
+                            <td><span class="ak-breed-icon breed{{$member->character($server)->Breed}}_{{$member->character($server)->Sex}}" title="{{$member->character($server)->classe()}}"></span><a href="{{ URL::route('characters.view',[$server, $member->character($server)->Id, $member->character($server)->Name])}}">{{$member->character($server)->Name}}</a></td>
                             <td>{{$member->character($server)->classe()}}</td>
                             <td>{{$member->character($server)->level()}}</td>
                             <td>{{$member->rankName()}}</td>

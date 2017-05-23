@@ -26,10 +26,10 @@
                <a href="{{URL::route('shop.payment.country')}}">
                Ogrines      </a>
             </li>  
-<!--            <li>
+             <li>
                <a href="{{URL::route('shop.market')}}">
                Marché des personnages      </a>
-            </li>-->
+            </li>
          </ul>
       </div>
       <div class="ak-nav-expand-more">
@@ -39,7 +39,7 @@
 </div>
 <div class="ak-carousel ak-carousel-theme-black">
    <div class="ak-carouseltouch"> 
-     <!-- <div class="ak-carousel-hlitem-category">
+     <div class="ak-carousel-hlitem-category">
                 <a class="ak-link-zone" href="{{URL::route('shop.market')}}"></a>
                 <div class="row">
                      <div class="col-md-8 ak-shop-article-background" style="background-image: url('{{URL::asset('imgs/shop/carousel_buy_char.jpg')}}')">
@@ -56,7 +56,7 @@
                         </div>
                      </div>
                 </div> 
-        </div>-->
+        </div>
         <div class="ak-carousel-hlitem-category">
                   <a class="ak-link-zone" href="{{URL::route('shop.payment.country')}}"></a>
                   <div class="row">
@@ -113,7 +113,7 @@
                </div>
             </div>
             <div class="ak-row-break clearfix visible-xs "></div>
-            <div class="col-sm-6 ">
+            <div class="col-sm-3 ">
                <div class="ak-mosaic-item-article ak-mosaic-item">
                   <div class="item">
                      <div class="ak-mosaic-item-illu illu">
@@ -144,12 +144,12 @@
                </div>
             </div>
             <div class="ak-row-break clearfix visible-xs "></div>
-            <!--<div class="col-sm-3 ">
+            <div class="col-sm-3 ">
                <div class="ak-mosaic-item-article ak-mosaic-item">
                   <div class="item">
                      <div class="ak-mosaic-item-illu illu">
                         <a href="{{URL::route('shop.market')}}">
-                        <img class="img-maxresponsive" data-max="200" onerror="this.src='{{URL::asset('imgs/shop/default_200_200.png')}}" src="{{URL::asset('imgs/shop/buy_char_200_200.png')}}">
+                        <img class="img-maxresponsive" data-max="200" onerror="this.src='{{URL::asset('imgs/shop/default_200_200.png')}}'" src="{{URL::asset('imgs/shop/buy_char_200_200.png')}}">
                         </a>
                         <a href="{{URL::route('shop.market')}}">
                         </a>
@@ -166,7 +166,7 @@
                      </div>
                      <div class="ak-item-bottom">
                         <div class="ak-price">
-                           <a href="{{URL::route('shop.market')}}"><span class="ak-display-price"><span class="ak-nobreak">70,00 €</span></span></a>
+                           <a href="{{URL::route('shop.market')}}">minimum <span class="ak-display-price ak-currency-ogr"><span class="ak-nobreak">{{config('dofus.characters_market.minimal_price')}} <span class="ak-icon-small ak-ogrines-icon"></span></span></span></a>
                         </div>
                         <div class="ak-item-actions ak-0-actions">
                         </div>
@@ -174,7 +174,7 @@
                   </div>
                </div>
             </div>
-            <div class="ak-row-break clearfix visible-xs visible-sm visible-md visible-lg "></div>-->
+            <div class="ak-row-break clearfix visible-xs visible-sm visible-md visible-lg "></div>
          </div>
       </div>
    </div>

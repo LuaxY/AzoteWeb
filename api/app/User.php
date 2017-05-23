@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Carbon\Carbon;
 use \Cache;
 use App\Helpers\Utils;
 use App\Security;
@@ -14,6 +14,8 @@ use App\Vote;
 use App\LotteryTicket;
 use App\Shop\ShopStatus;
 use App\SupportTicket;
+use App\WorldCharacter;
+use App\MarketCharacter;
 
 class User extends Authenticatable
 {
@@ -128,39 +130,39 @@ class User extends Authenticatable
             return $accounts;
         }
     }
-
-    public function transactions($take = null)
+    public function characters($minimal = null)
     {
-        $transactions = null;
-
-        if ($take) {
-            $transactions = Cache::remember('transactions_' . $this->id . '_' . $take, 10, function () use ($take) {
-                return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->take($take)->get();
-            });
-        } else {
-            $transactions = Cache::remember('transactions_' . $this->id, 10, function () {
-                return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc')->get();
-            });
-        }
-
-        return $transactions;
+        $characters = Cache::remember('characters_user_'.$this->id.'_'.$minimal, 10, function () use ($minimal) {
+             $characters_array = [];
+            foreach($this->accounts() as $account)
+            {
+                    $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $account->server, WorldCharacter::class, 'AccountId', $account->Id);
+                    foreach ($worldCharacters as $worldCharacter) {
+                            if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
+                                if($minimal)
+                                {
+                                    if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                       array_push($characters_array,$worldCharacter->character());
+                                }
+                                else
+                                    array_push($characters_array,$worldCharacter->character());
+                            }
+                            
+                        
+                    }
+            }
+            return $characters_array;
+        });
+       return $characters;
+    }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
-    public function votes($take = null)
+    public function votes()
     {
-        $votes = null;
-
-        if ($take) {
-            $votes = Cache::remember('votes_' . $this->id . '_' . $take, 10, function () use ($take) {
-                return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->take($take)->get();
-            });
-        } else {
-            $votes = Cache::remember('votes_' . $this->id, 10, function () {
-                return $this->hasMany(Vote::class)->orderBy('created_at', 'desc')->get();
-            });
-        }
-
-        return $votes;
+        return $this->hasMany(Vote::class);
     }
 
     public function gifts($onlyAvailable = false, $server = "")
@@ -205,6 +207,11 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function marketCharacters()
+    {
+        return $this->hasMany(MarketCharacter::class);
     }
 
     public function supportRequests($state)
@@ -252,7 +259,7 @@ class User extends Authenticatable
         $levels = [];
         if (config('dofus.payment.check_level')) { // Check minimum level if asked
             foreach ($this->accounts() as $account) {
-                foreach ($account->characters(false, true) as $character) {
+                foreach ($account->characters(false, false) as $character) {
                     if ($character->level() >= config('dofus.payment.level_for_real')) {
                         array_push($levels, $character->level());
                     }
@@ -350,6 +357,67 @@ class User extends Authenticatable
                     return $settings->preloadtext;
         }
         return "";
+    }
+
+    public function getCharactersSettings($server, $characterId)
+    {
+        $json = json_decode($this->settings);
+        if(!$json)
+            $json = new \stdClass;
+        if(@!isset($json->characters))
+            $json->characters = [];
+
+        $collect = collect($json->characters);
+        $collection = $collect->where('identifier', $characterId.'_'.$server)->first();
+        if($collection)
+            return $collection;
+        else
+        {
+            $new = new \stdClass;
+            $new->show_alignment = 1;
+            $new->show_ladder = 1;
+            $new->show_equipments = 1;
+            $new->show_spells = 1;
+            $new->show_caracteristics = 1;
+            $new->show_inventory = 1;
+            $new->show_idols = 1;
+            $new->history = null;
+            $new->historyDate = null;
+            
+            return $new;
+        }
+    }
+
+    public function isCharacterOwnedByMe($server,$characterId, $minimal = null)
+    {
+        if($minimal)
+            $characters = $this->characters(true);
+        else
+            $characters = $this->characters();
+
+        if($characters)
+        {
+            foreach($characters as $character)
+            {
+                if(($character->Id == $characterId) && ($character->server == $server))
+                    return true;
+            }
+        }
+            return false;
+    }
+
+    public function isAccountOwnedByMe($server,$accountId)
+    {
+        $accounts = $this->accounts($server);
+        if($accounts)
+        {
+            foreach($accounts as $account)
+            {
+                if(($account->Id == $accountId) && ($account->server == $server))
+                    return true;
+            }
+        }
+            return false;
     }
 
 }

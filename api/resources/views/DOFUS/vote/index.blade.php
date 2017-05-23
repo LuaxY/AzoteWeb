@@ -15,7 +15,7 @@
 <div class="ak-container ak-main-center vote-rewards">
     <div class="ak-title-container">
         <h1 class="ak-return-link">
-            <span class="ak-icon-big ak-character"></span></a> Vote pour le serveur
+            <span class="ak-icon-big ak-gift"></span></a> Vote pour le serveur
         </h1>
     </div>
     <div class="ak-infos-general">

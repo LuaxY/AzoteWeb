@@ -87,21 +87,24 @@ class Account extends Model
         }
     }
 
-    public function characters($deleted = null, $nocache = null)
+    public function characters($nocache = null, $minimal = null)
     {
         if (!$nocache) {
-            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id, 10, function () use ($deleted) {
+            $characters = Cache::remember('characters_'.$this->server.'_'.$this->Id.'_'.$minimal, 10, function () use ($minimal) {
                 $characters = [];
                 $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
                 foreach ($worldCharacters as $worldCharacter) {
-                    if ($deleted) {
-                        $characters[] = $worldCharacter->character();
-                    } else {
                         if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
-                            $characters[] = $worldCharacter->character();
+                            if($minimal)
+                            {
+                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                     $characters[] = $worldCharacter->character();
+                            }
+                            else
+                                $characters[] = $worldCharacter->character();
                         }
-                    }
+                    
                 }
                 return $characters;
             });
@@ -110,13 +113,15 @@ class Account extends Model
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
             foreach ($worldCharacters as $worldCharacter) {
-                if ($deleted) {
-                    $characters[] = $worldCharacter->character();
-                } else {
                     if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
-                        $characters[] = $worldCharacter->character();
+                       if($minimal)
+                            {
+                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                     $characters[] = $worldCharacter->character();
+                            }
+                            else
+                                $characters[] = $worldCharacter->character();
                     }
-                }
             }
             return $characters;
         }
@@ -131,7 +136,7 @@ class Account extends Model
                 $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
                 foreach ($worldCharacters as $worldCharacter) {
-                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate) {
+                    if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate && !MarketCharacter::inSell($worldCharacter->character())) {
                         $characters[] = $worldCharacter->character();
                     }
                 }
@@ -143,7 +148,7 @@ class Account extends Model
             $worldCharacters = ModelCustom::hasManyOnOneServer('auth', $this->server, WorldCharacter::class, 'AccountId', $this->Id);
 
             foreach ($worldCharacters as $worldCharacter) {
-                if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate) {
+                if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate && !MarketCharacter::inSell($worldCharacter->character())) {
                     $characters[] = $worldCharacter->character();
                 }
             }
@@ -242,5 +247,10 @@ class Account extends Model
     public function user()
     {
         return User::where('email', $this->Email)->first();
+    }
+
+    public function availableSlots()
+    {
+        return (config('dofus.characters_limit') - count($this->characters(true,false)) > 0) ? (config('dofus.characters_limit') - count($this->characters(true,false))) : 0;
     }
 }

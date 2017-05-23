@@ -37,6 +37,7 @@ class PostController extends Controller
         if (!is_numeric($page)) {
             abort(404);
         }
+        
         $posts = Cache::remember('posts_page_' . $page, self::CACHE_EXPIRE_MINUTES, function () {
             return Post::latest('published_at')->orderBy('id', 'desc')->published()->paginate(self::POSTS_PER_PAGE);
         });

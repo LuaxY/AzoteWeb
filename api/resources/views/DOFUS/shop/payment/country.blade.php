@@ -28,10 +28,10 @@
                <a href="{{URL::route('shop.payment.country')}}">
                Ogrines      </a>
             </li>
-<!--            <li>
+            <li>
                <a href="{{URL::route('shop.market')}}">
                Marché des personnages      </a>
-            </li>-->
+            </li>
          </ul>
       </div>
       <div class="ak-nav-expand-more">

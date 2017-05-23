@@ -36,7 +36,7 @@ class World extends Model
 
         if ($account) {
             $account->server = $server;
-            $characters = $account->characters(1);
+            $characters = $account->characters(true);
 
             if ($characters) {
                 foreach ($characters as $character) {
@@ -55,7 +55,7 @@ class World extends Model
         $account = Account::on($server . '_auth')->where('Id', $accountId)->where('Email', Auth::user()->email)->first();
         if ($account) {
             $account->server = $server;
-            $characters = $account->DeletedCharacters(1);
+            $characters = $account->DeletedCharacters(true);
             if ($characters) {
                 foreach ($characters as $character) {
                     if ($characterId == $character->Id) {

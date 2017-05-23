@@ -32,13 +32,24 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('serverarray', function ($attribute, $value, $parameters)
          {
             $result = true;
-            foreach ($value as $v) {
-                if (!in_array($v, config('dofus.servers'))) {
-                    $result = false;
+            if(is_array($value))
+            {
+                foreach ($value as $v) {
+                    if (!in_array($v, config('dofus.servers'))) {
+                        $result = false;
+                    }
                 }
             }
+            else
+            {
+                if (!in_array($value, config('dofus.servers'))) {
+                        $result = false;
+                    }
+            }
+
             return $result;
         });
+        
 
         Validator::extend('sexarray', function ($attribute, $value, $parameters)
          {

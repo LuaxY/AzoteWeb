@@ -14,7 +14,7 @@
 @section('content')
 <div id="ak-filters-move-target" class="ak-filters-move-target"></div><a id="list" class="ak-anchor"></a>
 <div class="ak-title-container">
-    <h1><span class="ak-icon-big ak-shop"></span> Marché des personnages</h1>
+    <h1><span class="ak-icon-big ak-character"></span> Marché des personnages</h1>
 </div>
 <div class="ak-page-menu ak-glue">
    <nav class="ak-nav-expand ak-expanded">
@@ -40,6 +40,9 @@
    </nav>
 </div>
 <div class="ak-container ak-panel ak-nocontentpadding">
+    <div class="text-center" style="padding-top:10px">
+    <a href="{{URL::route('shop.market.sell')}}"><button type="button" role="button" class="btn btn-lg btn-info">Vendre un personnage</button></a>              
+    </div>
     @if($market_characters->total() == 0)
         <div class="ak-panel-content">
                 <div class="ak-list-options ak-listoptions-actions ak-ajaxloader" data-target="div.main">
@@ -49,8 +52,7 @@
                             <img src="{{URL::asset('imgs/assets/no-result.png')}}" class="img-max-responsive">
                             <div><br>
                                 <strong>Aucun</strong> élément ne correspond à vos critères.<br>
-                                Pour apparaitre dans le marché des personnages, le joueur doit avoir mis le personnage en vente<br>
-                                et attendre 30 minutes pour que la liste soit mise à jour. 
+                                Il est possible que la liste mette 30 minutes à se mettre à jour.<br>
                             </div>
                             </div>
                         </div>
@@ -103,8 +105,9 @@
                </tr>
             </thead>
             <tbody>
+                
                 @foreach($market_characters as $market)
-                <tr class="ak-bg-odd">
+                <tr class="ak-bg-odd" id="{{$market->id}}">
                     <td class="ak-ladder-avatar ak-valign-top">
                         <div class="ak-entitylook" alt="{{$market->Name}}" style="background:url({{DofusForge::player($market->character(), $market->character()->server, 'face', 1, 48, 48)}}) top left;width:48px;height:48px"></div>
                     </td>
@@ -117,7 +120,21 @@
                     <td>{{Utils::format_price($market->ogrines)}} <span class="ak-icon-small ak-ogrines-icon"></span></td>
                     <td>
                     <a target="_blank" href="{{ URL::route('characters.view',[$market->character()->server, $market->character_id, $market->character()->Name])}}"><span class="ak-icon-tiny ak-filter ak-tooltip" title="Consulter"></span></a>
-                    <a href=""><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
+                    @if(Auth::user()->id != $market->user_id)
+                        @if(Auth::user()->points < $market->ogrines)
+                        <a class="ak-tooltip"><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
+                        <script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"<p>Votre réserve d'Ogrines est insuffisante pour faire cet achat: Il vous manque {{(int)ceil($market->ogrines - Auth::user()->points)}} Ogrines.<\/p><a href=\"{{URL::route('shop.payment.country')}}\" class=\"btn btn-primary\">Acheter des Ogrines<\/a>"},"style":{"classes":"ak-tooltip-white-shop"},"position":{"my":"bottom center","at":"top center","adjust":{"scroll":false}},"show":{"event":"click"},"hide":{"fixed":true,"delay":400}},"forceOnTouch":true}</script>                      
+                        @else
+                        <a href="{{route('shop.market.buy',$market->id)}}"><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
+                        @endif
+                    @else
+                    <a href="javascript:void(0)"><span class="ak-icon-tiny ak-trashcan ak-tooltip" title="Retirer"></span></a>
+                    <div class="ak-tooltip hide" style="display: none;">
+                        <p>Êtes-vous sur de vouloir retirer votre personnage de la vente ?</p>      
+                            <a data-id="{{$market->id}}" class="removelink btn btn-primary btn-sm">Confirmer</a>
+                    </div>
+                    <script type="application/json">{"forceOnTouch":true,"tooltip":{"show":{"event":"click"},"style":{"classes":"ak-tooltip-white-shop"},"hide":{"delay":300,"fixed":true}}}</script>
+                    @endif
                     </td>
                 </tr>
                 @endforeach
@@ -137,3 +154,49 @@
    @endif
 </div>
 @stop
+@section('bottom')
+<script>
+    var $ = require('jquery');
+                    
+                    $('body').on('click', '.removelink', function () {
+                        // Find ID of the post
+                        var id = $(this).data('id');
+                        $(this).attr('disabled', true).removeClass('removelink');
+                        // Some variables
+                        var url_market_base = '{{ route('shop.market')}}';
+                        var token = '{{ Session::token() }}';
+
+                        $.ajax({
+                                method: 'DELETE',
+                                url: ''+url_market_base+'/retirer',
+                                dataType: 'json',
+                                data: { _token: token, marketid: id},
+
+                                success: function () {
+                                    $('#'+ id +'').fadeOut();
+                                    toastr.success('Votre personnage a été retiré de la vente et restauré sur votre compte de jeu');
+                                },
+
+                                error: function(jqXhr, json, errorThrown) {
+                                    var errors = jqXhr.responseJSON;
+                                    var errorsHtml;
+                                    if(errors)
+                                    {
+                                        errorsHtml= '';
+                                        $.each( errors, function( key, value ) {
+                                            errorsHtml += '<li>' + value[0] + '</li>';
+                                        });
+                                    }
+                                    else
+                                    {
+                                        errorsHtml = 'Unknown error';
+                                    }
+                                    $(this).attr('disabled', false).addClass('removelink');
+                                    toastr.error(errorsHtml);
+                                }
+                        });
+                    });
+
+
+</script>
+@endsection

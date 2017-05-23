@@ -9,12 +9,15 @@ use App\Character;
 
 class WorldCharacter extends Model
 {
-    protected $primaryKey = 'Id';
+    protected $primaryKey = 'CharacterId';
+
 
     protected $table = 'worlds_characters';
 
     public $server;
 
+    public $timestamps = false;
+    
     public function character()
     {
         return ModelCustom::hasOneOnOneServer('world', $this->server, Character::class, 'Id', $this->CharacterId);

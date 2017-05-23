@@ -167,7 +167,7 @@ function(e) {
         return !0
     }), t.widget("ankama.ak_simpleform", t.ankama.widget, {
         options: {
-            initSelector: ".ak-simpleform",
+            initSelector: ".ak-simpleform-nonused",
             helpPopupBtnCls: "ak-btn-popup",
             server: {
                 xhrFields: {

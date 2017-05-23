@@ -16,16 +16,42 @@
    <div class="ak-title-container ak-backlink">
       <h1><span class="ak-icon-big ak-character"></span></a>{{$character->Name}}</h1>
    </div>
-   <div class="ak-page-menu">
-      <nav class="ak-nav-expand ">
-         <div class="ak-nav-expand-container">
-            <ul class="ak-nav-links ak-nav-expand-links">
-               <li class="on"><a href="{{route('characters.view', [$server, $character->Id, $character->Name])}}">Profil</a></li>
-               <li><a href="{{route('characters.caracteristics', [$server, $character->Id, $character->Name])}}">Caractéristiques</a></li>
-            </ul>
-         </div>
-      </nav>
+   @include('gameaccount.character.nav.topnav')
+   @if($marketCharacter)
+   <div class="ak-container ak-panel-stack ak-directories ak-glue" style="margin-bottom:12px;">
+    <div class="ak-container ak-panel ak-success-content">        
+        <div class="ak-panel-title">
+              <span class="ak-panel-title-icon"></span>Marché des personnages            
+        </div>
+        <div class="ak-panel-content">
+            <div>
+            <h3 class="text-center text-success">{{$character->Name}} est en vente sur le <a style="color:#337ab7;" href="{{URL::route('shop.market')}}">marché des personnages</a> !</h3>
+                <div class="ak-character-score">
+                    <div class="ak-character-score-layer">
+                        <span class="ak-icon-big ak-ogrines-icon"></span>
+                        <span class="ak-score-text">{{Utils::format_price($marketCharacter->ogrines)}}</span>
+                    </div>
+                </div>
+                <div class="text-center ak-points-block-container">
+                    <div class="ak-points-block ak-success-category-0">
+                    @if(Auth::user()->id != $marketCharacter->user_id)
+                        @if(Auth::user()->points < $marketCharacter->ogrines)
+                        <a class="btn btn-xxl btn-info ak-tooltip">Acheter</a>
+                        <script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"<p>Votre réserve d'Ogrines est insuffisante pour faire cet achat: Il vous manque {{(int)ceil($marketCharacter->ogrines - Auth::user()->points)}} Ogrines.<\/p><a href=\"{{URL::route('shop.payment.country')}}\" class=\"btn btn-primary\">Acheter des Ogrines<\/a>"},"style":{"classes":"ak-tooltip-white-shop"},"position":{"my":"bottom center","at":"top center","adjust":{"scroll":false}},"show":{"event":"click"},"hide":{"fixed":true,"delay":400}},"forceOnTouch":true}</script>
+                        @else
+                        <a class="btn btn-xxl btn-info" href="{{route('shop.market.buy',$marketCharacter->id)}}">Acheter</a>
+                        @endif
+                    @else
+                        <a class="btn btn-xxl btn-info ak-tooltip">Acheter</a>
+                        <script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"<p>Vous ne pouvez pas acheter votre propre personnage.<\/p>"},"style":{"classes":"ak-tooltip-white-shop"},"position":{"my":"bottom center","at":"top center","adjust":{"scroll":false}},"show":{"event":"click"},"hide":{"fixed":true,"delay":400}},"forceOnTouch":true}</script> 
+                    @endif               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
    </div>
+   @endif
    <div class="ak-container ak-panel ak-nocontentpadding">
       <div class="ak-panel-content">
          <div class="ak-character-banner">
@@ -65,6 +91,12 @@
                 <div class="ak-directories-property ak-directories-property-creation-date">
                     <span class="ak-directories-creation-date">Création : Le {{$character->CreationDate->format('d/m/Y')}}</span>
                 </div>
+                 @if(Auth::user()->id == $character->user()->id)
+                <div class="pull-right" style="margin-top:7px;">
+                    <a href="{{route('characters.settings', [$server,$character->Id,$character->Name])}}"><span class="ak-icon-specific ak-settings ak-tooltip" title="Paramètres"></span>
+                    </a>
+                </div>
+                @endif
             </div>
          </div>
       </div>
@@ -88,6 +120,7 @@
                </div>
             </div>
             @endif
+            @if($settings->show_alignment)
             <div class="ak-container ak-panel large ak-infos-alignement ak-{{$character->alignment()->sideFrench()}}">
                 <div class="ak-panel-title">
                     <span class="ak-panel-title-icon"></span>Alignement
@@ -98,17 +131,20 @@
                     </div>
                 </div>
             </div>
+            @endif
          </div>
       </div>
       <div class="ak-column ak-container col-md-8 ak-directories-right">
          <div class="ak-container ak-panel-stack ak-directories ak-glue">
+             @if($settings->history)
             <div class="ak-container ak-panel ak-character-presentation">
                 <div class="ak-panel-title">
                     <span class="ak-panel-title-icon"></span>Présentation
-                    <span class="ak-presentation-date">Dernière mise à jour le 04/03/2017</span>            
+                    <span class="ak-presentation-date">Dernière mise à jour le @if($settings->historyDate){{$settings->historyDate}}@endif</span>            
                 </div>
-                <div class="ak-panel-content">Ma présentation ici</div>
+                <div class="ak-panel-content">{{$settings->history}}</div>
             </div>
+            @endif
             <div class="ak-container ak-panel">
                <div class="ak-panel-title">
                   <span class="ak-panel-title-icon"></span>Dernière connexion            
@@ -133,6 +169,7 @@
                   </div>
                </div>
             </div>
+            @if($settings->show_ladder)
             <div class="ak-container ak-panel ak-nocontentpadding ak-character-ranking">
                 <div class="ak-panel-title">
                     <span class="ak-panel-title-icon"></span>
@@ -187,7 +224,8 @@
                         </table>
                     </div>
                 </div>
-                </div>
+            </div>
+            @endif
          </div>
       </div>
    </div>

@@ -11,6 +11,7 @@
     <div class="ak-title-container">
         <h1><span class="ak-icon-big ak-bank"></span></a> Mon compte</h1>
     </div>
+    @include('account.nav.topnav')
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
@@ -83,7 +84,7 @@
             <td class="ak-center">{{ count($account->characters()) }}</td>
             <td class="ak-center">
                 <a href="{{ URL::route('gameaccount.view', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-filter ak-tooltip" title="Détails du compte"></span></a>
-                <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon ak-tooltip" title="Transférer des jetons"></span></a>
+                <a href="{{ URL::route('gameaccount.transfert', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-ogrines-icon ak-tooltip" title="Transférer des ogrines"></span></a>
                 <a href="{{ URL::route('gameaccount.gifts', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-gifts-icon ak-tooltip" title="Transférer des cadeaux"></span></a>
                 <a href="{{ URL::route('gameaccount.jetons', [$account->server, $account->Id]) }}"><span class="ak-icon-small ak-votes-icon ak-tooltip" title="Convertir des jetons"></span></a>
             </td>
@@ -94,58 +95,11 @@
     <div class="ak-container ak-panel-stack">
         <div class="ak-container ak-panel ak-glue">
             <div class="ak-panel-content">
-                <div class="">
+                <div class="text-center">
                     <a href="{{ URL::route('gameaccount.create') }}"><button class="btn btn-info btn-lg">Créer un nouveau compte</button></a>
                 </div>
             </div>
-
-            <div class="ak-panel-title">
-                <span class="ak-panel-title-icon"></span> Mes 10 derniers achats
-            </div>
         </div>
     </div>
-
-    <table class="ak-container ak-table">
-        <tr>
-            <th class="ak-center">#</th>
-            <th>Date d'achat</th>
-            <th>Ogrines</th>
-            <th>Code</th>
-            <th>Statut</th>
-        </tr>
-        @foreach (Auth::user()->transactions(10) as $transaction)
-        <tr>
-            <td class="ak-center">{{ $transaction->id }}</td>
-            <td>{!! ucwords(utf8_encode($transaction->created_at->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</td>
-            <td><span class="ak-icon-small ak-ogrines-icon"></span> &nbsp; {{ Utils::format_price($transaction->points) }}</td>
-            <td>{{ $transaction->code }}</td>
-            <td>{{ Utils::transaction_status($transaction->state) }}</td>
-        </tr>
-        @endforeach
-    </table>
-
-    <div class="ak-container ak-panel-stack">
-        <div class="ak-container ak-panel ak-glue">
-            <div class="ak-panel-title">
-                <br>
-                <span class="ak-panel-title-icon"></span> Mes 10 derniers votes
-            </div>
-        </div>
-    </div>
-
-    <table class="ak-container ak-table">
-        <tr>
-            <th></th>
-            <th>Date du vote</th>
-            <th>Jetons</th>
-        </tr>
-        @foreach (Auth::user()->votes(10) as $vote)
-        <tr>
-            <td></td>
-            <td>{!! ucwords(utf8_encode($vote->created_at->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</td>
-            <td>+1 <span class="ak-icon-small ak-votes-icon"></span></td>
-        </tr>
-        @endforeach
-    </table>
 </div>
 @stop

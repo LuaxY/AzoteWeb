@@ -9,6 +9,7 @@
          <div class="ak-level">Niveau {{$item->Template->Level}}</div>
       </div>
    </div>
+   @if(!empty($newEffectArray))
    <div class="ak-encyclo-detail">
       <div class="ak-container ak-tabs-container">
          <ul class="ak-container nav nav-tabs ak-tabs">
@@ -58,4 +59,5 @@
          </div>
       </div>
    </div>
+   @endif
 </div>
