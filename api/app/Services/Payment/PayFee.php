@@ -51,12 +51,12 @@ class PayFee extends Payment
 
         $this->rates->$countryName->$methodName->$palier = $newMethod;
 		
-        $pricesCB = explode('|', config('dofus.payment.recursos.pricesCB'));
+        /*$pricesCB = explode('|', config('dofus.payment.recursos.pricesCB'));
         $pricesPS = explode('|', config('dofus.payment.recursos.pricesPS'));
         $coeffCB  = config('dofus.payment.recursos.coeffCB');
         $coeffPS  = config('dofus.payment.recursos.coeffPS');
 		
-		$cid = config('dofus.payment.recursos.c_sms');
+		$cid = config('dofus.payment.recursos.c');
 		$wmid = config('dofus.payment.recursos.w');
 			
         if ($pricesCB) {
@@ -92,7 +92,7 @@ class PayFee extends Payment
 			}
 		}
 		
-		/*if ($pricesPS) {
+		if ($pricesPS) {
             $methodName = 'paysafecard';
 
             $this->rates->$countryName->$methodName = new \stdClass;
