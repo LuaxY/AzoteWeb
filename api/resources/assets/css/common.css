@@ -21997,6 +21997,15 @@ img.mfp-img {
     font-family: "bebas_neueregular", sans-serif
 }
 
+.ak-forum-post-form .ak-comment-support-submit {
+    margin-right: 12px;
+    margin-right: 1.2rem;
+    margin-top: 5px;
+    margin-top: 0.5rem;
+    float: right;
+    font-family: "bebas_neueregular", sans-serif
+}
+
 .ak-forum-post-form .ak-avatar {
     text-align: center;
     vertical-align: top;
@@ -22036,6 +22045,9 @@ img.mfp-img {
 .ak-forum-post-form .btn.btn-primary.ak-comment-submit {
     background: #2baaff
 }
+.ak-forum-post-form .btn.btn-primary.ak-comment-support-submit {
+    background: #2baaff
+}
 
 .ak-forum-post-form .ak-avatar img {
     border-color: #cdbe9f
@@ -22061,6 +22073,10 @@ img.mfp-img {
         margin-right: 18px;
         margin-right: 1.8rem
     }
+    .ak-forum-post-form .ak-comment-support-submit {
+        margin-right: 18px;
+        margin-right: 1.8rem
+    }
 }
 
 @media all and (min-width: 768px) {
@@ -22070,6 +22086,10 @@ img.mfp-img {
     }
 
     .ak-forum-post-form .ak-comment-submit {
+        margin-right: 55px;
+        margin-right: 5.5rem
+    }
+    .ak-forum-post-form .ak-comment-support-submit {
         margin-right: 55px;
         margin-right: 5.5rem
     }

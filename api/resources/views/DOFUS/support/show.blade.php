@@ -99,7 +99,7 @@
                         </div>
                          @if ($errors->has('message')) <label class="error control-label">{{ $errors->first('message') }}</label> @endif
                     </div>
-                {!! Form::submit('Envoyer', ['class' => 'ak-comment-submit btn btn-primary btn-lg']) !!}
+                {!! Form::submit('Envoyer', ['class' => 'ak-comment-support-submit btn btn-primary btn-lg']) !!}
                 {!! Form::close() !!}
             @endif
         </div>
