@@ -52,7 +52,7 @@ class CharactersController extends Controller
 
         $json = $character->getJsonInventoryEquiped();
 
-        if(!$json)
+        if(is_null($json))
         {
           $request->session()->flash('notify', ['type' => 'warning', 'message' => "Affichage impossible actuellement"]);
           return redirect()->back();
