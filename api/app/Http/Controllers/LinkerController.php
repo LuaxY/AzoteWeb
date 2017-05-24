@@ -34,6 +34,7 @@ class LinkerController extends Controller
         if(!World::isServerExist($server))
              return response()->json([], 402);
         $character = Cache::get('character_view_'.$server.'_'.$characterId);
+        $character->server = $server;
         if(!$character)
             return response()->json([], 402);
         $id = $request->input('id');
@@ -76,6 +77,8 @@ class LinkerController extends Controller
             $collection = collect($itemsall);
         }
         $item = $collection->where('Id', $id)->first();
+        if(!$item)
+             return view('templates.linker_error');
         $effects = $item->Effects;
         $effectArray = [];
         foreach($effects as $k => $effect)

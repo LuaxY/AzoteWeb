@@ -24,7 +24,7 @@ class CharactersController extends Controller
     public function view(Request $request, $server, $characterId, $characterName)
     {
         $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
-        
+        $character->server = $server;
         $marketCharacter = null;
         if(MarketCharacter::inSell($character))
             $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
@@ -40,7 +40,7 @@ class CharactersController extends Controller
     public function caracteristics(Request $request, $server, $characterId, $characterName)
     {
          $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
-        
+        $character->server = $server;
         $marketCharacter = null;
         if(MarketCharacter::inSell($character))
             $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
@@ -75,7 +75,7 @@ class CharactersController extends Controller
     public function inventory(Request $request, $server, $characterId, $characterName)
     {
         $character = $this->urlValidationAndGetCharacter($server,$characterId,$characterName);
-        
+        $character->server = $server;
         $marketCharacter = null;
         if(MarketCharacter::inSell($character))
             $marketCharacter = MarketCharacter::where('character_id', $character->Id)->where('buy_date', null)->first();
