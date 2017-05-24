@@ -210,6 +210,18 @@ class ShopController extends Controller
                 $validator->errors()->add('character', "Ce personnage est invalide");
                 return redirect()->to(app('url')->previous(). '#sellplace')->withErrors($validator)->withInput();
             }
+            // CHECK IF ACCOUNT OF CHARACTER IS NOT JAIL OR BANNED
+            $account = $character->account($server);
+            if(!$account)
+            {
+                $validator->errors()->add('character', "Problème de compte de jeu");
+                return redirect()->to(app('url')->previous(). '#sellplace')->withErrors($validator)->withInput();
+            }
+            if($account->IsJailed == 1 || $account->isBanned())
+            {
+                $validator->errors()->add('character', "Problème de compte de jeu");
+                return redirect()->to(app('url')->previous(). '#sellplace')->withErrors($validator)->withInput();
+            }
 
             // CHECK IF CHARACTER IS NOT ALREADY IN SELL
             if(MarketCharacter::inSell($character)) // Check if buy date null
@@ -219,7 +231,7 @@ class ShopController extends Controller
             }
 
             // CHECK IF PLAYER CONNECTED
-            $playerConnected = Stump::get($server, '/Account/'.$character->account($server)->Id.'');
+            $playerConnected = Stump::get($server, '/Account/'.$account->Id.'');
             if($playerConnected)
             {
                 $validator->errors()->add('character', "Vous devez être déconnecté du compte en jeu");

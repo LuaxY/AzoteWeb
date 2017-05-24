@@ -53,6 +53,7 @@
                               </p>
                               <ul>
                                  <li>Votre personnage doit être de niveau 20 minimum et s'être connecté en jeu depuis moins de 6 mois</li>
+                                 <li>Le compte de votre personnage ne peut pas être en prison ou banni</li>
                                  <li>Vous devez être déconnecté du compte de jeu du personnage</li>
                                  <li>Lors de la mise en vente, vous devrez payer une taxe de mise en vente. Cette taxe équivaut à {{config('dofus.characters_market.procent_taxe')}} % du prix de vente</li>
                                  <li>Tout ce que contient votre personnage (équipements, parchemins, etc) sera transféré avec celui-ci. Si un autre joueur vous l'achète, il vous sera impossible de les récupérer</li>
@@ -105,7 +106,12 @@
                                               {{$character->Name}} <a href="{{ URL::route('characters.view', [$character->server, $character->Id, $character->Name]) }}" target="_blank"><span class="ak-icon-small ak-filter ak-tooltip" title="Consulter"></a>                       
                                             </div>
                                             <div class="ak-text">Niv. {{$character->level()}} - @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}} - @endif {{ucfirst($character->server)}}</div>
+                                            @php $account = $character->account($character->server) @endphp
+                                            @if($account->IsJailed == 1 || $account->isBanned())
+                                              <div class="ak-text" style="color:red;">Le compte de ce personnage est en prison ou banni</div>
+                                            @endif
                                         </div>
+                                        @if($account->IsJailed != 1 && !$account->isBanned())
                                         <div class="ak-aside">
                                             <div class="form-group">
                                               <div class="radio">
@@ -114,6 +120,7 @@
                                               </div>
                                             </div>
                                         </div>
+                                        @endif
                                       </div>
                                   </div>
                                 </div>
@@ -124,8 +131,8 @@
                             @endforeach
                           @endif
                         </div>
-                        @if ($errors->has('character')) <label class="error control-label">{{ $errors->first('character')}}</label>@endif
-                        @if ($errors->has('server')) <label class="error control-label">{{ $errors->first('server')}}</label>@endif
+                        @if ($errors->has('character')) <p class="control-label" style="color:red; font-weight:bold;">{{ $errors->first('character')}}</p>@endif
+                        @if ($errors->has('server')) <p class="control-label" style="color:red; font-weight:bold;">{{ $errors->first('server')}}</p>@endif
                      </div>
                   </div>
                   <div class="ak-panel-title">
@@ -138,8 +145,8 @@
                             <input type="text" class="form-control" autocomplete="off" name="ogrines" placeholder="Minimum {{config('dofus.characters_market.minimal_price')}}" value="{{ Input::old('ogrines') }}" id="ogrines" autocapitalize="off" autocorrect="off" required="required" />
                         </div>
                     </div>
-                    @if ($errors->has('ogrines')) <label class="error control-label">{{ $errors->first('ogrines') }}</label> @endif
-                    <label class="hidden error control-label" id="errorogrines"></label>
+                    @if ($errors->has('ogrines')) <p class="control-label" style="color:red; font-weight:bold;">{{ $errors->first('ogrines') }}</p> @endif
+                    <p class="hidden control-label" style="color:red; font-weight:bold;" id="errorogrines"></p>
                   <div class="ak-panel-title">
                      <span class="ak-panel-title-icon"></span>
                      Taxe de mise en vente: 
@@ -150,8 +157,8 @@
                             <input type="text" readonly="readonly" class="form-control" autocomplete="off" name="taxe" placeholder="0" value="{{ Input::old('taxe') }}" id="taxe" autocapitalize="off" autocorrect="off" />
                         </div>
                     </div>
-                    @if ($errors->has('taxe')) <label class="error control-label">{!! $errors->first('taxe') !!}</label> @endif
-                    <label class="hidden error control-label" id="errortaxe"></label>
+                    @if ($errors->has('taxe')) <p class="control-label" style="color:red; font-weight:bold;">{!! $errors->first('taxe') !!}</p> @endif
+                    <p class="hidden control-label" style="color:red; font-weight:bold;" id="errortaxe"></p>
                     <div class="text-center">
                     <input id="submit_button" type="submit" role="button" class="btn btn-primary btn-lg" value="Mettre en vente">
                     </div>
@@ -171,31 +178,13 @@
         var formvalid = false;
         var charactervalid = false;
         var priceortaxevalid = false;
-
-        $('.ak-list-element').click(function() {
-          $(this).find("input[type='radio']").prop("checked", true).trigger("change");
-          charactervalid = true;
-        });
-
-        $("#form-sell").submit(function(e){
-         $("#submit_button").attr("disabled", true);
-          if(charactervalid && priceortaxevalid)
-            formvalid = true;
-
-          if(formvalid === false)
-          {
-              e.stopPropagation();
-              toastr.error('Veuillez vérifier le formulaire');
-              $("#submit_button").attr("disabled", false);
-              return false;
-          }
-        });
-
-        $("#ogrines").on("change paste keyup", function() {
+        
+        isPriceValid = function(input) {
+          $this = input;
           var userpoints = {{Auth::user()->points}};
           var minimal_price = {{config('dofus.characters_market.minimal_price')}};
           var procent = {{config('dofus.characters_market.procent_taxe')}};
-          var value = $(this).val();
+          var value = $this.val();
           var taxe = $("#taxe");
           var error = $("#errorogrines");
           var errortaxe = $("#errortaxe");
@@ -238,6 +227,34 @@
             error.removeClass('hidden').text('Le prix est incorrect');
             priceortaxevalid = false;
           }
+        }
+
+        if($("#ogrines").val() != '')
+        {
+          isPriceValid($("#ogrines"));
+        }
+
+        $('.ak-list-element').click(function() {
+          $(this).find("input[type='radio']").prop("checked", true).trigger("change");
+          charactervalid = true;
+        });
+
+        $("#form-sell").submit(function(e){
+         $("#submit_button").attr("disabled", true);
+          if(charactervalid && priceortaxevalid)
+            formvalid = true;
+
+          if(formvalid === false)
+          {
+              e.stopPropagation();
+              toastr.error('Veuillez vérifier le formulaire');
+              $("#submit_button").attr("disabled", false);
+              return false;
+          }
+        });
+
+        $("#ogrines").on("change paste keyup", function() {
+          isPriceValid($("#ogrines"));
         });
     });
 </script>

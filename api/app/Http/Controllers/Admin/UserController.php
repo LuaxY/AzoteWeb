@@ -37,7 +37,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $user = User::findOrFail($user->id);
-        $transactions = $user->transactions(10);
+        $transactions = $user->transactions()->take(10)->get();
         $tickets = Cache::remember('tickets_admin_' . $user->id, 10, function () use ($user) {
             return LotteryTicket::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(10)->get();
         });

@@ -101,8 +101,11 @@
                                                         <a href="{{ route('guild.view', [$character->server, $character->guild($character->server)->Id, $character->guild($character->server)->Name])}}"><div class="ak-emblem" style="background:url({{ URL::asset($character->guild($character->server)->emblem(40,40)) }}) center center;width:40px;height:40px"></div></a>
                                                     </div>
                                                     @endif
+                                                    @php $account = $character->account($character->server) @endphp
                                                     <div class="ak-character-infos ak-emblem">
+                                                        @if($account->IsJailed != 1 && !$account->isBanned())
                                                         <a href="{{route('shop.market.sell')}}"><span class="ak-tooltip ak-icon-big ak-sell" style="width:40px; height:40px;"></span><script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"Vendre"},"style":{"classes":"ak-tooltip-content"}},"forceOnTouch":true}</script></a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                         @endforeach
