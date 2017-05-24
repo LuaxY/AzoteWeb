@@ -63,16 +63,16 @@
                 <td class="ak-rank"></td>
                 <td class="ak-name">
                     <span class="ak-breed-icon breed{{ $character->Breed }}_{{ $character->Sex }}"></span>
-                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level() >= 20))
+                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level($character->server) >= 20))
                     <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}">{{ $character->Name }}</a>
                     @else
                     {{ $character->Name }}
                     @endif
                 </td>
                 <td class="ak-class">{{ $character->classe() }}</td>
-                <td class="ak-center">{{ $character->level() }}</td>
+                <td class="ak-center">{{ $character->level($character->server) }}</td>
                 <td class="ak-center">
-                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level() >= 20))
+                    @if(($character->LastUsage > \Carbon\Carbon::today()->subMonths(6)->toDateString()) && ($character->level($character->server) >= 20))
                     <a href="{{ URL::route('characters.view', [$account->server, $character->Id, $character->Name]) }}"><span class="ak-icon-small ak-filter ak-tooltip" title="Consulter"></span>
                     </a>
                     @else

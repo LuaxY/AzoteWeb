@@ -35,7 +35,7 @@
             </div>
             <div class="ak-directories-main-infos">
                <div class="ak-directories-property">
-                  <span class="ak-directories-level">Niveau {{$character->level()}}</span>@if($character->PrestigeRank > 0)<span class="ak-directories-prestige"> - Prestige {{$character->PrestigeRank}}</span>@endif<br>
+                  <span class="ak-directories-level">Niveau {{$character->level($server)}}</span>@if($character->PrestigeRank > 0)<span class="ak-directories-prestige"> - Prestige {{$character->PrestigeRank}}</span>@endif<br>
                   <span class="ak-directories-breed">{{$character->classe()}}</span>
                </div>
                @if($character->titleActive($server))

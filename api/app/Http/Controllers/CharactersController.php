@@ -194,7 +194,7 @@ class CharactersController extends Controller
         });
         if(!$character)
             abort(404);
-        if((!MarketCharacter::inSell($character)) && (($character->level() < 20 && $character->PrestigeRank < 1) || $character->LastUsage < Carbon::today()->subMonths(6)->toDateString()))
+        if((!MarketCharacter::inSell($character)) && (($character->level($server) < 20 && $character->PrestigeRank < 1) || $character->LastUsage < Carbon::today()->subMonths(6)->toDateString()))
             abort(404);
 
         $character->server = $server;

@@ -93,7 +93,7 @@
                                                     </div>
                                                     <div class="ak-character-infos">
                                                         <div class="ak-name"><a href="{{ URL::route('characters.view', [$character->server, $character->Id, $character->Name]) }}">{{$character->Name}}</a></div>
-                                                        <div class="ak-level">{{$character->classe()}} - Niv : {{$character->level()}} @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}}@endif</div>
+                                                        <div class="ak-level">{{$character->classe()}} - Niv : {{$character->level($character->server)}} @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}}@endif</div>
                                                         <div class="ak-server">{{ucfirst($character->server)}}</div>
                                                     </div>
                                                     @if($character->guild($character->server))

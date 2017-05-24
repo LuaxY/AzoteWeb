@@ -28,7 +28,7 @@
                         @if ($errors->has('nickname')) <label class="error control-label">{{ $errors->first('nickname') }}</label> @endif
                     </div>
                     <b>Classe</b>: {{ $character->classe() }}<br>
-                    <b>Niveau</b>: {{ $character->level() }}<br>
+                    <b>Niveau</b>: {{ $character->level($account->server) }}<br>
                     <b>Serveur</b>: {{ ucfirst($account->server) }}<br><br>
                     <div class="form-group @if ($errors->has('price')) has-error @endif">
                         <label class="control-label" for="price">Prix</label>

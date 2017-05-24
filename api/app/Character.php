@@ -185,7 +185,6 @@ class Character extends Model
     }
     public function level($server = 'sigma')
     {
-        // 
         $tempExp = $this->Experience;
 
         if (config('dofus.details')[$server]->prestige) {

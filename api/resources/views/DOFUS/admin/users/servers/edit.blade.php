@@ -115,7 +115,7 @@
                                         <td>{{ $character->Id }}</td>
                                         <td>{{ $character->Name }}</td>
                                         <td>{{ $character->classe() }}</td>
-                                        <td>{{ $character->level() }}</td>
+                                        <td>{{ $character->level($server) }}</td>
                                         <td>{{ $character->CreationDate->format('d-m-Y H:i:s') }}</td>
                                         <td>{{ $character->LastUsage->format('d-m-Y H:i:s') }}</td>
                                         <td>@if ($character->isDeleted())
