@@ -116,14 +116,16 @@ class ShopController extends Controller
 
                 if(!$market_characters)
                 {
+                    $db = config('database.connections');
                     $ids = [];
                     // Finds id's of filtered market characters
                     foreach($servers as $server)
                     {
+                        $world = $db[$server.'_world']['database'];
                         $elements = DB::table('market_characters AS mk')
                                             ->where('mk.server', $server)
                                             ->select('mk.id', 'mk.character_id', 'mk.server')
-                                            ->leftJoin('azote_'.$server.'_world.characters AS ch', 'ch.Id', '=', 'mk.character_id');
+                                            ->leftJoin($world.'.characters AS ch', 'ch.Id', '=', 'mk.character_id');
 
                         if($request->TEXT)
                             $elements = $elements->where('ch.Name', 'like', '%'.$request->TEXT.'%');

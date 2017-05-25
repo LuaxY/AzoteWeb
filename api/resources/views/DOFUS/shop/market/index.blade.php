@@ -122,7 +122,7 @@
                     <a target="_blank" href="{{ URL::route('characters.view',[$market->character()->server, $market->character_id, $market->character()->Name])}}"><span class="ak-icon-tiny ak-filter ak-tooltip" title="Consulter"></span></a>
                     @if(Auth::user()->id != $market->user_id)
                         @if(Auth::user()->points < $market->ogrines)
-                        <a class="ak-tooltip"><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
+                        <a class="ak-tooltip" style="cursor:pointer;"><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
                         <script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"<p>Votre réserve d'Ogrines est insuffisante pour faire cet achat: Il vous manque {{(int)ceil($market->ogrines - Auth::user()->points)}} Ogrines.<\/p><a href=\"{{URL::route('shop.payment.country')}}\" class=\"btn btn-primary\">Acheter des Ogrines<\/a>"},"style":{"classes":"ak-tooltip-white-shop"},"position":{"my":"bottom center","at":"top center","adjust":{"scroll":false}},"show":{"event":"click"},"hide":{"fixed":true,"delay":400}},"forceOnTouch":true}</script>                      
                         @else
                         <a href="{{route('shop.market.buy',$market->id)}}"><span class="ak-icon-tiny ak-cart ak-tooltip" title="Acheter"></span></a>
