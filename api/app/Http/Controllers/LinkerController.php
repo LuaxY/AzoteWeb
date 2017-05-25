@@ -34,9 +34,10 @@ class LinkerController extends Controller
         if(!World::isServerExist($server))
              return response()->json([], 402);
         $character = Cache::get('character_view_'.$server.'_'.$characterId);
-        $character->server = $server;
         if(!$character)
             return response()->json([], 402);
+
+        $character->server = $server;
         $id = $request->input('id');
         if(!is_numeric($id))
             return response()->json([], 402);

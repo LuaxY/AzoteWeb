@@ -65,7 +65,7 @@ class CharactersController extends Controller
         $itemsbottom = collect($itemsall['bottom']);
         $costume = collect($itemsall['costume']);
 
-        $spells = Cache::remember('character_spells'.$server.'_'.$characterId, 10, function () use($character){
+        $spells = Cache::remember('character_spells'.$server.'_'.$characterId, 30, function () use($character){
             return $character->spells()->get();
         });
 

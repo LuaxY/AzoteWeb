@@ -30,7 +30,7 @@ class Character extends Model
         if(!$json)
             return '(not found)';
 
-        $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 10, function () use ($json, $carrac) {
+        $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 30, function () use ($json, $carrac) {
             $items = $json;
             if(!$items)
                 return ('not decode');
@@ -290,7 +290,7 @@ class Character extends Model
 
     public function getJsonInventory()
     {
-        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id, 10, function (){
+        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id, 30, function (){
             $json = Stump::get($this->server, "/Character/$this->Id/Inventory");
             return json_decode($json);
         });
@@ -299,7 +299,7 @@ class Character extends Model
     }
     public function getJsonInventoryEquiped()
     {
-        $json = Cache::remember('character_inventory_equiped_json_'.$this->server.'_'.$this->Id, 10, function (){
+        $json = Cache::remember('character_inventory_equiped_json_'.$this->server.'_'.$this->Id, 30, function (){
             $json = Stump::get($this->server, "/Character/$this->Id/Inventory/Equiped");
             return json_decode($json);
         });
@@ -308,7 +308,7 @@ class Character extends Model
 
     public function getJsonInventoryByItemType($typeId)
     {
-        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id.'_'.$typeId, 10, function () use($typeId){
+        $json = Cache::remember('character_inventory_json_'.$this->server.'_'.$this->Id.'_'.$typeId, 30, function () use($typeId){
             $json = Stump::get($this->server, "/Character/$this->Id/Inventory/Type/$typeId");
             return json_decode($json);
         });
@@ -318,7 +318,7 @@ class Character extends Model
 
     public function getEquipment($json)
     {
-        $itemsall = Cache::remember('character_equipment_'.$this->server.'_'.$this->Id, 10, function () use($json) {
+        $itemsall = Cache::remember('character_equipment_'.$this->server.'_'.$this->Id, 30, function () use($json) {
                $itemsall = array('left' => [], 'right' => [], 'bottom' => [], 'costume' => []);
                $items = $json;
                 foreach($items as $item)
@@ -361,7 +361,7 @@ class Character extends Model
 
     public function getInventory($json)
     {
-        $items = Cache::remember('character_inventory_'.$this->server.'_'.$this->Id, 10, function () use($json) {
+        $items = Cache::remember('character_inventory_'.$this->server.'_'.$this->Id, 30, function () use($json) {
                $items = [];
                $allitems = $json;
                 foreach($allitems as $item)

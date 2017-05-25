@@ -122,7 +122,7 @@ class Stump
                 'headers' => [
                     'APIKey' => config('dofus.api_key')
                 ],
-                'timeout' => 5, // seconds
+                'timeout' => 10, // seconds
             ]);
 
             if ($res->getStatusCode() == 200) {
