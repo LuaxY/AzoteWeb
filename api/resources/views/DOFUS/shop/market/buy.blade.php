@@ -220,7 +220,7 @@ else
                         {
                           if(data.error)
                           {
-                            validname = true;
+                            validname = false;
                             $("#errorname").removeClass('hidden').text(data.error);
                             $("#successname").addClass('hidden');
                             $("#charactername").parents('.form-group').addClass('has-error');

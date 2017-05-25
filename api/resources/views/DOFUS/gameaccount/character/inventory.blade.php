@@ -8,8 +8,7 @@
         background-color: inherit;
     }
     .ak-item-nb{
-        color:white;
-    
+    color:white;
     border-radius: 4px;
     font-size: 10px;
     font-size: 1rem;
