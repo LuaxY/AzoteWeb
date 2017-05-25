@@ -27,33 +27,38 @@ class Character extends Model
     public function countStuff($server, $type, array $carrac)
     {
         $json = $this->getJsonInventory();
-        if(!$json)
+        if(is_null($json))
             return '(not found)';
-
-        $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 30, function () use ($json, $carrac) {
-            $items = $json;
-            if(!$items)
-                return ('not decode');
-            $value = 0;
-            foreach($items as $item)
-            {
-                if(!in_array($item->Position,[63]))
+        if(!empty($json))
+        {
+            $value = Cache::remember('character_count_stuff_.'.$server.'_.'.$this->Id.'_.'.$type, 30, function () use ($json, $carrac) {
+                $items = $json;
+                if(is_null($items))
+                    return ('not decode');
+                $value = 0;
+                foreach($items as $item)
                 {
-                    foreach($item->Effects as $effect)
+                    if(!in_array($item->Position,[63]))
                     {
-                        if(in_array($effect->Template->Id,$carrac))
+                        foreach($item->Effects as $effect)
                         {
-                            if($effect->Template->Operator == '+')
-                                $value += $effect->Value;
-                            else
-                                $value -= $effect->Value;
+                            if(in_array($effect->Template->Id,$carrac))
+                            {
+                                if($effect->Template->Operator == '+')
+                                    $value += $effect->Value;
+                                else
+                                    $value -= $effect->Value;
+                            }
                         }
                     }
                 }
-            }
-            return $value;
-        });
-            return $value;
+                return $value;
+            });
+        }
+        else
+            $value = 0;
+
+        return $value;
     }
     public function position($type = 'pvp', $spec = 'all', $server = 'sigma')
     {

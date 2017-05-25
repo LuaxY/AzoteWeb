@@ -7,6 +7,18 @@
     .ak-pagination{
         background-color: inherit;
     }
+    .ak-item-nb{
+        color:white;
+    
+    border-radius: 4px;
+    font-size: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 12px;
+    padding: 0.2em 0.3em;
+    position: absolute;
+    text-align: center;
+    }
     </style>
 @stop
 @section('breadcrumbs')
@@ -114,6 +126,7 @@
                         <div class="row">
                         @endif
                         <div class="ak-equipment-item ak-equipment-idol" id="">
+                        <span class="ak-item-nb">{{$item->Stack}}</span>
                             <span class="ak-linker" data-hasqtip="linker_item_{{$item->Id}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->Id}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->Id}}","character":"{{$character->Id}}","server":"{{$server}}","position":"inventory","builder":""}}</script>                       
                         </div>
                         @if($k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44 || $k == (count($items) - 1))
