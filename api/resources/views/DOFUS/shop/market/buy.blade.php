@@ -86,6 +86,14 @@ else
                <div class="ak-container ak-panel ak-nocontentpadding">
                   <div class="ak-panel-title">
                      <span class="ak-panel-title-icon"></span>
+                     Fiche du personnage 
+                  </div>
+                  <p>N'hésitez pas à consulter une dernière fois la page perso de {{$marketCharacter->character_name}} avant de procéder à l'achat:</p>
+                  <div class="text-center">
+                  <a href="" target="_blank" class="btn btn-info btn-lg">Consulter</a>
+                  </div>
+                  <div class="ak-panel-title">
+                     <span class="ak-panel-title-icon"></span>
                      Sur quel compte souhaitez-vous placer le personnage ? 
                   </div>
                   <p>Vous devez être déconnecté du compte en jeu pour procéder à l'achat.<br>Celui-ci doit contenir au moins un slot disponible</p>
