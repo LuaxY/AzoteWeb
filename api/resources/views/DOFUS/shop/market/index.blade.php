@@ -113,7 +113,7 @@
                     </td>
                     <td><a target="_blank" href="{{ URL::route('characters.view',[$market->character()->server, $market->character_id, $market->character()->Name])}}">{{$market->character()->Name}}</a></td>
                     <td>{{$market->character()->classe()}}</td>
-                    <td>{{$market->character()->level()}}</td>
+                    <td>{{$market->character()->level($market->server)}}</td>
                     <td>{{$market->character()->PrestigeRank}}</td>
                     <td>{{$market->character()->sex()}}</td>
                     <td>{{ucfirst($market->character()->server)}}</td>
