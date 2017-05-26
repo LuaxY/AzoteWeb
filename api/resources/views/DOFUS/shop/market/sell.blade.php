@@ -110,8 +110,11 @@
                                             @if($account->IsJailed == 1 || $account->isBanned())
                                               <div class="ak-text" style="color:red;">Le compte de ce personnage est en prison ou banni</div>
                                             @endif
+                                            @if($account->isStaff())
+                                              <div class="ak-text" style="color:red;">Le compte de ce personnage fait partie du staff</div>
+                                            @endif
                                         </div>
-                                        @if($account->IsJailed != 1 && !$account->isBanned())
+                                        @if($account->IsJailed != 1 && !$account->isBanned() && !$account->isStaff())
                                         <div class="ak-aside">
                                             <div class="form-group">
                                               <div class="radio">

@@ -69,9 +69,9 @@ class Account extends Model
         $this->connection = $conn;
     }
 
-    public function isAdmin()
+    public function isStaff()
     {
-        if ($this->Role >= 4) {
+        if ($this->UserGroupId > 1) {
             return true;
         } else {
             return false;

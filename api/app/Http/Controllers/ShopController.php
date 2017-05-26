@@ -219,7 +219,7 @@ class ShopController extends Controller
                 $validator->errors()->add('character', "Problème de compte de jeu");
                 return redirect()->to(app('url')->previous(). '#sellplace')->withErrors($validator)->withInput();
             }
-            if($account->IsJailed == 1 || $account->isBanned())
+            if($account->IsJailed == 1 || $account->isBanned() || $account->isStaff())
             {
                 $validator->errors()->add('character', "Problème de compte de jeu");
                 return redirect()->to(app('url')->previous(). '#sellplace')->withErrors($validator)->withInput();

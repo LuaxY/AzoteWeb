@@ -151,7 +151,7 @@ else
                               <img onerror="this.src='{{URL::asset('imgs/shop/default_50_50.png')}}" src="{{ DofusForge::player($character, $server, 'face', 2, 50, 50) }}">
                             </td>
                             <td>
-                              <a href="">{{$character->Name}} </a>          
+                              <a href="{{ URL::route('characters.view',[$server, $marketCharacter->character_id, $marketCharacter->character_name])}}" target="_blank">{{$character->Name}} </a>          
                             </td>
                             <td class="ak-money-value">
                               <span class="ak-display-price ak-currency-ogr"><span class="ak-nobreak">{{Utils::format_price($marketCharacter->ogrines)}} <span class="ak-icon-small ak-ogrines-icon"></span></span></span>      
