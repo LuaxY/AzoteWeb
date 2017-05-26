@@ -108,6 +108,39 @@
             </tbody>
          </table>
     </div>
+    <div class="ak-container ak-panel-stack">
+        <div class="ak-container ak-panel ak-glue">
+            <div class="ak-panel-title">
+                <span class="ak-panel-title-icon"></span> Mes personnages achetés
+            </div>
+        </div>
+    </div>
+    <div class="ak-responsivetable-wrapper">
+         <table border="1" class="ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
+            <thead>
+               <tr>
+                  <th data-priority="9"></th>
+                  <th data-priority="8">Nom</th>
+                  <th data-priority="3">Serveur<span class="ak-picto-common"></span></th>
+                  <th data-priority="2">Acheté le<span class="ak-picto-common"></span></th>
+                  <th data-priority="1">Prix<span class="ak-picto-common"></span></th>
+               </tr>
+            </thead>
+            <tbody>
+                @foreach($mcBuyed as $market)
+                <tr class="ak-bg-odd" id="{{$market->id}}">
+                    <td class="ak-ladder-avatar ak-valign-top">
+                        <div class="ak-entitylook" alt="{{$market->Name}}" style="background:url({{DofusForge::player($market->character(), $market->character()->server, 'face', 1, 48, 48)}}) top left;width:48px;height:48px"></div>
+                    </td>
+                    <td>{{$market->character_name}}</td>
+                    <td>{{ucfirst($market->character()->server)}}</td>
+                    <td>{!! ucwords(utf8_encode($market->buy_date->formatLocalized('%e %B %Y &agrave; %Hh%M'))) !!}</td>
+                    <td>{{Utils::format_price($market->ogrines)}} <span class="ak-icon-small ak-ogrines-icon"></span></td>
+                </tr>
+                @endforeach
+            </tbody>
+         </table>
+    </div>
 </div>
 @stop
 @section('bottom')

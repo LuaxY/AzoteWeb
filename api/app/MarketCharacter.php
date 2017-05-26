@@ -37,6 +37,11 @@ class MarketCharacter extends Model
         $query->where('buy_date', '!=', null);
     }
 
+    public function scopeBuyed($query, $user_id)
+    {
+        $query->where('buy_date', '!=', null)->where('buyer_id', $user_id);
+    }
+
 
     public function user()
     {

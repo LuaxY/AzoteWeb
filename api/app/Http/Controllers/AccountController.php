@@ -603,7 +603,8 @@ class AccountController extends Controller
     {
         $mcInSell = Auth::user()->marketCharacters()->inSell()->get();
         $mcSold = Auth::user()->marketCharacters()->sold()->get();
+        $mcBuyed = Auth::user()->marketCharacters()->buyed(Auth::user()->id)->get();
 
-        return view ('account.market', compact('mcInSell', 'mcSold'));
+        return view ('account.market', compact('mcInSell', 'mcSold', 'mcBuyed'));
     } 
 }
