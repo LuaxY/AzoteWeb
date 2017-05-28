@@ -49,7 +49,7 @@
                            DÉCOUVREZ LE MARCHE DES PERSONNAGES      
                         </div>
                         <div class="ak-carousel-hlitem-description">
-                           Tu souhaites acheter le personnage d'un autre joueur?     
+                           Tu souhaites acheter le personnage d'un autre joueur ou simplement vendre le tien ? Alors viens découvrir le marché des personnages !
                         </div>
                         <div class="ak-price-actions">
                            <a href="{{URL::route('shop.market')}}" class="btn btn-primary btn-lg ak-btn-unlock ak-btn-discover">Découvrir</a>

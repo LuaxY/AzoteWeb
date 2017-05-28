@@ -233,7 +233,7 @@
                     <div class="ak-row-cell ak-infos-logged">
                         <span class="ak-infos-title">Tickets : </span>
                         <span class="ak-infos-nb">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>
-                        <a href="{{ URL::route('lottery.index') }}" class="ak-infos-link">Jouer à la lotterie</a>
+                        <a href="{{ URL::route('lottery.index') }}" class="ak-infos-link">Jouer à la loterie</a>
                     </div>
                 </div>
                 <div class="ak-infos-row ak-account-manage">

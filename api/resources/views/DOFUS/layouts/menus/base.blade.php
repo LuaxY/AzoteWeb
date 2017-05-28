@@ -73,7 +73,7 @@
                                     <span class="ak-reserve">{{ Utils::format_price(count(Auth::user()->lotteryTickets(true))) }}</span>
                                     <span class="ak-icon-small ak-ticket-icon"></span>
                                 </a>
-                                <div class="ak-tooltip hidden" style="display: none;">Jouer à la lotterie</div>
+                                <div class="ak-tooltip hidden" style="display: none;">Jouer à la loterie</div>
                                  <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-blue"}}}</script>
                             </div>
                         </div>

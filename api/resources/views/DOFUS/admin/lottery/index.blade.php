@@ -1,6 +1,6 @@
 @extends('layouts.admin.admin')
-@section('title') Lotteries @endsection
-@section('page-title') Lotteries: Manage @endsection
+@section('title') Loteries @endsection
+@section('page-title') Loteries: Manage @endsection
 @section('content')
         <!-- Start content -->
 <div class="content">
@@ -9,7 +9,7 @@
             <div class="col-sm-12">
                 <div class="card-box">
                     <a href="{{ route('admin.lottery.create') }}" class="btn btn-primary waves-effect waves-light btn-lg m-b-5"><i class="zmdi zmdi-plus"></i> Create Lottery</a>
-                    <h4 class="header-title m-b-30">Lotteries</h4>
+                    <h4 class="header-title m-b-30">Loteries</h4>
                     <table class="table table-striped" id="tickets-table">
                         <thead>
                         <tr>

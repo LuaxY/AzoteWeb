@@ -434,7 +434,7 @@
                         <tr class="ak-bg-odd">
                             <td><span class="ak-icon-small ak-tx-vitality"></span></td>
                             <td><strong>Vitalité</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Vitality}} + {{$character->PermanentAddedVitality}}">{{$character->Vitality + $character->PermanentAddedVitality}}</span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Vitality + $character->PermanentAddedVitality}}">{{$character->Vitality}} + {{$character->PermanentAddedVitality}}</span></td>
                             <td>{{$character->countStuff($server,'vitality',['125','153'])}}</td>
                             <td>{{$character->Vitality + $character->PermanentAddedVitality + $character->countStuff($server,'vitality',['125','153'])}}</td>
                         </tr>
@@ -766,7 +766,7 @@
                 <div class="col-md-6 ak-secondary-caracteristics">
                 </div>
             </div>
-            <small>Les carractéristiques pourraient ne pas être tout à fait éxactes (version BETA!)</small>
+            <small>Les caractéristiques pourraient ne pas être tout à fait exactes (version BETA !)</small>
         </div>
         </div>
         @endif
