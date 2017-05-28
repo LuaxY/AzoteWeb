@@ -441,35 +441,35 @@
                         <tr class="ak-bg-even">
                             <td><span class="ak-icon-small ak-tx-wisdom"></span></td>
                             <td><strong>Sagesse</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Wisdom}} + {{$character->PermanentAddedWisdom}}">{{$character->Wisdom + $character->PermanentAddedWisdom}}</span></td></span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Wisdom + $character->PermanentAddedWisdom}}">{{$character->Wisdom}} + {{$character->PermanentAddedWisdom}}</span></td></span></td>
                             <td>{{$character->countStuff($server,'wisdom',['124','156'])}}</td>
                             <td>{{$character->Wisdom + $character->PermanentAddedWisdom + $character->countStuff($server,'wisdom',['124','156'])}}</td>
                         </tr>
                         <tr class="ak-bg-odd">
                             <td><span class="ak-icon-small ak-tx-strength"></span></td>
                             <td><strong>Force</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Strength}} + {{$character->PermanentAddedStrength}}">{{$character->Strength + $character->PermanentAddedStrength}}</span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Strength + $character->PermanentAddedStrength}}">{{$character->Strength}} + {{$character->PermanentAddedStrength}}</span></td>
                             <td>{{$character->countStuff($server,'strength',['118','157'])}}</td>
                             <td>{{$character->Strength + $character->PermanentAddedStrength + $character->countStuff($server,'strength',['118','157'])}}</td>
                         </tr>
                         <tr class="ak-bg-even">
                             <td><span class="ak-icon-small ak-tx-intelligence"></span></td>
                             <td><strong>Intelligence</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Intelligence}} + {{$character->PermanentAddedIntelligence}}">{{$character->Intelligence + $character->PermanentAddedIntelligence}}</span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Intelligence + $character->PermanentAddedIntelligence}}">{{$character->Intelligence}} + {{$character->PermanentAddedIntelligence}}</span></td>
                             <td>{{$character->countStuff($server,'intelligence',['126','155'])}}</td>
                             <td>{{$character->Intelligence + $character->PermanentAddedIntelligence + $character->countStuff($server,'intelligence',['126','155'])}}</td>
                         </tr>
                         <tr class="ak-bg-odd">
                             <td><span class="ak-icon-small ak-tx-chance"></span></td>
                             <td><strong>Chance</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Chance}} + {{$character->PermanentAddedChance}}">{{$character->Chance + $character->PermanentAddedChance}}</span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Chance + $character->PermanentAddedChance}}">{{$character->Chance}} + {{$character->PermanentAddedChance}}</span></td>
                             <td>{{$character->countStuff($server,'chance',['123','152'])}}</td>
                             <td>{{$character->Chance + $character->PermanentAddedChance + $character->countStuff($server,'chance',['123','152'])}}</td>
                         </tr>
                         <tr class="ak-bg-even">
                             <td><span class="ak-icon-small ak-tx-agility"></span></td>
                             <td><strong>Agilité</strong></td>
-                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Agility}} + {{$character->PermanentAddedAgility}}">{{$character->Agility + $character->PermanentAddedAgility}}</span></td>
+                            <td><span class="ak-tooltip" title="Base (Naturel + Additionnel) : {{$character->Agility + $character->PermanentAddedAgility}}">{{$character->Agility}} + {{$character->PermanentAddedAgility}}</span></td>
                             <td>{{$character->countStuff($server,'agility',['119','154'])}}</td>
                             <td>{{$character->Agility + $character->PermanentAddedAgility + $character->countStuff($server,'agility',['119','154'])}}</td>
                         </tr>
