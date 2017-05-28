@@ -98,7 +98,7 @@ class Account extends Model
                         if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
                             if($minimal)
                             {
-                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level($this->server) >= 20 || $worldCharacter->character()->PrestigeRank > 0))
                                      $characters[] = $worldCharacter->character();
                             }
                             else
@@ -116,7 +116,7 @@ class Account extends Model
                     if ($worldCharacter->character() && $worldCharacter->character()->DeletedDate == null) {
                        if($minimal)
                             {
-                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)) && ($worldCharacter->character()->level($this->server) >= 20 || $worldCharacter->character()->PrestigeRank > 0))
                                      $characters[] = $worldCharacter->character();
                             }
                             else

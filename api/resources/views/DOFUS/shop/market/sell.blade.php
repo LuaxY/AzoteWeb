@@ -105,7 +105,7 @@
                                             <div class="ak-title">
                                               {{$character->Name}} <a href="{{ URL::route('characters.view', [$character->server, $character->Id, $character->Name]) }}" target="_blank"><span class="ak-icon-small ak-filter ak-tooltip" title="Consulter"></a>                       
                                             </div>
-                                            <div class="ak-text">Niv. {{$character->level()}} - @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}} - @endif {{ucfirst($character->server)}}</div>
+                                            <div class="ak-text">Niv. {{$character->level($character->server)}} - @if($character->PrestigeRank > 0)- P{{$character->PrestigeRank}} - @endif {{ucfirst($character->server)}}</div>
                                             @php $account = $character->account($character->server) @endphp
                                             @if($account->IsJailed == 1 || $account->isBanned())
                                               <div class="ak-text" style="color:red;">Le compte de ce personnage est en prison ou banni</div>

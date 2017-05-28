@@ -151,7 +151,7 @@ class User extends Authenticatable
                                         {
                                             if($minimal)
                                             {
-                                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level() >= 20 || $worldCharacter->character()->PrestigeRank > 0))
+                                                if(($worldCharacter->character()->LastUsage > Carbon::today()->subMonths(6)->toDateString()) && ($worldCharacter->character()->level($worldCharacter->server) >= 20 || $worldCharacter->character()->PrestigeRank > 0))
                                                 array_push($characters_array,$worldCharacter->character());
                                             }
                                             else
