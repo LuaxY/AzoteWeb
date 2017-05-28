@@ -57,7 +57,7 @@ class DofusForge
     {
             if(config('dofus.details')[$server]->version == "2.10")
             {
-                $look = bin2hex($character->EntityLookString);
+                $look = bin2hex(self::purifyLook($character->EntityLookString));
             }
             else
             {
@@ -67,7 +67,7 @@ class DofusForge
                 if(!$look)
                     $look = $character->DefaultLookString;
 
-                $look = bin2hex($look);
+                $look = bin2hex(self::purifyLook($look));
             }
 
             return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
@@ -112,5 +112,17 @@ class DofusForge
 
             return $text;
         }
+    }
+
+    private static function purifyLook($look)
+    {
+        $start = '|1@';
+
+        $position = strpos($look, $start);
+        if(!$position)
+            return $look;
+
+        $newLook = substr($look,0,$position) . "}";
+        return $newLook;
     }
 }
