@@ -26,7 +26,7 @@ class Character extends Model
 
     public function countStuff($server, $type, array $carrac)
     {
-        $json = $this->getJsonInventory();
+        $json = $this->getJsonInventoryEquiped();
         if(is_null($json))
             return '(not found)';
         if(!empty($json))
