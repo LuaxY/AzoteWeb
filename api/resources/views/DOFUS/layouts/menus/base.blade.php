@@ -102,6 +102,7 @@
                                 <div class="ak-shop-article-container">
                                     <div class="ak-shop-article-action">
                                         <a href="{{ URL::route('shop.payment.country') }}" class="btn btn-primary btn-lg ak-btn-unlock"><span class="ak-icon-med ak-unlock"></span> Acheter des <span class="ak-icon-ogrines"></span></a>
+                                        <a href="{{ URL::route('shop.market') }}" class="btn btn-primary btn-lg ak-btn-unlock-character"><span class="ak-icon-med ak-unlock"></span> Acheter un <span class="ak-icon-character"></span></a>
                                     </div>
                                 </div>
                             </div>

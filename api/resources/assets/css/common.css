@@ -27991,7 +27991,7 @@ a.ak-content-nav-button.ak-next {
     overflow: hidden
 }
 
-.ak-block-shop .ak-icon-ogrines {
+.ak-block-shop .ak-icon-ogrines, .ak-block-shop .ak-icon-character {
     display: inline-block;
     height: 31px;
     width: 35px;
@@ -28029,7 +28029,7 @@ a.ak-content-nav-button.ak-next {
     overflow: hidden
 }
 
-.ak-block-shop .ak-btn-unlock {
+.ak-block-shop .ak-btn-unlock, .ak-block-shop .ak-btn-unlock-character {
     margin: 15px 22px;
     padding: 0;
     display: block;
@@ -28038,7 +28038,7 @@ a.ak-content-nav-button.ak-next {
     line-height: 48px
 }
 
-.ak-block-shop .ak-btn-unlock .ak-icon-med {
+.ak-block-shop .ak-btn-unlock .ak-icon-med, .ak-block-shop .ak-btn-unlock-character .ak-icon-med {
     float: left;
     vertical-align: middle;
     margin-right: 12px;
@@ -28091,6 +28091,9 @@ a.ak-content-nav-button.ak-next {
 .ak-block-shop .ak-icon-ogrines {
     background-image: url("../imgs/assets/icon-ogrines.png")
 }
+.ak-block-shop .ak-icon-character {
+    background-image: url("../imgs/assets/icon-character.png")
+}
 
 .ak-block-shop .ak-icon-med.ak-unlock, .ak-block-shop .ak-icon-med.ak-cart,
 .ak-block-shop .ak-icon-med.ak-trash, .ak-block-shop .ak-icon-med.ak-basket,
@@ -28129,8 +28132,15 @@ a.ak-content-nav-button.ak-next {
     background: #ff9d01
 }
 
+.ak-block-shop .ak-btn-unlock-character {
+    background: #33aef3
+}
+
 .ak-block-shop .ak-btn-unlock:hover, .ak-block-shop .ak-btn-unlock .ak-icon-med {
     background-color: #ec8c02
+}
+.ak-block-shop .ak-btn-unlock-character:hover, .ak-block-shop .ak-btn-unlock-character .ak-icon-med {
+    background-color: #298bc3;
 }
 
 @media all and (min-width: 768px) {

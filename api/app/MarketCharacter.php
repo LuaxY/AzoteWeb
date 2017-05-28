@@ -42,7 +42,6 @@ class MarketCharacter extends Model
         $query->where('buy_date', '!=', null)->where('buyer_id', $user_id);
     }
 
-
     public function user()
     {
         return $this->hasOne(User::class);

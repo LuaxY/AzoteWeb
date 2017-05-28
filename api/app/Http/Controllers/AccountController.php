@@ -32,6 +32,7 @@ use App\Mail\UserMail;
 use App\Role;
 use App\Character;
 use App\World;
+use App\MarketCharacter;
 
 class AccountController extends Controller
 {
@@ -603,8 +604,8 @@ class AccountController extends Controller
     public function market(Request $request)
     {
         $mcInSell = Auth::user()->marketCharacters()->inSell()->get();
-        $mcSold = Auth::user()->marketCharacters()->sold()->get();
-        $mcBuyed = Auth::user()->marketCharacters()->buyed(Auth::user()->id)->get();
+        $mcSold =  Auth::user()->marketCharacters()->sold()->get();
+        $mcBuyed = MarketCharacter::buyed(Auth::user()->id)->get();
 
         return view ('account.market', compact('mcInSell', 'mcSold', 'mcBuyed'));
     } 

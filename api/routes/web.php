@@ -271,37 +271,37 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
     ]);
     
     Route::get(Lang::get('routes.shop.market'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@market',
         'as'         => 'shop.market'
     ]);
 
     Route::get(Lang::get('routes.shop.market.sell'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@marketSell',
         'as'         => 'shop.market.sell'
     ]);
 
     Route::post(Lang::get('routes.shop.market.sell'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@marketSell',
         'as'         => 'shop.market.sell'
     ]);
 
     Route::delete(Lang::get('routes.shop.market.remove'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@marketRemove',
         'as'         => 'shop.market.remove'
     ]);
 
     Route::get(Lang::get('routes.shop.market.buy'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@marketBuy',
         'as'         => 'shop.market.buy'
     ]);
 
     Route::post(Lang::get('routes.shop.market.buy'), [
-        'middleware' => ['staff', 'marketMaintenance'],
+        'middleware' => ['auth', 'marketMaintenance'],
         'uses'       => 'ShopController@marketBuy',
         'as'         => 'shop.market.buy'
     ]);

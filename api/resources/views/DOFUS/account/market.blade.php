@@ -147,10 +147,11 @@
 <script>
     var $ = require('jquery');
                     
-                    $('body').on('click', '.removelink', function () {
+                    $('body').on('click', '.removelink:not([disabled])', function () {
                         // Find ID of the post
+                        var button = $(this);
                         var id = $(this).data('id');
-                        $(this).attr('disabled', true).removeClass('removelink');
+                        button.attr('disabled', true);
                         // Some variables
                         var url_market_base = '{{ route('shop.market')}}';
                         var token = '{{ Session::token() }}';
@@ -180,7 +181,7 @@
                                     {
                                         errorsHtml = 'Unknown error';
                                     }
-                                    $(this).attr('disabled', false).addClass('removelink');
+                                    button.attr('disabled', false);
                                     toastr.error(errorsHtml);
                                 }
                         });

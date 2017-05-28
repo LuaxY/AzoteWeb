@@ -90,7 +90,7 @@ else
                   </div>
                   <p>N'hésitez pas à consulter une dernière fois la page perso de {{$marketCharacter->character_name}} avant de procéder à l'achat:</p>
                   <div class="text-center">
-                  <a href="" target="_blank" class="btn btn-info btn-lg">Consulter</a>
+                  <a href="{{ URL::route('characters.view',[$server, $marketCharacter->character_id, $marketCharacter->character_name])}}" target="_blank" class="btn btn-info btn-lg">Consulter</a>
                   </div>
                   <div class="ak-panel-title">
                      <span class="ak-panel-title-icon"></span>
@@ -109,8 +109,8 @@ else
                           @endforeach
                       </select>
                     </div>
-                    @if ($errors->has('account')) <label class="error control-label">{!! $errors->first('account') !!}</label> @endif
-                    <label class="hidden error control-label" id="erroraccount"></label>
+                    @if ($errors->has('account')) <p class="control-label" style="color:red; font-weight:bold;">{!! $errors->first('account') !!}</p> @endif
+                    <p class="hidden control-label" id="erroraccount" style="color:red; font-weight:bold;"></p>
                   @else
                   <div class="alert alert-danger">
                       Vous ne possédez aucun compte de jeu
@@ -126,9 +126,9 @@ else
                             <input type="text" class="form-control" autocomplete="off" name="charactername" value="{{$charactername}}" id="charactername" autocapitalize="off" autocorrect="off" required="required" />
                         </div>
                     </div>
-                    @if ($errors->has('charactername')) <label class="error control-label">{{ $errors->first('charactername') }}</label> @endif
-                    <label class="hidden error control-label" id="errorname"></label>
-                    <label class="hidden success control-label" id="successname" style="color:green;"></label>
+                    @if ($errors->has('charactername')) <p class="control-label" style="color:red; font-weight:bold;">{{ $errors->first('charactername') }}</p> @endif
+                    <p class="hidden control-label" id="errorname" style="color:red; font-weight:bold;"></p>
+                    <label class="hidden control-label" id="successname" style="color:green;"></label>
                     <div class="ak-panel-title">
                      <span class="ak-panel-title-icon"></span>
                      Recapitulatif 
@@ -186,7 +186,7 @@ else
                 <div class="ak-bag-total">
                   <strong>Total :</strong> <span class="ak-display-price ak-currency-ogr">{{Utils::format_price($marketCharacter->ogrines)}} <span class="ak-icon-small ak-ogrines-icon"></span></span>
                 </div>
-                 @if ($errors->has('recap')) <label class="error control-label">{!! $errors->first('recap') !!}</label> @endif
+                 @if ($errors->has('recap')) <p class="control-label" style="color:red; font-weight:bold;">{!! $errors->first('recap') !!}</p> @endif
                 <div class="ak-bag-actions">
                   <input type="submit" id="buy_button" role="button" class="btn btn-primary btn-lg" value="Acheter">               
                 </div>
@@ -202,6 +202,7 @@ else
 <script>
       var $ = require('jquery');
       $(document).ready(function() {
+      
               checkNameAvailability = function(nameInput) {
                 $this = nameInput;
                 var validName = new RegExp('^[A-Z][a-z]{2,9}(?:-[A-Za-z][a-z]{2,9}|[a-z]{1,10})$');
