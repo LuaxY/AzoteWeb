@@ -17,15 +17,7 @@ class ShopMaintenance
      */
     public function handle($request, Closure $next)
     {
-        $characterCount = 0;
-
-        foreach (Auth::user()->accounts() as $account) {
-            $characterCount += count($account->characters(false, true));
-        }
-
-        $canBuy = $characterCount > 0;
-
-        if (config('dofus.shop_maintenance') || !$canBuy) {
+        if (config('dofus.shop_maintenance')) {
             $request->session()->flash('notify', ['type' => 'warning', 'message' => "Boutique en maintenance."]);
             return redirect()->to('shop/maintenance');
         }
