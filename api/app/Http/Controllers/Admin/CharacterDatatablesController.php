@@ -31,7 +31,7 @@ class CharacterDatatablesController extends Controller
                 return $character->classe();
             })
             ->editColumn('Experience', function ($character) {
-                return $character->level($server);
+                return $character->level($character->server);
             })
             ->addColumn('Status', function ($character) {
                 if ($character->isDeleted()) {
