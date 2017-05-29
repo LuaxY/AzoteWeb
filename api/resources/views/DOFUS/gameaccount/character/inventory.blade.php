@@ -120,6 +120,9 @@
                   </div>
                </div>
                <div class="ak-equipment-bottom">
+                @if(count($items) == 0)
+                <p class="text-center alert alert-info">L'inventaire est vide.</p>
+                @endif
                     @foreach($items as $k => $item)
                         @if($k == 0 || $k == 9 || $k == 18 || $k == 27 || $k == 36)
                         <div class="row">
@@ -152,6 +155,9 @@
                 <div class="ak-panel-content">
                     <div class="hidden-xs">
                     <div class="ak-equipment-bottom">
+                    @if(count($idols) == 0)
+                    <p class="text-center alert alert-info">Le personnage ne possède aucune idole.</p>
+                    @endif
                     @foreach($idols as $k => $idol)
                                 @if($k == 0 || $k == 9 || $k == 18 || $k == 27 || $k == 36)
                                 <div class="row">

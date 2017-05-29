@@ -86,6 +86,9 @@
                                 <script type="application/json">{"tooltip":{"style":{"classes":"ak-tooltip-white"}}}</script>
                             </div>
                                     <div class="ak-characters-list">
+                                    @if(count(Auth::user()->characters(true)) == 0)
+                                        <p class="text-center" style="margin-top:10px;">Vous n'avez aucun personnage</p>
+                                    @endif
                                         @foreach(Auth::user()->characters(true) as $character)
                                                 <div class="ak-character">
                                                     <div class="ak-character-img">
@@ -103,7 +106,7 @@
                                                     @endif
                                                     @php $account = $character->account($character->server) @endphp
                                                     <div class="ak-character-infos ak-emblem">
-                                                        @if($account->IsJailed != 1 && !$account->isBanned())
+                                                        @if($account->IsJailed != 1 && !$account->isBanned() && !$account->isStaff())
                                                         <a href="{{route('shop.market.sell')}}"><span class="ak-tooltip ak-icon-big ak-sell" style="width:40px; height:40px;"></span><script type="application/json">{"manual":true,"tooltip":{"content":{"title":"","text":"Vendre"},"style":{"classes":"ak-tooltip-content"}},"forceOnTouch":true}</script></a>
                                                         @endif
                                                     </div>
