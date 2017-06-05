@@ -5,7 +5,7 @@ git pull
 php artisan migrate
 gulp --production
 
-chmod -R 777 bootstrap/cache public/forge public/uploads public/uploads/support public/filemanager/userfiles
+chmod -R 777 bootstrap/cache public/forge public/uploads public/uploads/support public/filemanager/userfiles public/imgs
 
 chmod -R 777 storage
 mkdir -p storage/framework/sessions
