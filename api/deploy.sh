@@ -11,6 +11,7 @@ chmod -R 777 storage
 mkdir -p storage/framework/sessions
 chmod -R 777 storage
 chmod 777 vote
+chmod 777 public/imgs/lottery
 php artisan clear-compiled
 php artisan optimize
 

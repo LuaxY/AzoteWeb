@@ -103,7 +103,6 @@ class Account extends Model
                             }
                             else
                                 $characters[] = $worldCharacter->character();
-							$characters[] = $worldCharacter->character();
                         }
                     
                 }
@@ -122,7 +121,6 @@ class Account extends Model
                             }
                             else
                                 $characters[] = $worldCharacter->character();
-						$characters[] = $worldCharacter->character();
                     }
             }
             return $characters;

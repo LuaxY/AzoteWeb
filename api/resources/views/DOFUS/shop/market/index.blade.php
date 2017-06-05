@@ -72,7 +72,7 @@
             <div class="col-sm-12">
                <div class="ak-list-info" style="text-align:center;">
                 @if($market_characters->hasMorePages())
-                    @if($market_characters->total() > 20)
+                    @if($market_characters->total() > 200)
                     Plus de <strong>200</strong> résultats ont été trouvé. Veuillez affiner votre recherche en utilisant les filtres : Nom de personnage, Classe, Niveau et Sexe
                     @else
                     <strong>{{$market_characters->total()}}</strong> résultats ont été trouvé. Vous pouvez affiner votre recherche en utilisant les filtres : Nom de personnage, Classe, Niveau et Sexe

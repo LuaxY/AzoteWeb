@@ -323,6 +323,8 @@ class Character extends Model
 
     public function getEquipment($json)
     {
+        if(!$json)
+            return [];
         $itemsall = Cache::remember('character_equipment_'.$this->server.'_'.$this->Id, 30, function () use($json) {
                $itemsall = array('left' => [], 'right' => [], 'bottom' => [], 'costume' => []);
                $items = $json;
@@ -366,6 +368,8 @@ class Character extends Model
 
     public function getInventory($json)
     {
+        if(!$json)
+            return [];
         $items = Cache::remember('character_inventory_'.$this->server.'_'.$this->Id, 30, function () use($json) {
                $items = [];
                $allitems = $json;
