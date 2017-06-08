@@ -59,7 +59,6 @@ class CharactersController extends Controller
         }
 
         $itemsall = $character->getEquipment($json);
-       
         $itemsleft = collect($itemsall['left']);
         $itemsright = collect($itemsall['right']);
         $itemsbottom = collect($itemsall['bottom']);
