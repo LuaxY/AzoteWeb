@@ -27,6 +27,6 @@ class PostController extends Controller
             }
                 return $postsarray;
         });
-        return json_encode($posts);
+        return response()->json($posts);
     }
 }
