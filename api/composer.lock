@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bc266465ba3c6b615189b3db3cc1cf05",
-    "content-hash": "7b57ec2345b962fdb495cd8e95da11b1",
+    "hash": "81e3f984cdfae62722d041235a03b3c9",
+    "content-hash": "01d1edf1a686396d58baf7475b0ecb3a",
     "packages": [
         {
             "name": "chriskonnertz/open-graph",
@@ -2250,16 +2250,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "dev-master",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "3acf867cacd3cbb95a4d920e64416d4e6051560d"
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/3acf867cacd3cbb95a4d920e64416d4e6051560d",
-                "reference": "3acf867cacd3cbb95a4d920e64416d4e6051560d",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "shasum": ""
             },
             "require": {
@@ -2273,11 +2273,6 @@
                 "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Predis\\": "src/"
@@ -2301,7 +2296,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-11-22 14:33:03"
+            "time": "2016-06-16 16:22:20"
         },
         {
             "name": "psr/http-message",
@@ -5392,8 +5387,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "greggilbert/recaptcha": 20,
-        "oriceon/toastr-5-laravel": 20,
-        "predis/predis": 20
+        "oriceon/toastr-5-laravel": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

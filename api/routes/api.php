@@ -12,3 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['namespace' => 'Api', 'domain' => Config::get('dofus.domain.main')], function () {
+
+            Route::get('/get/posts', [
+                'uses' => 'PostController@get'
+            ])->where('number', '[0-9]+');
+});

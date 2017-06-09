@@ -23,7 +23,7 @@
         "mattketmo/email-checker": "^1.5",
         "oriceon/toastr-5-laravel": "dev-master",
         "pqb/filemanager-laravel": "2.*",
-        "predis/predis": "dev-master",
+        "predis/predis": "^1.1",
         "roumen/sitemap": "^2.6",
         "ryan/toastr-for-laravel": "^1.0",
         "sentry/sentry": ">=1.6.0",
