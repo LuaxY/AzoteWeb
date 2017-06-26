@@ -20,6 +20,7 @@ use App\Services\Payment\DediPass;
 use App\Services\Payment\Starpass;
 use App\Services\Payment\Recursos;
 use App\Services\Payment\PayFee;
+use App\Services\Payment\OneoPay;
 use App\Shop\ShopStatus;
 use App\Helpers\CloudFlare;
 
@@ -58,7 +59,10 @@ class PaymentController extends Controller
             if ($used == "payfee") {
                 $this->payment = new PayFee;
             }
-
+            if ($used == "oneopay") {
+                $this->payment = new OneoPay;
+            }
+			
             if (!$this->payment) {
                 return redirect()->to('shop/maintenance');
             }
