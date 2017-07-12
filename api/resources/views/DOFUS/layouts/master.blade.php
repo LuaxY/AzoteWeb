@@ -61,7 +61,7 @@
                     @if (Auth::guest())
                     <div class="ak-nav-not-logged">
                         <div class="ak-connect-links">
-                            <a href="{{ URL::route('login') }}" class="login ak-modal-trigger">
+                            <a href="{{ URL::route('login') }}" class="login">
                                 <span>Connexion</span>
                                 <img class="img-responsive" src="{{ URL::asset('imgs/avatar/default.jpg') }}" alt="Avatar">
                             </a>

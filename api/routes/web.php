@@ -425,6 +425,17 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'   => 'ladder.guild'
     ]);
 
+    Route::get(Lang::get('routes.ladder.kolizeum'), [
+        'uses' => 'LadderController@kolizeum',
+        'as'   => 'ladder.kolizeum'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.kolizeum1v1'), [
+        'uses' => 'LadderController@kolizeum1v1',
+        'as'   => 'ladder.kolizeum1v1'
+    ]);
+
+
     /* ============ OTHERS ============ */
 
     Route::get(Lang::get('routes.download'), [
@@ -506,6 +517,9 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
             $sitemap->add(URL::route('ladder.general', ['epsilon']), date('c', time()), '0.5', 'daily');
             $sitemap->add(URL::route('ladder.pvp', ['epsilon']), date('c', time()), '0.5', 'daily');
             $sitemap->add(URL::route('ladder.guild', ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.kolizeum', ['sigma']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.kolizeum', ['epsilon']), date('c', time()), '0.5', 'daily');
+            $sitemap->add(URL::route('ladder.kolizeum1v1', ['epsilon']), date('c', time()), '0.5', 'daily');
             $sitemap->add(URL::route('servers'), date('c', time()), '0.3', 'weekly');
 
             $posts = \DB::table('posts')->where('published', 1)->where('published_at', '<=', Carbon\Carbon::now())->orderBy('updated_at', 'desc')->get();

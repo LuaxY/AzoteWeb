@@ -11,6 +11,14 @@
                 <li @if ($page_name == 'Guilde') class="on" @endif>
                     <a href="{{ URL::route('ladder.guild', [$server]) }}">Ladder Guilde</a>
                 </li>
+                <li @if ($page_name == 'Kolizéum') class="on" @endif>
+                    <a href="{{ URL::route('ladder.kolizeum', [$server]) }}">Ladder Kolizéum</a>
+                </li>
+                @if(config('dofus.details')[$server]->version != "2.10")
+                <li @if ($page_name == 'Kolizéum 1vs1') class="on" @endif>
+                    <a href="{{ URL::route('ladder.kolizeum1v1', [$server]) }}">Ladder Kolizéum 1vs1</a>
+                </li>
+                @endif
             </ul>
         </div>
     </nav>

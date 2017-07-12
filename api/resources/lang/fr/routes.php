@@ -146,6 +146,10 @@ return [
 
     'ladder.guild' => 'classement/{server}/guilde',
 
+    'ladder.kolizeum' => 'classement/{server}/kolizeum',
+
+    'ladder.kolizeum1v1' => 'classement/{server}/kolizeum1vs1',
+
     /** Others **/
 
     'download' => 'telecharger',
