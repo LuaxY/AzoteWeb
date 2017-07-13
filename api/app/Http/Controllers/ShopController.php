@@ -347,7 +347,13 @@ class ShopController extends Controller
     public function marketBuy(Request $request, $id)
     {
         $marketCharacter = MarketCharacter::where('buy_date', null)->findOrFail($id);
-        $character = $marketCharacter->character();
+        // GET CHARACTER
+        $character = Character::on($marketCharacter->server . '_world')->where('Id', $marketCharacter->character_id)->where('DeletedDate', '!=', null)->first(); // "Deleted" character
+        if(!$character)
+        {
+            $request->session()->flash('notify', ['type' => 'error', 'message' => "Ce personnage ne semble plus être en vente"]);
+            return redirect()->route('shop.market');
+        }
         $server = $marketCharacter->server;
 
         if($request->isMethod('post'))
@@ -365,6 +371,19 @@ class ShopController extends Controller
             if(!Auth::user()->isAccountOwnedByMe($server,$request->account))
             {
                 $validator->errors()->add('account', "Problème avec le compte de jeu");
+                return redirect()->to(app('url')->previous(). '#buyplace')->withErrors($validator)->withInput();
+            }
+
+            // CHECK IF ACCOUNT SELLED (NOT BUYER!!) IS NOT JAIL OR BANNED
+            $accountSelled = $character->account($server);
+            if(!$accountSelled)
+            {
+                $validator->errors()->add('account', "Problème de compte de jeu");
+                return redirect()->to(app('url')->previous(). '#buyplace')->withErrors($validator)->withInput();
+            }
+            if($accountSelled->IsJailed == 1 || $accountSelled->isBanned() || $accountSelled->isStaff())
+            {
+                $validator->errors()->add('account', "Achat impossible. Le personnage que vous souhaitez acheter est actuellement sanctionné.");
                 return redirect()->to(app('url')->previous(). '#buyplace')->withErrors($validator)->withInput();
             }
 
@@ -404,7 +423,7 @@ class ShopController extends Controller
             Auth::user()->points -= $marketCharacter->ogrines;
             Auth::user()->save();
 
-            // GET CHARACTER AND WORLD CHARACTER
+            // GET WORLD CHARACTER
             $character = Character::on($server . '_world')->where('Id', $marketCharacter->character_id)->where('DeletedDate', '!=', null)->first(); // "Deleted" character
             $worldCharacter = WorldCharacter::on($server . '_auth')->where('CharacterId', $marketCharacter->character_id)->first();
             // CHANGE ACCOUNT PROPR
