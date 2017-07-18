@@ -684,6 +684,28 @@
                             <td><strong>Poussée</strong></td>
                             <td>{{$character->countStuff($server,'damagepush',['414','415'])}}</td>
                         </tr>
+                        @if(config('dofus.details')[$server]->version != "2.10")
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-small"></span></td>
+                                <td><strong>Sorts</strong></td>
+                                <td>{{$character->countStuff($server,'damagespells',['2812','2813'])}}</td>
+                            </tr>
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-small"></span></td>
+                                <td><strong>Arme</strong></td>
+                                <td>{{$character->countStuff($server,'damageweapon',['2808','2809'])}}</td>
+                            </tr>
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-smal"></span></td>
+                                <td><strong>Distance</strong></td>
+                                <td>{{$character->countStuff($server,'damagedistance',['2804','2805'])}}</td>
+                            </tr>
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-smallh"></span></td>
+                                <td><strong>Mêlée</strong></td>
+                                <td>{{$character->countStuff($server,'damagemelee',['2800','2801'])}}</td>
+                            </tr>
+                        @endif
                     </tbody>
                     </table>
                 </div>
@@ -756,6 +778,18 @@
                             <td><strong>Poussée (fixe)</strong></td>
                             <td>{{$character->countStuff($server,'respush',['416','417'])}}</td>
                         </tr>
+                        @if(config('dofus.details')[$server]->version != "2.10")
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-small"></span></td>
+                                <td><strong>Distance</strong></td>
+                                <td>{{$character->countStuff($server,'resdist',['2806','2807'])}}</td>
+                            </tr>
+                            <tr class="ak-bg-even">
+                                <td><span class="ak-icon-small"></span></td>
+                                <td><strong>Mêlée</strong></td>
+                                <td>{{$character->countStuff($server,'resmelee',['2802','2803'])}}</td>
+                            </tr>
+                        @endif
                     </tbody>
                     </table>
                 </div>

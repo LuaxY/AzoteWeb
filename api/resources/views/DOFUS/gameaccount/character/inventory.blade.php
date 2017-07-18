@@ -131,7 +131,7 @@
                         <span class="ak-item-nb">{{$item->Stack}}</span>
                             <span class="ak-linker" data-hasqtip="linker_item_{{$item->Id}}"><img src="{{DofusForge::item($item->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$item->Id}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$item->Id}}","character":"{{$character->Id}}","server":"{{$server}}","position":"inventory","builder":""}}</script>                       
                         </div>
-                        @if($k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44 || $k == (count($items) - 1))
+                        @if(($k == 0 && count($items) == 1) || $k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44 || $k == (count($items) - 1))
                         </div>
                         @endif
                     @endforeach
@@ -165,7 +165,7 @@
                                 <div class="ak-equipment-item ak-equipment-idol" id="">
                                     <span class="ak-linker" data-hasqtip="linker_item_{{$idol->ItemId}}"><img src="{{DofusForge::item($idol->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$idol->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$idol->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"idols","builder":""}}</script>                       
                                 </div>
-                                @if($k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44)
+                                @if(($k == 0 && count($idols) == 1) || $k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44)
                                 </div>
                                 @endif
                         @endforeach
