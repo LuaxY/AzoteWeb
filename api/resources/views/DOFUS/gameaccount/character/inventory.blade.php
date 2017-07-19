@@ -163,7 +163,7 @@
                                 <div class="row">
                                 @endif
                                 <div class="ak-equipment-item ak-equipment-idol" id="">
-                                    <span class="ak-linker" data-hasqtip="linker_item_{{$idol->ItemId}}"><img src="{{DofusForge::item($idol->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$idol->ItemId}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$idol->ItemId}}","character":"{{$character->Id}}","server":"{{$server}}","position":"idols","builder":""}}</script>                       
+                                    <span class="ak-linker" data-hasqtip="linker_item_{{$idol->Id}}"><img src="{{DofusForge::item($idol->Template->IconId, 52)}}"></span><script type="application/json">{"iShowDelay":250,"iHideDelay":250,"linker-id":"linker_item_{{$idol->Id}}","linker-path":"{{URL::route('linker.get', 'item')}}","linker-display-type":"TOOLTIP","linker-query-datas":{"l":"fr","id":"{{$idol->Id}}","character":"{{$character->Id}}","server":"{{$server}}","position":"idols","builder":""}}</script>                       
                                 </div>
                                 @if(($k == 0 && count($idols) == 1) || $k == 8 || $k == 17 || $k == 26 || $k == 35 || $k == 44)
                                 </div>
