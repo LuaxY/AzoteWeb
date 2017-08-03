@@ -73,6 +73,9 @@ class Utils
     
     public static function format_price($price, $delimiter = ' ')
     {
-        return number_format(round(floor($price), 0, PHP_ROUND_HALF_DOWN), 0, ",", $delimiter);
+        if(!is_numeric($price))
+            return "-";
+        else
+            return number_format(round(floor($price), 0, PHP_ROUND_HALF_DOWN), 0, ",", $delimiter);
     }
 }

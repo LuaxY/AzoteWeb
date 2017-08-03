@@ -32,10 +32,11 @@
                     <th>Nom</th>
                     <th>Classe</th>
                     <th class="ak-center">Niveau</th>
-                    @if (config('dofus.details')[$server]->prestige) <th class="ak-center">Prestige</th> @endif
                     <th>Cote</th>
-                    <th class="ak-xp-total">Victoires (jour)</th>
-                    <th class="ak-xp-total">Défaites (jour)</th>
+                    <th class="ak-xp-total">Victoires</th>
+                    <th class="ak-xp-total">Défaites</th>
+                    <th class="ak-xp-total">Total</th>
+                    <th class="ak-xp-total">Ratio</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,10 +55,15 @@
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
                     <td class="ak-center">{{ $character->level($server) }}</td>
-                    @if (config('dofus.details')[$server]->prestige) <td class="ak-center">{{ $character->PrestigeRank }}</td> @endif
                     <td>{{$character->ArenaDuelRank}}</td>
-                    <td class="ak-xp-total">{{$character->ArenaDuelDailyMatchsWon}}</td>
-                    <td class="ak-xp-total">{{$character->ArenaDuelDailyMatchsCount - $character->ArenaDuelDailyMatchsWon}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsWon}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsCount - $character->ArenaDuelMatchsWon}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsCount}}</td>
+                    @php 
+                        $ratio = App\Character::KolizeumRatio($character->ArenaDuelMatchsCount,$character->ArenaDuelMatchsWon);
+                    @endphp
+                    <td class="ak-xp-total ak-ratio-{{$ratio['type']}}">{{App\Helpers\Utils::format_price($ratio['value'])}} 
+                        @if(is_numeric($ratio['value'])) % @endif</td>
                 </tr>
                 @endforeach
             </tbody>

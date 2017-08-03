@@ -22826,6 +22826,21 @@ img.mfp-img {
     color: #42301A
 }
 
+.ak-table .ak-ratio-pos
+{
+    color: green;
+    font-weight: bold;
+}
+.ak-table .ak-ratio-neg
+{
+    color: red;
+    font-weight: bold;
+}
+.ak-table .ak-ratio-equal
+{
+    color: orange;
+    font-weight: bold;
+}
 @media all and (min-width: 992px) {
     .ak-table .ak-xp-24h, .ak-table .ak-xp-total {
         text-align: right

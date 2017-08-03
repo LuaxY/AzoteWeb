@@ -389,4 +389,20 @@ class Character extends Model
         });
         return $items;
     }
+
+    public static function KolizeumRatio($total, $wins)
+    {
+        $ratio = ['value' => '-', 'type' => 'none'];
+        if($total != 0)
+        {
+            $ratio['value'] = (($wins / $total) * 100);
+            if($ratio['value'] < 50)
+                $ratio['type'] = 'neg';
+            if($ratio['value'] == 50)
+                $ratio['type'] = 'equal';
+            if($ratio['value'] > 50)
+                $ratio['type'] = 'pos';
+        }
+            return $ratio;
+    }
 }

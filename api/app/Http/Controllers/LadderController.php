@@ -100,7 +100,7 @@ class LadderController extends Controller
             $world = $db[$server.'_world']['database'];
 
             $result = DB::table($world.'.characters AS ch')
-                ->select('ch.Id', 'ch.Name', 'ch.Breed', 'ch.Sex', 'ch.ArenaRank', 'ch.PrestigeRank', 'ch.Experience', 'ch.ArenaDailyMatchsCount', 'ch.ArenaDailyMatchsWon')
+                ->select('ch.Id', 'ch.Name', 'ch.Breed', 'ch.Sex', 'ch.ArenaRank', 'ch.Experience', 'ch.ArenaMatchsCount', 'ch.ArenaMatchsWon')
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1)
@@ -131,7 +131,7 @@ class LadderController extends Controller
             $world = $db[$server.'_world']['database'];
 
             $result = DB::table($world.'.characters AS ch')
-                ->select('ch.Id', 'ch.Name', 'ch.Breed', 'ch.Sex', 'ch.ArenaDuelRank', 'ch.PrestigeRank', 'ch.Experience', 'ch.ArenaDuelDailyMatchsCount', 'ch.ArenaDuelDailyMatchsWon')
+                ->select('ch.Id', 'ch.Name', 'ch.Breed', 'ch.Sex', 'ch.ArenaDuelRank', 'ch.Experience', 'ch.ArenaDuelMatchsCount', 'ch.ArenaDuelMatchsWon')
                 ->leftJoin($auth.'.worlds_characters AS wc', 'ch.Id', '=', 'wc.CharacterId')
                 ->leftJoin($auth.'.accounts AS acc', 'wc.AccountId', '=', 'acc.Id')
                 ->where('acc.UserGroupId', 1)
