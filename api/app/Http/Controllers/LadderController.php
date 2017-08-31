@@ -11,6 +11,7 @@ use App\World;
 use App\Character;
 use App\Guild;
 use App\Exceptions\GenericException;
+use App\Season;
 
 class LadderController extends Controller
 {
@@ -93,6 +94,11 @@ class LadderController extends Controller
         if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
+        $seasonActive = null;
+        if(config('dofus.details')[$server]->version != '2.10')
+        {
+            $seasonActive = Season::where('active', 1)->first();
+        }
 
         $characters = Cache::remember('ladder.kolizeum.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             $db = config('database.connections');
@@ -112,7 +118,7 @@ class LadderController extends Controller
             return Character::hydrate($result->toArray());
         });
 
-        return view('ladder.kolizeum', ['server' => $server, 'current' => 'kolizeum', 'characters' => $characters]);
+        return view('ladder.kolizeum', ['server' => $server, 'current' => 'kolizeum', 'characters' => $characters, 'seasonActive' => $seasonActive]);
     }
 
     public function kolizeum1v1($server)
@@ -123,6 +129,11 @@ class LadderController extends Controller
         if(config('dofus.details')[$server]->version == '2.10')
         {
             throw new GenericException('invalid_server', $server);
+        }
+        $seasonActive = null;
+        if(config('dofus.details')[$server]->version != '2.10')
+        {
+            $seasonActive = Season::where('active', 1)->first();
         }
 
         $characters = Cache::remember('ladder.kolizeum1v1.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
@@ -143,6 +154,6 @@ class LadderController extends Controller
             return Character::hydrate($result->toArray());
         });
 
-        return view('ladder.kolizeum1v1', ['server' => $server, 'current' => 'kolizeum', 'characters' => $characters]);
+        return view('ladder.kolizeum1v1', ['server' => $server, 'current' => 'kolizeum', 'characters' => $characters, 'seasonActive' => $seasonActive]);
     }
 }

@@ -22,6 +22,14 @@
 
     <div class="ak-container ak-banner-header">
         <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_koli1v1.jpg') }}">
+        @if($seasonActive)
+        <div>
+            <center style="font-family:bebas_neueregular;font-size: 200%;color:#c52c02;">Saison {{$seasonActive->id}}: En cours</center>
+            <div>
+                <center style="font-family:bebas_neueregular;font-size: 150%;">{{$seasonActive->begin->format('d M Y')}} - {{$seasonActive->end->format('d M Y')}}</center>
+            </div>
+        </div>
+        @endif
     </div>
 
     <div class="ak-responsivetable-wrapper">
