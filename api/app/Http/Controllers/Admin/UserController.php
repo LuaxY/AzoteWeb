@@ -79,7 +79,6 @@ class UserController extends Controller
         $forumAccount->email             = $user->email;
         $forumAccount->joined            = time();
         $forumAccount->ip_address        = '';
-        $forumAccount->member_login_key  = str_random(32);
         $forumAccount->members_seo_name  = strtolower($user->pseudo);
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
         $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->password);
@@ -96,9 +95,6 @@ class UserController extends Controller
             $forumAccountValidating->new_reg = 1;
             $forumAccountValidating->save();
         }
-
-        setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
-        setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
 
         if (!$request->active) {
             Mail::to($user)->send(new UserCreated($user));

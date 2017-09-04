@@ -15,6 +15,7 @@ use App\Services\DofusForge;
 use App\User;
 use App\Account;
 use App\ForumAccount;
+use App\ForumKnownDevice;
 use App\EmailModification;
 use Redis;
 
@@ -87,7 +88,6 @@ class AccountController extends Controller
         $forumAccount->email             = $user->email;
         $forumAccount->joined            = time();
         $forumAccount->ip_address        = '';
-        $forumAccount->member_login_key  = str_random(32);
         $forumAccount->members_seo_name  = strtolower($user->pseudo);
         $forumAccount->members_pass_salt = $forumAccount->generateSalt();
         $forumAccount->members_pass_hash = $forumAccount->encryptedPassword($request->input('password'));
@@ -104,9 +104,20 @@ class AccountController extends Controller
         $forumAccountValidating->new_reg = 1;
         $forumAccountValidating->ip_address = $clientIp;
         $forumAccountValidating->save();
+		
+	    $forumKnownDevice = new ForumKnownDevice;
+        $forumKnownDevice->device_key = str_random(32);
+        $forumKnownDevice->member_id = $user->forum_id;
+        $forumKnownDevice->user_agent = $request->header('User-Agent');
+        $forumKnownDevice->login_key = str_random(32);
+        $forumKnownDevice->last_seen = 0;
+        $forumKnownDevice->anonymous = 0;
+        $forumKnownDevice->login_handler = "Internal";
+        $forumKnownDevice->save();	
 
         setcookie('ips4_member_id', $forumAccount->member_id, 0, '/', config('dofus.forum.domain'));
-        setcookie('ips4_pass_hash', $forumAccount->member_login_key, 0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_login_key', $forumKnownDevice->login_key, 0, '/', config('dofus.forum.domain'));
+        setcookie('ips4_device_key', $forumKnownDevice->device_key, 0, '/', config('dofus.forum.domain'));
 
         Mail::to($user)->send(new UserCreated($user));
 
