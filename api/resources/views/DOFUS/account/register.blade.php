@@ -25,7 +25,7 @@
                         </div>
                         <div class="ak-inner-block">
                             <div class="ak-form ak-registerform-container">
-                                {!! Form::open(['route' => 'register', 'class' => 'ak-container ak-registerform']) !!}
+                                {!! Form::open(['route' => 'register', 'class' => 'ak-container']) !!}
                                     <h4 style="display: none">Account</h4>
                                     <fieldset class="ak-container ak-fieldset">
                                         <div class="ak-fieldset-content">

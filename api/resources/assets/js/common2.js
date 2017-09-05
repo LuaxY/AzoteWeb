@@ -7287,7 +7287,7 @@ typeof Ankama.Ads == "undefined" && (Ankama.Ads = {
             r = require("jquery.complexify");
         t.widget("ankama.ak_registerform", t.ankama.ak_simpleform, {
             options: {
-                initSelector: ".ak-registerform"
+                initSelector: ".ak-nonused"
             },
             _create: function() {
                 var e = this;
@@ -7869,7 +7869,7 @@ typeof Ankama.Ads == "undefined" && (Ankama.Ads = {
             n = require("lodash");
         t.widget("ankama.ak_form_builder", t.ankama.ak_simpleform, {
             options: {
-                initSelector: ".ak-form-builder",
+                initSelector: ".ak-form-buildernonused",
                 ajaxSubmit: !1
             },
             _init: function() {

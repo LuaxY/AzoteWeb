@@ -39,7 +39,7 @@
         _ = require("lodash");
     $.widget("ankama.ak_form_certification", $.ankama.ak_simpleform, {
         options: {
-            initSelector: ".ak-form-certification"
+            initSelector: ".ak-form-certificationnonused"
         },
         _create: function() {
             var self = this;
@@ -2766,7 +2766,7 @@
         _ = require("lodash");
     $.widget("ankama.ak_form_certification", $.ankama.ak_simpleform, {
         options: {
-            initSelector: ".ak-form-certification"
+            initSelector: ".ak-form-certificationnonused"
         },
         _create: function() {
             var self = this;
@@ -2857,7 +2857,7 @@
         complexify = require("jquery.complexify");
     $.widget("ankama.ak_form_account", $.ankama.ak_registerform, {
         options: {
-            initSelector: ".ak-form-account",
+            initSelector: ".ak-form-accountnonused",
             ajaxSubmit: false
         },
         _create: function() {
