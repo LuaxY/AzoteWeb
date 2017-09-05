@@ -21,6 +21,9 @@ class OneoPay extends Payment
 
         $this->rates->$countryName = new \stdClass;
         $this->rates->$countryName->$methodName = new \stdClass;
+		
+        $palier = "FR-AUDIOTEL-300-A";
+		$rate = json_decode(file_get_contents('http://api.oneopay.com/rates/?rate=FR-AUDIOTEL-300-A'));
 
         $newMethod = new \stdClass;
 
@@ -28,7 +31,7 @@ class OneoPay extends Payment
         $newMethod->points   = 150;
         $newMethod->price    = 3;
         $newMethod->cost     = "3 " . $newMethod->devise;
-        $newMethod->number   = "08 99 37 99 39";
+        $newMethod->number   = $rate->call;
         $newMethod->text   = "3€/appel depuis une ligne fixe + coût d'un appel, 1 appel requis.<br>Coût : 3€";
 
         $newMethod->legal = new \stdClass;
@@ -37,8 +40,6 @@ class OneoPay extends Payment
         $newMethod->legal->shortcode = null;
         $newMethod->legal->keyword   = null;
         $newMethod->legal->footer    = null;
-
-        $palier = "FR-AUDIOTEL-300-A";
 
         $this->rates->$countryName->$methodName->$palier = $newMethod;
 		
