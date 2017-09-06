@@ -7,30 +7,21 @@
 @stop
 
 @section('breadcrumbs')
-{? $page_name = 'Kolizéum' ?}
+{? $page_name = 'Kolizéum 1vs1' ?}
 {!! Breadcrumbs::render('ladder.page', $page_name, $server) !!}
 @stop
 
 @section('content')
 <div class="ak-container ak-main-center">
-    <div class="ak-title-container">
-        <h1><span class="ak-icon-big ak-ladder-kolizeum"></span></a> Classement {{ $page_name }}</h1>
+    <div class="ak-title-container ak-backlink">
+        <h1><span class="ak-icon-big ak-ladder-kolizeum"></span></a> Saisons Kolizéum 1vs1: {{$server}}</h1>
+        <a href="{{ URL::route('ladder.kolizeum1v1.seasons', [$server]) }}"class="ak-backlink-button">Retour à la liste des saisons</a>
     </div>
 
-    @include('ladder.servers')
-    @include('ladder.menu')
+    @include('ladder.seasons.template.menu')
 
     <div class="ak-container ak-banner-header">
-        <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_koli3v3.jpg') }}">
-        @if($seasonActive)
-        <div style="background-color:#a5a288;margin: 10px;">
-        <a href="{{route('ladder.kolizeum.seasons', $server)}}" style="position: absolute;float: right;margin: 10px;" class="btn btn-sm btn-primary">Voir toutes les saisons</a>
-            <center style="font-family:bebas_neueregular;font-size: 200%;color:#c52c02;">Saison {{$seasonActive->id}}: En cours</center>
-            <div>
-                <center style="font-family:bebas_neueregular;font-size: 150%;">{{$seasonActive->begin->format('d M Y')}} - {{$seasonActive->end->format('d M Y')}}</center>
-            </div>
-        </div>
-        @endif
+        <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_koli1v1.jpg') }}">
     </div>
 
     <div class="ak-responsivetable-wrapper">
@@ -64,12 +55,12 @@
                     </td>
                     <td class="ak-class">{{ $character->classe() }}</td>
                     <td class="ak-center">{{ $character->level($server) }}</td>
-                    <td>{{$character->ArenaRank}}</td>
-                    <td class="ak-xp-total">{{$character->ArenaMatchsWon}}</td>
-                    <td class="ak-xp-total">{{$character->ArenaMatchsCount - $character->ArenaMatchsWon}}</td>
-                    <td class="ak-xp-total">{{$character->ArenaMatchsCount}}</td>
+                    <td>{{$character->ArenaDuelRank}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsWon}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsCount - $character->ArenaDuelMatchsWon}}</td>
+                    <td class="ak-xp-total">{{$character->ArenaDuelMatchsCount}}</td>
                     @php 
-                        $ratio = App\Character::KolizeumRatio($character->ArenaMatchsCount,$character->ArenaMatchsWon);
+                        $ratio = App\Character::KolizeumRatio($character->ArenaDuelMatchsCount,$character->ArenaDuelMatchsWon);
                     @endphp
                     <td class="ak-xp-total ak-ratio-{{$ratio['type']}}">{{App\Helpers\Utils::format_price($ratio['value'])}} 
                         @if(is_numeric($ratio['value'])) % @endif</td>

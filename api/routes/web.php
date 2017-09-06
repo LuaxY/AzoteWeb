@@ -435,6 +435,25 @@ Route::group(['domain' => Config::get('dofus.domain.main')], function () {
         'as'   => 'ladder.kolizeum1v1'
     ]);
 
+    Route::get(Lang::get('routes.ladder.kolizeum.seasons'), [
+        'uses' => 'LadderController@kolizeumSeasons',
+        'as'   => 'ladder.kolizeum.seasons'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.kolizeum1v1.seasons'), [
+        'uses' => 'LadderController@kolizeum1v1Seasons',
+        'as'   => 'ladder.kolizeum1v1.seasons'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.kolizeum.season'), [
+        'uses' => 'LadderController@kolizeumSeason',
+        'as'   => 'ladder.kolizeum.season'
+    ]);
+
+    Route::get(Lang::get('routes.ladder.kolizeum1v1.season'), [
+        'uses' => 'LadderController@kolizeum1v1Season',
+        'as'   => 'ladder.kolizeum1v1.season'
+    ]);
 
     /* ============ OTHERS ============ */
 

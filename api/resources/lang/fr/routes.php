@@ -150,6 +150,14 @@ return [
 
     'ladder.kolizeum1v1' => 'classement/{server}/kolizeum1vs1',
 
+    'ladder.kolizeum.seasons' => 'classement/{server}/kolizeum/seasons',
+
+    'ladder.kolizeum1v1.seasons' => 'classement/{server}/kolizeum1vs1/seasons',
+
+    'ladder.kolizeum.season' => 'classement/{server}/kolizeum/season/{id}',
+
+    'ladder.kolizeum1v1.season' => 'classement/{server}/kolizeum1vs1/season/{id}',
+    
     /** Others **/
 
     'download' => 'telecharger',

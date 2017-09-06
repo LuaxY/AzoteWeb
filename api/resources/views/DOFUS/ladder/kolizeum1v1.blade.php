@@ -24,6 +24,7 @@
         <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_koli1v1.jpg') }}">
         @if($seasonActive)
         <div style="background-color:#a5a288;margin: 10px;">
+        <a href="{{route('ladder.kolizeum1v1.seasons', $server)}}" style="position: absolute;float: right;margin: 10px;" class="btn btn-sm btn-primary">Voir toutes les saisons</a>
             <center style="font-family:bebas_neueregular;font-size: 200%;color:#c52c02;">Saison {{$seasonActive->id}}: En cours</center>
             <div>
                 <center style="font-family:bebas_neueregular;font-size: 150%;">{{$seasonActive->begin->format('d M Y')}} - {{$seasonActive->end->format('d M Y')}}</center>

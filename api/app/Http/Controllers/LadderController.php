@@ -94,11 +94,8 @@ class LadderController extends Controller
         if (!World::isServerExist($server)) {
             throw new GenericException('invalid_server', $server);
         }
-        $seasonActive = null;
-        if(config('dofus.details')[$server]->version != '2.10')
-        {
-            $seasonActive = Season::where('active', 1)->first();
-        }
+
+        $seasonActive = Season::where('active', 1)->where('server', $server)->first();
 
         $characters = Cache::remember('ladder.kolizeum.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             $db = config('database.connections');
@@ -130,11 +127,8 @@ class LadderController extends Controller
         {
             throw new GenericException('invalid_server', $server);
         }
-        $seasonActive = null;
-        if(config('dofus.details')[$server]->version != '2.10')
-        {
-            $seasonActive = Season::where('active', 1)->first();
-        }
+
+        $seasonActive = Season::where('active', 1)->where('server', $server)->first();
 
         $characters = Cache::remember('ladder.kolizeum1v1.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server) {
             $db = config('database.connections');
@@ -156,4 +150,131 @@ class LadderController extends Controller
 
         return view('ladder.kolizeum1v1', ['server' => $server, 'current' => 'kolizeum', 'characters' => $characters, 'seasonActive' => $seasonActive]);
     }
+
+    public function kolizeumSeasons(Request $request, $server)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        // Verifications d'anciennes saisons
+        $oldSeasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
+
+        if(!$oldSeasons)
+        {
+            $request->session()->flash('notify', ['type' => 'info', 'message' => "Aucune ancienne saison trouvée"]);
+            return redirect()->back();
+        }
+
+        $characters = [];
+
+        foreach($oldSeasons as $season)
+        {
+            $characters[$season->id] = [];
+            $result = Cache::remember('ladder.kolizeum.3first.season'.$season->id.'.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server, $season) {
+                $result = DB::table($season->table)
+                ->select('Id', 'Name', 'Breed', 'Sex', 'ArenaRank')
+                ->orderBy('ArenaRank', 'DESC')
+                ->where('ArenaRank', '>', 0)
+                ->take(3)
+                ->get();
+    
+                return Character::hydrate($result->toArray());
+            });
+            array_push($characters[$season->id], $result);
+        }
+
+        return view('ladder.seasons.kolizeum', ['server' => $server, 'oldSeasons' => $oldSeasons, 'characters' => $characters]);
+    }
+    
+    public function kolizeum1v1Seasons(Request $request, $server)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        // Verifications d'anciennes saisons
+        $oldSeasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
+
+        if(!$oldSeasons)
+        {
+            $request->session()->flash('notify', ['type' => 'info', 'message' => "Aucune ancienne saison trouvée"]);
+            return redirect()->back();
+        }
+
+        $characters = [];
+
+        foreach($oldSeasons as $season)
+        {
+            $characters[$season->id] = [];
+            $result = Cache::remember('ladder.kolizeum1v1.3first.season'.$season->id.'.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server, $season) {
+                $result = DB::table($season->table)
+                ->select('Id', 'Name', 'Breed', 'Sex', 'ArenaDuelRank')
+                ->orderBy('ArenaDuelRank', 'DESC')
+                ->where('ArenaDuelRank', '>', 0)
+                ->take(3)
+                ->get();
+    
+                return Character::hydrate($result->toArray());
+            });
+            array_push($characters[$season->id], $result);
+        }
+
+        return view('ladder.seasons.kolizeum1v1', ['server' => $server, 'oldSeasons' => $oldSeasons, 'characters' => $characters]);
+    }
+
+    public function kolizeumSeason(Request $request, $server, $id)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        $season = Season::where('active', 0)->where('id', $id)->where('server', $server)->first();
+
+        if(!$season)
+            abort(404);
+
+        $seasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
+
+        $characters = Cache::remember('ladder.kolizeum.season'.$season->id.'.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server, $season) {
+            $result = DB::table($season->table)
+                ->select('Id', 'Name', 'Breed', 'Sex', 'ArenaRank', 'Experience', 'ArenaMatchsCount', 'ArenaMatchsWon')
+                ->orderBy('ArenaRank', 'DESC')
+                ->where('ArenaRank', '>', 0)
+                ->take(100)
+                ->get();
+
+            return Character::hydrate($result->toArray());
+        });
+
+        return view('ladder.seasons.view.kolizeum', ['server' => $server, 'characters' => $characters, 'season' => $season, 'seasons' => $seasons, 'current' => 'kolizeum']);
+    }
+
+    public function kolizeum1v1Season(Request $request, $server, $id)
+    {
+        if (!World::isServerExist($server)) {
+            throw new GenericException('invalid_server', $server);
+        }
+
+        $season = Season::where('active', 0)->where('id', $id)->where('server', $server)->first();
+
+        if(!$season)
+            abort(404);
+
+        $seasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
+
+        $characters = Cache::remember('ladder.kolizeum1v1.season'.$season->id.'.'.$server, self::LADDER_CACHE_EXPIRE_MINUTES, function () use ($server, $season) {
+            $result = DB::table($season->table)
+                ->select('Id', 'Name', 'Breed', 'Sex', 'ArenaDuelRank', 'Experience', 'ArenaDuelMatchsCount', 'ArenaDuelMatchsWon')
+                ->orderBy('ArenaDuelRank', 'DESC')
+                ->where('ArenaDuelRank', '>', 0)
+                ->take(100)
+                ->get();
+
+            return Character::hydrate($result->toArray());
+        });
+
+        return view('ladder.seasons.view.kolizeum1v1', ['server' => $server, 'characters' => $characters, 'season' => $season, 'seasons' => $seasons, 'current' => 'kolizeum1v1']);
+    }
+
 }
