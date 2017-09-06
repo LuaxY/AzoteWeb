@@ -29,7 +29,7 @@
       <div class="col-sm-6 col-md-6">
          <div class="ak-section-kolizeum ak-block-hp-ladder">
             <div class="ak-section-title">
-               <a href="href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}""><span class="ak-text ">Saison {{$oldSeason->id}}</span></a>
+               <a href="href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}""><span class="ak-text ">Saison {{$oldSeason->id}} <small style="float:right;"> {{$oldSeason->begin->format('d M Y')}} - {{$oldSeason->end->format('d M Y')}}</small></span></a>
             </div>
             <a class="ak-section-illu" href="href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}"" style="background:url({{URL::asset($oldSeason->image)}})"></a>
             <div class="ak-section-desc">

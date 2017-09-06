@@ -22,6 +22,12 @@
 
     <div class="ak-container ak-banner-header">
         <img class="img-responsive" src="{{ URL::asset('imgs/assets/header_koli3v3.jpg') }}">
+        <div style="background-color:#a5a288;margin: 10px;">
+            <center style="font-family:bebas_neueregular;font-size: 200%;color:#c52c02;">Saison {{$season->id}}: Terminée</center>
+            <div>
+                <center style="font-family:bebas_neueregular;font-size: 150%;">{{$season->begin->format('d M Y')}} - {{$season->end->format('d M Y')}}</center>
+            </div>
+        </div>
     </div>
 
     <div class="ak-responsivetable-wrapper">

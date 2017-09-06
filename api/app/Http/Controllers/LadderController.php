@@ -160,7 +160,7 @@ class LadderController extends Controller
         // Verifications d'anciennes saisons
         $oldSeasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
 
-        if(!$oldSeasons || empty($oldSeasons))
+        if(!$oldSeasons || count($oldSeasons) == 0)
         {
             $request->session()->flash('notify', ['type' => 'info', 'message' => "Aucune ancienne saison trouvée"]);
             return redirect()->back();
@@ -196,7 +196,7 @@ class LadderController extends Controller
         // Verifications d'anciennes saisons
         $oldSeasons = Season::where('active', 0)->where('server', $server)->whereNotNull('table')->get();
 
-        if(!$oldSeasons || empty($oldSeasons))
+        if(!$oldSeasons || count($oldSeasons) == 0)
         {
             $request->session()->flash('notify', ['type' => 'info', 'message' => "Aucune ancienne saison trouvée"]);
             return redirect()->back();
