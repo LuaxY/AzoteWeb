@@ -29,9 +29,9 @@
       <div class="col-sm-6 col-md-6">
          <div class="ak-section-kolizeum ak-block-hp-ladder">
             <div class="ak-section-title">
-               <a href="href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}""><span class="ak-text ">Saison {{$oldSeason->id}} <small style="float:right;"> {{$oldSeason->begin->format('d M Y')}} - {{$oldSeason->end->format('d M Y')}}</small></span></a>
+               <a href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}""><span class="ak-text ">Saison {{$oldSeason->id}} <small style="float:right;"> {{$oldSeason->begin->format('d M Y')}} - {{$oldSeason->end->format('d M Y')}}</small></span></a>
             </div>
-            <a class="ak-section-illu" href="href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}"" style="background:url({{URL::asset($oldSeason->image)}})"></a>
+            <a class="ak-section-illu" href="{{URL::route('ladder.kolizeum.season', [$server, $oldSeason->id])}}"" style="background:url({{URL::asset($oldSeason->image)}})"></a>
             <div class="ak-section-desc">
                <div class="ak-responsivetable-wrapper" style="overflow: hidden;">
                     <table border="1" class="ak-ladder ak-ladder-section ak-container ak-table ak-responsivetable" style="white-space: nowrap; visibility: visible;">
