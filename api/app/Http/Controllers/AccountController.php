@@ -586,12 +586,13 @@ class AccountController extends Controller
     
     public function purchases(Request $request)
     {
+        $authid = Auth::user()->id;
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
         if (!is_numeric($page)) {
             abort(404);
         }
         
-        $transactions = Cache::remember('account_transactions_page_' . $page, 15, function () {
+        $transactions = Cache::remember('account'.$authid.'_transactions_page_' . $page, 15, function () {
             return Auth::user()->transactions()->paginate(self::TRANSACTIONS_PER_PAGE);
         });
 
@@ -600,12 +601,13 @@ class AccountController extends Controller
 
     public function votes(Request $request)
     {
+        $authid = Auth::user()->id;
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
         if (!is_numeric($page)) {
             abort(404);
         }
         
-        $votes = Cache::remember('account_votes_page_' . $page, 15, function () {
+        $votes = Cache::remember('account'.$authid.'_votes_page_' . $page, 15, function () {
             return Auth::user()->votes()->paginate(self::VOTES_PER_PAGE);
         });
 
