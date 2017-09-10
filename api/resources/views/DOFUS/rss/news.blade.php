@@ -3,7 +3,7 @@
     <channel>
         <title>{{ config('dofus.title') }} - {{ config('dofus.subtitle') }}</title>
         <link>{{ url('/') }}</link>
-        <description>{{ config('dofus.title') }} Serveurs Dofus 2.10 & 2.35</description>
+        <description>{{ config('dofus.title') }} Serveurs Dofus @foreach(config('dofus.servers') as $k => $server){{config('dofus.details')[$server]->version}}@if(($k == 0) || ($k % 2 == 0)) &@endif @endforeach</description>
         @foreach ($posts as $post)
         <item>
             <title>{{ $post->title }}</title>
