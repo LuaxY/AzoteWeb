@@ -1,4 +1,4 @@
-<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ak-modal-wrapper" tabindex="-1" role="dialog" aria-describedby="ui-id-6" aria-labelledby="ui-id-7" style="height: auto; width: 90%; display: block; top: 200px; left: 336px; z-index: 101;">
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ak-modal-wrapper" tabindex="-1" role="dialog" style="height: auto; width: 90%; display: block; top: 200px; left: 336px; z-index: 101;">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
         <span id="ui-id-7" class="ui-dialog-title">Comment jouer ?</span>
         <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="Close">
@@ -6,7 +6,7 @@
             <span class="ui-button-text">Close</span>
         </button>
     </div>
-    <div class="ak-modal ak-modal-login js-modal-login ui-dialog-content ui-widget-content" id="ui-id-6" style="display: block; width: auto; min-height: 78px; max-height: 825.4px; height: auto;">
+    <div class="js-modal-login ui-dialog-content ui-widget-content">
         <div class="ak-modal-content ak-panel-stack">
             <div class="ak-container ak-panel ak-nocontentpadding">
                 <div class="ak-panel-content">
