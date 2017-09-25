@@ -63,6 +63,7 @@ class PostController extends Controller
 
     public function show(Request $request, $id, $slug = "")
     {
+        $result = false;
         $page = $request->has('page') && is_numeric($request->input('page')) ? $request->input('page') : 1;
         $errors;
         if (!is_numeric($page)) {
@@ -108,6 +109,7 @@ class PostController extends Controller
                 $totalResults = Comment::where('post_id', $id)->count();
                 $this->clearCommentsCache($totalResults, $id, self::COMMENTS_PER_PAGE);
                 $page = $this->getLastPage($totalResults, self::COMMENTS_PER_PAGE);
+                $result = true;
             }
         }
 
@@ -115,7 +117,7 @@ class PostController extends Controller
             return Comment::where('post_id', $id)->orderBy('created_at', 'asc')->paginate(self::COMMENTS_PER_PAGE, ['*'], 'page', $page);
         });
 
-        return view('posts.show', compact('post', 'comments', 'og', 'errors'));
+        return view('posts.show', compact('post', 'comments', 'og', 'errors', 'result'));
     }
 
     public function redirect(Request $request, $id, $slug = "")

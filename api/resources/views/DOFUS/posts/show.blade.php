@@ -88,15 +88,15 @@
                     </nav>
                 </div>
             </div>
-            @if(Auth::check())
+            @if(Auth::check() && $result == false)
                 {!! Form::open(['url' => URL::full(), 'class' => 'ak-forum-post-form ak-ajaxloader', 'data-target' => '.ak-forum-post-panel']) !!}
                     <div class="row ak-comment-container">
                         <div class="ak-avatar">
                             <img src="{{ URL::asset(Auth::user()->avatar) }}" alt="" border="0">
                         </div>
                         <input type="hidden" name="postback" value="forum_add_comment">
-                        <input type="hidden" name="topic_title" value="Bonus ce Weekend : +25% d'Expérience pour vous et vos Métiers !">
-                        <input type="hidden" name="user" value="26940534">
+                        <input type="hidden" name="topic_title" value="{{$post->title}}">
+                        <input type="hidden" name="user" value="{{Auth::user()->id}}">
                         <div class="ak-comment">
                             {!! Form::textarea('comment', null, ['class' => 'ak-comment-textarea', 'placeholder' => 'Commenter...', 'rows' => '0', 'cols' => '0', 'style' => 'height:70px;']) !!}
                         </div>
