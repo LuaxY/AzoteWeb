@@ -72,6 +72,30 @@ class DofusForge
 
             return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
     }
+    public static function playerId($characterId, $server, $mode, $orientation, $sizeX, $sizeY, $margin = 0)
+    {
+        $character = Character::on($server.'_world')->where('Id', $characterId)->first();
+        if($character)
+        {
+            if(config('dofus.details')[$server]->version == "2.10")
+            {
+                $look = bin2hex(self::purifyLook($character->EntityLookString));
+            }
+            else
+            {
+                $jsonLook = Stump::get($server, "/Character/$character->Id/Look");
+                $look = json_decode($jsonLook);
+
+                if(!$look)
+                    $look = $character->DefaultLookString;
+
+                $look = bin2hex(self::purifyLook($look));
+            }
+
+            return self::asset("dofus/renderer/look/$look/$mode/$orientation/{$sizeX}_{$sizeY}-{$margin}.png");
+        }
+        return null;
+    }
 
     public static function item($iconId, $size)
     {

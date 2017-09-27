@@ -93,10 +93,31 @@
         <div class="row ak-container">
             <div class="ak-block-shop">
                 <div class="text-center ak-shop-top">
-                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-title"> La boutique</a>
+                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-title"> La Boutique</a> 
                 </div>
                 <div class="ak-shop-articles">
                     <div class="row ak-container">
+                        <div class="ak-column ak-container col-xs-12 col-sm-4 col-md-12">
+                            <div class="ak-shop-article">
+                                <div class="ak-shop-article-container">
+                                    <div class="ak-shop-article-illustration">
+                                        <a href="{{route('shop.market.buy',$shopCharacter[0]->id)}}">
+                                        <img src="{{ DofusForge::playerId($shopCharacter[0]->id, $shopCharacter[0]->server, 'full', 1, 80, 171) }}" class="img-maxresponsive">
+                                        </a>
+                                    </div>
+                                    <div class="ak-shop-article-infos">
+                                        <span class="ak-shop-article-title"><a href="{{route('shop.market.buy',$shopCharacter[0]->id)}}">{{$shopCharacter[0]->character_name}}</a></span>
+                                        <span class="ak-shop-article-server">{{ ucfirst($shopCharacter[0]->server)}}</span>
+                                        <span class="ak-shop-article-price"><a href="{{route('shop.market.buy',$shopCharacter[0]->id)}}"><span class="ak-nobreak">{{Utils::format_price($shopCharacter[0]->ogrines)}} <span class="ak-icon-ogrines"></span></span></a></span>
+                                    </div>
+                                    <div class="ak-shop-article-action">
+                                        <a href="{{route('shop.market.buy',$shopCharacter[0]->id)}}" class="btn btn-primary btn-lg ak-btn-unlock"><span class="ak-icon-med ak-unlock"></span> Acheter </a> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ak-container" style="margin-top:10px;">
                         <div class="ak-column ak-container col-xs-12 col-sm-4 col-md-12">
                             <div class="ak-shop-article">
                                 <div class="ak-shop-article-container">
@@ -110,7 +131,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-link"> Aller sur la boutique</a>
+                    <a href="{{ URL::route('shop.index') }}" class="ak-shop-link"> Aller sur la boutique </a> 
                 </div>
             </div>
             <a class="ak-home-facebook" href="{{ config('dofus.social.facebook') }}" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>

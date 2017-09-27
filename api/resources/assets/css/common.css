@@ -28020,6 +28020,12 @@ a.ak-content-nav-button.ak-next {
     margin-left: 22px
 }
 
+.ak-block-shop .ak-shop-article-server {
+    display: block;
+    font-size: 14px;
+    margin-left: 22px
+}
+
 .ak-block-shop .ak-shop-article-price {
     display: block;
     font-weight: bold;

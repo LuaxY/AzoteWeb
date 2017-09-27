@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
-
+use \Cache;
 use Validator;
 use App\User;
+use App\MarketCharacter;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-         Validator::extend('breedarray', function ($attribute, $value, $parameters)
-         {
+        Validator::extend('breedarray', function ($attribute, $value, $parameters)
+        {
             $result = true;
             foreach ($value as $v) {
                 if (!in_array($v, [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18])) {
@@ -79,6 +81,15 @@ class AppServiceProvider extends ServiceProvider
 
         Carbon::setlocale(config('app.locale'));
         setlocale(LC_TIME, config('app.locale'));
+
+
+        $shopCharacters = Cache::remember('shopcharacters', 60, function () {
+            return MarketCharacter::latest('created_at')->insell()->take(20)->get();
+        });
+        
+        View::share('shopCharacter', $shopCharacters->random(1));
+
+
     }
 
     /**
