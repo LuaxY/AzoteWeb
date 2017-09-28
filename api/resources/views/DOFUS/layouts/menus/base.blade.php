@@ -102,7 +102,7 @@
                                 <div class="ak-shop-article-container">
                                     <div class="ak-shop-article-illustration">
                                         <a href="{{route('shop.market.buy',$shopCharacter[0]->id)}}">
-                                        <img src="{{ DofusForge::playerId($shopCharacter[0]->id, $shopCharacter[0]->server, 'full', 1, 80, 171) }}" class="img-maxresponsive">
+                                        <img src="{{ DofusForge::playerId($shopCharacter[0]->character_id, $shopCharacter[0]->server, 'full', 1, 80, 171) }}" class="img-maxresponsive">
                                         </a>
                                     </div>
                                     <div class="ak-shop-article-infos">
