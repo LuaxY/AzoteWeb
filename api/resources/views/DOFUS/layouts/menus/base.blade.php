@@ -87,10 +87,6 @@
         @endif
 
         <div class="row ak-container">
-            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:22px;">Vote et gagne des cadeaux</a>
-        </div>
-
-        <div class="row ak-container">
             <div class="ak-block-shop">
                 <div class="text-center ak-shop-top">
                     <a href="{{ URL::route('shop.index') }}" class="ak-shop-title"> La Boutique</a> 
@@ -134,6 +130,9 @@
                     <a href="{{ URL::route('shop.index') }}" class="ak-shop-link"> Aller sur la boutique </a> 
                 </div>
             </div>
+        
+            <a class="ak-btn-code" href="{{ URL::route('vote.index') }}" style="padding-left:70px;font-size:22px;">Vote et gagne des cadeaux</a>
+
             <a class="ak-home-facebook" href="{{ config('dofus.social.facebook') }}" target="_blank">Nous suivre<br>sur <span>Facebook</span></a>
             <a class="ak-home-youtube" href="{{ config('dofus.social.youtube') }}" target="_blank">visiter la chaine<br>youtube <span>{{ config('dofus.title') }}</span></a>
             <a class="ak-home-discord" href="{{ config('dofus.social.discord') }}" target="_blank">Nous rejoindre <br>sur <span>Discord</span></a>
