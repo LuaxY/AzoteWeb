@@ -1,8 +1,0 @@
-{
-    "fields": [{
-        "type": "accounts",
-        "name": "Compte de jeu",
-        "hint": "Selectionnez le compte impliqué.",
-        "child": "game_involved"
-    }]
-}

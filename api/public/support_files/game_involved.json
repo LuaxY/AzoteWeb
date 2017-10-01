@@ -1,8 +1,0 @@
-{
-    "fields": [{
-        "type": "characters",
-        "name": "Personnage",
-        "hint": "Selectionnez le personnage impliqué.",
-        "child": "game_player_final"
-    }]
-}

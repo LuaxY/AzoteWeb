@@ -1,7 +1,0 @@
-{
-    "fields": [{
-        "type": "servers",
-        "name": "Serveur",
-        "child": "game"
-    }]
-}
